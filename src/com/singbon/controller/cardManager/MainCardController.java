@@ -223,14 +223,18 @@ public class MainCardController extends BaseController {
 			User user = this.mainCardService.selectById(userId);
 			model.addAttribute("user", user);
 		}
-		model.addAttribute("sn", device.getSn());
-
-		// 读卡机状态
-		if (TerminalManager.getSNToSocketChannelList().containsKey(device.getSn())) {
-			model.addAttribute("cardStatus", 1);
-		} else {
-			model.addAttribute("cardStatus", 0);
+		if(device!=null){
+			model.addAttribute("sn", device.getSn());			
+			// 读卡机状态
+			if (TerminalManager.getSNToSocketChannelList().containsKey(device.getSn())) {
+				model.addAttribute("cardStatus", 1);
+			} else {
+				model.addAttribute("cardStatus", 0);
+			}
+		}else{
+			model.addAttribute("cardStatus", 0);			
 		}
+
 
 		return StringUtil.requestPath(request, "userInfo");
 	}

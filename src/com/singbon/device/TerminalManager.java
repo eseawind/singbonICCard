@@ -173,6 +173,8 @@ public class TerminalManager {
 				map.put("'cardSN'", getCardSN(b));
 				String msg = JSONUtil.convertToJson(map);
 				TerminalManager.getEngineInstance().sendToAll("c" + sn, msg);
+				List list= TerminalManager.getEngineInstance().getConnections();
+				int a=0;
 			}
 		}
 	}

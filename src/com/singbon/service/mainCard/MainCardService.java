@@ -138,14 +138,14 @@ public class MainCardService {
 		// SimpleDateFormat myFormatter = new SimpleDateFormat("yyyy-MM-dd");
 		Calendar c = Calendar.getInstance();
 
-		int allOpCash = cardAllInfo.getOpCash() + cardAllInfo.getGiveCash();
+		int allOpCash = (cardAllInfo.getOpCash() + cardAllInfo.getGiveCash()) * 100;
 		String tmUserId = StringUtil.leftPad(user.getUserId(), 6);
 		String tmCardNo = StringUtil.leftPad(Integer.valueOf(user.getCardNO()), 6);
 		String tmConsumePwd = StringUtil.leftPad(Integer.valueOf(user.getConsumePwd()), 6);
 		String tmIdentityPwd = StringUtil.leftPad(Integer.valueOf(user.getIdentityPwd()), 4);
 		c.setTime(user.getInvalidDate());
 		String tmInvalidDate = StringUtil.dateToHexString(c);
-		String tmCardMark = StringUtil.leftPad(240, 2);
+		String tmCardMark = StringUtil.leftPad(241, 2);
 		String tmCardBatch = StringUtil.leftPad(cardAllInfo.getCardBatch(), 2);
 		String tmCheck1 = "00"; // 异或校验，以后补充
 
@@ -196,8 +196,8 @@ public class MainCardService {
 
 		// 静态ID（16字节高字节在前）+设备机器号（4字节高字节在前）+数据长度（2字节高字节在前）+cd+01+是否校验卡号标志（1字节）+物理卡号（4字节高字节在前）+读卡扇区号（1字节）+读卡块号（1字节）+读写状态字节（1字节）+块数据（16字节高字节在前）+读卡扇区号（1字节）+读卡块号（1字节）+读写状态字节（1字节）+块数据（16字节高字节在前）+...+CRC校验（字节高字节在前）
 		String baseBlock0 = "010000" + baseData.substring(0, 32);
-		String baseBlock1 = "010000" + baseData.substring(0, 32);
-		String baseBlock2 = "010100" + baseData.substring(32);
+		String baseBlock1 = "010100" + baseData.substring(0, 32);
+		String baseBlock2 = "010200" + baseData.substring(32);
 
 		String sendStr = baseBlock0 + baseBlock1 + baseBlock2 + consumeData + subsidyData + "0000";
 		String bufLen = StringUtil.leftPad(11 + sendStr.length() / 2, 4);

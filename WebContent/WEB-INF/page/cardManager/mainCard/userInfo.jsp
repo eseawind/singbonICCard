@@ -1,9 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<!-- <script src="/js/comet4j.js" type="text/javascript"></script> -->
+<script src="/js/comet4j.js" type="text/javascript"></script>
 <script type="text/javascript">
-
 	var isOnline=false;
 	var isHeart=false;
 	var title=null;
@@ -65,6 +64,7 @@
 			}
 		});
 		$("#userinfo .infoCard").click(function() {
+			alertMsg.warn($("#userinfo .infoCard").length);
 			if(isOnline){
 				$.post("${base }/command.do?comm=infoCardInit");
 			}else{
@@ -77,6 +77,7 @@
 	});
 
 	function init() {
+		JS.Engine.stop();
 		JS.Engine.start('/conn');
 		JS.Engine.on({
 			'c${sn}' : function(e) {//侦听一个channel
@@ -124,13 +125,16 @@
 					}					
 				//信息发卡命令
 				} else if (e2.f1 == 5) {
+					alertMsg.warn($("#userinfo .infoCard").length);
 					if(e2.r==1){
 						$("#userinfo input[name=cardSN]").val(e2.cardSN);
+						alert(1);
 						validateCallback($("#userinfo"), function(e) {
 						}, null);
 					}else{
 						opCardResult(e2.r);
 					}
+					alertMsg.warn($("#userinfo .infoCard").length);
 				//信息发卡完成
 				} else if (e2.f1 == 6) {
 					if(e2.r==1){

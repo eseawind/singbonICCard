@@ -16,7 +16,7 @@
 		where userId=#{userId}
 	</update>
 	<update id="infoCard" parameterMap="user2">
-		update user set cardSN=#{cardSN},cardSeq=1,status=1,cardMakeDate=now()
+		update user set cardNO=#{cardNO},cardSN=#{cardSN},cardSeq=1,status=1,cardMakeDate=now()
 		where userId=#{userId}
 	</update>
 	<delete id="delete" parameterType="int">
@@ -26,7 +26,7 @@
 		select * from user where userId=#{userId}
 	</select>
 	<select id="selectMaxCardNO" resultType="java.lang.Integer">
-		select ifnull(max(cardNO),1)+1 cardNO from user where companyId=#{companyId}
+		select ifnull(max(cardNO),0)+1 cardNO from user where companyId=#{companyId}
 	</select>
 	<select id="selectCountByCardSN" resultType="java.lang.Integer">
 		select count(userId) from user where companyId=#{companyId} and cardSN=#{cardSN}
