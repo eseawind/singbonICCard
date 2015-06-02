@@ -59,6 +59,7 @@
 					if (i < aStyles.length) $ftd.addClass(aStyles[i][1]);
 				}		
 				$tr.click(function(){
+					alert();
 					var target=$(this).attr("target");
 					if(target=="batch"){
 						batchClick($(this));

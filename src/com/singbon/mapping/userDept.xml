@@ -5,8 +5,8 @@
 	</resultMap>
 	<parameterMap type="com.singbon.entity.UserDept" id="userDept2" />
 	<insert id="insert" parameterMap="userDept2">
-		insert into userDept (deptName,parentId,batchId)
-		values (#{deptName},#{parentId},#{batchId})
+		insert into userDept (companyId,deptName,parentId,batchId)
+		values (#{companyId},#{deptName},#{parentId},#{batchId})
 	</insert>
 	<update id="update" parameterMap="userDept2">
 		update userDept set deptName=#{deptName},batchId=#{batchId}

@@ -41,8 +41,8 @@ public class UserDeptController {
 	 * @param request
 	 * @param model
 	 */
-	@RequestMapping(value = "/addEditUserDept.do")
-	public void addEdituserDept(@ModelAttribute UserDept userDept, HttpServletRequest request, HttpServletResponse response, Model model) {
+	@RequestMapping(value = "/addEdit.do")
+	public void addEdit(@ModelAttribute UserDept userDept, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
 		userDept.setCompanyId(company.getId());
 
@@ -67,12 +67,18 @@ public class UserDeptController {
 	 * @param request
 	 * @param model
 	 */
-	@RequestMapping(value = "/deleteUserDept.do")
+	@RequestMapping(value = "/delete.do")
 	public void delete(HttpServletRequest request, HttpServletResponse response, Model model, Integer id) {
 
 		PrintWriter p = null;
 		try {
 			p = response.getWriter();
+
+			List list = this.userDeptService.selectByParentId(id);
+			if (list.size() > 0) {
+				p.print(2);
+				return;
+			}
 			this.userDeptService.delete(id);
 			p.print(1);
 		} catch (Exception e) {
@@ -87,8 +93,8 @@ public class UserDeptController {
 	 * @param request
 	 * @param model
 	 */
-	@RequestMapping(value = "/userDeptTreeList.do")
-	public String userDeptTreeList(HttpServletRequest request, Model model) {
+	@RequestMapping(value = "/treeList.do")
+	public String treeList(HttpServletRequest request, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
 		List<UserDept> list = this.userDeptService.selectTreeList(company.getId());
 		model.addAttribute("list", list);
@@ -102,8 +108,8 @@ public class UserDeptController {
 	 * @param request
 	 * @param model
 	 */
-	@RequestMapping(value = "/userDeptList.do")
-	public String userDeptList(HttpServletRequest request, Model model, Integer parentId) {
+	@RequestMapping(value = "/list.do")
+	public String list(HttpServletRequest request, Model model, Integer parentId) {
 
 		List list = this.userDeptService.selectByParentId(parentId);
 		model.addAttribute("list", list);
