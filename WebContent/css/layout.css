@@ -1,0 +1,16 @@
+@CHARSET "UTF-8";
+/*登录*/
+#loginform {
+	
+}
+
+#devicelist .item {
+	height:40px;
+	width:100px;
+	border: 1px solid gray;
+	float: left;
+	margin: 10px;
+	cursor: pointer;
+	text-align: center;
+	padding-top:10px;
+}

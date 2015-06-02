@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.singbon.dao.systemManager.BatchDAO">
+	<resultMap id="batch" type="com.singbon.entity.Batch">
+	</resultMap>
+	<parameterMap type="com.singbon.entity.Batch" id="batch2" />
+	<insert id="insert" parameterMap="batch2">
+		insert into batch (companyId,batchName,beginDate,endDate,invalidDate)
+		values (#{companyId},#{batchName},#{beginDate},#{endDate},#{invalidDate})
+	</insert>
+	<update id="update" parameterMap="batch2">
+		update batch set batchName=#{batchName},beginDate=#{beginDate},endDate=#{endDate},invalidDate=#{invalidDate}
+		where id=#{id}
+	</update>
+	<select id="selectList" resultMap="batch">
+		select * from batch where companyId=#{companyId}
+	</select>
+</mapper>
