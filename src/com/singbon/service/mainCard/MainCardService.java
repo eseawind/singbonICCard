@@ -40,12 +40,12 @@ public class MainCardService {
 	}
 
 	/**
-	 * 删除人员
+	 * 删除未发卡人员
 	 * 
 	 * @param user
 	 */
-	public void delete(Integer id) {
-		this.mainCardDAO.delete(id);
+	public void delete(Integer deptId) {
+		this.mainCardDAO.delete(deptId);
 	}
 
 	/**
@@ -54,7 +54,7 @@ public class MainCardService {
 	 * @param id
 	 * @return
 	 */
-	public User selectById(@Param("id") Integer id){
+	public User selectById(Integer id){
 		return this.mainCardDAO.selectById(id);
 	}
 	

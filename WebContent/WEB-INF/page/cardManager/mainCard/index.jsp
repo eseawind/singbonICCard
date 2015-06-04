@@ -15,7 +15,9 @@
 	};
 	function refreshUserList() {
 		$("#userList")
-				.loadUrl("${base}/list.do?deptId=" + selectedDeptId+"&searchStr="+searchStr);
+				.loadUrl("${base}/list.do?deptId=" + selectedDeptId+"&searchStr="+searchStr, {}, function(){
+					$("#userList").find("[layoutH]").layoutH();
+				});
 	}
 </script>
 <link href="/themes/css/custom.css" rel="stylesheet" type="text/css" />

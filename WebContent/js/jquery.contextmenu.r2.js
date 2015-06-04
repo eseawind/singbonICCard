@@ -91,14 +91,15 @@
   function display(index, trigger, e, options) {
     var cur = hash[index];
     content = $('#'+cur.id).find('ul:first').clone(true);
-    content.css(cur.menuStyle).find('li').css(cur.itemStyle).hover(
+    content.css(cur.menuStyle).find('li[id]').css(cur.itemStyle).hover(
       function() {
         $(this).css(cur.itemHoverStyle);
       },
       function(){
         $(this).css(cur.itemStyle);
       }
-    ).find('img').css({verticalAlign:'middle',paddingRight:'2px'});
+    ).end().find('li[class]').css({'border-color': '#99bbe8','border-width':'0 0 1px 0','border-style':'dotted',margin: '3px 10px'})
+    .find('img').css({verticalAlign:'middle',paddingRight:'2px'});
 
     // Send the content to the menu
     menu.html(content);

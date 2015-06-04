@@ -31,12 +31,12 @@ public interface MainCardDAO {
 	public void update(User user);
 
 	/**
-	 * 删除人员
+	 * 删除未发卡人员
 	 * 
 	 * @param id
 	 * @return
 	 */
-	public void delete(Integer id);
+	public void delete(@Param("deptId") Integer deptId);
 
 	/**
 	 * 根据主键查询人员

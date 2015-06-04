@@ -72,7 +72,7 @@
 	left: 85px;
 }
 </style>
-<form id="userinfo" method="post" action="${base }/addEdit.do" class="pageForm required-validate">
+<form id="userinfo" method="post" action="${base }/addEdit.do" class="pageForm required-validate" onsubmit="return false;">
 	<div class="pageFormContent" layoutH="60">
 		<fieldset>
 			<legend>基本信息</legend>
@@ -100,7 +100,7 @@
 				<dt>性别：</dt>
 				<dd>
 					<label><input type="radio" name="sex"
-						<c:if test="${user.sex==0}">checked="checked"</c:if> value="0" />男</label> <label><input
+						<c:if test="${user.sex==null || user.sex==0}">checked="checked"</c:if> value="0" />男</label> <label><input
 						type="radio" name="sex" value="1" <c:if test="${user.sex==1}">checked="checked"</c:if> />女</label>
 				</dd>
 			</dl>

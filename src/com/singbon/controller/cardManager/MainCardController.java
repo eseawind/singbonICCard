@@ -179,6 +179,24 @@ public class MainCardController extends BaseController {
 	}
 
 	/**
+	 * 删除未发卡人员
+	 * 
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/delete.do", method = RequestMethod.POST)
+	public void delete(HttpServletRequest request,HttpServletResponse response, Integer deptId, Model model) {
+		PrintWriter p = null;
+		try {
+			p = response.getWriter();
+			this.mainCardService.delete(deptId);
+			p.print(1);
+		} catch (Exception e) {
+			p.print(0);
+		}
+	}
+	
+	/**
 	 * 命令处理
 	 * 
 	 * @param model

@@ -31,20 +31,53 @@
 				// 					alert(url);
 				$.pdialog.open(url, "dialog", "信息修改", cardOptions);
 			},
-			'single' : function(t, target) {
+			'delete' : function(t, target) {
+				if (selectedDeptId <= "0") {
+					alertMsg.warn('请选择部门');
+					return;
+				}
+				alertMsg.confirm("确定要删除未发卡人员吗？", {
+					okCall : function() {
+						$.post("${base}/delete.do?deptId=" + selectedDeptId,
+								function(e) {
+									refreshUserList();
+								});
+					}
+				});
+			},
+			'dept' : function(t, target) {
+				if (selectedDeptId <= "0") {
+					alertMsg.warn('请选择部门');
+					return;
+				}
+				alertMsg.confirm("确定要删除未发卡人员吗？", {
+					okCall : function() {
+						$.post("${base}/delete.do?deptId=" + selectedDeptId,
+								function(e) {
+									refreshUserList();
+								});
+					}
+				});
 			},
 			'batch' : function(t, target) {
 			}
+		},
+		onShowMenu : function(e, menu) {
+// 			alert($(e.target).html());
+			if (!$(e.target).parents("tbody").hasClass("userList")) {
+				$('#edit', menu).remove();
+			}
+			return menu;
 		}
 	};
-	$(function(){
-		$(".searchBar .search").click(function(){
-			searchStr=$("input[name='searchStr']").val();
+	$(function() {
+		$(".searchBar .search").click(function() {
+			searchStr = $("input[name='searchStr']").val();
 			refreshUserList();
 		});
-		$(".searchBar .clear").click(function(){
-			searchStr=$("input[name='searchStr']").val("");
-			searchStr=null;
+		$(".searchBar .clear").click(function() {
+			searchStr = $("input[name='searchStr']").val("");
+			searchStr = null;
 			refreshUserList();
 		});
 	});
@@ -53,8 +86,11 @@
 	<ul>
 		<li id="info">信息录入</li>
 		<li id="edit">信息修改</li>
+		<li id="dept">部门调整</li>
+		<li class="divide" />
 		<li id="single">单个发卡</li>
 		<li id="batch">批量发卡</li>
+		<li id="delete">删除未发卡人员</li>
 	</ul>
 </div>
 <div class="pageHeader" style="border: 1px #B8D0D6 solid">
@@ -64,7 +100,7 @@
 	<div class="searchBar">
 		<table class="searchContent">
 			<tr>
-				<td>编号/姓名：<input type="text" name="searchStr" value="${searchStr }"/>
+				<td>编号/姓名：<input type="text" name="searchStr" value="${searchStr }" />
 				</td>
 				<td><div class="buttonActive">
 						<div class="buttonContent">
@@ -90,7 +126,7 @@
 				<th width="120">性别</th>
 				<th width="200">身份证号</th>
 				<th width="80">卡类别</th>
-				<th width="80">使用状态</th>
+				<th width="80">状态</th>
 			</tr>
 		</thead>
 		<tbody class="userList">

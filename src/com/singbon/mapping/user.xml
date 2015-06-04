@@ -16,7 +16,7 @@
 		where id=#{id}
 	</update>
 	<delete id="delete" parameterType="int">
-		delete from user where id=#{0}
+		delete from user where status=0 and deptId=#{deptId}
 	</delete>
 	<select id="selectById" resultMap="user">
 		select * from user where id=#{id}
