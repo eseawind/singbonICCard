@@ -48,6 +48,10 @@
 			tbody.wrap("<div class='gridScroller'" + layoutStr + " style='width:" + $tc.width() + "px;'><div class='gridTbody'><table style='width:" + (tlength - 20) + "px;'></table></div></div>");
 			var ftr = $(">tr:first-child", tbody);
 			var $trs = tbody.find('>tr');
+			//添加右键菜单
+			if(tbody.hasClass("userList")){
+				$trs.contextMenu('menu',userListOps);
+			}
 			
 			$trs.hoverClass().each(function(){
 				var $tr = $(this);
@@ -59,7 +63,6 @@
 					if (i < aStyles.length) $ftd.addClass(aStyles[i][1]);
 				}		
 				$tr.click(function(){
-					alert();
 					var target=$(this).attr("target");
 					if(target=="batch"){
 						batchClick($(this));

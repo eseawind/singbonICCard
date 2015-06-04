@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.singbon.dao.mainCard.MainCardDAO">
+	<resultMap id="user" type="com.singbon.entity.User">
+	</resultMap>
+	<parameterMap type="com.singbon.entity.User" id="user2" />
+	<insert id="insert" parameterMap="user2">
+		insert into user
+		(companyId,deptId,username,shortName,userNO,sex,cardID,cardType,cardFunc,cardIdentity,status,cardCost,cardDeposit,beginDate,endDate,consumePwd,identityPwd)
+		values
+		(#{companyId},#{deptId},#{username},#{shortName},#{userNO},#{sex},#{cardID},#{cardType},#{cardFunc},#{cardIdentity},#{status},#{cardCost},#{cardDeposit},#{beginDate},#{endDate},#{consumePwd},#{identityPwd})
+	</insert>
+	<update id="update" parameterMap="user2">
+		update user set
+		username=#{username},shortName=#{shortName},userNO=#{userNO},sex=#{sex},cardID=#{cardID},cardType=#{cardType},cardFunc=#{cardFunc},cardIdentity=#{cardIdentity},endDate=#{endDate},consumePwd=#{consumePwd},identityPwd=#{identityPwd}
+		where id=#{id}
+	</update>
+	<delete id="delete" parameterType="int">
+		delete from user where id=#{0}
+	</delete>
+	<select id="selectById" resultMap="user">
+		select * from user where id=#{id}
+	</select>
+	<select id="selectByCondition" resultMap="user">
+		select * from user
+		<where>
+			<if test="deptId!=null">
+				and deptId=#{deptId}
+			</if>
+			<if test="searchStr!=null">
+				and (
+				username like concat('%',#{searchStr},'%')
+				or shortName like concat('%',#{searchStr},'%')
+				or userNO like concat('%',#{searchStr},'%')
+				)
+			</if>
+		</where>
+	</select>
+</mapper>

@@ -45,6 +45,15 @@ public class BatchService {
 		
 		return this.batchDAO.selectList(companyId);
 	}
+	/**
+	 * 根据主键获取批次
+	 * 
+	 * @return
+	 */
+	public Batch selectById(Integer id) {
+		
+		return this.batchDAO.selectById(id);
+	}
 	
 	/**
 	 * 添加修改人员部门

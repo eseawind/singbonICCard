@@ -1,6 +1,5 @@
 <!-- 人员部门 -->
-<%@ page language="java" contentType="text/html; charset=utf-8"
-	pageEncoding="utf-8"%>
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <script type="text/javascript">
@@ -37,12 +36,14 @@
 		});
 		$("#userDeptForm .delete").click(
 				function() {
-					if(selectedDeptId<0){
+					if (selectedDeptId < 0) {
 						alertMsg.warn('请选择人员部门');
 						return;
 					}
-					var size= $(".userDeptTree li[deptId="+selectedDeptId+"] ul").size();
-					if(size>0){
+					var size = $(
+							".userDeptTree li[deptId=" + selectedDeptId
+									+ "] ul").size();
+					if (size > 0) {
 						alertMsg.warn('包含有下级部门不能删除');
 						return;
 					}
@@ -52,15 +53,16 @@
 									function(e) {
 										//0失败1成功2包含下级部门3包含人员
 										if (e == 1) {
-											$("#userDeptForm input").eq(1).val(-1);
+											$("#userDeptForm input").eq(1).val(
+													-1);
 											refreshUserDeptList();
 											refreshUserDeptTreeList();
 											emptyForm();
-										} else if(e==0){
+										} else if (e == 0) {
 											alertMsg.warn("删除失败");
-										} else if(e==2){
+										} else if (e == 2) {
 											alertMsg.warn("包含有下级部门不能删除");
-										} else if(e==3){
+										} else if (e == 3) {
 											alertMsg.warn("包含有人员不能删除");
 										}
 									});
@@ -79,8 +81,10 @@
 		$("#userDeptForm input").eq(0).val("");
 		$("#userDeptForm input").eq(1).val(-1);
 		$("#userDeptForm input").eq(2).val("");
-// 		$("#userDeptForm select").eq(0).val(0);
+		// 		$("#userDeptForm select").eq(0).val(0);
 	}
+
+	//选择部门
 	function selectUserDept(a) {
 		selectedDeptId = a.attr("deptId");
 		emptyForm();
@@ -88,8 +92,13 @@
 		if (selectedDeptId != 0) {
 			$("#userDeptForm input").eq(0).val(selectedDeptId);
 			$("#userDeptForm input").eq(2).val(a.html());
-			var select= $("#userDeptForm select");
-			select.prev().val(a.attr("batchId")).html($("option[value="+a.attr("batchId")+"]",select).html());
+			var select = $("#userDeptForm select");
+			select
+					.prev()
+					.val(a.attr("batchId"))
+					.html(
+							$("option[value=" + a.attr("batchId") + "]", select)
+									.html());
 		}
 		refreshUserDeptList();
 	};
@@ -111,9 +120,8 @@
 					<dl>
 						<dt>部门名称：</dt>
 						<dd>
-							<input type="hidden" name="id" /> <input type="hidden"
-								name="parentId" /> <input type="text" name="deptName"
-								maxlength="20" class="required" />
+							<input type="hidden" name="id" /> <input type="hidden" name="parentId" /> <input
+								type="text" name="deptName" maxlength="20" class="required" />
 						</dd>
 					</dl>
 					<dl>

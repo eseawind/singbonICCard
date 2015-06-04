@@ -37,4 +37,10 @@ public interface BatchDAO {
 	 */
 	public List<Batch> selectList(@Param("companyId") Integer companyId);
 
+	/**
+	 * 根据主键获取批次
+	 * 
+	 * @return
+	 */
+	public Batch selectById(@Param("id") Integer id);
 }

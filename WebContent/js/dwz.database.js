@@ -59,7 +59,7 @@
 						alertMsg.error($this.attr("warn") || DWZ.msg("alertSelectMsg"));
 						return false;
 					}
-					
+					alert();
 					$.pdialog.open(url, "_blank", $this.attr("title") || $this.text(), options);
 					return false;
 				});

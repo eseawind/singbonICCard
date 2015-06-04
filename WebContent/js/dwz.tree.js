@@ -52,7 +52,8 @@
 						}
 					}
 					$("a", $this).click(function(event){
-						if($(this).attr("module")=="userDept"){
+						var module=$(this).attr("module");
+						if(module=="userDept" || module=="mainCard"){
 							selectUserDept($(this));
 						}
 						$("div." + op.selected, $this).removeClass(op.selected);

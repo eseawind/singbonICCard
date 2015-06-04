@@ -14,7 +14,7 @@ import com.singbon.entity.Company;
 import com.singbon.entity.User;
 
 /**
- * 卡操作业务层
+ * 制卡中心业务层
  * 
  * @author 郝威
  * 
