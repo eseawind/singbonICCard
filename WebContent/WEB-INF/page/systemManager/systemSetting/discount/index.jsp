@@ -29,28 +29,26 @@
 <link href="/themes/css/custom.css" rel="stylesheet" type="text/css" />
 <style type="text/css">
 </style>
-<div id="discountList" class="unitBox">
-	<jsp:include page="${base}/discountList.do" />
-</div>
+
 <div class="form"
-	style="display: block; overflow: auto; border: solid 1px #CCC; line-height: 21px; background: #fff; margin-top: 5px;">
+	style="float: left; display: block; overflow: auto; width: 240px; border: solid 1px #CCC; line-height: 21px; background: #fff">
 	<form id="discountForm" method="post" action="${base}/save.do"
 		class="pageForm required-validate">
-		<div class="pageFormContent" layoutH="480"
-			style="width: 500px; margin: 0 auto; overflow: hidden; padding-top: 30px;">
+		<div class="pageFormContent" style="padding: 200px 0 50px;">
 			<dl>
 				<dt>补助金额：</dt>
 				<dd>
-					<input type="text" name="subsidy" maxlength="20" class="digits required" value="0"/>
+					<input type="hidden" name="id"/>
+					<input type="text" name="subsidy" maxlength="20" class="digits required"/>
 				</dd>
 			</dl>
 			<dl>
 				<dt>扣费比例：</dt>
 				<dd>
-					<input type="hidden" name="id" /> <select class="combox"
+					<select class="combox"
 						name="rate" class="required">
 						<c:forEach var="i" begin="1" end="200" step="1">
-							<option value="${i}" <c:if test="${i==100 }">selected="selected"</c:if>>${i}</option>
+							<option value="${i}">${i}</option>
 						</c:forEach>
 					</select>
 				</dd>
@@ -61,14 +59,14 @@
 					<input style="margin: 0; width: 30px;" type="radio"
 						name="giveCashType" checked="checked" value="0" />充多少送多少<br /> <input
 						style="margin: 0; width: 30px;" type="radio" name="giveCashType"
-						value="1" />固定值 
+						value="1" />固定值
 				</dd>
 			</dl>
 			<dl style="width: 300px;margin-top:10px;">
 				<dt>&nbsp;</dt>
 				<dd>
 					<input type="text" name="giveCash" maxlength="20"
-						class="digits required" style="display: none;" value="0"/>
+						class="digits required" style="display: none;"/>
 				</dd>
 			</dl>
 		</div>
@@ -82,4 +80,7 @@
 			</ul>
 		</div>
 	</form>
+</div>
+<div id="discountList" class="unitBox" style="margin-left: 246px;">
+	<jsp:include page="${base}/discountList.do" />
 </div>

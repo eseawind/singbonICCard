@@ -24,7 +24,7 @@
 		select #{companyId},15,100,0,0,0
 	</insert>
 	<update id="update" parameterMap="discount2">
-		update discount set discountType=#{discountType},rate=#{rate},subsidy=#{subsidy},giveCashType=#{giveCashType},giveCash=#{giveCash}
+		update discount set rate=#{rate},subsidy=#{subsidy},giveCashType=#{giveCashType},giveCash=#{giveCash}
 		where id=#{id}
 	</update>
 	<select id="selectList" resultMap="discount">

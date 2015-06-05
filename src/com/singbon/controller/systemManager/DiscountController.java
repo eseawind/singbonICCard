@@ -58,13 +58,12 @@ public class DiscountController extends BaseController {
 	 * @param model
 	 */
 	@RequestMapping(value = "/discountList.do")
-	public String DiscountList(HttpServletRequest request, Model model) {
+	public String discountList(HttpServletRequest request, Model model) {
 
 		Company company = (Company) request.getSession().getAttribute("company");
 		List<Discount> list = this.discountService.selectList(company.getId());
 		if (list.size() == 0) {
 			this.discountService.insert(company.getId());
-		}else{
 			list = this.discountService.selectList(company.getId());
 		}
 		model.addAttribute("list", list);

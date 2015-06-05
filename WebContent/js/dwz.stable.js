@@ -69,6 +69,8 @@
 					var target=$(this).attr("target");
 					if(target=="batch"){
 						batchClick($(this));
+					}else if(target=="discount"){
+						discountClick($(this));
 					}
 					$trs.filter(".selected").removeClass("selected");
 					$tr.addClass("selected");
