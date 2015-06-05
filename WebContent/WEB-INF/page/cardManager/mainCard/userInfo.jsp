@@ -192,7 +192,7 @@
 			<dl>
 				<dt>当前有效期：</dt>
 				<dd>
-					<input type="text" name="endDate" maxlength="20" class="date required"
+					<input type="text" name="endDate" maxlength="20" class="date required" readonly="readonly"
 						value="<fmt:formatDate value="${user.endDate==null ? batch.endDate :user.endDate }" pattern="yyyy-MM-dd"/>" />
 				</dd>
 			</dl>

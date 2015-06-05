@@ -174,7 +174,7 @@
 						<!-- 显示左右控制时添加 class="tabsPageHeaderMargin" -->
 						<ul class="navTab-tab">
 							<li tabid="main" class="main"><a href="javascript:;"><span><span
-										class="home_icon">系统管理</span></span></a></li>
+										class="home_icon">欢迎首页</span></span></a></li>
 						</ul>
 					</div>
 				</div>

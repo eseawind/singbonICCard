@@ -1,0 +1,74 @@
+package com.singbon.controller.systemManager;
+
+import java.io.PrintWriter;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.singbon.controller.BaseController;
+import com.singbon.entity.Discount;
+import com.singbon.entity.Company;
+import com.singbon.service.systemManager.DiscountService;
+import com.singbon.util.StringUtil;
+
+/**
+ * 优惠方案控制类
+ * 
+ * @author 郝威
+ * 
+ */
+@Controller
+@RequestMapping(value = "/systemManager/systemSetting/discount")
+public class DiscountController extends BaseController {
+
+	@Autowired
+	public DiscountService discountService;
+
+	/**
+	 * 保存修改优惠方案
+	 * 
+	 * @param Discount
+	 * @param request
+	 * @param model
+	 */
+	@RequestMapping(value = "/save.do")
+	public void save(@ModelAttribute Discount discount, HttpServletRequest request, HttpServletResponse response, Model model) {
+		PrintWriter p = null;
+		try {
+			p = response.getWriter();
+			this.discountService.update(discount);
+			p.print(1);
+		} catch (Exception e) {
+			p.print(0);
+		}
+	}
+
+	/**
+	 * 优惠方案列表
+	 * 
+	 * @param Discount
+	 * @param request
+	 * @param model
+	 */
+	@RequestMapping(value = "/discountList.do")
+	public String DiscountList(HttpServletRequest request, Model model) {
+
+		Company company = (Company) request.getSession().getAttribute("company");
+		List<Discount> list = this.discountService.selectList(company.getId());
+		if (list.size() == 0) {
+			this.discountService.insert(company.getId());
+		}else{
+			list = this.discountService.selectList(company.getId());
+		}
+		model.addAttribute("list", list);
+		return StringUtil.requestPath(request, "discountList");
+	}
+
+}
