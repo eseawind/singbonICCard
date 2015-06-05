@@ -81,7 +81,7 @@
 				<dd>
 					<input name="id" type="hidden" value="${user.id }" /> <input name="deptId" type="hidden"
 						value="${deptId }" /> <input name="username" type="text" class="required"
-						value="${user.username }" />
+						value="${user.username }" onblur="shortName.value=($('input[name=username]').toPinyin());" onchange="shortName.value=($('input[name=username]').toPinyin())" onkeydown="shortName.value=($('input[name=username]').toPinyin())"/>
 				</dd>
 			</dl>
 			<dl>
