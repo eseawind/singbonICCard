@@ -47,19 +47,19 @@
 			<dl style="margin: 10px 0;">
 				<dt>开始日期：</dt>
 				<dd>
-					<input type="text" name="beginDate" maxlength="20" class="date required" />
+					<input type="text" name="beginDate" maxlength="20" class="date required" readonly="readonly"/>
 				</dd>
 			</dl>
 			<dl style="margin: 10px 0;">
 				<dt>结束日期：</dt>
 				<dd>
-					<input type="text" name="endDate" maxlength="20" class="date required" />
+					<input type="text" name="endDate" maxlength="20" class="date required" readonly="readonly"/>
 				</dd>
 			</dl>
 			<dl style="margin: 10px 0 50px;">
 				<dt>失效日期：</dt>
 				<dd>
-					<input type="text" name="invalidDate" maxlength="20" class="date required" />
+					<input type="text" name="invalidDate" maxlength="20" class="date required" readonly="readonly"/>
 				</dd>
 			</dl>
 		</div>

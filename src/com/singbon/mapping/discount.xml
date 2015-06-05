@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.singbon.dao.systemManager.DiscountDAO">
+	<resultMap id="discount" type="com.singbon.entity.Discount">
+	</resultMap>
+	<parameterMap type="com.singbon.entity.Discount" id="discount2" />
+	<insert id="insert">
+		insert into discount (companyId,discountType,rate,subsidy,giveCashType,giveCash)
+		select #{companyId},0,100,0,0,0 union
+		select #{companyId},1,100,0,0,0 union
+		select #{companyId},2,100,0,0,0 union
+		select #{companyId},3,100,0,0,0 union
+		select #{companyId},4,100,0,0,0 union
+		select #{companyId},5,100,0,0,0 union
+		select #{companyId},6,100,0,0,0 union
+		select #{companyId},7,100,0,0,0 union
+		select #{companyId},8,100,0,0,0 union
+		select #{companyId},9,100,0,0,0 union
+		select #{companyId},10,100,0,0,0 union
+		select #{companyId},11,100,0,0,0 union
+		select #{companyId},12,100,0,0,0 union
+		select #{companyId},13,100,0,0,0 union
+		select #{companyId},14,100,0,0,0 union
+		select #{companyId},15,100,0,0,0
+	</insert>
+	<update id="update" parameterMap="discount2">
+		update discount set discountType=#{discountType},rate=#{rate},subsidy=#{subsidy},giveCashType=#{giveCashType},giveCash=#{giveCash}
+		where id=#{id}
+	</update>
+	<select id="selectList" resultMap="discount">
+		select * from discount where companyId=#{companyId}
+	</select>
+</mapper>
