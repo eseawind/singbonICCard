@@ -22,13 +22,14 @@ import com.singbon.device.FrameType;
 import com.singbon.entity.Batch;
 import com.singbon.entity.CardFunc;
 import com.singbon.entity.CardIdentity;
-import com.singbon.entity.CardType;
 import com.singbon.entity.Company;
+import com.singbon.entity.Discount;
 import com.singbon.entity.SysUser;
 import com.singbon.entity.User;
 import com.singbon.entity.UserDept;
 import com.singbon.service.mainCard.MainCardService;
 import com.singbon.service.systemManager.BatchService;
+import com.singbon.service.systemManager.DiscountService;
 import com.singbon.service.systemManager.UserDeptService;
 import com.singbon.util.StringUtil;
 
@@ -48,7 +49,8 @@ public class MainCardController extends BaseController {
 	public UserDeptService userDeptService;
 	@Autowired
 	public BatchService batchService;
-
+	@Autowired
+	public DiscountService discountService;
 	/**
 	 * 添加修改人员
 	 * 
@@ -117,15 +119,9 @@ public class MainCardController extends BaseController {
 	 */
 	@RequestMapping(value = "/userInfo.do", method = RequestMethod.GET)
 	public String userInfo(HttpServletRequest request, Integer id, Integer deptId, Integer batchId,Integer editType, Model model) {
-		List<CardType> cardTypeList = new ArrayList<CardType>();
+		Company company = (Company) request.getSession().getAttribute("company");
 		List<CardFunc> cardFuncList = new ArrayList<CardFunc>();
 		List<CardIdentity> cardIdentityList = new ArrayList<CardIdentity>();
-		for (int i = 0; i < 16; i++) {
-			CardType t = new CardType();
-			t.setId(i);
-			t.setTypeName(i + "类卡");
-			cardTypeList.add(t);
-		}
 		CardFunc m1 = new CardFunc();
 		m1.setId(0);
 		m1.setFuncName("银校卡");
@@ -161,8 +157,9 @@ public class MainCardController extends BaseController {
 		cardIdentityList.add(m6);
 		cardIdentityList.add(m7);
 		cardIdentityList.add(m8);
-
-		model.addAttribute("cardTypeList", cardTypeList);
+		
+		List<Discount> discountList =discountService.selectList(company.getId());
+		model.addAttribute("discountList", discountList);
 		model.addAttribute("cardFuncList", cardFuncList);
 		model.addAttribute("cardIdentityList", cardIdentityList);
 

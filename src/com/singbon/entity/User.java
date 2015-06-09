@@ -25,7 +25,6 @@ public class User implements Serializable {
 	private String sexDesc;
 	private String cardID;
 	private Integer cardType;
-	private String cardTypeDesc;
 	private Integer cardFunc;
 	private String cardFuncDesc;
 	private Integer cardIdentity;
@@ -121,14 +120,6 @@ public class User implements Serializable {
 
 	public void setCardType(Integer cardType) {
 		this.cardType = cardType;
-	}
-
-	public String getCardTypeDesc() {
-		return cardTypeDesc;
-	}
-
-	public void setCardTypeDesc(String cardTypeDesc) {
-		this.cardTypeDesc = cardTypeDesc;
 	}
 
 	public Integer getCardFunc() {
