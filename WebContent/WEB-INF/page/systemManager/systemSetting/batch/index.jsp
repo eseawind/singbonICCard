@@ -1,6 +1,7 @@
 <!-- 批次设置 -->
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 
 <script type="text/javascript">
 	$(function() {
@@ -66,7 +67,9 @@
 		<div class="formBar">
 			<div class="panelBar" style="border-style: none;">
 				<ul class="toolBar">
-					<li><a class="add" href="javascript:;"><span>添加</span></a></li>
+					<security:authorize ifAnyGranted="ROLE_ADMIN">
+						<li><a class="add" href="javascript:;"><span>添加</span></a></li>
+					</security:authorize>
 					<li><a class="edit" href="javascript:;"><span>修改</span></a></li>
 				</ul>
 			</div>
