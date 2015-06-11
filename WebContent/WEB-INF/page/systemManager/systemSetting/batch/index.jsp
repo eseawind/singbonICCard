@@ -2,8 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="security"
-	uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 
 <script type="text/javascript">
 	$(function() {
@@ -72,12 +71,19 @@
 		<div class="formBar">
 			<div class="panelBar" style="border-style: none;">
 				<ul class="toolBar">
+<<<<<<< HEAD
 					<security:authorize ifAnyGranted="ROLE_BATCH_ADD,ROLE_ADMIN">
 						<li><a class="add" href="javascript:;"><span>添加</span></a></li>
 					</security:authorize>
 					<security:authorize ifAnyGranted="ROLE_BATCH_EDIT,ROLE_ADMIN">
 						<li><a class="edit" href="javascript:;"><span>修改</span></a></li>
 					</security:authorize>
+=======
+					<security:authorize ifAnyGranted="ROLE_ADMIN">
+						<li><a class="add" href="javascript:;"><span>添加</span></a></li>
+					</security:authorize>
+					<li><a class="edit" href="javascript:;"><span>修改</span></a></li>
+>>>>>>> branch 'master' of https://github.com/ycsty2008/singbonICCard.git
 				</ul>
 			</div>
 		</div>
