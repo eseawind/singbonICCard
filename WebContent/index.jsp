@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=utf-8"
-    pageEncoding="utf-8"%>
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -7,23 +7,39 @@
 <title>系统登录</title>
 <script type="text/javascript" src="/js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript">
-	$(function(){
-		$("#login").click(function(){
-			$("#loginform").submit();
+	$(function() {
+		$("#login").click(function() {
+			$("form").submit();
 		});
 	});
 </script>
 </head>
 <body>
-	<%=java.lang.Runtime.getRuntime().  
-			freeMemory() / (1024*1024)+"M/"+java.lang.Runtime.getRuntime()
-			.totalMemory()/(1024*1024)+"M" %>
-	<div style="loginform">
-		<form id="loginform" action="/login.do" method="post">
-			管理员账号：<input name="superAdmin"/>
-			出纳员账号：<input name="loginName" value="1"/>
-			密码：<input type="password" name="loginPwd" value="1"/>
-			<input id="login" type="button" value="登录"/>
+	<%=java.lang.Runtime.getRuntime().freeMemory() / (1024 * 1024) + "M/" + java.lang.Runtime.getRuntime().totalMemory() / (1024 * 1024) + "M"%>
+
+	<div id="login-box">
+		<h3>Login with Username and Password</h3>
+		<c:if test="${not empty error}">
+			<div class="error">${error}</div>
+		</c:if>
+		<c:if test="${not empty msg}">
+			<div class="msg">${msg}</div>
+		</c:if>
+		<form name='loginForm' action="<c:url value='j_spring_security_check' />" method='POST'>
+			<table>
+				<tr>
+					<td>User:</td>
+					<td><input type='text' name='username' value=''></td>
+				</tr>
+				<tr>
+					<td>Password:</td>
+					<td><input type='password' name='password' /></td>
+				</tr>
+				<tr>
+					<td colspan='2'><input id="login" type="button" value="submit" /></td>
+				</tr>
+			</table>
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 		</form>
 	</div>
 </body>
