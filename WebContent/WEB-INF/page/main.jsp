@@ -151,7 +151,9 @@
 								<li><a href="#" target="navTab">参数设置</a></li>
 								<li><a href="#" target="navTab">用户管理</a></li>
 								<li><a href="#" target="navTab">用户管理</a></li>
-								<li><a href="#" target="navTab">权限设置</a></li>
+								<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_USERROLES">
+									<li><a href="/systemManager/userRoles/index.do" target="navTab">授权管理</a></li>
+								</security:authorize>
 							</ul>
 						</div>
 					</security:authorize>

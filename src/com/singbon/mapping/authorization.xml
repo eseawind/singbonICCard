@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.singbon.dao.systemManager.AuthorizationDAO">
+	<resultMap id="group" type="com.singbon.entity.AuthGroup">
+	</resultMap>
+	<parameterMap type="com.singbon.entity.AuthGroup" id="group2"></parameterMap>
+	<resultMap id="groupRoles" type="com.singbon.entity.AuthGroupRoles">
+	</resultMap>
+	<parameterMap type="com.singbon.entity.AuthGroupRoles" id="groupRoles2"></parameterMap>
+	<select id="selectGroup" resultMap="group">
+		select * from authGroup where
+		companyId=#{companyId}
+	</select>
+	<insert id="insertGroup" parameterMap="group2">
+		insert into authGroup
+		(companyId,groupName) values (#{companyId},'#{groupName}')
+	</insert>
+	<update id="updateGroup" parameterMap="group2">
+		update authGroup set
+		groupName='#{groupName}' where id=#{id}
+	</update>
+	<update id="deleteGroup">
+		delete from authGroup where id=#{id}
+	</update>
+
+	<select id="selectGroupRoles" resultMap="groupRoles">
+		select * from
+		authGroupRoles where groupId=#{groupId}
+	</select>
+	<insert id="insertGroupRoles">
+		insert into authGroupRoles (groupId,role) values
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(#{item.groupId},#{item.role})
+		</foreach>
+	</insert>
+	<delete id="deleteGroupReles">
+		delete from authGroupRoles where groupId=#{groupId}
+	</delete>
+</mapper>
