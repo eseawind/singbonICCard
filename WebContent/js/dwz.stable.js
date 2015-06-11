@@ -65,12 +65,13 @@
 					if (i < aStyles.length) $ftd.addClass(aStyles[i][1]);
 				}		
 				$tr.click(function(){
-					//修改批次
 					var target=$(this).attr("target");
 					if(target=="batch"){
 						batchClick($(this));
 					}else if(target=="discount"){
 						discountClick($(this));
+					}else if(target=="authGroup"){
+						authGroupClick($(this));
 					}
 					$trs.filter(".selected").removeClass("selected");
 					$tr.addClass("selected");

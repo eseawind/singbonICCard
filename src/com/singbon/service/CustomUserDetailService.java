@@ -13,15 +13,15 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 
-import com.singbon.entity.UserRoles;
-import com.singbon.service.systemManager.UserRolesService;
+import com.singbon.entity.AuthUserGroup;
+import com.singbon.service.systemManager.AuthorizationService;
 
 @Repository("customUserDetailService")
 public class CustomUserDetailService implements UserDetailsService {
 	@Autowired
 	public SysUserService sysUserService;
 	@Autowired
-	public UserRolesService userRolesService;
+	public AuthorizationService userRolesService;
 
 	@Override
 	public UserDetails loadUserByUsername(String loginInfo) throws UsernameNotFoundException {
@@ -39,10 +39,11 @@ public class CustomUserDetailService implements UserDetailsService {
 
 	public Collection<GrantedAuthority> obtainUserPowers(Integer userId) {
 		Collection<GrantedAuthority> gas = new ArrayList<GrantedAuthority>();
-		List<UserRoles> list = this.userRolesService.selectByUserId(userId);
-		for (UserRoles r : list) {
-			gas.add(new SimpleGrantedAuthority(r.getRole()));
-		}
+//		List<AuthUserGroup> list = this.userRolesService.selectByUserId(userId);
+//		for (AuthUserGroup r : list) {
+//			//gas.add(new SimpleGrantedAuthority(r.getRole()));
+//		}
+		gas.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
 		return gas;
 	}
 
