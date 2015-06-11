@@ -28,7 +28,7 @@
 		});
 	});
 	function refreshBatchList() {
-		$("#batchList").loadUrl("${base}/batchList.do");
+		$("#batchList").loadUrl("${base}/list.do");
 	}
 </script>
 <link href="/themes/css/custom.css" rel="stylesheet" type="text/css" />
@@ -71,19 +71,12 @@
 		<div class="formBar">
 			<div class="panelBar" style="border-style: none;">
 				<ul class="toolBar">
-<<<<<<< HEAD
 					<security:authorize ifAnyGranted="ROLE_BATCH_ADD,ROLE_ADMIN">
 						<li><a class="add" href="javascript:;"><span>添加</span></a></li>
 					</security:authorize>
 					<security:authorize ifAnyGranted="ROLE_BATCH_EDIT,ROLE_ADMIN">
 						<li><a class="edit" href="javascript:;"><span>修改</span></a></li>
 					</security:authorize>
-=======
-					<security:authorize ifAnyGranted="ROLE_ADMIN">
-						<li><a class="add" href="javascript:;"><span>添加</span></a></li>
-					</security:authorize>
-					<li><a class="edit" href="javascript:;"><span>修改</span></a></li>
->>>>>>> branch 'master' of https://github.com/ycsty2008/singbonICCard.git
 				</ul>
 			</div>
 		</div>
@@ -91,5 +84,5 @@
 </div>
 
 <div id="batchList" class="unitBox" style="margin-left: 246px;">
-	<jsp:include page="${base}/batchList.do" />
+	<jsp:include page="${base}/list.do" />
 </div>

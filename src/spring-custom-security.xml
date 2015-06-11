@@ -35,7 +35,7 @@
 		<!-- 二级模块 系统设置 end -->
 
 		<security:intercept-url pattern="/systemManager/**"
-			access="ROLE_SYSTEMMANAGER,ROLE_SUPERADMIN" />
+			access="ROLE_ADMIN,ROLE_SYSTEMMANAGER" />
 		<!--一级模块 系统管理 end -->
 
 		<security:intercept-url pattern="/index.jsp"

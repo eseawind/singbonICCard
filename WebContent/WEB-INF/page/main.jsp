@@ -134,7 +134,7 @@
 				</div>
 
 				<div class="accordion" fillSpace="sidebar">
-					<security:authorize ifAnyGranted="ROLE_SYSTEMMANAGER,ROLE_SUPERADMIN">
+					<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_SYSTEMMANAGER">
 						<div class="accordionHeader">
 							<h2>
 								<span>Folder</span> <a href="/systemManager/index.do"
@@ -143,7 +143,7 @@
 						</div>
 						<div class="accordionContent">
 							<ul class="tree">
-								<security:authorize ifAnyGranted="ROLE_SYSTEMSETTING,ROLE_SUPERADMIN">
+								<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_SYSTEMSETTING">
 									<li><a href="/systemManager/systemSetting/index.do"
 										target="navTab">系统设置</a></li>
 								</security:authorize>

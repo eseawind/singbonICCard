@@ -19,27 +19,27 @@ import com.singbon.service.systemManager.BatchService;
 import com.singbon.util.StringUtil;
 
 /**
- * 批次控制类
+ * 授权分组控制类
  * 
  * @author 郝威
  * 
  */
 @Controller
 @RequestMapping(value = "/systemManager/systemSetting/batch")
-public class BatchController extends BaseController {
+public class UserRolesGroupController extends BaseController {
 
 	@Autowired
 	public BatchService batchService;
 
 	/**
-	 * 添加修改
+	 * 添加修改批次
 	 * 
 	 * @param batch
 	 * @param request
 	 * @param model
 	 */
-	@RequestMapping(value = "/addEdit.do")
-	public void addEdit(@ModelAttribute Batch batch, HttpServletRequest request, HttpServletResponse response, Model model) {
+	@RequestMapping(value = "/addEditBatch.do")
+	public void addEditBatch(@ModelAttribute Batch batch, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
 		batch.setCompanyId(company.getId());
 
@@ -58,19 +58,19 @@ public class BatchController extends BaseController {
 	}
 
 	/**
-	 * 列表
+	 * 批次列表
 	 * 
 	 * @param batch
 	 * @param request
 	 * @param model
 	 */
-	@RequestMapping(value = "/list.do")
-	public String list(HttpServletRequest request, Model model) {
+	@RequestMapping(value = "/batchList.do")
+	public String batchList(HttpServletRequest request, Model model) {
 
 		Company company = (Company) request.getSession().getAttribute("company");
 		List<Batch> list = this.batchService.selectList(company.getId());
 		model.addAttribute("list", list);
-		return StringUtil.requestPath(request, "list");
+		return StringUtil.requestPath(request, "batchList");
 	}
 
 }

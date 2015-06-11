@@ -67,21 +67,4 @@ public class CommonController {
 		return "main";
 	}
 
-	/**
-	 * 首页
-	 * 
-	 * @param request
-	 * @param model
-	 * @return
-	 */
-	@RequestMapping(value = "/userDeptTree.do", method = RequestMethod.GET)
-	public String userDeptTree(HttpServletRequest request, String h, Model model) {
-		Company company = (Company) request.getSession().getAttribute("company");
-		// List<UserDept>
-		// list=this.commonService.getUserDeptList(user.getCompany());
-		// model.addAttribute("list", list);
-		model.addAttribute("h", h);
-		return "common/userDeptTree";
-	}
-
 }

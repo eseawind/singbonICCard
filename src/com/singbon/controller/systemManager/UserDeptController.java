@@ -35,7 +35,7 @@ public class UserDeptController {
 	public BatchService batchService;
 
 	/**
-	 * 添加修改人员部门
+	 * 添加修改
 	 * 
 	 * @param userDept
 	 * @param request
@@ -61,7 +61,7 @@ public class UserDeptController {
 	}
 
 	/**
-	 * 删除人员部门
+	 * 删除
 	 * 
 	 * @param userDept
 	 * @param request
