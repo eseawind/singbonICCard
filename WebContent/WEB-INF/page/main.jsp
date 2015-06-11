@@ -1,15 +1,22 @@
-<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+	pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="security"
+	uri="http://www.springframework.org/security/tags"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>兴邦IC卡管理系统</title>
-<link href="themes/default/style.css" rel="stylesheet" type="text/css" media="screen" />
-<link href="themes/css/core.css" rel="stylesheet" type="text/css" media="screen" />
-<link href="themes/css/print.css" rel="stylesheet" type="text/css" media="print" />
+<link href="themes/default/style.css" rel="stylesheet" type="text/css"
+	media="screen" />
+<link href="themes/css/core.css" rel="stylesheet" type="text/css"
+	media="screen" />
+<link href="themes/css/print.css" rel="stylesheet" type="text/css"
+	media="print" />
 <link href="themes/css/contextMenu.css" rel="stylesheet" type="text/css" />
-<link href="uploadify/css/uploadify.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="uploadify/css/uploadify.css" rel="stylesheet"
+	type="text/css" media="screen" />
 <!--[if IE]>
 <link href="themes/css/ieHack.css" rel="stylesheet" type="text/css" media="screen"/>
 <![endif]-->
@@ -24,7 +31,8 @@
 <script src="js/jquery.bgiframe.js" type="text/javascript"></script>
 <script src="xheditor/xheditor-1.2.1.min.js" type="text/javascript"></script>
 <script src="xheditor/xheditor_lang/zh-cn.js" type="text/javascript"></script>
-<script src="uploadify/scripts/jquery.uploadify.js" type="text/javascript"></script>
+<script src="uploadify/scripts/jquery.uploadify.js"
+	type="text/javascript"></script>
 
 <!-- svg图表  supports Firefox 3.0+, Safari 3.0+, Chrome 5.0+, Opera 9.5+ and Internet Explorer 6.0+ -->
 <script type="text/javascript" src="chart/raphael.js"></script>
@@ -126,21 +134,27 @@
 				</div>
 
 				<div class="accordion" fillSpace="sidebar">
-					<div class="accordionHeader">
-						<h2>
-							<span>Folder</span> <a href="/systemManager/index.do" target="navTab">系统管理</a>
-						</h2>
-					</div>
-					<div class="accordionContent">
-						<ul class="tree">
-							<li><a href="/systemManager/systemSetting/index.do" target="navTab">系统设置</a></li>
-							<li><a href="#" target="navTab">设备管理</a></li>
-							<li><a href="#" target="navTab">参数设置</a></li>
-							<li><a href="#" target="navTab">用户管理</a></li>
-							<li><a href="#" target="navTab">用户管理</a></li>
-							<li><a href="#" target="navTab">权限设置</a></li>
-						</ul>
-					</div>
+					<security:authorize ifAnyGranted="ROLE_SYSTEMMANAGER,ROLE_SUPERADMIN">
+						<div class="accordionHeader">
+							<h2>
+								<span>Folder</span> <a href="/systemManager/index.do"
+									target="navTab">系统管理</a>
+							</h2>
+						</div>
+						<div class="accordionContent">
+							<ul class="tree">
+								<security:authorize ifAnyGranted="ROLE_SYSTEMSETTING,ROLE_SUPERADMIN">
+									<li><a href="/systemManager/systemSetting/index.do"
+										target="navTab">系统设置</a></li>
+								</security:authorize>
+								<li><a href="#" target="navTab">设备管理</a></li>
+								<li><a href="#" target="navTab">参数设置</a></li>
+								<li><a href="#" target="navTab">用户管理</a></li>
+								<li><a href="#" target="navTab">用户管理</a></li>
+								<li><a href="#" target="navTab">权限设置</a></li>
+							</ul>
+						</div>
+					</security:authorize>
 					<div class="accordionHeader">
 						<h2>
 							<span>Folder</span>制卡中心
@@ -181,7 +195,8 @@
 				<div class="navTab-panel tabsPageContent layoutBox">
 					<div class="page unitBox">
 
-						<div class="pageFormContent" layoutH="80" style="margin-right: 230px"></div>
+						<div class="pageFormContent" layoutH="80"
+							style="margin-right: 230px"></div>
 					</div>
 				</div>
 			</div>

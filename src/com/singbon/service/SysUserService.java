@@ -19,8 +19,13 @@ public class SysUserService {
 	public SysUserDAO sysUserDAO;
 
 	public SysUser login(SysUser user) {
-
+		
 		return (SysUser) this.sysUserDAO.selectByLoginInfo(user);
+	}
+	
+	public SysUser login(String compayName, String loginName, String loginPwd) {
+		
+		return (SysUser) this.sysUserDAO.login(compayName, loginName, loginPwd);
 	}
 
 }
