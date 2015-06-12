@@ -15,7 +15,6 @@
 		style="float: left; display: block; overflow: auto; width: 240px; border: solid 1px #CCC; line-height: 21px; background: #fff">
 		<div id="authTree" layoutH="30">
 			<ul class="tree treeCheck treeFolder expand">
-				<li><a href="javascript:;" tvalue="ROLE_SYSTEMMANAGER">系统管理</a>
 					<ul>
 						<li><a href="javascript:;" tvalue="ROLE_SYSTEMSETTING">系统设置</a>
 							<ul>
