@@ -27,7 +27,7 @@
 		});
 	});
 	function refreshBatchList() {
-		$("#batchList").loadUrl("${base}/batchList.do");
+		$("#batchList").loadUrl("${base}/list.do");
 	}
 </script>
 <link href="/themes/css/custom.css" rel="stylesheet" type="text/css" />
@@ -41,36 +41,41 @@
 			<dl style="margin: 10px 0;">
 				<dt>批次名称：</dt>
 				<dd>
-					<input type="hidden" name="id" /> <input type="text" name="batchName" maxlength="20"
-						class="required" />
+					<input type="hidden" name="id" /> <input type="text"
+						name="batchName" maxlength="20" class="required" />
 				</dd>
 			</dl>
 			<dl style="margin: 10px 0;">
 				<dt>开始日期：</dt>
 				<dd>
-					<input type="text" name="beginDate" maxlength="20" class="date required" readonly="readonly"/>
+					<input type="text" name="beginDate" maxlength="20"
+						class="date required" readonly="readonly" />
 				</dd>
 			</dl>
 			<dl style="margin: 10px 0;">
 				<dt>结束日期：</dt>
 				<dd>
-					<input type="text" name="endDate" maxlength="20" class="date required" readonly="readonly"/>
+					<input type="text" name="endDate" maxlength="20"
+						class="date required" readonly="readonly" />
 				</dd>
 			</dl>
 			<dl style="margin: 10px 0 50px;">
 				<dt>失效日期：</dt>
 				<dd>
-					<input type="text" name="invalidDate" maxlength="20" class="date required" readonly="readonly"/>
+					<input type="text" name="invalidDate" maxlength="20"
+						class="date required" readonly="readonly" />
 				</dd>
 			</dl>
 		</div>
 		<div class="formBar">
 			<div class="panelBar" style="border-style: none;">
 				<ul class="toolBar">
-					<security:authorize ifAnyGranted="ROLE_ADMIN">
+					<security:authorize ifAnyGranted="ROLE_BATCH_ADD,ROLE_ADMIN">
 						<li><a class="add" href="javascript:;"><span>添加</span></a></li>
 					</security:authorize>
-					<li><a class="edit" href="javascript:;"><span>修改</span></a></li>
+					<security:authorize ifAnyGranted="ROLE_BATCH_EDIT,ROLE_ADMIN">
+						<li><a class="edit" href="javascript:;"><span>修改</span></a></li>
+					</security:authorize>
 				</ul>
 			</div>
 		</div>
@@ -78,5 +83,5 @@
 </div>
 
 <div id="batchList" class="unitBox" style="margin-left: 246px;">
-	<jsp:include page="${base}/batchList.do" />
+	<jsp:include page="${base}/list.do" />
 </div>

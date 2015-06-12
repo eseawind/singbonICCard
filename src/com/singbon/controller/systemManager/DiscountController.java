@@ -32,7 +32,7 @@ public class DiscountController extends BaseController {
 	public DiscountService discountService;
 
 	/**
-	 * 保存修改优惠方案
+	 * 保存修改
 	 * 
 	 * @param Discount
 	 * @param request
@@ -51,13 +51,13 @@ public class DiscountController extends BaseController {
 	}
 
 	/**
-	 * 优惠方案列表
+	 * 列表
 	 * 
 	 * @param Discount
 	 * @param request
 	 * @param model
 	 */
-	@RequestMapping(value = "/discountList.do")
+	@RequestMapping(value = "/list.do")
 	public String discountList(HttpServletRequest request, Model model) {
 
 		Company company = (Company) request.getSession().getAttribute("company");
@@ -67,7 +67,7 @@ public class DiscountController extends BaseController {
 			list = this.discountService.selectList(company.getId());
 		}
 		model.addAttribute("list", list);
-		return StringUtil.requestPath(request, "discountList");
+		return StringUtil.requestPath(request, "list");
 	}
 
 }

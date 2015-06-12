@@ -37,6 +37,7 @@ public class SysUser implements Serializable {
 	private String loginName;
 
 	private String loginPwd;
+	private Integer enabled;
 
 	public String getSuperAdmin() {
 		return superAdmin;
@@ -70,6 +71,14 @@ public class SysUser implements Serializable {
 
 	public void setUserType(Integer userType) {
 		this.userType = userType;
+	}
+
+	public Integer getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Integer enabled) {
+		this.enabled = enabled;
 	}
 
 }

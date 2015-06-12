@@ -3,6 +3,10 @@
 <mapper namespace="com.singbon.dao.SysUserDAO">
 	<resultMap id="sysUser" type="com.singbon.entity.SysUser">
 	</resultMap>
+	<select id="login" resultMap="sysUser">
+<!-- 		select * from sysuser where loginName =#{loginName} -->
+		select u.* from sysuser u,company c where u.companyId=c.id and u.loginName =#{loginName} and u.loginPwd=#{loginPwd} and c.companyName =#{companyName}
+	</select>
 	<select id="selectByLoginInfo" resultMap="sysUser">
 		select * from sysuser where loginName =#{loginName} and loginPwd =#{loginPwd}
 	</select>

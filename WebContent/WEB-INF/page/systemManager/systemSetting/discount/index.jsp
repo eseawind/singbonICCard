@@ -23,7 +23,7 @@
 		});
 	});
 	function refreshdiscountList() {
-		$("#discountList").loadUrl("${base}/discountList.do");
+		$("#discountList").loadUrl("${base}/list.do");
 	}
 </script>
 <link href="/themes/css/custom.css" rel="stylesheet" type="text/css" />
@@ -82,5 +82,5 @@
 	</form>
 </div>
 <div id="discountList" class="unitBox" style="margin-left: 246px;">
-	<jsp:include page="${base}/discountList.do" />
+	<jsp:include page="${base}/list.do" />
 </div>
