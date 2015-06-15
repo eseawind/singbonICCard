@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.singbon.dao.systemManager.AuthorizationDAO;
 import com.singbon.entity.AuthGroup;
-import com.singbon.entity.AuthGroupRoles;
 import com.singbon.entity.AuthUserGroup;
 
 /**
@@ -68,32 +67,6 @@ public class AuthorizationService {
 		this.authorizationDAO.deleteGroup(id);
 	}
 
-	/**
-	 * 组授权列表
-	 * 
-	 * @return
-	 */
-	public List<AuthGroupRoles> selectGroupRoles(@Param("groupId") Integer groupId) {
-		return this.authorizationDAO.selectGroupRoles(groupId);
-	}
-
-	/**
-	 * 添加组授权
-	 * 
-	 * @return
-	 */
-	public void insertGroupRoles(@Param("list") List<AuthGroupRoles> list) {
-		this.authorizationDAO.insertGroupRoles(list);
-	}
-
-	/**
-	 * 删除组授权
-	 * 
-	 * @return
-	 */
-	public void deleteGroupRoles(@Param("groupId") Integer groupId) {
-		this.authorizationDAO.deleteGroupRoles(groupId);
-	}
 
 	/**
 	 * 用户组列表
