@@ -245,6 +245,7 @@ a:hover {text-decoration:underline;}
 .panelBar .toolBar span, .panelBar .toolBar li.hover span { float:left; display:block; overflow:hidden; height:23px; padding:0 0 0 20px; line-height:23px; cursor:pointer;}
 
 .panelBar .toolBar a.add span { background-position:0 -696px;}
+.panelBar .toolBar a.save span { background-position:0 -720px;}
 .panelBar .toolBar a.delete span { background-position:0 -746px;}
 .panelBar .toolBar a.edit span { background-position:0 -796px;}
 .panelBar .toolBar a.icon span { background-position:0 -846px;}
