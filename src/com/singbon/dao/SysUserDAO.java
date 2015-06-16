@@ -1,5 +1,7 @@
 package com.singbon.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 import com.singbon.entity.SysUser;
@@ -26,5 +28,13 @@ public interface SysUserDAO extends BaseDAO {
 	 * @param user
 	 * @return
 	 */
-	public SysUser login(@Param("companyName") String compayName, @Param("loginName") String loginName, @Param("loginPwd") String loginPwd);
+	public SysUser login(@Param("companyName") String companyName, @Param("loginName") String loginName, @Param("loginPwd") String loginPwd);
+
+	/**
+	 * 获取用户列表
+	 * 
+	 * @param user
+	 * @return
+	 */
+	public List<SysUser> selectList(@Param("companyId") Integer companyId);
 }

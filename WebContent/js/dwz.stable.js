@@ -72,6 +72,8 @@
 						discountClick($(this));
 					}else if(target=="authGroup"){
 						authGroupClick($(this));
+					}else if(target=="authUser"){
+						authUserClick($(this));
 					}
 					$trs.filter(".selected").removeClass("selected");
 					$tr.addClass("selected");

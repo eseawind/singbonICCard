@@ -1,8 +1,9 @@
 package com.singbon.service.systemManager;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +28,7 @@ public class AuthorizationService {
 	 * 
 	 * @return
 	 */
-	public List<AuthGroup> selectGroup(@Param("companyId") Integer companyId) {
+	public List<AuthGroup> selectGroup(Integer companyId) {
 		return this.authorizationDAO.selectGroup(companyId);
 	}
 
@@ -54,7 +55,7 @@ public class AuthorizationService {
 	 * 
 	 * @return
 	 */
-	public Integer selectGroupUserCount(@Param("groupId") Integer groupId) {
+	public Integer selectGroupUserCount(Integer groupId) {
 		return this.authorizationDAO.selectGroupUserCount(groupId);
 	}
 
@@ -63,35 +64,36 @@ public class AuthorizationService {
 	 * 
 	 * @return
 	 */
-	public void deleteGroup(@Param("id") Integer id) {
+	public void deleteGroup(Integer id) {
 		this.authorizationDAO.deleteGroup(id);
 	}
-
 
 	/**
 	 * 用户组列表
 	 * 
 	 * @return
 	 */
-	public List<AuthUserGroup> selectUserGroup(@Param("userId") Integer userId) {
-		return this.authorizationDAO.selectUserGroup(userId);
+	public List<Map> selectUserGroupList(Integer companyId) {
+		return this.authorizationDAO.selectUserGroupList(companyId);
 	}
 
 	/**
-	 * 添加用户组
+	 * 保存用户组
 	 * 
 	 * @return
 	 */
-	public void insertUserGroup(@Param("list") List<AuthUserGroup> list) {
-		this.authorizationDAO.insertUserGroup(list);
-	}
-
-	/**
-	 * 删除用户组
-	 * 
-	 * @return
-	 */
-	public void deleteUserGroup(@Param("userId") Integer userId) {
+	public void saveUserGroup(String groupIds, Integer userId) {
 		this.authorizationDAO.deleteUserGroup(userId);
+		if (groupIds != null && !"".equals(groupIds)) {
+			List<AuthUserGroup> list = new ArrayList<AuthUserGroup>();
+			String[] groupIds2 = groupIds.split(",");
+			for (String g : groupIds2) {
+				AuthUserGroup group = new AuthUserGroup();
+				group.setUserId(userId);
+				group.setGroupId(Integer.valueOf(g));
+				list.add(group);
+			}
+			this.authorizationDAO.insertUserGroup(list);
+		}
 	}
 }

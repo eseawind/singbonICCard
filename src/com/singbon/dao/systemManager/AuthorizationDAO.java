@@ -1,6 +1,7 @@
 package com.singbon.dao.systemManager;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -50,12 +51,14 @@ public interface AuthorizationDAO {
 	 */
 	public void deleteGroup(@Param("id") Integer id);
 
+	
 	/**
 	 * 用户组列表
 	 * 
 	 * @return
 	 */
-	public List<AuthUserGroup> selectUserGroup(@Param("userId") Integer userId);
+	public List<Map> selectUserGroupList(@Param("companyId") Integer companyId);
+	
 
 	/**
 	 * 添加用户组

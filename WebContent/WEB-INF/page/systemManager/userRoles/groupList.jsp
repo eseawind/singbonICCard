@@ -1,5 +1,6 @@
 <!-- 授权分组列表 -->
-<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+	pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
@@ -38,10 +39,28 @@
 						}
 					}, null);
 				});
-		$("#authGroupForm .delete").click(
-				function() {
-					
-				});
+		$("#authGroupForm .delete").click(function() {
+			var groupId= $("#authGroupForm input").eq(0).val();
+			if(groupId==""){
+				alertMsg.warn("请选择分组");
+				return;
+			}
+			alertMsg.confirm("确定要删除吗？", {
+				okCall : function() {
+					$.post("${base }/deleteGroup.do?groupId=" + groupId,
+							function(e) {
+								//0失败1成功2已经授权
+								if (e == 1) {
+									refreshAuthGroupList();
+								} else if (e == 0) {
+									alertMsg.warn("删除失败");
+								} else if (e == 2) {
+									alertMsg.warn("该分组已被授权给用户不能删除！");
+								}
+							});
+				}
+			});
+		});
 	});
 	function refreshAuthGroupList() {
 		$("#groupList").loadUrl("${base}/groupList.do", {}, function() {
@@ -84,14 +103,14 @@
 	</tbody>
 </table>
 <div class="form">
-	<form id="authGroupForm" method="post" action="${base }/addEditGroup.do"
-		class="pageForm required-validate">
+	<form id="authGroupForm" method="post"
+		action="${base }/addEditGroup.do" class="pageForm required-validate">
 		<div class="pageFormContent">
 			<dl>
 				<dt>分组名称：</dt>
 				<dd>
-					<input type="hidden" name="id" /><input type="hidden" name="roles" /><input type="text"
-						name="groupName" maxlength="20" class="required" />
+					<input type="hidden" name="id" /><input type="hidden" name="roles" /><input
+						type="text" name="groupName" maxlength="20" class="required" />
 				</dd>
 			</dl>
 			<dl>

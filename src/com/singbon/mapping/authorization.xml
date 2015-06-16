@@ -19,9 +19,27 @@
 		update authGroup set
 		groupName=#{groupName},remark=#{remark},roles=#{roles} where id=#{id}
 	</update>
+	<select id="selectGroupUserCount" resultType="java.lang.Integer">
+		select count(*) from authUserGroup where groupId=#{groupId}
+	</select>
+	
 	<update id="deleteGroup">
 		delete from authGroup where id=#{id}
 	</update>
 	
-	
+	<select id="selectUserGroupList" resultType="java.util.Map">
+		select s.id,s.loginName,GROUP_CONCAT(a.groupid) groupIds from sysuser s left join authusergroup a on s.id=a.userId where
+		companyId=#{companyId} group by s.id
+	</select>
+
+	<insert id="insertUserGroup" parameterMap="userGroup2">
+		insert into authUserGroup (userId,groupId) values 
+		<foreach collection="list" item="item" index="index" separator=",">  
+    		(#{item.userId},#{item.groupId})
+		</foreach>
+	</insert>
+
+	<delete id="deleteUserGroup">
+		delete from authUserGroup where userId=#{userId}
+	</delete>
 </mapper>
