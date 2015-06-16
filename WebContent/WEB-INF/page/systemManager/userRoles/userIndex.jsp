@@ -18,7 +18,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach items="${list }" var="g">
+			<c:forEach items="${groupList }" var="g">
 				<tr groupId="${g.id }">
 					<td>${g.groupName }</td>
 					<td>${g.remark }</td>
@@ -36,9 +36,9 @@
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach items="${list }" var="g">
-				<tr groupId="${g.id }">
-					<td>${g.groupName }</td>
+			<c:forEach items="${sysUserList }" var="u">
+				<tr groupId="${u.id }">
+					<td>${u.loginName }</td>
 				</tr>
 			</c:forEach>
 		</tbody>

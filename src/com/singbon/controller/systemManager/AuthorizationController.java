@@ -2,6 +2,7 @@ package com.singbon.controller.systemManager;
 
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -51,25 +52,6 @@ public class AuthorizationController extends BaseController {
 	}
 
 	/**
-	 * 用户授权首页
-	 * 
-	 * @param request
-	 * @param model
-	 * @param module
-	 * @return
-	 */
-	@RequestMapping(value = "/userIndex.do")
-	public String userIndex(HttpServletRequest request, Model model) {
-		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
-		Company company = (Company) request.getSession().getAttribute("company");
-		model.addAttribute("sysUser", sysUser);
-		model.addAttribute("company", company);
-		model.addAttribute("base", "/systemManager/userRoles");
-
-		return "/systemManager/userRoles/userIndex";
-	}
-
-	/**
 	 * 添加修改分组
 	 * 
 	 * @param batch
@@ -112,4 +94,49 @@ public class AuthorizationController extends BaseController {
 		return "/systemManager/userRoles/groupList";
 	}
 
+	/**
+	 * 用户授权首页
+	 * 
+	 * @param request
+	 * @param model
+	 * @param module
+	 * @return
+	 */
+	@RequestMapping(value = "/userIndex.do")
+	public String userIndex(HttpServletRequest request, Model model) {
+		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
+		Company company = (Company) request.getSession().getAttribute("company");
+		model.addAttribute("sysUser", sysUser);
+		model.addAttribute("company", company);
+
+		List<AuthGroup> groupList = this.authorizationService.selectGroup(company.getId());
+		List<Map> sysUserList = this.authorizationService.selectUserGroupList(company.getId());
+		model.addAttribute("groupList", groupList);
+		model.addAttribute("sysUserList", sysUserList);
+		model.addAttribute("base", "/systemManager/userRoles");
+
+		return "/systemManager/userRoles/userIndex";
+	}
+
+	/**
+	 * 保存用户授权
+	 * 
+	 * @param batch
+	 * @param request
+	 * @param model
+	 */
+	@RequestMapping(value = "/saveUser.do")
+	public void saveUser(Integer userId, String groupIds, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Company company = (Company) request.getSession().getAttribute("company");
+
+		PrintWriter p = null;
+		try {
+			p = response.getWriter();
+			
+			this.authorizationService.saveUserGroup(groupIds, userId);
+			p.print(1);
+		} catch (Exception e) {
+			p.print(0);
+		}
+	}
 }

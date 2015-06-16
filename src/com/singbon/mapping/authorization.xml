@@ -23,5 +23,17 @@
 		delete from authGroup where id=#{id}
 	</update>
 	
-	
+	<select id="selectUserGroupList" resultType="java.util.Map">
+		select s.id,s.loginName,GROUP_CONCAT(a.groupid) groupIds from sysuser s left join authusergroup a on s.id=a.userId where
+		companyId=#{companyId}
+	</select>
+
+	<insert id="insertUserGroup" parameterMap="userGroup2">
+		insert into authGroup
+		(companyId,groupName,remark,roles) values (#{companyId},#{groupName},#{remark},#{roles})
+	</insert>
+
+	<delete id="deleteUserGroup">
+		delete from authUserGroup where userId=#{userId}
+	</delete>
 </mapper>
