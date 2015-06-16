@@ -14,64 +14,80 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.singbon.controller.BaseController;
 import com.singbon.entity.AuthGroup;
-import com.singbon.entity.Batch;
 import com.singbon.entity.Company;
 import com.singbon.entity.SysUser;
 import com.singbon.service.systemManager.AuthorizationService;
-import com.singbon.util.StringUtil;
 
 /**
- * 授权分组控制类
+ * 用户授权控制类
  * 
  * @author 郝威
  * 
  */
 @Controller
-@RequestMapping(value = "/systemManager/userRoles/group")
-public class AuthGroupController extends BaseController {
+@RequestMapping(value = "/systemManager/userRoles")
+public class AuthorizationController extends BaseController {
 
 	@Autowired
 	public AuthorizationService authorizationService;
 
 	/**
-	 * 首页
+	 * 分组首页
 	 * 
 	 * @param request
 	 * @param model
 	 * @param module
 	 * @return
 	 */
-	@RequestMapping(value = "/index.do")
-	public String index(HttpServletRequest request, Model model) {
+	@RequestMapping(value = "/groupIndex.do")
+	public String groupIndex(HttpServletRequest request, Model model) {
 		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
 		Company company = (Company) request.getSession().getAttribute("company");
 		model.addAttribute("sysUser", sysUser);
 		model.addAttribute("company", company);
+		model.addAttribute("base", "/systemManager/userRoles");
 
-		model.addAttribute("base", StringUtil.requestPath(request, "group"));
-
-		return StringUtil.requestPath(request, "group/index");
+		return "/systemManager/userRoles/groupIndex";
 	}
 
 	/**
-	 * 添加修改
+	 * 用户授权首页
+	 * 
+	 * @param request
+	 * @param model
+	 * @param module
+	 * @return
+	 */
+	@RequestMapping(value = "/userIndex.do")
+	public String userIndex(HttpServletRequest request, Model model) {
+		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
+		Company company = (Company) request.getSession().getAttribute("company");
+		model.addAttribute("sysUser", sysUser);
+		model.addAttribute("company", company);
+		model.addAttribute("base", "/systemManager/userRoles");
+
+		return "/systemManager/userRoles/userIndex";
+	}
+
+	/**
+	 * 添加修改分组
 	 * 
 	 * @param batch
 	 * @param request
 	 * @param model
 	 */
-	@RequestMapping(value = "/addEditBatch.do")
-	public void addEditBatch(@ModelAttribute Batch batch, HttpServletRequest request, HttpServletResponse response, Model model) {
+	@RequestMapping(value = "/addEditGroup.do")
+	public void addEditGroup(@ModelAttribute AuthGroup authGroup, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
-		batch.setCompanyId(company.getId());
+		authGroup.setCompanyId(company.getId());
 
 		PrintWriter p = null;
 		try {
 			p = response.getWriter();
-			if (batch.getId() == null) {
-				// this.batchService.save(batch);
+			if (authGroup.getId() == null) {
+				this.authorizationService.insertGroup(authGroup);
 			} else {
-				// this.batchService.update(batch);
+				this.authorizationService.updateGroup(authGroup);
 			}
 			p.print(1);
 		} catch (Exception e) {
@@ -80,19 +96,20 @@ public class AuthGroupController extends BaseController {
 	}
 
 	/**
-	 * 列表
+	 * 分组列表
 	 * 
 	 * @param batch
 	 * @param request
 	 * @param model
 	 */
-	@RequestMapping(value = "/list.do")
-	public String list(HttpServletRequest request, Model model) {
+	@RequestMapping(value = "/groupList.do")
+	public String groupList(HttpServletRequest request, Model model) {
 
 		Company company = (Company) request.getSession().getAttribute("company");
 		List<AuthGroup> list = this.authorizationService.selectGroup(company.getId());
 		model.addAttribute("list", list);
-		return StringUtil.requestPath(request, "group/list");
+		model.addAttribute("base", "/systemManager/userRoles");
+		return "/systemManager/userRoles/groupList";
 	}
 
 }

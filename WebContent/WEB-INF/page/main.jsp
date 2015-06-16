@@ -13,9 +13,9 @@
 	media="screen" />
 <link href="themes/css/print.css" rel="stylesheet" type="text/css"
 	media="print" />
-<link href="themes/css/contextMenu.css" rel="stylesheet" type="text/css" />
-<link href="uploadify/css/uploadify.css" rel="stylesheet"
-	type="text/css" media="screen" />
+<!-- <link href="themes/css/contextMenu.css" rel="stylesheet" type="text/css" /> -->
+<!-- <link href="uploadify/css/uploadify.css" rel="stylesheet" -->
+<!-- 	type="text/css" media="screen" /> -->
 <!--[if IE]>
 <link href="themes/css/ieHack.css" rel="stylesheet" type="text/css" media="screen"/>
 <![endif]-->
@@ -28,18 +28,18 @@
 <script src="js/jquery.cookie.js" type="text/javascript"></script>
 <script src="js/jquery.validate.js" type="text/javascript"></script>
 <script src="js/jquery.bgiframe.js" type="text/javascript"></script>
-<script src="xheditor/xheditor-1.2.1.min.js" type="text/javascript"></script>
-<script src="xheditor/xheditor_lang/zh-cn.js" type="text/javascript"></script>
-<script src="uploadify/scripts/jquery.uploadify.js"
-	type="text/javascript"></script>
+<!-- <script src="xheditor/xheditor-1.2.1.min.js" type="text/javascript"></script> -->
+<!-- <script src="xheditor/xheditor_lang/zh-cn.js" type="text/javascript"></script> -->
+<!-- <script src="uploadify/scripts/jquery.uploadify.js" -->
+<!-- 	type="text/javascript"></script> -->
 
 <!-- svg图表  supports Firefox 3.0+, Safari 3.0+, Chrome 5.0+, Opera 9.5+ and Internet Explorer 6.0+ -->
-<script type="text/javascript" src="chart/raphael.js"></script>
-<script type="text/javascript" src="chart/g.raphael.js"></script>
-<script type="text/javascript" src="chart/g.bar.js"></script>
-<script type="text/javascript" src="chart/g.line.js"></script>
-<script type="text/javascript" src="chart/g.pie.js"></script>
-<script type="text/javascript" src="chart/g.dot.js"></script>
+<!-- <script type="text/javascript" src="chart/raphael.js"></script> -->
+<!-- <script type="text/javascript" src="chart/g.raphael.js"></script> -->
+<!-- <script type="text/javascript" src="chart/g.bar.js"></script> -->
+<!-- <script type="text/javascript" src="chart/g.line.js"></script> -->
+<!-- <script type="text/javascript" src="chart/g.pie.js"></script> -->
+<!-- <script type="text/javascript" src="chart/g.dot.js"></script> -->
 
 <script src="js/dwz.core.js" type="text/javascript"></script>
 <script src="js/dwz.util.date.js" type="text/javascript"></script>

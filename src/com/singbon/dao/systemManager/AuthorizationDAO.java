@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.singbon.entity.AuthGroup;
-import com.singbon.entity.AuthGroupRoles;
 import com.singbon.entity.AuthUserGroup;
 
 /**
@@ -50,27 +49,6 @@ public interface AuthorizationDAO {
 	 * @return
 	 */
 	public void deleteGroup(@Param("id") Integer id);
-
-	/**
-	 * 组授权列表
-	 * 
-	 * @return
-	 */
-	public List<AuthGroupRoles> selectGroupRoles(@Param("groupId") Integer groupId);
-
-	/**
-	 * 添加组授权
-	 * 
-	 * @return
-	 */
-	public void insertGroupRoles(@Param("list") List<AuthGroupRoles> list);
-
-	/**
-	 * 删除组授权
-	 * 
-	 * @return
-	 */
-	public void deleteGroupRoles(@Param("groupId") Integer groupId);
 
 	/**
 	 * 用户组列表

@@ -1,5 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -8,7 +9,7 @@
 <%-- <link rel="Stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/login.css" /> --%>
 </head>
 <body>
-	<%=java.lang.Runtime.getRuntime().freeMemory() / (1024 * 1024) + "M/" + java.lang.Runtime.getRuntime().totalMemory() / (1024 * 1024) + "M"%>
+
 	<div id="login-box">
 		<h3>Login with Username and Password</h3>
 		<c:if test="${not empty error}">

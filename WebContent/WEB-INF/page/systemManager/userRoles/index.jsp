@@ -10,14 +10,14 @@
 	<div class="tabsHeader">
 		<div class="tabsHeaderContent">
 			<ul>
-				<li><a href="${base }/group/index.do" class="j-ajax"><span>授权分组</span></a></li>
-				<li><a href="${base }/user/index.do" class="j-ajax"><span>用户授权</span></a></li>
+				<li><a href="${base }/groupIndex.do" class="j-ajax"><span>授权分组</span></a></li>
+				<li><a href="${base }/userIndex.do" class="j-ajax"><span>用户授权</span></a></li>
 			</ul>
 		</div>
 	</div>
 	<div class="tabsContent" style="padding:0;" layoutH="0">
 		<div>
-			<jsp:include page="${base }/group/index.do"/>
+			<jsp:include page="${base }/groupIndex.do"/>
 		</div>
 		<div></div>
 	</div>

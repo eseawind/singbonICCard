@@ -35,7 +35,7 @@
 </style>
 <div class="form" layoutH="30"
 	style="float: left; display: block; overflow: auto; width: 240px; border: solid 1px #CCC; line-height: 21px; background: #fff">
-	<form id="batchForm" method="post" action="${base}/addEditBatch.do"
+	<form id="batchForm" method="post" action="${base}/addEdit.do"
 		class="pageForm required-validate">
 		<div class="pageFormContent" style="padding-top: 100px;">
 			<dl style="margin: 10px 0;">

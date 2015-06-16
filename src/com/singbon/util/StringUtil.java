@@ -27,6 +27,7 @@ public class StringUtil {
 		url = url.substring(0, last);
 		return url;
 	}
+
 	/**
 	 * 获取转发路径
 	 * 
@@ -37,7 +38,7 @@ public class StringUtil {
 		String url = request.getRequestURI();
 		url = url.replace("/WEB-INF/page", "");
 		int last = url.lastIndexOf("/");
-		url = url.substring(0, last+1) + path;
+		url = url.substring(0, last + 1) + path;
 		return url;
 	}
 }
