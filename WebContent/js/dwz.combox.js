@@ -28,6 +28,7 @@
 
 				allSelectBox.push(box.attr("id"));
 				$(op.selector, box).click(function(){
+//					alert($(this).html());
 					var options = $("#op_"+box.attr("id"));
 					if (options.is(":hidden")) {
 						if(options.height() > 300) {
@@ -36,7 +37,8 @@
 						var top = box.offset().top+box[0].offsetHeight-50;
 						if(top + options.height() > $(window).height() - 20) {
 							top =  $(window).height() - 20 - options.height();
-						}
+						}					
+//						options.css("width","95px");
 						options.css({top:top,left:box.offset().left}).show();
 						killAllBox(box.attr("id"));
 						$(document).click(killAllBox);
@@ -90,6 +92,7 @@
 				var options = '<ul class="comboxop" id="op_combox_'+ cid +'">';
 				$("option", $this).each(function(){
 					var option = $(this);
+					var width=
 					options +="<li><a class=\""+ (value==option[0].value?"selected":"") +"\" href=\"#\" value=\"" + option[0].value + "\">" + option[0].text + "</a></li>";
 				});
 				options +="</ul>";
