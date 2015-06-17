@@ -40,7 +40,9 @@
 								var jGroup = jGroups.eq(iTabIndex);
 								if (this.href && !jGroup.attr("loaded")) jGroup.loadUrl(this.href,{},function(){
 									jGroup.find("[layoutH]").layoutH();
-									jGroup.attr("loaded",true);
+									if(!jGroup.hasClass("refresh")){
+										jGroup.attr("loaded",true);										
+									}
 								});
 								event.preventDefault();
 							});

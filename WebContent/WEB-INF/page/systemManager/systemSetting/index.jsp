@@ -20,7 +20,7 @@
 	<div class="tabsContent" style="padding:0;" layoutH="0">
 		<div></div>
 		<div></div>
-		<div></div>
+		<div class="refresh"></div>
 		<div></div>
 	</div>
 </div>
