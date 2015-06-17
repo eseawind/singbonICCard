@@ -27,7 +27,7 @@
 	<tbody>
 		<c:forEach items="${list }" var="b">
 			<tr target="batch" batchId="${b.id }">
-				<td class="batchList" >${b.batchName }</td>
+				<td batchId="${b.id}" batchName="${b.batchName}">${b.batchName }</td>
 				<td><fmt:formatDate value="${b.beginDate}" pattern="yyyy-MM-dd"/></td>
 				<td><fmt:formatDate value="${b.endDate}" pattern="yyyy-MM-dd"/></td>
 				<td><fmt:formatDate value="${b.invalidDate}" pattern="yyyy-MM-dd"/></td>

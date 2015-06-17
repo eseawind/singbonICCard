@@ -8,12 +8,15 @@
  * @param {Object} form
  * @param {Object} callback
  * @param {String} confirmMsg 提示确认信息
+ * @param {Boolean} noVal 是否不需要验证 true不需要false需要
  */
-function validateCallback(form, callback, confirmMsg) {
+function validateCallback(form, callback, confirmMsg, noVal) {
 	var $form = $(form);
 
-	if (!$form.valid()) {
-		return false;
+	if(!noVal){
+		if (!$form.valid()) {
+			return false;
+		}		
 	}
 	
 	var _submitFn = function(){

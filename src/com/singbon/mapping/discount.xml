@@ -5,26 +5,26 @@
 	</resultMap>
 	<parameterMap type="com.singbon.entity.Discount" id="discount2" />
 	<insert id="insert">
-		insert into discount (companyId,discountType,rate,subsidy,giveCashType,giveCash)
-		select #{companyId},0,100,0,1,0 union
-		select #{companyId},1,100,0,1,0 union
-		select #{companyId},2,100,0,1,0 union
-		select #{companyId},3,100,0,1,0 union
-		select #{companyId},4,100,0,1,0 union
-		select #{companyId},5,100,0,1,0 union
-		select #{companyId},6,100,0,1,0 union
-		select #{companyId},7,100,0,1,0 union
-		select #{companyId},8,100,0,1,0 union
-		select #{companyId},9,100,0,1,0 union
-		select #{companyId},10,100,0,1,0 union
-		select #{companyId},11,100,0,1,0 union
-		select #{companyId},12,100,0,1,0 union
-		select #{companyId},13,100,0,1,0 union
-		select #{companyId},14,100,0,1,0 union
-		select #{companyId},15,100,0,1,0
+		insert into discount (companyId,discountType,rate,subsidy,giveCash)
+		select #{companyId},0,100,0,0 union
+		select #{companyId},1,100,0,0 union
+		select #{companyId},2,100,0,0 union
+		select #{companyId},3,100,0,0 union
+		select #{companyId},4,100,0,0 union
+		select #{companyId},5,100,0,0 union
+		select #{companyId},6,100,0,0 union
+		select #{companyId},7,100,0,0 union
+		select #{companyId},8,100,0,0 union
+		select #{companyId},9,100,0,0 union
+		select #{companyId},10,100,0,0 union
+		select #{companyId},11,100,0,0 union
+		select #{companyId},12,100,0,0 union
+		select #{companyId},13,100,0,0 union
+		select #{companyId},14,100,0,0 union
+		select #{companyId},15,100,0,0
 	</insert>
 	<update id="update" parameterMap="discount2">
-		update discount set rate=#{rate},subsidy=#{subsidy},giveCashType=#{giveCashType},giveCash=#{giveCash}
+		update discount set rate=#{rate},subsidy=#{subsidy},giveCash=#{giveCash}
 		where id=#{id}
 	</update>
 	<select id="selectList" resultMap="discount">

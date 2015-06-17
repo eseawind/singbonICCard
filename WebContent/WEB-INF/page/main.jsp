@@ -76,6 +76,7 @@
 <script src="/js/comet4j.js" type="text/javascript"></script>
 <script src="/js/jquery.contextmenu.r2.js" type="text/javascript"></script>
 <script src="/js/jQuery.Hz2Py-min.js" type="text/javascript"></script>
+<script src="/js/common.js" type="text/javascript"></script>
 <!--
 <script src="bin/dwz.min.js" type="text/javascript"></script>
 -->

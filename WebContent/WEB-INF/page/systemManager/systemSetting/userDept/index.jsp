@@ -127,7 +127,7 @@
 					<dl>
 						<dt>批次：</dt>
 						<dd>
-							<select class="combox" name="batchId">
+							<select class="combox" name="batchId" outerw="78" innerw="95">
 								<c:forEach items="${batchList }" var="b">
 									<option value="${b.id }">${b.batchName }</option>
 								</c:forEach>

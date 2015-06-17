@@ -7,25 +7,72 @@
 	$(function() {
 		$("#batchForm .add").click(function() {
 			$("#batchForm input").eq(0).val("");
-			validateCallback($(this).parents("form"), function(e) {
+			
+			var form=$(this).parents("form");
+			if(form.valid()){
+				var batchName=$("#batchForm input[name='batchName']").val();
+				var len= $("#batchList td[batchName='"+batchName+"']").length;
+				if(len>0){
+					alertMsg.warn("批次名称重复！");
+					return;					
+				}
+				if(!comparaDate()){
+					return;
+				}
+			}else{
+				return;
+			}
+			validateCallback(form, function(e) {
 				if (e == 1) {
+					alertMsg.correct("添加成功！");
+					form.clearForm();
 					refreshBatchList();
 				} else {
-
+					alertMsg.error("添加失败！");
 				}
-			}, null);
+			}, null,true);
 		});
+		
 		$("#batchForm .edit").click(function() {
-			validateCallback($(this).parents("form"), function(e) {
+			var form=$(this).parents("form");
+			if(form.valid()){
+				var batchId=$("#batchForm input[name='id']").val();
+				var batchName=$("#batchForm input[name='batchName']").val();
+				var len= $("#batchList td[batchId!="+batchId+"][batchName='"+batchName+"']").length;
+				if(len>0){
+					alertMsg.warn("批次名称重复！");
+					return;					
+				}
+				if(!comparaDate()){
+					return;
+				}
+			}else{
+				return;
+			}
+			validateCallback(form, function(e) {
 				if (e == 1) {
-					$("#batchForm input").eq(0).val("");
+					alertMsg.correct("修改成功！");
+					form.clearForm();
 					refreshBatchList();
 				} else {
-
+					alertMsg.error("修改失败！");
 				}
-			}, null);
+			}, null,true);
 		});
 	});
+	
+	function comparaDate(){
+		if($("#batchForm input[name='beginDate']").val()>=$("#batchForm input[name='endDate']").val()){
+			alertMsg.warn("开始日期应小于结束日期！");
+			return false;
+		}
+		if($("#batchForm input[name='endDate']").val()>=$("#batchForm input[name='invalidDate']").val()){
+			alertMsg.warn("结束日期应小于失效日期！");
+			return false;
+		}
+		return true;
+	}
+	
 	function refreshBatchList() {
 		$("#batchList").loadUrl("${base}/list.do");
 	}

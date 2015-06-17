@@ -28,7 +28,6 @@
 
 				allSelectBox.push(box.attr("id"));
 				$(op.selector, box).click(function(){
-//					alert($(this).html());
 					var options = $("#op_"+box.attr("id"));
 					if (options.is(":hidden")) {
 						if(options.height() > 300) {
@@ -38,7 +37,7 @@
 						if(top + options.height() > $(window).height() - 20) {
 							top =  $(window).height() - 20 - options.height();
 						}					
-//						options.css("width","95px");
+						options.css("width",$(this).parent().find("select").attr("innerw")+"px");
 						options.css({top:top,left:box.offset().left}).show();
 						killAllBox(box.attr("id"));
 						$(document).click(killAllBox);
@@ -78,7 +77,8 @@
 			});
 			allSelectBox = _selectBox;
 			
-			return this.each(function(i){
+			return this.each(function(i){		
+//				alert($(this).parent().find("select").attr("w"));
 				var $this = $(this).removeClass("combox");
 				var name = $this.attr("name");
 				var value= $this.val();
@@ -88,11 +88,10 @@
 
 				var cid = $this.attr("id") || Math.round(Math.random()*10000000);
 				var select = '<div class="combox"><div id="combox_'+ cid +'" class="select"' + (ref?' ref="' + ref + '"' : '') + '>';
-				select += '<a href="javascript:" class="'+$this.attr("class")+'" name="' + name +'" value="' + value + '">' + label +'</a></div></div>';
+				select += '<a style="width:'+$(this).parent().find("select").attr("outerw")+'px" href="javascript:" class="'+$this.attr("class")+'" name="' + name +'" value="' + value + '">' + label +'</a></div></div>';
 				var options = '<ul class="comboxop" id="op_combox_'+ cid +'">';
 				$("option", $this).each(function(){
 					var option = $(this);
-					var width=
 					options +="<li><a class=\""+ (value==option[0].value?"selected":"") +"\" href=\"#\" value=\"" + option[0].value + "\">" + option[0].text + "</a></li>";
 				});
 				options +="</ul>";

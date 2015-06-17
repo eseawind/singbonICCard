@@ -8,18 +8,16 @@
 		$("#discountForm .save").click(function() {
 			validateCallback($(this).parents("form"), function(e) {
 				if (e == 1) {
+					alertMsg.correct("保存成功！");
 					$("#discountForm input").eq(0).val("");
 					refreshdiscountList();
+					$("#discountForm input").each(function(){
+						$(this).val("");
+					});
 				} else {
-
+					alertMsg.error("保存失败！");
 				}
 			}, null);
-		});
-		$("input[name=giveCashType]:first").click(function() {
-			$("input[name=giveCash]").hide();
-		});
-		$("input[name=giveCashType]:last").click(function() {
-			$("input[name=giveCash]").show();
 		});
 	});
 	function refreshdiscountList() {
@@ -28,9 +26,7 @@
 </script>
 <link href="/themes/css/custom.css" rel="stylesheet" type="text/css" />
 <style type="text/css">
-	#discountForm .select a{
-		width: 78px;
-	}
+
 </style>
 
 <div class="form"
@@ -48,12 +44,12 @@
 			<dl>
 				<dt>扣费比例：</dt>
 				<dd>
-					<select class="combox" 
+					<select class="combox" outerw="78" innerw="95"
 						name="rate" class="required">
 						<c:forEach var="i" begin="1" end="200" step="1">
 							<option value="${i}" width="95">${i}</option>
 						</c:forEach>
-					</select>
+					</select>范围1-200
 				</dd>
 			</dl>
 			<dl style="width: 300px;">

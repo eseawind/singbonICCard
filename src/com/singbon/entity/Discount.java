@@ -1,7 +1,6 @@
 package com.singbon.entity;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * 优惠方案
@@ -43,7 +42,6 @@ public class Discount implements Serializable {
 	private Integer discountType;
 	private Integer rate;
 	private Integer subsidy;
-	private Integer giveCashType;
 	private Integer giveCash;
 
 	public Integer getRate() {
@@ -60,14 +58,6 @@ public class Discount implements Serializable {
 
 	public void setSubsidy(Integer subsidy) {
 		this.subsidy = subsidy;
-	}
-
-	public Integer getGiveCashType() {
-		return giveCashType;
-	}
-
-	public void setGiveCashType(Integer giveCashType) {
-		this.giveCashType = giveCashType;
 	}
 
 	public Integer getGiveCash() {
