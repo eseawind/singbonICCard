@@ -6,6 +6,7 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -16,6 +17,7 @@ import javax.servlet.ServletContextListener;
 
 import org.comet4j.core.util.JSONUtil;
 
+import com.singbon.device.CRC16;
 import com.singbon.device.FrameType;
 import com.singbon.device.TerminalManager;
 import com.singbon.util.StringUtil;
@@ -39,12 +41,10 @@ public class TCPSocketChannelListener implements ServletContextListener {
 		ssc.register(selector, SelectionKey.OP_ACCEPT);// register
 
 		while (true) {
-			// System.out.println(1);
 			// selector 线程。select() 会阻塞，直到有客户端连接，或者有消息读入
 			selector.select();
 			Iterator<SelectionKey> iterator = selector.selectedKeys().iterator();
 			while (iterator.hasNext()) {
-				// System.out.println(2);
 				SelectionKey selectionKey = iterator.next();
 				iterator.remove(); // 删除此消息
 				// 并在当前线程内处理
@@ -53,9 +53,9 @@ public class TCPSocketChannelListener implements ServletContextListener {
 		}
 	}
 
-	int i=0;
+	int i = 0;
+
 	public void handleSelectionKey(SelectionKey selectionKey) throws Exception {
-		String sn="c93f13929acfb4f83a56da83fa3279b64";
 		if (selectionKey.isAcceptable()) {
 			ServerSocketChannel ssc = (ServerSocketChannel) selectionKey.channel();
 			SocketChannel socketChannel = ssc.accept();
@@ -68,15 +68,17 @@ public class TCPSocketChannelListener implements ServletContextListener {
 			TerminalManager.getUuidToSNList().put(uuid, null);
 			// 打印
 			System.out.println(key.attachment() + " 连接成功");
-			
+
+			TerminalManager.getCardNOSN(socketChannel);
 			//
-			TerminalManager.getUuidToSNList().put(uuid, sn);
-			TerminalManager.getSNToSocketChannelList().put(sn, socketChannel);
+			// TerminalManager.getUuidToSNList().put(uuid, sn);
+			// TerminalManager.getSNToSocketChannelList().put(sn,
+			// socketChannel);
 		} else if (selectionKey.isReadable()) {
 			// 有消息进来
 			ByteBuffer byteBuffer = ByteBuffer.allocate(100);
 			SocketChannel sc = (SocketChannel) selectionKey.channel();
-			
+
 			int len = 0;
 			try {
 				len = sc.read(byteBuffer);
@@ -90,42 +92,51 @@ public class TCPSocketChannelListener implements ServletContextListener {
 			}
 			// 如果len>0，表示有输入。如果len==0, 表示输入结束。需要关闭 socketChannel
 			if (len > 0) {
-			System.out.println(++i);
+				System.out.println(++i);
 				byteBuffer.flip();
 				byte[] b = byteBuffer.array();
+				int byteLen = 0;
+				for (int i = b.length; i > 0; i--) {
+					if (b[i - 1] != 0) {
+						byteLen = i;
+						break;
+					}
+				}
+				b = Arrays.copyOf(b, byteLen);
+				// CRC16.sd_crc16_table(b,b.length);
+				for (byte b2 : b) {
+					System.out.print(StringUtil.toHexString(b2) + " ");
+				}
+				System.out.println();
 				
-				if(b[0]==12 &&b[1]==5 &&b[2]==0 ){
-					Map map = new HashMap();
-					map.put("'f1'", 4);
-					
-					String cardno= StringUtil.toHexString(b[3])+StringUtil.toHexString(b[4])+StringUtil.toHexString(b[5])+StringUtil.toHexString(b[6]);
-					map.put("'r'", cardno);
-					
-					String msg= JSONUtil.convertToJson(map);
-					TerminalManager.getEngineInstance().sendToAll(sn, msg);
+				//校验
+				if(!CRC16.compareCRC16(b)){
+					return;
 				}
 				
+				if (b[23] == (byte) 0xff && b[24] == (byte) 0xaa) {
+					System.out.println(11);
+				}
+
 				byteBuffer.clear();
 
-				sc.write(byteBuffer);
-
 				// 分发数据
-				//TerminalManager s = new TerminalManager();
-				//s.dispatchCommand(selectionKey, b);
+				TerminalManager s = new TerminalManager();
+				s.dispatchCardReaderCommand(selectionKey, b);
 			} else {
 				// 输入结束，关闭 socketChannel
 				String uuid = selectionKey.attachment().toString();
 				System.out.println(uuid + " 已关闭连接");
 				sc.close();
-				
+
 				removeSockeckChannel(uuid);
-				
-				Map map = new HashMap();
-				map.put("'f1'", FrameType.CardReaderStatus);
-				map.put("'r'", 0);
-				
-				String msg= JSONUtil.convertToJson(map);
-				TerminalManager.getEngineInstance().sendToAll(sn, msg);
+
+				// Map map = new HashMap();
+				// map.put("'f1'", FrameType.CardReaderStatus);
+				// map.put("'r'", 0);
+
+				// String msg = JSONUtil.convertToJson(map);
+				// TerminalManager.getEngineInstance().sendToAll(sn, msg);
 			}
 
 			Thread.sleep(100);
@@ -136,7 +147,7 @@ public class TCPSocketChannelListener implements ServletContextListener {
 		if (TerminalManager.getUuidToSNList().containsKey(uuid)) {
 			String sn = TerminalManager.getUuidToSNList().get(uuid);
 			TerminalManager.getUuidToSNList().remove(uuid);
-			//为null不在线
+			// 为null不在线
 			TerminalManager.getSNToSocketChannelList().put(sn, null);
 		}
 	}

@@ -1,11 +1,10 @@
 package com.singbon.device;
 
 import java.io.IOException;
-import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -86,45 +85,6 @@ public class TerminalManager {
 		TerminalManager.cmdList = cmdList;
 	}
 
-	/**
-	 * 分发处理命令
-	 * 
-	 * @param b
-	 *            命令
-	 */
-	public void dispatchCommand(SelectionKey selectionKey, byte[] b) {
-		if (b == null)
-			return;
-		if (btoInt(b[23]) == FrameType.Result && btoInt(b[24]) == SubFrameType.Heart) {
-			String sn = "";
-			for (int i = 0; i < 16; i++) {
-				String hex = Integer.toHexString(b[i] & 0xFF);
-				if (hex.length() == 1) {
-					hex = '0' + hex;
-				}
-				sn += hex;
-			}
-			if (!TerminalManager.getUuidToSNList().containsKey(selectionKey.attachment())) {
-				TerminalManager.getUuidToSNList().put(selectionKey.attachment().toString(), sn);
-				TerminalManager.getSNToSocketChannelList().put(sn, (SocketChannel) selectionKey.channel());
-			}
-		}
-
-		// 校时
-		if (b[0] == 1 && b[1] == 1) {
-
-			// MonitorListener.sendMsg(sn, "校时");
-		}
-		if (b[0] == 1 && b[1] == 2) {
-			// MonitorListener.sendMsg(sn, "消费数据："+b[0]+b[1]);
-			try {
-				JdbcDao.save("1", "insert into consume (money,uploadTime) values ('" + b[2] + "',now())");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
 	private int btoInt(byte b) {
 		return b & 0xff;
 	}
@@ -151,41 +111,58 @@ public class TerminalManager {
 	}
 
 	/**
-	 * 测试
+	 * 分发读卡器命令
 	 * 
-	 * @param sn
-	 * @throws IOException
+	 * @param selectionKey
+	 * @param b
+	 *            26 27指令 00 获取机器号序列号，01读卡，
 	 */
-	public static void test(String sn) throws IOException {
-		SocketChannel channel = getSocketChannel(sn);
-		if (channel != null) {
-			ByteBuffer byteBuffer = ByteBuffer.wrap(new byte[] { 0x0c, 0x02, 0x0b, 0x01 });
-			channel.write(byteBuffer);
-		} else {
-			getEngineInstance().sendToAll("c" + sn, "");
+	public void dispatchCardReaderCommand(SelectionKey selectionKey, byte[] b) {
+		if (b == null)
+			return;
+		if (Arrays.equals(getCardReaderResponse(b), new byte[] { 0x03, (byte) 0xFF, (byte) 0xAA, 0x01 })) {
+			// 获取机器号序列号
+			String sn = getSN(b);
+
+			// if
+			// (!TerminalManager.getUuidToSNList().containsKey(selectionKey.attachment()))
+			// {
+			TerminalManager.getUuidToSNList().put(selectionKey.attachment().toString(), sn);
+			TerminalManager.getSNToSocketChannelList().put(sn, (SocketChannel) selectionKey.channel());
+			// }
+		}else if(Arrays.equals(getCardReaderResponse(b), new byte[] { 0x03, (byte) 0xFF, (byte) 0xAA, 0x01 })) {
+			//读卡
 		}
 	}
 
-	/**
-	 * 寻卡
-	 * 
-	 * @param sn
-	 * @throws IOException
-	 */
-	public static void search(String sn) throws IOException {
-		ByteBuffer byteBuffer = ByteBuffer.wrap(new byte[] { 0x0c, 0x02, 0x02, 0x26 });
-		// s.write(byteBuffer);
+	// 获取读卡器回复类型
+	private byte[] getCardReaderResponse(byte[] b) {
+		return Arrays.copyOfRange(b, 22, 26);
+	}
+
+	// 获取序列号
+	private String getSN(byte[] b) {
+		String sn = "";
+		for (int i = 0; i < 16; i++) {
+			String hex = Integer.toHexString(b[i] & 0xFF);
+			if (hex.length() == 1) {
+				hex = '0' + hex;
+			}
+			sn += hex;
+		}
+		return sn;
 	}
 
 	/**
-	 * 获取卡号
+	 * 获取卡号序列号
 	 * 
-	 * @param sn
+	 * @param socketChannel
 	 * @throws IOException
 	 */
-	public static void cardno(String sn) throws IOException {
-		ByteBuffer byteBuffer = ByteBuffer.wrap(new byte[] { 0x0c, 0x01, 0x03 });
-		// s.write(byteBuffer);
+	public static void getCardNOSN(SocketChannel socketChannel) throws IOException {
+		ByteBuffer byteBuffer = ByteBuffer.wrap(new byte[] { (byte) 0xaa, 0x55, (byte) 0xaa, 0x55, (byte) 0xaa, 0x55, (byte) 0xaa, 0x55, (byte) 0xaa, 0x55, (byte) 0xaa, 0x55, (byte) 0xaa, 0x55,
+				(byte) 0xaa, 0x55, (byte) 0xff, (byte) 0xff, (byte) 0xff, (byte) 0xff, 0x00, 0x06, (byte) 0xff, (byte) 0xaa, 0x00, 0x00, 0x00, 0x00 });
+		socketChannel.write(byteBuffer);
 	}
 
 	public class SendCmdToCardReader implements Runnable {
@@ -205,7 +182,7 @@ public class TerminalManager {
 			List<String> list = TerminalManager.getCmdList().get(sn);
 			if (list != null) {
 				while (list.size() > 0) {
-					
+
 				}
 			}
 		}

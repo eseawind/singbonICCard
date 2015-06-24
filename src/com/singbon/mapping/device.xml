@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.singbon.dao.systemManager.DeviceDAO">
+	<resultMap id="device" type="com.singbon.entity.Device">
+	</resultMap>
+	<parameterMap type="com.singbon.entity.Device" id="device2" />
+	<insert id="insert" parameterMap="device2">
+		insert into device (companyId,deviceName,beginDate,endDate,invalidDate)
+		values (#{companyId},#{deviceName},#{beginDate},#{endDate},#{invalidDate})
+	</insert>
+	<update id="update" parameterMap="device2">
+		update device set deviceName=#{deviceName},beginDate=#{beginDate},endDate=#{endDate},invalidDate=#{invalidDate}
+		where id=#{id}
+	</update>
+	<select id="selectList" resultMap="device">
+		select * from device where companyId=#{companyId}
+	</select>
+	<select id="selectAllList" resultMap="device">
+		select * from device where enable=1
+	</select>
+</mapper>
