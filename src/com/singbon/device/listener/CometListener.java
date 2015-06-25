@@ -24,7 +24,6 @@ public class CometListener implements ServletContextListener {
 		CometContext cc = CometContext.getInstance();
 		
 		TerminalManager.setEngineInstance(cc.getEngine());
-		cc.registChannel("c1");
 		// 添加连接监听
 		TerminalManager.getEngineInstance().addConnectListener(new ConnectListener() {
 			@Override

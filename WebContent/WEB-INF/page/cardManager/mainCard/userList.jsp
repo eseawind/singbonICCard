@@ -59,6 +59,35 @@
 					}
 				});
 			},
+			'single' : function(t, target) {
+				if (selectedDeptId <= "0") {
+					alertMsg.warn('请选择部门');
+					return;
+				}
+				var url = "${base}/userInfo.do?editType=0&deptId="
+						+ selectedDeptId + "&batchId=" + selectedBatchId;
+				// 					alert(url);
+				$.pdialog.open(url, "dialog", "单个发卡", cardOptions);
+			},
+			'single' : function(t, target) {
+				if (selectedDeptId <= "0") {
+					alertMsg.warn('请选择部门');
+					return;
+				}
+				var url = "${base}/userInfo.do?editType=0&deptId="
+						+ selectedDeptId + "&batchId=" + selectedBatchId;
+				// 					alert(url);
+				$.pdialog.open(url, "dialog", "单个发卡", cardOptions);
+			},
+			'infoMakeCard' : function(t, target) {
+				if(!checkDeviceSn()){
+					return;
+				}
+				var url = "${base}/userInfo.do?editType=0&deptId="
+						+ selectedDeptId + "&batchId=" + selectedBatchId+"&sn="+deviceSn;
+				// 					alert(url);
+				$.pdialog.open(url, "dialog", "信息发卡", cardOptions);
+			},
 			'batch' : function(t, target) {
 			}
 		},
@@ -70,6 +99,15 @@
 			return menu;
 		}
 	};
+	
+	function checkDeviceSn(){
+		if(deviceSn==""){
+			alertMsg.warn('请先绑定读卡机！');
+			return false;
+		}
+		return true;
+	}
+	
 	$(function() {
 		$(".searchBar .search").click(function() {
 			searchStr = $("input[name='searchStr']").val();
@@ -89,6 +127,7 @@
 		<li id="dept">部门调整</li>
 		<li class="divide" />
 		<li id="single">单个发卡</li>
+		<li id="infoMakeCard">信息发卡</li>
 		<li id="batch">批量发卡</li>
 		<li id="delete">删除未发卡人员</li>
 	</ul>

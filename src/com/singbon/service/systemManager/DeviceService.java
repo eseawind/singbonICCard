@@ -40,6 +40,15 @@ public class DeviceService {
 	}
 
 	/**
+	 * 通过userId查找
+	 * 
+	 * @return
+	 */
+	public Device selectByUserId(Integer userId) {
+		return this.deviceDAO.selectByUserId(userId);
+	}
+
+	/**
 	 * 列表
 	 * 
 	 * @return

@@ -120,6 +120,7 @@ public class TerminalManager {
 	public void dispatchCardReaderCommand(SelectionKey selectionKey, byte[] b) {
 		if (b == null)
 			return;
+		TerminalManager.getEngineInstance().sendToAll("c"+getSN(b), 1);
 		if (Arrays.equals(getCardReaderResponse(b), new byte[] { 0x03, (byte) 0xFF, (byte) 0xAA, 0x01 })) {
 			// 获取机器号序列号
 			String sn = getSN(b);
@@ -130,8 +131,8 @@ public class TerminalManager {
 			TerminalManager.getUuidToSNList().put(selectionKey.attachment().toString(), sn);
 			TerminalManager.getSNToSocketChannelList().put(sn, (SocketChannel) selectionKey.channel());
 			// }
-		}else if(Arrays.equals(getCardReaderResponse(b), new byte[] { 0x03, (byte) 0xFF, (byte) 0xAA, 0x01 })) {
-			//读卡
+		} else if (Arrays.equals(getCardReaderResponse(b), new byte[] { 0x03, (byte) 0xFF, (byte) 0xAA, 0x01 })) {
+			// 读卡
 		}
 	}
 

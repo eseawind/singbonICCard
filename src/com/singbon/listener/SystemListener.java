@@ -33,14 +33,16 @@ public class SystemListener implements ServletContextListener {
 	public void contextInitialized(ServletContextEvent arg0) {
 		WebApplicationContext app = WebApplicationContextUtils.getRequiredWebApplicationContext(arg0.getServletContext());
 		DeviceService deviceService = (DeviceService) app.getBean("deviceService");
-		
+
 		// 加载设备序列号到公司的映射和设备序列号到socketchannel的空映射
 		List<Device> list = deviceService.selectAllList();
 		for (Device d : list) {
 			TerminalManager.getSnToCompanyList().put(d.getSn(), d.getCompanyId());
 			// 初始化添加空设备,以便查询设备
 			TerminalManager.getSNToSocketChannelList().put(d.getSn(), null);
+			TerminalManager.registChannel(d.getSn());
 		}
+
 	}
 
 }

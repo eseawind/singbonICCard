@@ -7,18 +7,13 @@ import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import org.comet4j.core.util.JSONUtil;
-
 import com.singbon.device.CRC16;
-import com.singbon.device.FrameType;
 import com.singbon.device.TerminalManager;
 import com.singbon.util.StringUtil;
 

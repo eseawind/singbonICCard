@@ -23,12 +23,14 @@ import com.singbon.entity.Batch;
 import com.singbon.entity.CardFunc;
 import com.singbon.entity.CardIdentity;
 import com.singbon.entity.Company;
+import com.singbon.entity.Device;
 import com.singbon.entity.Discount;
 import com.singbon.entity.SysUser;
 import com.singbon.entity.User;
 import com.singbon.entity.UserDept;
 import com.singbon.service.mainCard.MainCardService;
 import com.singbon.service.systemManager.BatchService;
+import com.singbon.service.systemManager.DeviceService;
 import com.singbon.service.systemManager.DiscountService;
 import com.singbon.service.systemManager.UserDeptService;
 import com.singbon.util.StringUtil;
@@ -51,6 +53,31 @@ public class MainCardController extends BaseController {
 	public BatchService batchService;
 	@Autowired
 	public DiscountService discountService;
+	@Autowired
+	public DeviceService deviceService;
+
+	/**
+	 * 首页
+	 * 
+	 * @param request
+	 * @param model
+	 * @param module
+	 * @return
+	 */
+	@RequestMapping(value = "/index.do")
+	public String index(HttpServletRequest request, Model model) {
+		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
+		Company company = (Company) request.getSession().getAttribute("company");
+		model.addAttribute("sysUser", sysUser);
+		model.addAttribute("company", company);
+
+		String url = request.getRequestURI();
+		model.addAttribute("base", url.replace("/index.do", ""));
+		Device device = this.deviceService.selectByUserId(sysUser.getId());
+		model.addAttribute("device", device);
+		return url.replace(".do", "");
+	}
+
 	/**
 	 * 添加修改人员
 	 * 
@@ -101,8 +128,8 @@ public class MainCardController extends BaseController {
 	@RequestMapping(value = "/list.do", method = RequestMethod.GET)
 	public String userList(HttpServletRequest request, Integer deptId, String searchStr, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
-		if("".equals(searchStr) || "null".equals(searchStr)){
-			searchStr=null;
+		if ("".equals(searchStr) || "null".equals(searchStr)) {
+			searchStr = null;
 		}
 		List<User> list = this.mainCardService.selectByCondition(deptId, searchStr);
 		model.addAttribute("list", list);
@@ -118,7 +145,8 @@ public class MainCardController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/userInfo.do", method = RequestMethod.GET)
-	public String userInfo(HttpServletRequest request, Integer id, Integer deptId, Integer batchId,Integer editType, Model model) {
+	public String userInfo(Integer id, Integer deptId, Integer batchId, Integer editType, String sn, HttpServletRequest request, Model model) {
+		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
 		Company company = (Company) request.getSession().getAttribute("company");
 		List<CardFunc> cardFuncList = new ArrayList<CardFunc>();
 		List<CardIdentity> cardIdentityList = new ArrayList<CardIdentity>();
@@ -157,8 +185,8 @@ public class MainCardController extends BaseController {
 		cardIdentityList.add(m6);
 		cardIdentityList.add(m7);
 		cardIdentityList.add(m8);
-		
-		List<Discount> discountList =discountService.selectList(company.getId());
+
+		List<Discount> discountList = discountService.selectList(company.getId());
 		model.addAttribute("discountList", discountList);
 		model.addAttribute("cardFuncList", cardFuncList);
 		model.addAttribute("cardIdentityList", cardIdentityList);
@@ -168,10 +196,12 @@ public class MainCardController extends BaseController {
 		model.addAttribute("base", StringUtil.requestBase(request));
 		model.addAttribute("deptId", deptId);
 		model.addAttribute("editType", editType);
-		if(id!=null){
-			User user=this.mainCardService.selectById(id);
+		if (id != null) {
+			User user = this.mainCardService.selectById(id);
 			model.addAttribute("user", user);
 		}
+		model.addAttribute("sn", sn);
+
 		return StringUtil.requestPath(request, "userInfo");
 	}
 
@@ -182,7 +212,7 @@ public class MainCardController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/delete.do", method = RequestMethod.POST)
-	public void delete(HttpServletRequest request,HttpServletResponse response, Integer deptId, Model model) {
+	public void delete(HttpServletRequest request, HttpServletResponse response, Integer deptId, Model model) {
 		PrintWriter p = null;
 		try {
 			p = response.getWriter();
@@ -192,7 +222,7 @@ public class MainCardController extends BaseController {
 			p.print(0);
 		}
 	}
-	
+
 	/**
 	 * 命令处理
 	 * 

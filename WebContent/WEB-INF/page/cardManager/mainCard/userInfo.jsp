@@ -8,6 +8,7 @@
 	}
 
 	$(function() {
+		init();
 		$("#userinfo .add").click(function() {
 			validateCallback($(this).parents("form"), function(e) {
 				if (e == 1) {
@@ -35,6 +36,7 @@
 		JS.Engine.on({
 			'c${sn}' : function(e) {//侦听一个channel
 				var e2 = eval('(' + e + ')');
+				alertMsg.correct('在线');
 				//读卡器状态
 				if (e2.f1 == 1) {
 					if (e2.r == 1) {
