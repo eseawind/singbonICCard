@@ -140,9 +140,10 @@ public class TerminalManager {
 		} else if (Arrays.equals(getCardReaderResponse(b), new byte[] { 0x03, (byte) 0xcd, (byte) 0x01, 0x01 })) {
 			Map map = new HashMap();
 			map.put("'f1'", FrameType.CardReaderWriteResponse);
-
 			String msg = JSONUtil.convertToJson(map);
 			TerminalManager.getEngineInstance().sendToAll("c" + sn, msg);
+		} else if (Arrays.equals(getCardReaderResponse(b), new byte[] { 0x03, (byte) 0xFF, (byte) 0xAA, 0x01 })) {
+			// 读卡
 		}
 	}
 

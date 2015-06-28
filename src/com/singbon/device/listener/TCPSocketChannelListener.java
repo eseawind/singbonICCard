@@ -20,7 +20,6 @@ import org.comet4j.core.util.JSONUtil;
 import com.singbon.device.CRC16;
 import com.singbon.device.FrameType;
 import com.singbon.device.TerminalManager;
-import com.singbon.util.StringUtil;
 
 /**
  * TCP服务监听和分发服务
@@ -53,7 +52,7 @@ public class TCPSocketChannelListener implements ServletContextListener {
 				}
 			}
 		} catch (Exception e) {
-			
+
 		}
 	}
 

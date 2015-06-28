@@ -64,15 +64,6 @@
 					alertMsg.warn('请选择部门');
 					return;
 				}
-				var url = "${base}/userInfo.do?editType=2&deptId="
-						+ selectedDeptId + "&batchId=" + selectedBatchId;
-				$.pdialog.open(url, "dialog", "单个发卡", cardOptions);
-			},
-			'single' : function(t, target) {
-				if (selectedDeptId <= "0") {
-					alertMsg.warn('请选择部门');
-					return;
-				}
 				var url = "${base}/userInfo.do?editType=0&deptId="
 						+ selectedDeptId + "&batchId=" + selectedBatchId;
 				$.pdialog.open(url, "dialog", "单个发卡", cardOptions);
@@ -103,7 +94,6 @@
 		}
 		return true;
 	}
-
 	$(function() {
 		$(".searchBar .search").click(function() {
 			searchStr = $("input[name='searchStr']").val();

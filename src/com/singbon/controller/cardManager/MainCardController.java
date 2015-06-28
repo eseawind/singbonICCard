@@ -225,7 +225,6 @@ public class MainCardController extends BaseController {
 
 		List<Discount> discountList = discountService.selectList(company.getId());
 		Batch batch = batchService.selectById(batchId);
-
 		model.addAttribute("discountList", discountList);
 		model.addAttribute("cardFuncList", cardFuncList);
 		model.addAttribute("cardIdentityList", cardIdentityList);
@@ -234,7 +233,6 @@ public class MainCardController extends BaseController {
 		model.addAttribute("base", StringUtil.requestBase(request));
 		model.addAttribute("deptId", deptId);
 		model.addAttribute("editType", editType);
-
 		if (id != null) {
 			User user = this.mainCardService.selectById(id);
 			model.addAttribute("user", user);
@@ -247,6 +245,7 @@ public class MainCardController extends BaseController {
 		} else {
 			model.addAttribute("cardStatus", 0);
 		}
+
 		return StringUtil.requestPath(request, "userInfo");
 	}
 

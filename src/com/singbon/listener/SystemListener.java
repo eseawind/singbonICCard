@@ -39,7 +39,7 @@ public class SystemListener implements ServletContextListener {
 		for (Device d : list) {
 			TerminalManager.getSnToCompanyList().put(d.getSn(), d.getCompanyId());
 			// 初始化添加空设备,以便查询设备
-//			TerminalManager.getSNToSocketChannelList().put(d.getSn(), null);
+			// TerminalManager.getSNToSocketChannelList().put(d.getSn(), null);
 			TerminalManager.registChannel(d.getSn());
 		}
 
