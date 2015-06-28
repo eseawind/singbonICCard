@@ -19,17 +19,15 @@ import com.singbon.device.TerminalManager;
  * 
  */
 public class CometListener implements ServletContextListener {
-	
+
 	public void contextInitialized(ServletContextEvent arg0) {
 		CometContext cc = CometContext.getInstance();
-		
+
 		TerminalManager.setEngineInstance(cc.getEngine());
-		cc.registChannel("c1");
 		// 添加连接监听
 		TerminalManager.getEngineInstance().addConnectListener(new ConnectListener() {
 			@Override
 			public boolean handleEvent(ConnectEvent event) {
-
 				CometConnection connection = event.getConn();
 				String ip = connection.getClientIp();
 				System.out.println(ip);

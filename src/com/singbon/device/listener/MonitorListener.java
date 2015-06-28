@@ -22,10 +22,7 @@ public class MonitorListener implements ServletContextListener {
 	
 	public void contextInitialized(ServletContextEvent arg0) {
 		CometContext cc = CometContext.getInstance();
-		// 注册应用的channel
-		for (int i = 1; i <= 10000; i++) {
-			cc.registChannel("c" + i);
-		}
+
 		TerminalManager.setEngineInstance(cc.getEngine());
 
 		// 添加连接监听

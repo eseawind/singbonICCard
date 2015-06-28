@@ -27,8 +27,10 @@ import org.springframework.security.web.authentication.AbstractAuthenticationPro
 import org.springframework.util.Assert;
 
 import com.singbon.entity.Company;
+import com.singbon.entity.Device;
 import com.singbon.entity.SysUser;
 import com.singbon.service.system.CompanyService;
+import com.singbon.service.systemManager.DeviceService;
 
 /**
  * Processes an authentication form submission. Called
@@ -54,6 +56,8 @@ public class CustomAuthenticationFilter extends AbstractAuthenticationProcessing
 	public SysUserService sysUserService;
 	@Autowired
 	public CompanyService companyService;
+	@Autowired
+	public DeviceService deviceService;
 	// ~ Static fields/initializers
 	// =====================================================================================
 
@@ -117,6 +121,8 @@ public class CustomAuthenticationFilter extends AbstractAuthenticationProcessing
 			request.getSession().setAttribute("company", company);
 			request.getSession().setAttribute("sysUser", user);
 			username = user.getId() + USERNAME_LOGINID_SPLIT + username + USERNAME_LOGINID_SPLIT + password + USERNAME_LOGINID_SPLIT + user.getEnabled();
+			Device device= this.deviceService.selectByUserId(user.getId());
+			request.getSession().setAttribute("device", device);
 		}
 
 		UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username, password);

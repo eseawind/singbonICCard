@@ -31,6 +31,13 @@ public interface DeviceDAO {
 	public void update(Device device);
 
 	/**
+	 * 通过userId查找
+	 * 
+	 * @return
+	 */
+	public Device selectByUserId(@Param("userId") Integer userId);
+	
+	/**
 	 * 列表
 	 * 
 	 * @return

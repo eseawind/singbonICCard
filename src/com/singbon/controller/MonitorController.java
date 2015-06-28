@@ -3,11 +3,8 @@ package com.singbon.controller;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,12 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.singbon.device.FrameType;
 import com.singbon.device.SubFrameType;
 import com.singbon.device.TerminalManager;
-import com.singbon.entity.Company;
-import com.singbon.entity.Device;
-import com.singbon.entity.SysUser;
 import com.singbon.service.MonitorService;
 
 /**
@@ -50,7 +43,7 @@ public class MonitorController {
 
 		if ("getDeviceStatus".equals(comm)) {
 			Map map = new HashMap();
-			map.put("'f1'", FrameType.Result);
+//			map.put("'f1'", FrameType.Result);
 			map.put("'f2'", SubFrameType.Heart);
 			Map map2 = new HashMap();
 

@@ -2,10 +2,9 @@ package com.singbon.controller.cardManager;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,17 +17,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.singbon.controller.BaseController;
-import com.singbon.device.FrameType;
+import com.singbon.device.TerminalManager;
 import com.singbon.entity.Batch;
+import com.singbon.entity.CardAllInfo;
 import com.singbon.entity.CardFunc;
 import com.singbon.entity.CardIdentity;
 import com.singbon.entity.Company;
+import com.singbon.entity.Device;
 import com.singbon.entity.Discount;
 import com.singbon.entity.SysUser;
 import com.singbon.entity.User;
 import com.singbon.entity.UserDept;
 import com.singbon.service.mainCard.MainCardService;
 import com.singbon.service.systemManager.BatchService;
+import com.singbon.service.systemManager.DeviceService;
 import com.singbon.service.systemManager.DiscountService;
 import com.singbon.service.systemManager.UserDeptService;
 import com.singbon.util.StringUtil;
@@ -51,29 +53,82 @@ public class MainCardController extends BaseController {
 	public BatchService batchService;
 	@Autowired
 	public DiscountService discountService;
+	@Autowired
+	public DeviceService deviceService;
+
 	/**
-	 * 添加修改人员
+	 * 首页
 	 * 
-	 * @param userDept
 	 * @param request
+	 * @param model
+	 * @param module
+	 * @return
+	 */
+	@RequestMapping(value = "/index.do")
+	public String index(HttpServletRequest request, Model model) {
+		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
+		Company company = (Company) request.getSession().getAttribute("company");
+		model.addAttribute("sysUser", sysUser);
+		model.addAttribute("company", company);
+
+		String url = request.getRequestURI();
+		model.addAttribute("base", url.replace("/index.do", ""));
+		Device device = this.deviceService.selectByUserId(sysUser.getId());
+		model.addAttribute("device", device);
+		return url.replace(".do", "");
+	}
+
+	/**
+	 * 添加修改人员信息和发卡
+	 * 
+	 * @param user用户信息
+	 * @param editType操作类型
+	 * @param opCash预发金额
+	 * @param giveCash赠送金额
+	 * @param cardCost开户卡成本
+	 * @param cardDeposit卡押金
+	 * @param request
+	 * @param response
 	 * @param model
 	 */
 	@RequestMapping(value = "/addEdit.do")
-	public void addEdit(@ModelAttribute User user, HttpServletRequest request, HttpServletResponse response, Model model) {
-		Company company = (Company) request.getSession().getAttribute("company");
-		user.setCompanyId(company.getId());
-		user.setStatus(0);
+	public void addEdit(@ModelAttribute User user, Integer editType, Integer opCash, Integer giveCash, Integer cardCost, Integer cardDeposit, HttpServletRequest request, HttpServletResponse response,
+			Model model) {
 		PrintWriter p = null;
-		try {
-			p = response.getWriter();
-			if (user.getId() == null) {
-				this.mainCardService.save(user);
-			} else {
-				this.mainCardService.update(user);
+		// 信息发卡
+		if (editType == 3) {
+			Device device = (Device) request.getSession().getAttribute("device");
+			SocketChannel socketChannel = TerminalManager.getSNToSocketChannelList().get(device.getSn());
+			if (socketChannel != null) {
+				try {
+					User user2 = this.mainCardService.selectById(user.getUserId());
+					CardAllInfo cardAllInfo = new CardAllInfo();
+					cardAllInfo.setCardCost(cardCost);
+					cardAllInfo.setCardDeposit(cardDeposit);
+					cardAllInfo.setLimitDayFare(0);
+					cardAllInfo.setLimitTimesFare(0);
+					cardAllInfo.setOpCash(opCash + giveCash);
+
+					this.mainCardService.infoCard(device.getSn(), socketChannel, user2, cardAllInfo);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
-			p.print(1);
-		} catch (Exception e) {
-			p.print(0);
+		} else if (editType == 0 || editType == 1) {
+			Company company = (Company) request.getSession().getAttribute("company");
+			user.setCompanyId(company.getId());
+			user.setStatus(0);
+			try {
+				p = response.getWriter();
+				if (user.getUserId() == null) {
+					this.mainCardService.save(user);
+				} else {
+					this.mainCardService.update(user);
+				}
+				p.print(1);
+			} catch (Exception e) {
+				p.print(0);
+			}
 		}
 	}
 
@@ -101,8 +156,8 @@ public class MainCardController extends BaseController {
 	@RequestMapping(value = "/list.do", method = RequestMethod.GET)
 	public String userList(HttpServletRequest request, Integer deptId, String searchStr, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
-		if("".equals(searchStr) || "null".equals(searchStr)){
-			searchStr=null;
+		if ("".equals(searchStr) || "null".equals(searchStr)) {
+			searchStr = null;
 		}
 		List<User> list = this.mainCardService.selectByCondition(deptId, searchStr);
 		model.addAttribute("list", list);
@@ -114,12 +169,22 @@ public class MainCardController extends BaseController {
 	/**
 	 * 用户信息页面
 	 * 
+	 * @param id
+	 * @param deptId
+	 * @param batchId
+	 * @param editType
+	 *            0信息录入，1修改，2单个发卡，3信息发卡
+	 * @param sn
+	 * @param request
 	 * @param model
 	 * @return
 	 */
 	@RequestMapping(value = "/userInfo.do", method = RequestMethod.GET)
-	public String userInfo(HttpServletRequest request, Integer id, Integer deptId, Integer batchId,Integer editType, Model model) {
+	public String userInfo(Integer id, Integer deptId, Integer batchId, Integer editType, HttpServletRequest request, Model model) {
+		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
 		Company company = (Company) request.getSession().getAttribute("company");
+		Device device = (Device) request.getSession().getAttribute("device");
+
 		List<CardFunc> cardFuncList = new ArrayList<CardFunc>();
 		List<CardIdentity> cardIdentityList = new ArrayList<CardIdentity>();
 		CardFunc m1 = new CardFunc();
@@ -157,20 +222,30 @@ public class MainCardController extends BaseController {
 		cardIdentityList.add(m6);
 		cardIdentityList.add(m7);
 		cardIdentityList.add(m8);
-		
-		List<Discount> discountList =discountService.selectList(company.getId());
+
+		List<Discount> discountList = discountService.selectList(company.getId());
+		Batch batch = batchService.selectById(batchId);
+
 		model.addAttribute("discountList", discountList);
 		model.addAttribute("cardFuncList", cardFuncList);
 		model.addAttribute("cardIdentityList", cardIdentityList);
 
-		Batch batch = batchService.selectById(batchId);
 		model.addAttribute("batch", batch);
 		model.addAttribute("base", StringUtil.requestBase(request));
 		model.addAttribute("deptId", deptId);
 		model.addAttribute("editType", editType);
-		if(id!=null){
-			User user=this.mainCardService.selectById(id);
+
+		if (id != null) {
+			User user = this.mainCardService.selectById(id);
 			model.addAttribute("user", user);
+		}
+		model.addAttribute("sn", device.getSn());
+
+		// 读卡机状态
+		if (TerminalManager.getSNToSocketChannelList().containsKey(device.getSn())) {
+			model.addAttribute("cardStatus", 1);
+		} else {
+			model.addAttribute("cardStatus", 0);
 		}
 		return StringUtil.requestPath(request, "userInfo");
 	}
@@ -182,7 +257,7 @@ public class MainCardController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/delete.do", method = RequestMethod.POST)
-	public void delete(HttpServletRequest request,HttpServletResponse response, Integer deptId, Model model) {
+	public void delete(HttpServletRequest request, HttpServletResponse response, Integer deptId, Model model) {
 		PrintWriter p = null;
 		try {
 			p = response.getWriter();
@@ -192,7 +267,7 @@ public class MainCardController extends BaseController {
 			p.print(0);
 		}
 	}
-	
+
 	/**
 	 * 命令处理
 	 * 
@@ -202,15 +277,30 @@ public class MainCardController extends BaseController {
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value = "/command.do", method = RequestMethod.POST)
-	public void command(HttpServletRequest request, String comm, Model model) throws IOException {
+	public void command(String comm, HttpServletRequest request, Model model) {
 		SysUser user = (SysUser) request.getSession().getAttribute("sysUser");
-		String sn = null;
-
+		Device device = (Device) request.getSession().getAttribute("device");
+		String sn = device.getSn();
+		// 获取读卡器状态
 		if ("getCardReaderStatus".equals(comm)) {
-			// 获取读卡器状态
-			Map map = new HashMap();
-			map.put("'f1'", FrameType.CardReaderStatus);
-			map.put("'r'", 1);
+			SocketChannel socketChannel = TerminalManager.getSNToSocketChannelList().get(sn);
+			if (socketChannel != null) {
+				try {
+					TerminalManager.getCardReaderHeartStatus(socketChannel);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		// 关闭连接通道
+		else if ("closeSocketChannel".equals(comm)) {
+			try {
+				TerminalManager.closeSocketChannel(sn);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 

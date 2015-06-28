@@ -11,6 +11,7 @@ import java.util.Map;
 
 import org.comet4j.core.CometContext;
 import org.comet4j.core.CometEngine;
+import org.comet4j.core.util.JSONUtil;
 
 /**
  * 终端设备通信监控管理
@@ -120,18 +121,28 @@ public class TerminalManager {
 	public void dispatchCardReaderCommand(SelectionKey selectionKey, byte[] b) {
 		if (b == null)
 			return;
-		if (Arrays.equals(getCardReaderResponse(b), new byte[] { 0x03, (byte) 0xFF, (byte) 0xAA, 0x01 })) {
-			// 获取机器号序列号
-			String sn = getSN(b);
+		String sn = getSN(b);
+		// 获取机器号序列号
+		if (Arrays.equals(getCardReaderResponse(b), new byte[] { 0x03, (byte) 0xff, (byte) 0xaa, 0x01 })) {
+			byte frame = FrameType.CardReaderStatus;
+			if (b[27] == 1) {
+				frame = FrameType.CardReaderHeartStatus;
+			} else {
+				TerminalManager.getUuidToSNList().put(selectionKey.attachment().toString(), sn);
+				TerminalManager.getSNToSocketChannelList().put(sn, (SocketChannel) selectionKey.channel());
+			}
+			Map map = new HashMap();
+			map.put("'f1'", frame);
+			map.put("'r'", 1);
+			String msg = JSONUtil.convertToJson(map);
+			TerminalManager.getEngineInstance().sendToAll("c" + sn, msg);
+			// 写卡
+		} else if (Arrays.equals(getCardReaderResponse(b), new byte[] { 0x03, (byte) 0xcd, (byte) 0x01, 0x01 })) {
+			Map map = new HashMap();
+			map.put("'f1'", FrameType.CardReaderWriteResponse);
 
-			// if
-			// (!TerminalManager.getUuidToSNList().containsKey(selectionKey.attachment()))
-			// {
-			TerminalManager.getUuidToSNList().put(selectionKey.attachment().toString(), sn);
-			TerminalManager.getSNToSocketChannelList().put(sn, (SocketChannel) selectionKey.channel());
-			// }
-		}else if(Arrays.equals(getCardReaderResponse(b), new byte[] { 0x03, (byte) 0xFF, (byte) 0xAA, 0x01 })) {
-			//读卡
+			String msg = JSONUtil.convertToJson(map);
+			TerminalManager.getEngineInstance().sendToAll("c" + sn, msg);
 		}
 	}
 
@@ -165,27 +176,38 @@ public class TerminalManager {
 		socketChannel.write(byteBuffer);
 	}
 
-	public class SendCmdToCardReader implements Runnable {
+	/**
+	 * 获取读卡机心跳状态
+	 * 
+	 * @param socketChannel
+	 * @throws IOException
+	 */
+	public static void getCardReaderHeartStatus(SocketChannel socketChannel) throws IOException {
+		ByteBuffer byteBuffer = ByteBuffer.wrap(new byte[] { (byte) 0xaa, 0x55, (byte) 0xaa, 0x55, (byte) 0xaa, 0x55, (byte) 0xaa, 0x55, (byte) 0xaa, 0x55, (byte) 0xaa, 0x55, (byte) 0xaa, 0x55,
+				(byte) 0xaa, 0x55, (byte) 0xff, (byte) 0xff, (byte) 0xff, (byte) 0xff, 0x00, 0x06, (byte) 0xff, (byte) 0xaa, 0x00, 0x01, 0x00, 0x00 });
+		socketChannel.write(byteBuffer);
+	}
 
-		private String sn;
+	/**
+	 * 关闭连接通道
+	 * 
+	 * @param socketChannel
+	 * @throws IOException
+	 */
+	public static void closeSocketChannel(String sn) throws IOException {
+		TerminalManager.getSNToSocketChannelList().remove(sn);
+	}
 
-		public String getSn() {
-			return sn;
-		}
-
-		public void setSn(String sn) {
-			this.sn = sn;
-		}
-
-		@Override
-		public void run() {
-			List<String> list = TerminalManager.getCmdList().get(sn);
-			if (list != null) {
-				while (list.size() > 0) {
-
-				}
-			}
-		}
-
+	/**
+	 * 发送命令到读卡机
+	 * 
+	 * @param socketChannel
+	 * @param b
+	 * @throws IOException
+	 */
+	public static void sendToCardReader(SocketChannel socketChannel, byte[] b) throws IOException {
+		CRC16.generate(b);
+		ByteBuffer byteBuffer = ByteBuffer.wrap(b);
+		socketChannel.write(byteBuffer);
 	}
 }

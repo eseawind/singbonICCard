@@ -1,7 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+	pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <script type="text/javascript">
+	// 0信息录入，1修改，2单个发卡，3信息发卡
 	var cardOptions = {
 		width : 600,
 		height : 500,
@@ -22,13 +24,11 @@
 				}
 				var url = "${base}/userInfo.do?editType=0&deptId="
 						+ selectedDeptId + "&batchId=" + selectedBatchId;
-				// 					alert(url);
 				$.pdialog.open(url, "dialog", "信息录入", cardOptions);
 			},
 			'edit' : function(t, target) {
 				var url = "${base}/userInfo.do?editType=1&id="
 						+ $(t).attr("attr");
-				// 					alert(url);
 				$.pdialog.open(url, "dialog", "信息修改", cardOptions);
 			},
 			'delete' : function(t, target) {
@@ -59,17 +59,51 @@
 					}
 				});
 			},
+			'single' : function(t, target) {
+				if (selectedDeptId <= "0") {
+					alertMsg.warn('请选择部门');
+					return;
+				}
+				var url = "${base}/userInfo.do?editType=2&deptId="
+						+ selectedDeptId + "&batchId=" + selectedBatchId;
+				$.pdialog.open(url, "dialog", "单个发卡", cardOptions);
+			},
+			'single' : function(t, target) {
+				if (selectedDeptId <= "0") {
+					alertMsg.warn('请选择部门');
+					return;
+				}
+				var url = "${base}/userInfo.do?editType=0&deptId="
+						+ selectedDeptId + "&batchId=" + selectedBatchId;
+				$.pdialog.open(url, "dialog", "单个发卡", cardOptions);
+			},
+			'infoCard' : function(t, target) {
+				if (!checkDeviceSn()) {
+					return;
+				}
+				var url = "${base}/userInfo.do?editType=3&id="
+						+ $(t).attr("attr");
+				$.pdialog.open(url, "dialog", "信息发卡", cardOptions);
+			},
 			'batch' : function(t, target) {
 			}
 		},
 		onShowMenu : function(e, menu) {
-// 			alert($(e.target).html());
 			if (!$(e.target).parents("tbody").hasClass("userList")) {
 				$('#edit', menu).remove();
 			}
 			return menu;
 		}
 	};
+
+	function checkDeviceSn() {
+		if (deviceSn == "") {
+			alertMsg.warn('请先绑定读卡机！');
+			return false;
+		}
+		return true;
+	}
+
 	$(function() {
 		$(".searchBar .search").click(function() {
 			searchStr = $("input[name='searchStr']").val();
@@ -89,18 +123,21 @@
 		<li id="dept">部门调整</li>
 		<li class="divide" />
 		<li id="single">单个发卡</li>
+		<li id="infoCard">信息发卡</li>
 		<li id="batch">批量发卡</li>
 		<li id="delete">删除未发卡人员</li>
 	</ul>
 </div>
 <div class="pageHeader" style="border: 1px #B8D0D6 solid">
-	<input type="hidden" name="pageNum" value="1" /> <input type="hidden" name="numPerPage"
-		value="${model.numPerPage}" /> <input type="hidden" name="orderField" value="${param.orderField}" />
-	<input type="hidden" name="orderDirection" value="${param.orderDirection}" />
+	<input type="hidden" name="pageNum" value="1" /> <input type="hidden"
+		name="numPerPage" value="${model.numPerPage}" /> <input type="hidden"
+		name="orderField" value="${param.orderField}" /> <input type="hidden"
+		name="orderDirection" value="${param.orderDirection}" />
 	<div class="searchBar">
 		<table class="searchContent">
 			<tr>
-				<td>编号/姓名：<input type="text" name="searchStr" value="${searchStr }" />
+				<td>编号/姓名：<input type="text" name="searchStr"
+					value="${searchStr }" />
 				</td>
 				<td><div class="buttonActive">
 						<div class="buttonContent">
@@ -116,7 +153,8 @@
 		</table>
 	</div>
 </div>
-<div class="pageContent" style="border-left: 1px #B8D0D6 solid; border-right: 1px #B8D0D6 solid">
+<div class="pageContent"
+	style="border-left: 1px #B8D0D6 solid; border-right: 1px #B8D0D6 solid">
 	<table class="table" width="99%" layoutH="95">
 		<thead>
 			<tr>
@@ -131,7 +169,7 @@
 		</thead>
 		<tbody class="userList">
 			<c:forEach var="user" items="${list}">
-				<tr attr="${user.id }">
+				<tr attr="${user.userId }">
 					<td>${index+1}</td>
 					<td>${user.userNO}</td>
 					<td>${user.username}</td>
@@ -154,8 +192,8 @@
 			</select> <span>条，共50条</span>
 		</div>
 
-		<div class="pagination" rel="jbsxBox" totalCount="200" numPerPage="20" pageNumShown="1"
-			currentPage="1"></div>
+		<div class="pagination" rel="jbsxBox" totalCount="200" numPerPage="20"
+			pageNumShown="1" currentPage="1"></div>
 
 	</div>
 </div>

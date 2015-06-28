@@ -74,7 +74,12 @@
 					dialog.jresize();
 				if(op.drawable)
 				 	dialog.dialogDrag();
-				$("a.close", dialog).click(function(event){ 
+				$("a.close", dialog).click(function(event){
+					var title=dialog.find(".dialogHeader").find("h1").html();
+					if(title.indexOf("读卡机")!=-1){
+						JS.Engine.stop();
+						$('#userinfo').stopTime ();
+					}
 					$.pdialog.close(dialog);
 					return false;
 				});

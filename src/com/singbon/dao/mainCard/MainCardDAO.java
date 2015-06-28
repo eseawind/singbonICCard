@@ -44,7 +44,7 @@ public interface MainCardDAO {
 	 * @param id
 	 * @return
 	 */
-	public User selectById(@Param("id") Integer id);
+	public User selectById(@Param("userId") Integer userId);
 
 	/**
 	 * 人员列表

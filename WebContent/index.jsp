@@ -7,6 +7,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Login Page</title>
 <%-- <link rel="Stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/login.css" /> --%>
+<script type="text/javascript">
+</script>
 </head>
 <body>
 

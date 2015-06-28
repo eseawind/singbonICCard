@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <script type="text/javascript">
+	var deviceSn="${device.sn}";
 	var selectedDeptId = -1;
 	var selectedBatchId = -1;
 	var searchStr=null;

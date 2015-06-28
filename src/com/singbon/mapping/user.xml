@@ -13,13 +13,13 @@
 	<update id="update" parameterMap="user2">
 		update user set
 		username=#{username},shortName=#{shortName},userNO=#{userNO},sex=#{sex},cardID=#{cardID},cardType=#{cardType},cardFunc=#{cardFunc},cardIdentity=#{cardIdentity},endDate=#{endDate},consumePwd=#{consumePwd},identityPwd=#{identityPwd}
-		where id=#{id}
+		where userId=#{userId}
 	</update>
 	<delete id="delete" parameterType="int">
 		delete from user where status=0 and deptId=#{deptId}
 	</delete>
 	<select id="selectById" resultMap="user">
-		select * from user where id=#{id}
+		select * from user where userId=#{userId}
 	</select>
 	<select id="selectByCondition" resultMap="user">
 		select * from user

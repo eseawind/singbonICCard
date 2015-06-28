@@ -32,24 +32,28 @@ public class TCPSocketChannelListener implements ServletContextListener {
 
 	protected Selector selector;
 
-	public void startServer() throws Exception {
-		selector = Selector.open();
+	public void startServer() {
+		try {
+			selector = Selector.open();
 
-		ServerSocketChannel ssc = ServerSocketChannel.open();
-		ssc.socket().bind(new InetSocketAddress(10001)); // port
-		ssc.configureBlocking(false);
-		ssc.register(selector, SelectionKey.OP_ACCEPT);// register
+			ServerSocketChannel ssc = ServerSocketChannel.open();
+			ssc.socket().bind(new InetSocketAddress(10001)); // port
+			ssc.configureBlocking(false);
+			ssc.register(selector, SelectionKey.OP_ACCEPT);// register
 
-		while (true) {
-			// selector 线程。select() 会阻塞，直到有客户端连接，或者有消息读入
-			selector.select();
-			Iterator<SelectionKey> iterator = selector.selectedKeys().iterator();
-			while (iterator.hasNext()) {
-				SelectionKey selectionKey = iterator.next();
-				iterator.remove(); // 删除此消息
-				// 并在当前线程内处理
-				handleSelectionKey(selectionKey);
+			while (true) {
+				// selector 线程。select() 会阻塞，直到有客户端连接，或者有消息读入
+				selector.select();
+				Iterator<SelectionKey> iterator = selector.selectedKeys().iterator();
+				while (iterator.hasNext()) {
+					SelectionKey selectionKey = iterator.next();
+					iterator.remove(); // 删除此消息
+					// 并在当前线程内处理
+					handleSelectionKey(selectionKey);
+				}
 			}
+		} catch (Exception e) {
+			
 		}
 	}
 
@@ -70,10 +74,6 @@ public class TCPSocketChannelListener implements ServletContextListener {
 			System.out.println(key.attachment() + " 连接成功");
 
 			TerminalManager.getCardNOSN(socketChannel);
-			//
-			// TerminalManager.getUuidToSNList().put(uuid, sn);
-			// TerminalManager.getSNToSocketChannelList().put(sn,
-			// socketChannel);
 		} else if (selectionKey.isReadable()) {
 			// 有消息进来
 			ByteBuffer byteBuffer = ByteBuffer.allocate(100);
@@ -92,7 +92,7 @@ public class TCPSocketChannelListener implements ServletContextListener {
 			}
 			// 如果len>0，表示有输入。如果len==0, 表示输入结束。需要关闭 socketChannel
 			if (len > 0) {
-				System.out.println(++i);
+				// System.out.println(++i);
 				byteBuffer.flip();
 				byte[] b = byteBuffer.array();
 				int byteLen = 0;
@@ -104,16 +104,16 @@ public class TCPSocketChannelListener implements ServletContextListener {
 				}
 				b = Arrays.copyOf(b, byteLen);
 				// CRC16.sd_crc16_table(b,b.length);
-				for (byte b2 : b) {
-					System.out.print(StringUtil.toHexString(b2) + " ");
-				}
-				System.out.println();
-				
-				//校验
-				if(!CRC16.compareCRC16(b)){
+				// for (byte b2 : b) {
+				// System.out.print(StringUtil.toHexString(b2) + " ");
+				// }
+				// System.out.println();
+
+				// 校验
+				if (!CRC16.compareCRC16(b)) {
 					return;
 				}
-				
+
 				if (b[23] == (byte) 0xff && b[24] == (byte) 0xaa) {
 					System.out.println(11);
 				}
@@ -129,27 +129,30 @@ public class TCPSocketChannelListener implements ServletContextListener {
 				System.out.println(uuid + " 已关闭连接");
 				sc.close();
 
-				removeSockeckChannel(uuid);
+				String sn = removeSockeckChannel(uuid);
 
-				// Map map = new HashMap();
-				// map.put("'f1'", FrameType.CardReaderStatus);
-				// map.put("'r'", 0);
+				if (sn != null) {
+					Map map = new HashMap();
+					map.put("'f1'", FrameType.CardReaderStatus);
+					map.put("'r'", 0);
 
-				// String msg = JSONUtil.convertToJson(map);
-				// TerminalManager.getEngineInstance().sendToAll(sn, msg);
+					String msg = JSONUtil.convertToJson(map);
+					TerminalManager.getEngineInstance().sendToAll("c" + sn, msg);
+				}
 			}
 
 			Thread.sleep(100);
 		}
 	}
 
-	private void removeSockeckChannel(String uuid) {
+	private String removeSockeckChannel(String uuid) {
+		String sn = null;
 		if (TerminalManager.getUuidToSNList().containsKey(uuid)) {
-			String sn = TerminalManager.getUuidToSNList().get(uuid);
+			sn = TerminalManager.getUuidToSNList().get(uuid);
 			TerminalManager.getUuidToSNList().remove(uuid);
-			// 为null不在线
-			TerminalManager.getSNToSocketChannelList().put(sn, null);
+			TerminalManager.getSNToSocketChannelList().remove(sn);
 		}
+		return sn;
 	}
 
 	/**

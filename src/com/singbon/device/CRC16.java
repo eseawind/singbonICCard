@@ -49,6 +49,17 @@ public class CRC16 {
 		}
 		return crc;
 	}
+	
+	/**
+	 * 生成带校验值
+	 * @param buf
+	 * @return
+	 */
+	public static void generate(byte[] buf) {
+		int crc=computeCRC16(buf);
+		buf[buf.length-2]=(byte) getH(crc);
+		buf[buf.length-1]=(byte) getL(crc);		
+	}
 
 	/**
 	 * 比较校验值
