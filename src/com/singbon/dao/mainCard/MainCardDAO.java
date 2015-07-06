@@ -20,7 +20,7 @@ public interface MainCardDAO {
 	 * @param user
 	 * @return
 	 */
-	public void insert(User user);
+	public Object insert(User user);
 
 	/**
 	 * 修改人员
@@ -54,5 +54,45 @@ public interface MainCardDAO {
 	 * @return
 	 */
 	public List<User> selectByCondition(@Param("deptId") Integer deptId, @Param("searchStr") String searchStr);
+
+	/**
+	 * 信息发卡
+	 * 
+	 * @param user
+	 * @return
+	 */
+	public void infoCard(User user);
+	
+	/**
+	 * 以物理卡号查询绑定数量
+	 * 
+	 * @param user
+	 * @return
+	 */
+	public int selectCountByCardSN(@Param("companyId") Integer companyId, @Param("cardSN") String cardSN);
+	
+	/**
+	 * 以用户编号查询数量
+	 * 
+	 * @param user
+	 * @return
+	 */
+	public int selectCountByUserNO(@Param("companyId") Integer companyId, @Param("userNO") String userNO);
+	
+	/**
+	 * 以用户编号用户ID查询数量
+	 * 
+	 * @param user
+	 * @return
+	 */
+	public int selectCountByUserNOUserId(@Param("companyId") Integer companyId, @Param("userNO") String userNO, @Param("userId") Integer userId);
+	
+	/**
+	 * 查询最大卡号+1
+	 * 
+	 * @param user
+	 * @return
+	 */
+	public int selectMaxCardNO(@Param("companyId") Integer companyId);
 
 }

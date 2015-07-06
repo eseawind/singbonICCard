@@ -9,7 +9,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.singbon.device.FrameType;
+import com.singbon.device.FrameCardReader;
 import com.singbon.entity.Company;
 import com.singbon.entity.User;
 
@@ -38,7 +38,7 @@ public class CardManagerService {
 		if ("getCardReaderStatus".equals(comm)) {
 			// 获取读卡器状态
 			Map map = new HashMap();
-			map.put("'f1'", FrameType.CardReaderStatus);
+			map.put("'f1'", FrameCardReader.Status);
 			map.put("'r'", 1);
 //			String msg = JSONUtil.convertToJson(map);
 			// 获取终端状态

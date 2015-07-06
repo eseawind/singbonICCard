@@ -2,6 +2,7 @@ package com.singbon.service.systemManager;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,44 +24,48 @@ public class BatchService {
 
 	/**
 	 * 添加批次
+	 * 
 	 * @param batch
 	 */
-	public void save(Batch batch){
+	public void save(Batch batch) {
 		this.batchDAO.insert(batch);
 	}
+
 	/**
 	 * 修改批次
+	 * 
 	 * @param batch
 	 */
-	public void update(Batch batch){
+	public void update(Batch batch) {
 		this.batchDAO.update(batch);
 	}
-	
+
 	/**
 	 * 批次列表
 	 * 
 	 * @return
 	 */
 	public List<Batch> selectList(Integer companyId) {
-		
+
 		return this.batchDAO.selectList(companyId);
 	}
+
 	/**
 	 * 根据主键获取批次
 	 * 
 	 * @return
 	 */
 	public Batch selectById(Integer id) {
-		
+
 		return this.batchDAO.selectById(id);
 	}
-	
+
 	/**
-	 * 添加修改人员部门
+	 * 根据人员部门主键获取批次
 	 * 
 	 * @return
 	 */
-	public void addEditUserDept(Integer id, Integer parentDeptId, String deptName, Integer batchId, Company company) {
-		
+	public Batch selectByDeptId(Integer deptId) {
+		return this.batchDAO.selectByDeptId(deptId);
 	}
 }

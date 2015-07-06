@@ -4,15 +4,19 @@
 	<resultMap id="user" type="com.singbon.entity.User">
 	</resultMap>
 	<parameterMap type="com.singbon.entity.User" id="user2" />
-	<insert id="insert" parameterMap="user2">
+	<insert id="insert" parameterMap="user2" useGeneratedKeys="true" keyProperty="userId">
 		insert into user
-		(companyId,deptId,username,shortName,userNO,sex,cardID,cardType,cardFunc,cardIdentity,status,cardCost,cardDeposit,beginDate,endDate,consumePwd,identityPwd)
+		(companyId,deptId,username,shortName,userNO,sex,cardID,cardNO,cardSN,cardSeq,cardType,cardFunc,cardIdentity,status,beginDate,invalidDate,cardMakeDate,consumePwd,identityPwd)
 		values
-		(#{companyId},#{deptId},#{username},#{shortName},#{userNO},#{sex},#{cardID},#{cardType},#{cardFunc},#{cardIdentity},#{status},#{cardCost},#{cardDeposit},#{beginDate},#{endDate},#{consumePwd},#{identityPwd})
+		(#{companyId},#{deptId},#{username},#{shortName},#{userNO},#{sex},#{cardID},#{cardNO},#{cardSN},#{cardSeq},#{cardType},#{cardFunc},#{cardIdentity},#{status},#{beginDate},#{invalidDate},#{cardMakeDate},#{consumePwd},#{identityPwd})
 	</insert>
 	<update id="update" parameterMap="user2">
 		update user set
 		username=#{username},shortName=#{shortName},userNO=#{userNO},sex=#{sex},cardID=#{cardID},cardType=#{cardType},cardFunc=#{cardFunc},cardIdentity=#{cardIdentity},endDate=#{endDate},consumePwd=#{consumePwd},identityPwd=#{identityPwd}
+		where userId=#{userId}
+	</update>
+	<update id="infoCard" parameterMap="user2">
+		update user set cardSN=#{cardSN},cardSeq=1,status=1,cardMakeDate=now()
 		where userId=#{userId}
 	</update>
 	<delete id="delete" parameterType="int">
@@ -21,10 +25,22 @@
 	<select id="selectById" resultMap="user">
 		select * from user where userId=#{userId}
 	</select>
+	<select id="selectMaxCardNO" resultType="java.lang.Integer">
+		select ifnull(max(cardNO),1)+1 cardNO from user where companyId=#{companyId}
+	</select>
+	<select id="selectCountByCardSN" resultType="java.lang.Integer">
+		select count(userId) from user where companyId=#{companyId} and cardSN=#{cardSN}
+	</select>
+	<select id="selectCountByUserNO" resultType="java.lang.Integer">
+		select count(userId) from user where companyId=#{companyId} and userNO=#{userNO}
+	</select>
+	<select id="selectCountByUserNOUserId" resultType="java.lang.Integer">
+		select count(userId) from user where companyId=#{companyId} and userNO=#{userNO} and userId!=#{userId}
+	</select>
 	<select id="selectByCondition" resultMap="user">
 		select * from user
 		<where>
-			<if test="deptId!=null">
+			<if test="deptId!=null and deptId > 0">
 				and deptId=#{deptId}
 			</if>
 			<if test="searchStr!=null">

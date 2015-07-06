@@ -18,7 +18,7 @@ import javax.servlet.ServletContextListener;
 import org.comet4j.core.util.JSONUtil;
 
 import com.singbon.device.CRC16;
-import com.singbon.device.FrameType;
+import com.singbon.device.FrameCardReader;
 import com.singbon.device.TerminalManager;
 
 /**
@@ -75,7 +75,7 @@ public class TCPSocketChannelListener implements ServletContextListener {
 			TerminalManager.getCardNOSN(socketChannel);
 		} else if (selectionKey.isReadable()) {
 			// 有消息进来
-			ByteBuffer byteBuffer = ByteBuffer.allocate(100);
+			ByteBuffer byteBuffer = ByteBuffer.allocate(200);
 			SocketChannel sc = (SocketChannel) selectionKey.channel();
 
 			int len = 0;
@@ -91,7 +91,6 @@ public class TCPSocketChannelListener implements ServletContextListener {
 			}
 			// 如果len>0，表示有输入。如果len==0, 表示输入结束。需要关闭 socketChannel
 			if (len > 0) {
-				// System.out.println(++i);
 				byteBuffer.flip();
 				byte[] b = byteBuffer.array();
 				int byteLen = 0;
@@ -132,7 +131,7 @@ public class TCPSocketChannelListener implements ServletContextListener {
 
 				if (sn != null) {
 					Map map = new HashMap();
-					map.put("'f1'", FrameType.CardReaderStatus);
+					map.put("'f1'", FrameCardReader.Status);
 					map.put("'r'", 0);
 
 					String msg = JSONUtil.convertToJson(map);

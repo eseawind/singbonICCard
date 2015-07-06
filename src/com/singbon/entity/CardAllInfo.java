@@ -21,6 +21,10 @@ public class CardAllInfo implements Serializable {
 	private Integer limitTimesFare;
 	// 操作额
 	private Integer opCash;
+	// 赠送金额
+	private Integer giveCash;
+	// 限次时间段定义
+	private Integer[] LimitPeriods;
 
 	public Integer getCardBatch() {
 		return cardBatch;
@@ -68,6 +72,22 @@ public class CardAllInfo implements Serializable {
 
 	public void setOpCash(Integer opCash) {
 		this.opCash = opCash;
+	}
+
+	public Integer[] getLimitPeriods() {
+		return LimitPeriods;
+	}
+
+	public void setLimitPeriods(Integer[] limitPeriods) {
+		LimitPeriods = limitPeriods;
+	}
+
+	public Integer getGiveCash() {
+		return giveCash;
+	}
+
+	public void setGiveCash(Integer giveCash) {
+		this.giveCash = giveCash;
 	}
 
 }

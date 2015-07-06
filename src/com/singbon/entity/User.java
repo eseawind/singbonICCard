@@ -30,7 +30,7 @@ public class User implements Serializable {
 	// 身份证号
 	private String cardID;
 	// 逻辑卡号
-	private String cardNO;
+	private Integer cardNO;
 	// 物理卡号
 	private String cardSN;
 	// 卡序号(第几张卡)
@@ -56,7 +56,9 @@ public class User implements Serializable {
 	// 身份密码
 	private String identityPwd;
 	// 失效期(YYYY-MM-DD)
-	private String invalidDate;
+	private Date invalidDate;
+	// 制卡日期
+	private Date cardMakeDate;
 	// 卡总额
 	private Integer cardTotalFare;
 	// 卡状态
@@ -144,11 +146,11 @@ public class User implements Serializable {
 		this.userNO = userNO;
 	}
 
-	public String getCardNO() {
+	public Integer getCardNO() {
 		return cardNO;
 	}
 
-	public void setCardNO(String cardNO) {
+	public void setCardNO(Integer cardNO) {
 		this.cardNO = cardNO;
 	}
 
@@ -177,7 +179,11 @@ public class User implements Serializable {
 	}
 
 	public String getSexDesc() {
-		return sexDesc;
+		if (this.sex == 0) {
+			return "男";
+		} else {
+			return "女";
+		}
 	}
 
 	public void setSexDesc(String sexDesc) {
@@ -256,11 +262,11 @@ public class User implements Serializable {
 		this.identityPwd = identityPwd;
 	}
 
-	public String getInvalidDate() {
+	public Date getInvalidDate() {
 		return invalidDate;
 	}
 
-	public void setInvalidDate(String invalidDate) {
+	public void setInvalidDate(Date invalidDate) {
 		this.invalidDate = invalidDate;
 	}
 
@@ -281,7 +287,7 @@ public class User implements Serializable {
 	}
 
 	public String getStatusDesc() {
-		return statusDesc;
+		return this.statusDescList[status];
 	}
 
 	public void setStatusDesc(String statusDesc) {
@@ -378,6 +384,14 @@ public class User implements Serializable {
 
 	public void setCardID(String cardID) {
 		this.cardID = cardID;
+	}
+
+	public Date getCardMakeDate() {
+		return cardMakeDate;
+	}
+
+	public void setCardMakeDate(Date cardMakeDate) {
+		this.cardMakeDate = cardMakeDate;
 	}
 
 }

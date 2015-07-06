@@ -1,10 +1,7 @@
 package com.singbon.service.mainCard;
 
-import java.io.IOException;
 import java.nio.channels.SocketChannel;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +9,11 @@ import org.springframework.stereotype.Service;
 
 import com.singbon.dao.mainCard.MainCardDAO;
 import com.singbon.device.CRC16;
+import com.singbon.device.CmdNumCardReader;
+import com.singbon.device.FrameCardReader;
 import com.singbon.device.TerminalManager;
 import com.singbon.entity.CardAllInfo;
+import com.singbon.entity.Device;
 import com.singbon.entity.User;
 import com.singbon.util.StringUtil;
 
@@ -34,8 +34,8 @@ public class MainCardService {
 	 * 
 	 * @param user
 	 */
-	public void save(User user) {
-		this.mainCardDAO.insert(user);
+	public Object save(User user) {
+		return this.mainCardDAO.insert(user);
 	}
 
 	/**
@@ -62,8 +62,48 @@ public class MainCardService {
 	 * @param id
 	 * @return
 	 */
-	public User selectById(Integer id) {
-		return this.mainCardDAO.selectById(id);
+	public User selectById(Integer userId) {
+		return this.mainCardDAO.selectById(userId);
+	}
+
+	/**
+	 * 以物理卡号查询绑定数量
+	 * 
+	 * @param user
+	 * @return
+	 */
+	public int selectCountByCardSN(Integer companyId, String cardSN) {
+		return this.mainCardDAO.selectCountByCardSN(companyId, cardSN);
+	}
+
+	/**
+	 * 以用户编号查询数量
+	 * 
+	 * @param user
+	 * @return
+	 */
+	public int selectCountByUserNO(Integer companyId, String userNO) {
+		return this.mainCardDAO.selectCountByUserNO(companyId, userNO);
+	}
+
+	/**
+	 * 以用户编号用户ID查询数量
+	 * 
+	 * @param user
+	 * @return
+	 */
+	public int selectCountByUserNOUserId(Integer companyId, String userNO, Integer userId) {
+		return this.mainCardDAO.selectCountByUserNOUserId(companyId, userNO, userId);
+	}
+
+	/**
+	 * 查询最大卡号+1
+	 * 
+	 * @param user
+	 * @return
+	 */
+	public int selectMaxCardNO(Integer companyId) {
+		return this.mainCardDAO.selectMaxCardNO(companyId);
 	}
 
 	/**
@@ -76,21 +116,34 @@ public class MainCardService {
 	}
 
 	/**
-	 * 信息发卡
+	 * 发卡
 	 * 
-	 * @return
-	 * @throws IOException
+	 * @param device
+	 * @param socketChannel
+	 * @param user
+	 * @param cardAllInfo
+	 * @throws Exception
 	 */
-	public void infoCard(String sn, SocketChannel socketChannel, User user, CardAllInfo cardAllInfo) throws Exception {
-		SimpleDateFormat myFormatter = new SimpleDateFormat("yyyy-MM-dd");
+	public void makeCard(Device device, SocketChannel socketChannel, User user, CardAllInfo cardAllInfo) throws Exception {
+		int makeCardType = 1;
+		if (user.getUserId() != null) {
+			makeCardType = CmdNumCardReader.InfoCard;
+		}
+		if (user.getUserId() != null) {
+			this.mainCardDAO.infoCard(user);
+		} else {
+			this.mainCardDAO.insert(user);
+		}
+
+		// SimpleDateFormat myFormatter = new SimpleDateFormat("yyyy-MM-dd");
 		Calendar c = Calendar.getInstance();
 
+		int allOpCash = cardAllInfo.getOpCash() + cardAllInfo.getGiveCash();
 		String tmUserId = StringUtil.leftPad(user.getUserId(), 6);
 		String tmCardNo = StringUtil.leftPad(Integer.valueOf(user.getCardNO()), 6);
 		String tmConsumePwd = StringUtil.leftPad(Integer.valueOf(user.getConsumePwd()), 6);
 		String tmIdentityPwd = StringUtil.leftPad(Integer.valueOf(user.getIdentityPwd()), 4);
-		Date invalidDate = myFormatter.parse(user.getInvalidDate());
-		c.setTime(invalidDate);
+		c.setTime(user.getInvalidDate());
 		String tmInvalidDate = StringUtil.dateToHexString(c);
 		String tmCardMark = StringUtil.leftPad(240, 2);
 		String tmCardBatch = StringUtil.leftPad(cardAllInfo.getCardBatch(), 2);
@@ -99,25 +152,63 @@ public class MainCardService {
 		String tmCardDeposit = StringUtil.leftPad(cardAllInfo.getCardDeposit(), 2);
 		String tmLimitDayFare = StringUtil.leftPad(cardAllInfo.getLimitDayFare(), 2);
 		String tmLimitTimesFare = StringUtil.leftPad(cardAllInfo.getLimitTimesFare(), 4);
-		String tmCardSeq = StringUtil.leftPad(user.getCardSeq(), 2);
+		// String tmCardSeq = StringUtil.leftPad(user.getCardSeq(), 2);
+		String tmCardSeq = "01";
 		String tmCardType = StringUtil.leftPad(user.getCardType(), 2);
 		String tmDeptId = StringUtil.leftPad(user.getDeptId(), 8);
-		String tmCardTotalFare = StringUtil.leftPad(user.getCardTotalFare(), 8);
+		String tmCardTotalFare = StringUtil.leftPad(allOpCash, 8);
 		String tmStandby = "06"; // 备用字段
 		String tmCheck2 = "00"; // 异或校验
 
 		String baseData = tmUserId + tmCardNo + tmConsumePwd + tmIdentityPwd + tmInvalidDate + tmCardMark + tmCardBatch + tmCheck1 + tmCardDeposit + tmLimitDayFare + tmLimitTimesFare + tmCardSeq
 				+ tmCardType + tmDeptId + tmCardTotalFare + tmStandby + tmCheck2;
 
-		int len = 11 + 19 * 2;
-		String bufLen = StringUtil.leftPad(len, 4);
-		String sendStr = sn + "00000000" + len + "cd010044444444";
+		// 大钱包
+		int cardOPCounter = 0;
+		if (allOpCash > 0) {
+			cardOPCounter = 1;
+		}
+		String tmCardOPCounter = StringUtil.leftPad(cardOPCounter, 4);
+		String tmCardOddFare = "01" + StringUtil.leftPad(allOpCash, 6);
+		String tmLastConsumeTime = "";
+		// if (pCardConsumeInfo.LastConsumeTime.ToString().Length > 8)
+		// { tmLastConsumeTime =
+		// StringUtil.leftPadFromDate(pCardConsumeInfo.LastConsumeTime); }
+		// else
+		// {
+		tmLastConsumeTime = "000000";
+		// }
+		String tmDaySumFare = StringUtil.leftPad(allOpCash, 6);
+		String tmLimitPeriod1 = StringUtil.leftPad(cardAllInfo.getLimitPeriods()[0], 1);
+		String tmLimitPeriod2 = StringUtil.leftPad(cardAllInfo.getLimitPeriods()[1], 1);
+		String tmLimitPeriod3 = StringUtil.leftPad(cardAllInfo.getLimitPeriods()[2], 1);
+		String tmLimitPeriod4 = StringUtil.leftPad(cardAllInfo.getLimitPeriods()[3], 1);
+		String tmLimitPeriod5 = StringUtil.leftPad(cardAllInfo.getLimitPeriods()[4], 1);
+		String tmLimitPeriod6 = StringUtil.leftPad(cardAllInfo.getLimitPeriods()[5], 1);
+		String tmCheck = "00"; // 校验位，同或校验
+
+		String consumeData = tmCardOPCounter + tmCardOddFare + tmLastConsumeTime + tmDaySumFare + tmLimitPeriod1 + tmLimitPeriod2 + tmLimitPeriod3 + tmLimitPeriod4 + tmLimitPeriod5 + tmLimitPeriod6
+				+ tmCheck;
+		consumeData = "020000" + consumeData;
+
+		// 补助钱包
+		String subsidyData = "030000" + "00000000000000000000000000000000";
+
+		// 静态ID（16字节高字节在前）+设备机器号（4字节高字节在前）+数据长度（2字节高字节在前）+cd+01+是否校验卡号标志（1字节）+物理卡号（4字节高字节在前）+读卡扇区号（1字节）+读卡块号（1字节）+读写状态字节（1字节）+块数据（16字节高字节在前）+读卡扇区号（1字节）+读卡块号（1字节）+读写状态字节（1字节）+块数据（16字节高字节在前）+...+CRC校验（字节高字节在前）
 		String baseBlock0 = "010000" + baseData.substring(0, 32);
-		String baseBlock1 = "010100" + baseData.substring(32);
+		String baseBlock1 = "010000" + baseData.substring(0, 32);
+		String baseBlock2 = "010100" + baseData.substring(32);
 
-		byte[] buf = StringUtil.strTobytes(sendStr + baseBlock0 + baseBlock1 + "0000");
+		String sendStr = baseBlock0 + baseBlock1 + baseBlock2 + consumeData + subsidyData + "0000";
+		String bufLen = StringUtil.leftPad(11 + sendStr.length() / 2, 4);
+		String cardMakeStr = StringUtil.leftPad(makeCardType, 4);
+		sendStr = device.getSn() + StringUtil.leftPad(device.getDeviceNum(), 8) + bufLen + "cd01" + cardMakeStr + "0044444444" + sendStr;
+
+		byte[] buf = StringUtil.strTobytes(sendStr);
 		CRC16.generate(buf);
-
+		System.out.print(StringUtil.leftPad(buf[buf.length - 2], 2) + " ");
+		System.out.print(StringUtil.leftPad(buf[buf.length - 1], 2));
+		System.out.println();
 		TerminalManager.sendToCardReader(socketChannel, buf);
 	}
 }

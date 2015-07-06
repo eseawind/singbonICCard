@@ -27,13 +27,13 @@
 				$.pdialog.open(url, "dialog", "信息录入", cardOptions);
 			},
 			'edit' : function(t, target) {
-				var url = "${base}/userInfo.do?editType=1&id="
-						+ $(t).attr("attr");
+				var url = "${base}/userInfo.do?editType=1&userId="
+						+ $(t).attr("userId");
 				$.pdialog.open(url, "dialog", "信息修改", cardOptions);
 			},
 			'delete' : function(t, target) {
 				if (selectedDeptId <= "0") {
-					alertMsg.warn('请选择部门');
+					alertMsg.warn('请选择部门！');
 					return;
 				}
 				alertMsg.confirm("确定要删除未发卡人员吗？", {
@@ -50,21 +50,18 @@
 					alertMsg.warn('请选择部门');
 					return;
 				}
-				alertMsg.confirm("确定要删除未发卡人员吗？", {
-					okCall : function() {
-						$.post("${base}/delete.do?deptId=" + selectedDeptId,
-								function(e) {
-									refreshUserList();
-								});
-					}
-				});
+				
 			},
 			'single' : function(t, target) {
 				if (selectedDeptId <= "0") {
-					alertMsg.warn('请选择部门');
+					alertMsg.warn('请选择部门！');
 					return;
 				}
-				var url = "${base}/userInfo.do?editType=0&deptId="
+				if (!checkDeviceSn()) {
+					return;
+				}
+				
+				var url = "${base}/userInfo.do?editType=2&deptId="
 						+ selectedDeptId + "&batchId=" + selectedBatchId;
 				$.pdialog.open(url, "dialog", "单个发卡", cardOptions);
 			},
@@ -72,11 +69,27 @@
 				if (!checkDeviceSn()) {
 					return;
 				}
-				var url = "${base}/userInfo.do?editType=3&id="
-						+ $(t).attr("attr");
-				$.pdialog.open(url, "dialog", "信息发卡", cardOptions);
+				if($(t).attr("status")==0){
+					var url = "${base}/userInfo.do?editType=3&userId="
+							+ $(t).attr("userId");
+					$.pdialog.open(url, "dialog", "信息发卡", cardOptions);
+				}else{
+					alertMsg.warn('该用户已发卡不能重复操作！');
+				}
 			},
 			'batch' : function(t, target) {
+			},
+			'loss' : function(t, target) {
+				if (!checkDeviceSn()) {
+					return;
+				}
+				if($(t).attr("status")==1){
+					var url = "${base}/changeCard.do?editType=1&userId="
+							+ $(t).attr("userId");
+					$.pdialog.open(url, "dialog", "挂失", cardOptions);
+				}else{
+					alertMsg.warn('该卡不是正常卡，不能进行挂失操作！');
+				}				
 			}
 		},
 		onShowMenu : function(e, menu) {
@@ -89,7 +102,7 @@
 
 	function checkDeviceSn() {
 		if (deviceSn == "") {
-			alertMsg.warn('请先绑定读卡机！');
+			alertMsg.warn('请先绑定读卡机再进行操作！');
 			return false;
 		}
 		return true;
@@ -115,6 +128,11 @@
 		<li id="single">单个发卡</li>
 		<li id="infoCard">信息发卡</li>
 		<li id="batch">批量发卡</li>
+		<li class="divide" />
+		<li id="loss">挂失</li>
+		<li id="unloss">解挂</li>
+		<li id="remakeCard">补卡</li>
+		<li id="changeCard">换卡</li>		
 		<li id="delete">删除未发卡人员</li>
 	</ul>
 </div>
@@ -159,7 +177,7 @@
 		</thead>
 		<tbody class="userList">
 			<c:forEach var="user" items="${list}">
-				<tr attr="${user.userId }">
+				<tr userId="${user.userId }" status="${user.status }">
 					<td>${index+1}</td>
 					<td>${user.userNO}</td>
 					<td>${user.username}</td>

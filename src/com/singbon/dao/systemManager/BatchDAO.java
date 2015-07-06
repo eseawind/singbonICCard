@@ -43,4 +43,11 @@ public interface BatchDAO {
 	 * @return
 	 */
 	public Batch selectById(@Param("id") Integer id);
+	
+	/**
+	 * 根据人员部门主键获取批次
+	 * 
+	 * @return
+	 */
+	public Batch selectByDeptId(@Param("deptId") Integer deptId);
 }

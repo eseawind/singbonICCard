@@ -23,7 +23,8 @@ public class StringUtil {
 	 */
 	public static String leftPad(int str, int num) {
 		String temp = Integer.toHexString(str);
-		for (int i = 0; i < num - temp.length(); i++) {
+		num = num - temp.length();
+		for (int i = 0; i < num; i++) {
 			temp = "0" + temp;
 		}
 		return temp;
@@ -36,7 +37,8 @@ public class StringUtil {
 	 */
 	public static String rightPad(int str, int num) {
 		String temp = Integer.toHexString(str);
-		for (int i = 0; i < num - temp.length(); i++) {
+		num = num - temp.length();
+		for (int i = 0; i < num; i++) {
 			temp += "0";
 		}
 		return temp;
@@ -73,7 +75,9 @@ public class StringUtil {
 	public static byte[] strTobytes(String str) {
 		byte[] b = new byte[str.length() / 2];
 		for (int i = 0; i < str.length() / 2; i++) {
-			b[i] = (byte) ((int) Integer.valueOf(str.substring(i * 2, 2)));
+			String s=str.substring(i * 2, i * 2+2);
+			System.out.print(s+" ");
+			b[i] = (byte) Integer.parseInt(s, 16);
 		}
 		return b;
 	}

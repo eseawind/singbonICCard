@@ -18,4 +18,7 @@
 	<select id="selectById" resultMap="batch">
 		select * from batch where id=#{id}
 	</select>
+	<select id="selectByDeptId" resultMap="batch">
+		select b.* from batch b,userDept d where b.id=d.batchId and d.id=#{deptId}
+	</select>
 </mapper>
