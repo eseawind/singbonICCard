@@ -129,6 +129,11 @@
 					jDContent.find("[layoutH]").layoutH(jDContent);
 					$(".pageContent", dialog).width($(dialog).width()-14);
 					$("button.close").click(function(){
+						var title=dialog.find(".dialogHeader").find("h1").html();
+						if(title.indexOf("读卡机")!=-1){
+							JS.Engine.stop();
+							$('#userinfo').stopTime ();
+						}
 						$.pdialog.close(dialog);
 						return false;
 					});

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.singbon.controller.BaseController;
+import com.singbon.device.CommandCodeCardReader;
 import com.singbon.device.FrameCardReader;
 import com.singbon.device.TerminalManager;
 import com.singbon.entity.Batch;
@@ -84,41 +85,6 @@ public class MainCardController extends BaseController {
 	}
 
 	/**
-	 * 变更卡首页
-	 * 
-	 * @param userId
-	 * @param editType 0挂失，1解挂，2补卡，3换卡，4注销
-	 * @param request
-	 * @param model
-	 * @return
-	 */
-	@RequestMapping(value = "/changeCard.do")
-	public String changeCard(Integer userId, Integer editType, HttpServletRequest request, Model model) {
-		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
-		Company company = (Company) request.getSession().getAttribute("company");
-		model.addAttribute("sysUser", sysUser);
-		model.addAttribute("company", company);
-
-		String url = request.getRequestURI();
-		model.addAttribute("base", url.replace("/changeCard.do", ""));
-		User user = this.mainCardService.selectById(userId);
-		model.addAttribute("user", user);
-		Device device = this.deviceService.selectByUserId(sysUser.getId());
-		model.addAttribute("device", device);
-		model.addAttribute("editType", editType);
-		
-		model.addAttribute("sn", device.getSn());
-
-		// 读卡机状态
-		if (TerminalManager.getSNToSocketChannelList().containsKey(device.getSn())) {
-			model.addAttribute("cardStatus", 1);
-		} else {
-			model.addAttribute("cardStatus", 0);
-		}
-		return url.replace(".do", "");
-	}
-
-	/**
 	 * 人员部门树列表
 	 * 
 	 * @param userDept
@@ -138,9 +104,10 @@ public class MainCardController extends BaseController {
 	 * 
 	 * @param model
 	 * @return
+	 * @throws Exception
 	 */
 	@RequestMapping(value = "/list.do", method = RequestMethod.GET)
-	public String userList(HttpServletRequest request, Integer deptId, String searchStr, Model model) {
+	public String userList(HttpServletRequest request, Integer deptId, String searchStr, Model model) throws Exception {
 		Company company = (Company) request.getSession().getAttribute("company");
 		if ("".equals(searchStr) || "null".equals(searchStr)) {
 			searchStr = null;
@@ -223,18 +190,17 @@ public class MainCardController extends BaseController {
 			User user = this.mainCardService.selectById(userId);
 			model.addAttribute("user", user);
 		}
-		if(device!=null){
-			model.addAttribute("sn", device.getSn());			
+		if (device != null) {
+			model.addAttribute("sn", device.getSn());
 			// 读卡机状态
 			if (TerminalManager.getSNToSocketChannelList().containsKey(device.getSn())) {
 				model.addAttribute("cardStatus", 1);
 			} else {
 				model.addAttribute("cardStatus", 0);
 			}
-		}else{
-			model.addAttribute("cardStatus", 0);			
+		} else {
+			model.addAttribute("cardStatus", 0);
 		}
-
 
 		return StringUtil.requestPath(request, "userInfo");
 	}
@@ -253,11 +219,14 @@ public class MainCardController extends BaseController {
 	 * @param response
 	 * @param model
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value = "/addEdit.do")
 	public void addEdit(@ModelAttribute User user, @ModelAttribute CardAllInfo cardAllInfo, Integer editType, Integer batchId, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
 		Device device = (Device) request.getSession().getAttribute("device");
 		PrintWriter p = null;
+		int allOpCash = (cardAllInfo.getOpCash() + cardAllInfo.getGiveCash()) * 100;
+		int cardOpCounter = allOpCash > 0 ? 1 : 0;
 		// 单个发卡
 		if (editType == 2) {
 			int cardSNCount = this.mainCardService.selectCountByCardSN(company.getId(), user.getCardSN());
@@ -277,13 +246,17 @@ public class MainCardController extends BaseController {
 					user.setCardSeq(1);
 					user.setCardNO(cardNO);
 					user.setCardMakeDate(new Date());
+					user.setCardTotalFare(allOpCash);
+					user.setCardOddFare(allOpCash);
+					user.setDaySumFare(allOpCash);
+					user.setCardOPCounter(cardOpCounter);
 
 					cardAllInfo.setLimitDayFare(0);
 					cardAllInfo.setLimitTimesFare(0);
 					cardAllInfo.setLimitPeriods(new Integer[] { 0, 0, 0, 0, 0, 0 });
 					cardAllInfo.setCardBatch(batchId);
 
-					this.mainCardService.makeCard(device, socketChannel, user, cardAllInfo);
+					this.mainCardService.makeCard(device, socketChannel, user, cardAllInfo, CommandCodeCardReader.SingleCard, 1);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -304,8 +277,12 @@ public class MainCardController extends BaseController {
 				try {
 					User user2 = this.mainCardService.selectById(user.getUserId());
 					user2.setCardSN(user.getCardSN());
-					int cardNO = this.mainCardService.selectMaxCardNO(company.getId());					
+					int cardNO = this.mainCardService.selectMaxCardNO(company.getId());
 					user2.setCardNO(cardNO);
+					user2.setCardTotalFare(allOpCash);
+					user2.setCardOddFare(allOpCash);
+					user2.setDaySumFare(allOpCash);
+					user2.setCardOPCounter(cardOpCounter);
 
 					cardAllInfo.setLimitDayFare(0);
 					cardAllInfo.setLimitTimesFare(0);
@@ -317,7 +294,7 @@ public class MainCardController extends BaseController {
 					} else {
 						cardAllInfo.setCardBatch(batch.getId());
 					}
-					this.mainCardService.makeCard(device, socketChannel, user2, cardAllInfo);
+					this.mainCardService.makeCard(device, socketChannel, user2, cardAllInfo, CommandCodeCardReader.InfoCard, 1);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -387,7 +364,7 @@ public class MainCardController extends BaseController {
 				SocketChannel socketChannel = TerminalManager.getSNToSocketChannelList().get(device.getSn());
 				if (socketChannel != null) {
 					try {
-						TerminalManager.getCardSNToMakeCard(socketChannel, 1);
+						TerminalManager.getCardSNToMakeCard(socketChannel, device, CommandCodeCardReader.SingleCard, 1);
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -409,9 +386,11 @@ public class MainCardController extends BaseController {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value = "/command.do", method = RequestMethod.POST)
 	public void command(String comm, HttpServletRequest request, Model model) {
+		Company company = (Company) request.getSession().getAttribute("company");
 		SysUser user = (SysUser) request.getSession().getAttribute("sysUser");
 		Device device = (Device) request.getSession().getAttribute("device");
 		String sn = device.getSn();
+		int section = TerminalManager.getSection(company.getId());
 		// 获取读卡器状态
 		if ("getCardReaderStatus".equals(comm)) {
 			SocketChannel socketChannel = TerminalManager.getSNToSocketChannelList().get(sn);
@@ -419,7 +398,6 @@ public class MainCardController extends BaseController {
 				try {
 					TerminalManager.getCardReaderHeartStatus(socketChannel);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -429,7 +407,6 @@ public class MainCardController extends BaseController {
 			try {
 				TerminalManager.closeSocketChannel(sn);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -438,8 +415,176 @@ public class MainCardController extends BaseController {
 			SocketChannel socketChannel = TerminalManager.getSNToSocketChannelList().get(sn);
 			if (socketChannel != null) {
 				try {
-					TerminalManager.getCardSNToMakeCard(socketChannel, 2);
+					TerminalManager.getCardSNToMakeCard(socketChannel, device, CommandCodeCardReader.InfoCard, 1);
 				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		// 解挂初始化
+		else if ("unlossInit".equals(comm)) {
+			SocketChannel socketChannel = TerminalManager.getSNToSocketChannelList().get(sn);
+			if (socketChannel != null) {
+				try {
+					TerminalManager.getBaseCardInfoToUnloss(socketChannel, device, 1);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		// 补卡初始化
+		else if ("remakeCardInit".equals(comm)) {
+			SocketChannel socketChannel = TerminalManager.getSNToSocketChannelList().get(sn);
+			if (socketChannel != null) {
+				try {
+					TerminalManager.getCardSNToMakeCard(socketChannel, device, CommandCodeCardReader.RemakeCard, 1);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		// 换卡读老卡
+		else if ("readOldCard".equals(comm)) {
+			SocketChannel socketChannel = TerminalManager.getSNToSocketChannelList().get(sn);
+			if (socketChannel != null) {
+				try {
+					TerminalManager.getOldCardInfoToChangeCard(socketChannel, device, section);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	/**
+	 * 变更卡首页
+	 * 
+	 * @param userId
+	 * @param editType
+	 *            0挂失，1解挂，2补卡，3换卡，4注销
+	 * @param request
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/changeCard.do")
+	public String changeCard(Integer userId, Integer editType, HttpServletRequest request, Model model) {
+		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
+		Company company = (Company) request.getSession().getAttribute("company");
+		model.addAttribute("sysUser", sysUser);
+		model.addAttribute("company", company);
+
+		String url = request.getRequestURI();
+		model.addAttribute("base", url.replace("/changeCard.do", ""));
+		User user = this.mainCardService.selectById(userId);
+		model.addAttribute("user", user);
+		Device device = this.deviceService.selectByUserId(sysUser.getId());
+		model.addAttribute("device", device);
+		model.addAttribute("editType", editType);
+
+		model.addAttribute("sn", device.getSn());
+
+		// 读卡机状态
+		if (TerminalManager.getSNToSocketChannelList().containsKey(device.getSn())) {
+			model.addAttribute("cardStatus", 1);
+		} else {
+			model.addAttribute("cardStatus", 0);
+		}
+		return url.replace(".do", "");
+	}
+
+	/**
+	 * 变更卡
+	 * 
+	 * @param userId
+	 * @param editType
+	 *            0挂失，1解挂，2补卡，3换卡，4注销
+	 * @param cardSN
+	 *            物理卡号
+	 * @param cardInfoStr
+	 *            卡信息
+	 * @param request
+	 * @param model
+	 * @return
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@RequestMapping(value = "/doChangeCard.do", method = RequestMethod.POST)
+	public void doChangeCard(Integer userId, Integer editType, Integer lossReason, String cardSN, String cardInfoStr, HttpServletRequest request, HttpServletResponse response, Model model) {
+		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
+		Company company = (Company) request.getSession().getAttribute("company");
+		Device device = (Device) request.getSession().getAttribute("device");
+		String sn = device.getSn();
+
+		PrintWriter p = null;
+		try {
+			p = response.getWriter();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		// 挂失
+		if (editType == 0) {
+			try {
+				this.mainCardService.changeStatus(userId, 2);
+				p.print(1);
+			} catch (Exception e) {
+				p.print(2);
+				e.printStackTrace();
+			}
+		}
+		// 解挂
+		else if (editType == 1) {
+			SocketChannel socketChannel = TerminalManager.getSNToSocketChannelList().get(sn);
+			if (socketChannel != null) {
+				try {
+					this.mainCardService.unloss(userId, socketChannel, device, cardSN, cardInfoStr);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		// 补卡
+		else if (editType == 2) {
+			int cardSNCount = this.mainCardService.selectCountByCardSN(company.getId(), cardSN);
+			if (cardSNCount > 0) {
+				Map map = new HashMap();
+				map.put("'f1'", FrameCardReader.ExsitCardSN);
+				String msg = JSONUtil.convertToJson(map);
+				TerminalManager.getEngineInstance().sendToAll("c" + device.getSn(), msg);
+				return;
+			}
+			SocketChannel socketChannel = TerminalManager.getSNToSocketChannelList().get(device.getSn());
+			if (socketChannel != null) {
+				try {
+					User user = this.mainCardService.selectById(userId);
+					user.setCardSN(cardSN);
+					int cardNO = this.mainCardService.selectMaxCardNO(company.getId());
+					user.setCardNO(cardNO);
+					user.setCardSeq(user.getCardSeq() + 1);
+
+					CardAllInfo cardAllInfo = new CardAllInfo();
+					cardAllInfo.setLimitDayFare(0);
+					cardAllInfo.setLimitTimesFare(0);
+					cardAllInfo.setLimitPeriods(new Integer[] { 0, 0, 0, 0, 0, 0 });
+					cardAllInfo.setCardDeposit(0);
+
+					Batch batch = this.batchService.selectByDeptId(user.getDeptId());
+					if (batch == null) {
+						cardAllInfo.setCardBatch(0);
+					} else {
+						cardAllInfo.setCardBatch(batch.getId());
+					}
+					this.mainCardService.makeCard(device, socketChannel, user, cardAllInfo, CommandCodeCardReader.RemakeCard, 1);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		// 换新卡
+		else if (editType == 3) {
+			SocketChannel socketChannel = TerminalManager.getSNToSocketChannelList().get(sn);
+			if (socketChannel != null) {
+				try {
+					this.mainCardService.unloss(userId, socketChannel, device, cardSN, cardInfoStr);
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}

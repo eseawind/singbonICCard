@@ -114,6 +114,7 @@
 					}else{
 						opCardResult(e2.r);
 					}
+				//单个发卡完成
 				}else if(e2.f1==4){
 					if(e2.r==1){
 						refreshUserList();
@@ -125,16 +126,13 @@
 					}					
 				//信息发卡命令
 				} else if (e2.f1 == 5) {
-					alertMsg.warn($("#userinfo .infoCard").length);
 					if(e2.r==1){
 						$("#userinfo input[name=cardSN]").val(e2.cardSN);
-						alert(1);
 						validateCallback($("#userinfo"), function(e) {
 						}, null);
 					}else{
 						opCardResult(e2.r);
 					}
-					alertMsg.warn($("#userinfo .infoCard").length);
 				//信息发卡完成
 				} else if (e2.f1 == 6) {
 					if(e2.r==1){

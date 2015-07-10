@@ -6,9 +6,9 @@
 	<parameterMap type="com.singbon.entity.User" id="user2" />
 	<insert id="insert" parameterMap="user2" useGeneratedKeys="true" keyProperty="userId">
 		insert into user
-		(companyId,deptId,username,shortName,userNO,sex,cardID,cardNO,cardSN,cardSeq,cardType,cardFunc,cardIdentity,status,beginDate,invalidDate,cardMakeDate,consumePwd,identityPwd)
+		(companyId,deptId,username,shortName,userNO,sex,cardID,cardNO,cardSN,cardSeq,cardType,cardFunc,cardIdentity,status,beginDate,invalidDate,cardMakeDate,consumePwd,identityPwd,cardTotalFare,cardOddFare,cardOPCounter)
 		values
-		(#{companyId},#{deptId},#{username},#{shortName},#{userNO},#{sex},#{cardID},#{cardNO},#{cardSN},#{cardSeq},#{cardType},#{cardFunc},#{cardIdentity},#{status},#{beginDate},#{invalidDate},#{cardMakeDate},#{consumePwd},#{identityPwd})
+		(#{companyId},#{deptId},#{username},#{shortName},#{userNO},#{sex},#{cardID},#{cardNO},#{cardSN},#{cardSeq},#{cardType},#{cardFunc},#{cardIdentity},#{status},#{beginDate},#{invalidDate},#{cardMakeDate},#{consumePwd},#{identityPwd},#{cardTotalFare},#{cardOddFare},#{cardOPCounter})
 	</insert>
 	<update id="update" parameterMap="user2">
 		update user set
@@ -16,7 +16,15 @@
 		where userId=#{userId}
 	</update>
 	<update id="infoCard" parameterMap="user2">
-		update user set cardNO=#{cardNO},cardSN=#{cardSN},cardSeq=1,status=1,cardMakeDate=now()
+		update user set cardNO=#{cardNO},cardSN=#{cardSN},cardSeq=1,status=1,cardMakeDate=now(),cardTotalFare=#{cardTotalFare},cardOddFare=#{cardOddFare},cardOPCounter=#{cardOPCounter}
+		where userId=#{userId}
+	</update>
+	<update id="remakeCard" parameterMap="user2">
+		update user set cardNO=#{cardNO},cardSN=#{cardSN},cardSeq=#{cardSeq},status=1
+		where userId=#{userId}
+	</update>
+	<update id="changeStatus">
+		update user set status=#{status}
 		where userId=#{userId}
 	</update>
 	<delete id="delete" parameterType="int">

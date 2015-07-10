@@ -9,8 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.singbon.dao.mainCard.MainCardDAO;
 import com.singbon.device.CRC16;
-import com.singbon.device.CmdNumCardReader;
-import com.singbon.device.FrameCardReader;
+import com.singbon.device.CommandCodeCardReader;
 import com.singbon.device.TerminalManager;
 import com.singbon.entity.CardAllInfo;
 import com.singbon.entity.Device;
@@ -33,8 +32,9 @@ public class MainCardService {
 	 * 添加人员
 	 * 
 	 * @param user
+	 * @throws Exception
 	 */
-	public Object save(User user) {
+	public Object save(User user) throws Exception {
 		return this.mainCardDAO.insert(user);
 	}
 
@@ -43,7 +43,7 @@ public class MainCardService {
 	 * 
 	 * @param user
 	 */
-	public void update(User user) {
+	public void update(User user) throws Exception {
 		this.mainCardDAO.update(user);
 	}
 
@@ -52,7 +52,7 @@ public class MainCardService {
 	 * 
 	 * @param user
 	 */
-	public void delete(Integer deptId) {
+	public void delete(Integer deptId) throws Exception {
 		this.mainCardDAO.delete(deptId);
 	}
 
@@ -82,7 +82,7 @@ public class MainCardService {
 	 * @param user
 	 * @return
 	 */
-	public int selectCountByUserNO(Integer companyId, String userNO) {
+	public int selectCountByUserNO(Integer companyId, String userNO) throws Exception {
 		return this.mainCardDAO.selectCountByUserNO(companyId, userNO);
 	}
 
@@ -92,7 +92,7 @@ public class MainCardService {
 	 * @param user
 	 * @return
 	 */
-	public int selectCountByUserNOUserId(Integer companyId, String userNO, Integer userId) {
+	public int selectCountByUserNOUserId(Integer companyId, String userNO, Integer userId) throws Exception {
 		return this.mainCardDAO.selectCountByUserNOUserId(companyId, userNO, userId);
 	}
 
@@ -102,7 +102,7 @@ public class MainCardService {
 	 * @param user
 	 * @return
 	 */
-	public int selectMaxCardNO(Integer companyId) {
+	public int selectMaxCardNO(Integer companyId) throws Exception {
 		return this.mainCardDAO.selectMaxCardNO(companyId);
 	}
 
@@ -111,34 +111,34 @@ public class MainCardService {
 	 * 
 	 * @return
 	 */
-	public List<User> selectByCondition(Integer deptId, String searchStr) {
+	public List<User> selectByCondition(Integer deptId, String searchStr) throws Exception {
 		return this.mainCardDAO.selectByCondition(deptId, searchStr);
 	}
 
 	/**
-	 * 发卡
+	 * 单个发卡、信息发卡、补卡
 	 * 
 	 * @param device
 	 * @param socketChannel
 	 * @param user
 	 * @param cardAllInfo
+	 * @param commandCode
+	 *            命令码
+	 * @param section
+	 *            开始扇区
 	 * @throws Exception
 	 */
-	public void makeCard(Device device, SocketChannel socketChannel, User user, CardAllInfo cardAllInfo) throws Exception {
-		int makeCardType = 1;
-		if (user.getUserId() != null) {
-			makeCardType = CmdNumCardReader.InfoCard;
-		}
-		if (user.getUserId() != null) {
-			this.mainCardDAO.infoCard(user);
-		} else {
+	public void makeCard(Device device, SocketChannel socketChannel, User user, CardAllInfo cardAllInfo, int commandCode, int section) throws Exception {
+		if (commandCode == CommandCodeCardReader.SingleCard) {
 			this.mainCardDAO.insert(user);
+		} else if (commandCode == CommandCodeCardReader.InfoCard) {
+			this.mainCardDAO.infoCard(user);
+		} else if (commandCode == CommandCodeCardReader.RemakeCard) {
+			this.mainCardDAO.remakeCard(user);
 		}
-
 		// SimpleDateFormat myFormatter = new SimpleDateFormat("yyyy-MM-dd");
 		Calendar c = Calendar.getInstance();
 
-		int allOpCash = (cardAllInfo.getOpCash() + cardAllInfo.getGiveCash()) * 100;
 		String tmUserId = StringUtil.leftPad(user.getUserId(), 6);
 		String tmCardNo = StringUtil.leftPad(Integer.valueOf(user.getCardNO()), 6);
 		String tmConsumePwd = StringUtil.leftPad(Integer.valueOf(user.getConsumePwd()), 6);
@@ -156,7 +156,7 @@ public class MainCardService {
 		String tmCardSeq = "01";
 		String tmCardType = StringUtil.leftPad(user.getCardType(), 2);
 		String tmDeptId = StringUtil.leftPad(user.getDeptId(), 8);
-		String tmCardTotalFare = StringUtil.leftPad(allOpCash, 8);
+		String tmCardTotalFare = StringUtil.leftPad(user.getCardTotalFare(), 8);
 		String tmStandby = "06"; // 备用字段
 		String tmCheck2 = "00"; // 异或校验
 
@@ -164,12 +164,8 @@ public class MainCardService {
 				+ tmCardType + tmDeptId + tmCardTotalFare + tmStandby + tmCheck2;
 
 		// 大钱包
-		int cardOPCounter = 0;
-		if (allOpCash > 0) {
-			cardOPCounter = 1;
-		}
-		String tmCardOPCounter = StringUtil.leftPad(cardOPCounter, 4);
-		String tmCardOddFare = "01" + StringUtil.leftPad(allOpCash, 6);
+		String tmCardOPCounter = StringUtil.leftPad(user.getCardOPCounter(), 4);
+		String tmCardOddFare = "01" + StringUtil.leftPad(user.getCardOddFare(), 6);
 		String tmLastConsumeTime = "";
 		// if (pCardConsumeInfo.LastConsumeTime.ToString().Length > 8)
 		// { tmLastConsumeTime =
@@ -178,7 +174,7 @@ public class MainCardService {
 		// {
 		tmLastConsumeTime = "000000";
 		// }
-		String tmDaySumFare = StringUtil.leftPad(allOpCash, 6);
+		String tmDaySumFare = StringUtil.leftPad(user.getDaySumFare(), 6);
 		String tmLimitPeriod1 = StringUtil.leftPad(cardAllInfo.getLimitPeriods()[0], 1);
 		String tmLimitPeriod2 = StringUtil.leftPad(cardAllInfo.getLimitPeriods()[1], 1);
 		String tmLimitPeriod3 = StringUtil.leftPad(cardAllInfo.getLimitPeriods()[2], 1);
@@ -189,20 +185,23 @@ public class MainCardService {
 
 		String consumeData = tmCardOPCounter + tmCardOddFare + tmLastConsumeTime + tmDaySumFare + tmLimitPeriod1 + tmLimitPeriod2 + tmLimitPeriod3 + tmLimitPeriod4 + tmLimitPeriod5 + tmLimitPeriod6
 				+ tmCheck;
-		consumeData = "020000" + consumeData;
+		String consumeSection = StringUtil.leftPad(section + 1, 2);
+		consumeData = consumeSection + "0000" + consumeData;
 
 		// 补助钱包
-		String subsidyData = "030000" + "00000000000000000000000000000000";
+		String subsidySection = StringUtil.leftPad(section + 2, 2);
+		String subsidyData = subsidySection + "0000" + "00000000000000000000000000000000";
 
 		// 静态ID（16字节高字节在前）+设备机器号（4字节高字节在前）+数据长度（2字节高字节在前）+cd+01+是否校验卡号标志（1字节）+物理卡号（4字节高字节在前）+读卡扇区号（1字节）+读卡块号（1字节）+读写状态字节（1字节）+块数据（16字节高字节在前）+读卡扇区号（1字节）+读卡块号（1字节）+读写状态字节（1字节）+块数据（16字节高字节在前）+...+CRC校验（字节高字节在前）
-		String baseBlock0 = "010000" + baseData.substring(0, 32);
-		String baseBlock1 = "010100" + baseData.substring(0, 32);
-		String baseBlock2 = "010200" + baseData.substring(32);
+		String baseInfoSection = StringUtil.leftPad(section, 2);
+		String baseBlock0 = baseInfoSection + "0000" + baseData.substring(0, 32);
+		String baseBlock1 = baseInfoSection + "0100" + baseData.substring(0, 32);
+		String baseBlock2 = baseInfoSection + "0200" + baseData.substring(32);
 
 		String sendStr = baseBlock0 + baseBlock1 + baseBlock2 + consumeData + subsidyData + "0000";
 		String bufLen = StringUtil.leftPad(11 + sendStr.length() / 2, 4);
-		String cardMakeStr = StringUtil.leftPad(makeCardType, 4);
-		sendStr = device.getSn() + StringUtil.leftPad(device.getDeviceNum(), 8) + bufLen + "cd01" + cardMakeStr + "0044444444" + sendStr;
+		String commandCodeStr = StringUtil.leftPad(commandCode, 4);
+		sendStr = device.getSn() + StringUtil.leftPad(device.getDeviceNum(), 8) + bufLen + "cd01" + commandCodeStr + "0044444444" + sendStr;
 
 		byte[] buf = StringUtil.strTobytes(sendStr);
 		CRC16.generate(buf);
@@ -210,5 +209,71 @@ public class MainCardService {
 		System.out.print(StringUtil.leftPad(buf[buf.length - 1], 2));
 		System.out.println();
 		TerminalManager.sendToCardReader(socketChannel, buf);
+	}
+
+	/**
+	 * 更改状态
+	 * 
+	 * @param userId
+	 * @param status
+	 *            2挂失、1解挂
+	 * @return
+	 * @throws Exception
+	 */
+	public void changeStatus(Integer userId, Integer status) throws Exception {
+		this.mainCardDAO.changeStatus(userId, status);
+	}
+
+	/**
+	 * 解挂
+	 * 
+	 * @param userId
+	 * @return
+	 * @throws Exception
+	 */
+	public void unloss(Integer userId, SocketChannel socketChannel, Device device, String cardSN, String cardInfoStr) throws Exception {
+		this.mainCardDAO.changeStatus(userId, 1);
+
+		String cardMakeStr = StringUtil.leftPad(CommandCodeCardReader.Unloss, 4);
+		String sendBufStr = "cd01" + cardMakeStr + "01" + cardSN + cardInfoStr;
+		String bufLen = StringUtil.leftPad(2 + sendBufStr.length() / 2, 4);
+		sendBufStr = device.getSn() + StringUtil.leftPad(device.getDeviceNum(), 8) + bufLen + sendBufStr;
+		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
+		sendBuf[sendBuf.length - 5] = (byte) 0xf1;
+		CRC16.generate(sendBuf);
+		TerminalManager.sendToCardReader(socketChannel, sendBuf);
+	}
+
+	/**
+	 * 换卡换新卡
+	 * 
+	 * @param userId
+	 * @return
+	 * @throws Exception
+	 */
+	public void changeNewCard(Integer userId, SocketChannel socketChannel, Device device, String cardSN, String cardInfoStr) throws Exception {
+		this.mainCardDAO.changeStatus(userId, 1);
+
+		String cardMakeStr = StringUtil.leftPad(CommandCodeCardReader.Unloss, 4);
+		String sendBufStr = "cd01" + cardMakeStr + "01" + cardSN + cardInfoStr;
+		String bufLen = StringUtil.leftPad(2 + sendBufStr.length() / 2, 4);
+		sendBufStr = device.getSn() + StringUtil.leftPad(device.getDeviceNum(), 8) + bufLen + sendBufStr;
+		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
+		sendBuf[sendBuf.length - 5] = (byte) 0xf1;
+		CRC16.generate(sendBuf);
+		TerminalManager.sendToCardReader(socketChannel, sendBuf);
+	}
+
+	/**
+	 * 变更卡
+	 * 
+	 * @param userId
+	 * @param editType
+	 *            0挂失，1解挂，2补卡，3换卡，4注销
+	 * @param status
+	 *            2挂失、1解挂
+	 * @return
+	 */
+	public void changeCard(Integer userId, Integer editType, Integer status) {
 	}
 }

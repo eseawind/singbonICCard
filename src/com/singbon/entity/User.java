@@ -70,7 +70,7 @@ public class User implements Serializable {
 	// 卡余额
 	private Integer cardOddFare;
 	// 上次消费时间
-	private String lastConsumeTime;
+	private Date lastConsumeTime;
 	// 当日操作金额
 	private Integer daySumFare;
 	// 卡操作计数器(大钱包)
@@ -80,7 +80,7 @@ public class User implements Serializable {
 	// 卡补助余额
 	private Integer cardOddSubsidy;
 	// 上次补助消费时间
-	private String lastSubsidyConsumeTime;
+	private Date lastSubsidyConsumeTime;
 	// 当日补助操作金额
 	private Integer daySumSubsidy;
 	// 卡操作计数器(小钱包)
@@ -88,7 +88,7 @@ public class User implements Serializable {
 	// 补助计数器
 	private Integer subsidyTimesCounter;
 	// 补助失效日期
-	private String subsidyInvalidDate;
+	private Date subsidyInvalidDate;
 
 	public String[] getStatusDescList() {
 		return statusDescList;
@@ -302,11 +302,11 @@ public class User implements Serializable {
 		this.cardOddFare = cardOddFare;
 	}
 
-	public String getLastConsumeTime() {
+	public Date getLastConsumeTime() {
 		return lastConsumeTime;
 	}
 
-	public void setLastConsumeTime(String lastConsumeTime) {
+	public void setLastConsumeTime(Date lastConsumeTime) {
 		this.lastConsumeTime = lastConsumeTime;
 	}
 
@@ -334,11 +334,11 @@ public class User implements Serializable {
 		this.cardOddSubsidy = cardOddSubsidy;
 	}
 
-	public String getLastSubsidyConsumeTime() {
+	public Date getLastSubsidyConsumeTime() {
 		return lastSubsidyConsumeTime;
 	}
 
-	public void setLastSubsidyConsumeTime(String lastSubsidyConsumeTime) {
+	public void setLastSubsidyConsumeTime(Date lastSubsidyConsumeTime) {
 		this.lastSubsidyConsumeTime = lastSubsidyConsumeTime;
 	}
 
@@ -366,11 +366,11 @@ public class User implements Serializable {
 		this.subsidyTimesCounter = subsidyTimesCounter;
 	}
 
-	public String getSubsidyInvalidDate() {
+	public Date getSubsidyInvalidDate() {
 		return subsidyInvalidDate;
 	}
 
-	public void setSubsidyInvalidDate(String subsidyInvalidDate) {
+	public void setSubsidyInvalidDate(Date subsidyInvalidDate) {
 		this.subsidyInvalidDate = subsidyInvalidDate;
 	}
 
