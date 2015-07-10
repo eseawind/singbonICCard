@@ -36,5 +36,13 @@ public class FrameCardReader {
 	 * 信息发卡完成
 	 */
 	public static byte InfoCardDone = 0x06;
+	/**
+	 * 解挂命令
+	 */
+	public static byte UnlossCmd = 0x07;
+	/**
+	 * 解挂完成
+	 */
+	public static byte UnlossDone = 0x08;
 
 }

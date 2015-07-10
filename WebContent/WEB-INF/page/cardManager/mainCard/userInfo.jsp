@@ -128,7 +128,6 @@
 					alertMsg.warn($("#userinfo .infoCard").length);
 					if(e2.r==1){
 						$("#userinfo input[name=cardSN]").val(e2.cardSN);
-						alert(1);
 						validateCallback($("#userinfo"), function(e) {
 						}, null);
 					}else{

@@ -16,5 +16,9 @@ public class CmdNumCardReader {
 	 * 信息发卡
 	 */
 	public static byte InfoCard = 0x02;
+	/**
+	 * 解挂
+	 */
+	public static byte Unloss = 0x03;
 
 }

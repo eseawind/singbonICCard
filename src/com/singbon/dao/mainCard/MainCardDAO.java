@@ -20,7 +20,7 @@ public interface MainCardDAO {
 	 * @param user
 	 * @return
 	 */
-	public Object insert(User user);
+	public Object insert(User user) throws Exception;
 
 	/**
 	 * 修改人员
@@ -28,7 +28,7 @@ public interface MainCardDAO {
 	 * @param user
 	 * @return
 	 */
-	public void update(User user);
+	public void update(User user) throws Exception;
 
 	/**
 	 * 删除未发卡人员
@@ -36,7 +36,7 @@ public interface MainCardDAO {
 	 * @param id
 	 * @return
 	 */
-	public void delete(@Param("deptId") Integer deptId);
+	public void delete(@Param("deptId") Integer deptId) throws Exception;
 
 	/**
 	 * 根据主键查询人员
@@ -61,8 +61,8 @@ public interface MainCardDAO {
 	 * @param user
 	 * @return
 	 */
-	public void infoCard(User user);
-	
+	public void infoCard(User user) throws Exception;
+
 	/**
 	 * 以物理卡号查询绑定数量
 	 * 
@@ -70,29 +70,39 @@ public interface MainCardDAO {
 	 * @return
 	 */
 	public int selectCountByCardSN(@Param("companyId") Integer companyId, @Param("cardSN") String cardSN);
-	
+
 	/**
 	 * 以用户编号查询数量
 	 * 
 	 * @param user
 	 * @return
 	 */
-	public int selectCountByUserNO(@Param("companyId") Integer companyId, @Param("userNO") String userNO);
-	
+	public int selectCountByUserNO(@Param("companyId") Integer companyId, @Param("userNO") String userNO) throws Exception;
+
 	/**
 	 * 以用户编号用户ID查询数量
 	 * 
 	 * @param user
 	 * @return
 	 */
-	public int selectCountByUserNOUserId(@Param("companyId") Integer companyId, @Param("userNO") String userNO, @Param("userId") Integer userId);
-	
+	public int selectCountByUserNOUserId(@Param("companyId") Integer companyId, @Param("userNO") String userNO, @Param("userId") Integer userId) throws Exception;
+
 	/**
 	 * 查询最大卡号+1
 	 * 
 	 * @param user
 	 * @return
 	 */
-	public int selectMaxCardNO(@Param("companyId") Integer companyId);
+	public int selectMaxCardNO(@Param("companyId") Integer companyId) throws Exception;
+
+	/**
+	 * 改变卡状态
+	 * 
+	 * @param userId
+	 * @param status
+	 *            2挂失、1解挂
+	 * @return
+	 */
+	public void changeStatus(@Param("userId") Integer userId, @Param("status") Integer status) throws Exception;
 
 }

@@ -80,15 +80,24 @@
 			'batch' : function(t, target) {
 			},
 			'loss' : function(t, target) {
-				if (!checkDeviceSn()) {
-					return;
-				}
 				if($(t).attr("status")==1){
-					var url = "${base}/changeCard.do?editType=1&userId="
+					var url = "${base}/changeCard.do?editType=0&userId="
 							+ $(t).attr("userId");
 					$.pdialog.open(url, "dialog", "挂失", cardOptions);
 				}else{
 					alertMsg.warn('该卡不是正常卡，不能进行挂失操作！');
+				}				
+			},
+			'unloss' : function(t, target) {
+				if (!checkDeviceSn()) {
+					return;
+				}
+				if($(t).attr("status")==2){
+					var url = "${base}/changeCard.do?editType=1&userId="
+							+ $(t).attr("userId");
+					$.pdialog.open(url, "dialog", "解挂", cardOptions);
+				}else{
+					alertMsg.warn('该卡不是挂失卡，不能进行解挂操作！');
 				}				
 			}
 		},

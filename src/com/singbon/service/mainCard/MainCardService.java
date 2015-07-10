@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import com.singbon.dao.mainCard.MainCardDAO;
 import com.singbon.device.CRC16;
 import com.singbon.device.CmdNumCardReader;
-import com.singbon.device.FrameCardReader;
 import com.singbon.device.TerminalManager;
 import com.singbon.entity.CardAllInfo;
 import com.singbon.entity.Device;
@@ -33,8 +32,9 @@ public class MainCardService {
 	 * 添加人员
 	 * 
 	 * @param user
+	 * @throws Exception
 	 */
-	public Object save(User user) {
+	public Object save(User user) throws Exception {
 		return this.mainCardDAO.insert(user);
 	}
 
@@ -43,7 +43,7 @@ public class MainCardService {
 	 * 
 	 * @param user
 	 */
-	public void update(User user) {
+	public void update(User user) throws Exception {
 		this.mainCardDAO.update(user);
 	}
 
@@ -52,7 +52,7 @@ public class MainCardService {
 	 * 
 	 * @param user
 	 */
-	public void delete(Integer deptId) {
+	public void delete(Integer deptId) throws Exception {
 		this.mainCardDAO.delete(deptId);
 	}
 
@@ -82,7 +82,7 @@ public class MainCardService {
 	 * @param user
 	 * @return
 	 */
-	public int selectCountByUserNO(Integer companyId, String userNO) {
+	public int selectCountByUserNO(Integer companyId, String userNO) throws Exception {
 		return this.mainCardDAO.selectCountByUserNO(companyId, userNO);
 	}
 
@@ -92,7 +92,7 @@ public class MainCardService {
 	 * @param user
 	 * @return
 	 */
-	public int selectCountByUserNOUserId(Integer companyId, String userNO, Integer userId) {
+	public int selectCountByUserNOUserId(Integer companyId, String userNO, Integer userId) throws Exception {
 		return this.mainCardDAO.selectCountByUserNOUserId(companyId, userNO, userId);
 	}
 
@@ -102,7 +102,7 @@ public class MainCardService {
 	 * @param user
 	 * @return
 	 */
-	public int selectMaxCardNO(Integer companyId) {
+	public int selectMaxCardNO(Integer companyId) throws Exception {
 		return this.mainCardDAO.selectMaxCardNO(companyId);
 	}
 
@@ -111,7 +111,7 @@ public class MainCardService {
 	 * 
 	 * @return
 	 */
-	public List<User> selectByCondition(Integer deptId, String searchStr) {
+	public List<User> selectByCondition(Integer deptId, String searchStr) throws Exception {
 		return this.mainCardDAO.selectByCondition(deptId, searchStr);
 	}
 
@@ -210,5 +210,51 @@ public class MainCardService {
 		System.out.print(StringUtil.leftPad(buf[buf.length - 1], 2));
 		System.out.println();
 		TerminalManager.sendToCardReader(socketChannel, buf);
+	}
+
+	/**
+	 * 更改状态
+	 * 
+	 * @param userId
+	 * @param status
+	 *            2挂失、1解挂
+	 * @return
+	 * @throws Exception
+	 */
+	public void changeStatus(Integer userId, Integer status) throws Exception {
+		this.mainCardDAO.changeStatus(userId, status);
+	}
+
+	/**
+	 * 解挂
+	 * 
+	 * @param userId
+	 * @return
+	 * @throws Exception
+	 */
+	public void unloss(Integer userId, SocketChannel socketChannel, Device device, String cardSN, String baseInfoStr) throws Exception {
+		this.mainCardDAO.changeStatus(userId, 1);
+
+		String cardMakeStr = StringUtil.leftPad(CmdNumCardReader.Unloss, 4);
+		String sendBufStr = "cd01" + cardMakeStr + "01" + cardSN + baseInfoStr;
+		String bufLen = StringUtil.leftPad(2 + sendBufStr.length() / 2, 4);
+		sendBufStr = device.getSn() + StringUtil.leftPad(device.getDeviceNum(), 8) + bufLen + sendBufStr;
+		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
+		sendBuf[sendBuf.length-5]=(byte) 0xf1;
+		CRC16.generate(sendBuf);
+		TerminalManager.sendToCardReader(socketChannel, sendBuf);
+	}
+
+	/**
+	 * 变更卡
+	 * 
+	 * @param userId
+	 * @param editType
+	 *            0挂失，1解挂，2补卡，3换卡，4注销
+	 * @param status
+	 *            2挂失、1解挂
+	 * @return
+	 */
+	public void changeCard(Integer userId, Integer editType, Integer status) {
 	}
 }

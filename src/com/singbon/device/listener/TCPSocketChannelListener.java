@@ -52,7 +52,7 @@ public class TCPSocketChannelListener implements ServletContextListener {
 				}
 			}
 		} catch (Exception e) {
-
+			e.printStackTrace();
 		}
 	}
 

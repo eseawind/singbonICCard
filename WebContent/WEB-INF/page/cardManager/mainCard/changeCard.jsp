@@ -2,7 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<!-- <script src="/js/comet4j.js" type="text/javascript"></script> -->
+<script src="/js/comet4j.js" type="text/javascript"></script>
 <script type="text/javascript">
 
 	var isOnline=false;
@@ -28,56 +28,38 @@
 			}
 			init();
 		}
-		$("#userinfo .add").click(function() {
+		$("#userinfo .loss").click(function() {
 			validateCallback($(this).parents("form"), function(e) {
-				if (e == 1) {
-					refreshUserList();
-					$("#userinfo input[name=username]").val("");
-					$("#userinfo input[name=shortName]").val("");
-					$("#userinfo input[name=userNO]").val("");
-					
-					alertMsg.correct('录入成功！');
-				} else if(e==2) {
-					alertMsg.warn('用户编号已存在请更改！');					
+				var editType="${editType }";
+				//挂失
+				if(editType==0){
+					if (e == 1) {
+						refreshUserList();
+						$("#userinfo .close").click();								
+						alertMsg.correct('挂失成功！');
+					} else if(e==2) {
+						alertMsg.warn('挂失失败！');					
+					}
 				}
 			}, null);
 		});
-		$("#userinfo .edit").click(function() {
-			validateCallback($(this).parents("form"), function(e) {
-				if (e == 1) {
-					refreshUserList();
-					alertMsg.correct('修改成功！');
-				} else if(e==2) {
-					alertMsg.warn('该用户编号已存在请更改！');					
-				}
-			}, null);
-		});
-		$("#userinfo .singleCard").click(function() {
+		$("#userinfo .unloss").click(function() {
 			if(isOnline){
 				if($("#userinfo").valid()){
-					$.post("${base }/singleCardInit.do?userNO="+$('#userinfo input[name=userNO]').val(),function(e){
+					$.post("${base }/command.do?comm=unloss",function(e){
 						if(e==2){
-							alertMsg.warn('该用户编号已存在请更改！');					
+							alertMsg.warn('该卡片与用户信息不匹配请更换！');					
 						}
 					});
 				}
 			}else{
-				alertMsg.warn('读卡机当前处于离线状态不能发卡！');
+				alertMsg.warn('读卡机当前处于离线状态不能解挂！');
 			}
-		});
-		$("#userinfo .infoCard").click(function() {
-			if(isOnline){
-				$.post("${base }/command.do?comm=infoCardInit");
-			}else{
-				alertMsg.warn('读卡机当前处于离线状态不能发卡！');
-			}
-		});
-		$("#userinfo .delete").click(function() {
-			$('#userinfo').stopTime();
 		});
 	});
 
 	function init() {
+		JS.Engine.stop();
 		JS.Engine.start('/conn');
 		JS.Engine.on({
 			'c${sn}' : function(e) {//侦听一个channel
@@ -105,43 +87,30 @@
 				//心跳
 				} else if (e2.f1 == 2) {
 					heartTime=new Date();
-				//单个发卡命令
-				} else if (e2.f1 == 3) {
+				//解挂命令
+				} else if (e2.f1 == 7) {
 					if(e2.r==1){
-						$("#userinfo input[name=cardSN]").val(e2.cardSN);
-						validateCallback($("#userinfo"), function(e) {
-						}, null);
+						var userId= $("#userinfo input[name=userId]").val();
+						var cardSN= $("#userinfo input[name=cardSN]").val();
+						$("#userinfo input[name=baseInfoStr]").val(e2.baseInfoStr);
+// 						alert(userId+" "+cardSN+" "+e2.userId+" "+e2.cardSN);
+						if(userId==e2.userId && cardSN==e2.cardSN){
+							validateCallback($("#userinfo"), function(e) {
+							}, null);
+						}else{
+							alertMsg.warn('该卡片与用户信息不匹配请更换！');					
+						}
 					}else{
 						opCardResult(e2.r);
 					}
-				}else if(e2.f1==4){
+				}else if(e2.f1==8){
 					if(e2.r==1){
 						refreshUserList();
- 						$("#userinfo").clearForm();
-						//$("#userinfo .close").click();
-						alertMsg.correct('单个发卡完成！');
+						$("#userinfo .close").click();								
+						alertMsg.correct('解挂成功！');
 					}else{
 						opCardResult(e2.r);
-					}					
-				//信息发卡命令
-				} else if (e2.f1 == 5) {
-					if(e2.r==1){
-						$("#userinfo input[name=cardSN]").val(e2.cardSN);
-						validateCallback($("#userinfo"), function(e) {
-						}, null);
-					}else{
-						opCardResult(e2.r);
-					}
-				//信息发卡完成
-				} else if (e2.f1 == 6) {
-					if(e2.r==1){
-						refreshUserList();
-// 						$("#userinfo").clearForm();
-						$("#userinfo .close").click();
-						alertMsg.correct('信息发卡完成！');
-					}else{
-						opCardResult(e2.r);
-					}
+					}	
 				}
 			}
 		});
@@ -208,6 +177,7 @@
 					<input name="userId" type="hidden" value="${user.userId }" /> 
 					<input name="editType" type="hidden" value="${editType }" />
 					<input name="cardSN" type="hidden" value="${user.cardSN }" /> 
+					<input name="baseInfoStr" type="hidden"/> 
 					<input name="batchId" type="hidden" value="${batch.id }" /> 
 					
 				</dd>
@@ -219,6 +189,7 @@
 				</dd>
 			</dl>
 		</fieldset>
+		<c:if test="${editType==0 }">
 		<fieldset>
 			<legend>挂失原因</legend>
 			<dl>
@@ -227,31 +198,32 @@
 				</dt>
 			</dl>
 		</fieldset>
+		</c:if>
 	</div>
 	<div class="formBar">
 		<ul>
-			<c:if test="${editType==1 }">
+			<c:if test="${editType==0 }">
 				<li><div class="buttonActive">
 						<div class="buttonContent loss">
 							<button type="button">挂失</button>
 						</div>
 					</div></li>
 			</c:if>
-			<c:if test="${editType==2 }">
+			<c:if test="${editType==1 }">
 				<li><div class="button">
 						<div class="buttonContent unloss">
 							<button type="button">解挂</button>
 						</div>
 					</div></li>
 			</c:if>
-			<c:if test="${editType==3 }">
+			<c:if test="${editType==2 }">
 				<li><div class="button">
 						<div class="buttonContent remakeCard">
 							<button type="button">补卡</button>
 						</div>
 					</div></li>
 			</c:if>
-			<c:if test="${editType==4 }">
+			<c:if test="${editType==3 }">
 				<li><div class="button">
 						<div class="buttonContent changeCard">
 							<button type="button">换卡</button>

@@ -1,6 +1,7 @@
 package com.singbon.util;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -49,16 +50,16 @@ public class StringUtil {
 	// 修改2009-07-06：二进制前7位表示年，下4位月，最后5位表示日如"2009-07-06" -> "12E6"
 	public static String dateToHexString(Calendar date) {
 		String year = String.valueOf(date.get(Calendar.YEAR));
-		int tmYear = Integer.valueOf(year.substring(2));
-		int tmMonth = date.get(Calendar.MONTH) + 1;
-		int tmDay = date.get(Calendar.DAY_OF_MONTH);
+		byte tmYear = (byte)((int)Integer.valueOf(year.substring(2)));
+		byte tmMonth = (byte)(date.get(Calendar.MONTH) + 1);
+		byte tmDay = (byte)date.get(Calendar.DAY_OF_MONTH);
 
 		String tmpStr = Integer.toHexString((tmYear << 1) | (tmMonth >> 3));
 		if (tmpStr.length() == 1) {
 			tmpStr = "0" + tmpStr;
 		}
 
-		String tmpStr2 = Integer.toHexString(tmMonth << 5 | tmDay);
+		String tmpStr2 = Integer.toHexString((byte)(tmMonth << 5 | tmDay));
 		if (tmpStr2.length() == 1) {
 			tmpStr2 = "0" + tmpStr2;
 		}
