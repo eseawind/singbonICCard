@@ -27,8 +27,8 @@
 		update user set status=#{status}
 		where userId=#{userId}
 	</update>
-	<update id="changeStatus">
-		update user set status=#{status}
+	<update id="changeNewCard">
+		update user set cardNO=#{cardNO},cardSN=#{cardSN}
 		where userId=#{userId}
 	</update>
 	<delete id="delete" parameterType="int">

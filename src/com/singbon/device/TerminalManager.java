@@ -123,125 +123,6 @@ public class TerminalManager {
 		return 1;
 	}
 
-	/**
-	 * 分发读卡器命令
-	 * 
-	 * @param selectionKey
-	 * @param b
-	 *            26 27指令 00 获取机器号序列号，01读卡，
-	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void dispatchCardReaderCommand(SelectionKey selectionKey, byte[] b) {
-		if (b == null)
-			return;
-		String sn = getSN(b);
-		// 帧
-		byte[] frameByte = getFrame(b);
-		// 命令码
-		int commandCode = getCommandCode(b);
-		// 状态码 1读卡器读写成功、2读卡器寻卡失败、3读卡器卡校验失败、4读卡器物理卡号不匹配、5读卡器读写卡失败
-		byte b35 = 0;
-		if (b.length > 35) {
-			b35 = b[35];
-		}
-		// 物理卡号
-		String cardSN = null;
-		if (b.length > 33) {
-			cardSN = getCardSN(b);
-		}
-		Map map = new HashMap();
-		// 获取机器号序列号
-		if (Arrays.equals(frameByte, new byte[] { 0x03, (byte) 0xff, (byte) 0xaa, 0x01 })) {
-			byte frame = FrameCardReader.Status;
-			if (b[27] == 1) {
-				frame = FrameCardReader.HeartStatus;
-			} else {
-				TerminalManager.getUuidToSNList().put(selectionKey.attachment().toString(), sn);
-				TerminalManager.getSNToSocketChannelList().put(sn, (SocketChannel) selectionKey.channel());
-			}
-			map.put("'f1'", frame);
-			map.put("'r'", 1);
-			String msg = JSONUtil.convertToJson(map);
-			TerminalManager.getEngineInstance().sendToAll("c" + sn, msg);
-			// 写卡回复
-		} else if (Arrays.equals(frameByte, new byte[] { 0x03, (byte) 0xcd, 0x01, 0x01 })) {
-			// 单个发卡完成
-			if (commandCode == CommandCodeCardReader.SingleCard) {
-				map.put("'f1'", FrameCardReader.SingleCardDone);
-				map.put("'r'", b35);
-				String msg = JSONUtil.convertToJson(map);
-				TerminalManager.getEngineInstance().sendToAll("c" + sn, msg);
-			}
-			// 信息发卡完成
-			else if (commandCode == CommandCodeCardReader.InfoCard) {
-				map.put("'f1'", FrameCardReader.InfoCardDone);
-				map.put("'r'", b35);
-				String msg = JSONUtil.convertToJson(map);
-				TerminalManager.getEngineInstance().sendToAll("c" + sn, msg);
-			}
-			// 解挂完成
-			else if (commandCode == CommandCodeCardReader.Unloss) {
-				map.put("'f1'", FrameCardReader.UnlossDone);
-				map.put("'r'", b35);
-				String msg = JSONUtil.convertToJson(map);
-				TerminalManager.getEngineInstance().sendToAll("c" + sn, msg);
-			}
-			// 补卡完成
-			else if (commandCode == CommandCodeCardReader.RemakeCard) {
-				map.put("'f1'", FrameCardReader.RemakeCardDone);
-				map.put("'r'", b35);
-				String msg = JSONUtil.convertToJson(map);
-				TerminalManager.getEngineInstance().sendToAll("c" + sn, msg);
-			}
-			// 读卡回复
-		} else if (Arrays.equals(frameByte, new byte[] { 0x03, (byte) 0xcd, 0x00, 0x01 })) {
-			// 发送单个发卡命令
-			if (commandCode == CommandCodeCardReader.SingleCard) {
-				map.put("'f1'", FrameCardReader.SingleCardCmd);
-				map.put("'r'", b35);
-				map.put("'cardSN'", cardSN);
-				String msg = JSONUtil.convertToJson(map);
-				TerminalManager.getEngineInstance().sendToAll("c" + sn, msg);
-			}
-			// 发送信息发卡命令
-			else if (commandCode == CommandCodeCardReader.InfoCard) {
-				map.put("'f1'", FrameCardReader.InfoCardCmd);
-				map.put("'r'", b35);
-				map.put("'cardSN'", cardSN);
-				String msg = JSONUtil.convertToJson(map);
-				TerminalManager.getEngineInstance().sendToAll("c" + sn, msg);
-			}
-			// 发解挂命令
-			else if (commandCode == CommandCodeCardReader.Unloss) {
-				map.put("'f1'", FrameCardReader.UnlossCmd);
-				map.put("'r'", b35);
-				map.put("'cardInfoStr'", cardAllInfo(b));
-				map.put("'cardSN'", cardSN);
-				map.put("'userId'", Integer.parseInt(getUserId(b), 16));
-				String msg = JSONUtil.convertToJson(map);
-				TerminalManager.getEngineInstance().sendToAll("c" + sn, msg);
-			}
-			// 发补卡命令
-			else if (commandCode == CommandCodeCardReader.RemakeCard) {
-				map.put("'f1'", FrameCardReader.RemakeCardCmd);
-				map.put("'r'", b35);
-				map.put("'cardSN'", cardSN);
-				String msg = JSONUtil.convertToJson(map);
-				TerminalManager.getEngineInstance().sendToAll("c" + sn, msg);
-			}
-			// 换卡读原卡命令
-			else if (commandCode == CommandCodeCardReader.ReadOldCard) {
-				map.put("'f1'", FrameCardReader.ReadOldCardCmd);
-				map.put("'r'", b35);
-				map.put("'cardSN'", cardSN);
-				map.put("'userId'", Integer.parseInt(getUserId(b), 16));
-				map.put("'cardInfoStr'", cardAllInfo(b));
-				String msg = JSONUtil.convertToJson(map);
-				TerminalManager.getEngineInstance().sendToAll("c" + sn, msg);
-			}
-		}
-	}
-
 	// 获取读卡器回复帧
 	private byte[] getFrame(byte[] b) {
 		return Arrays.copyOfRange(b, 22, 26);
@@ -302,6 +183,120 @@ public class TerminalManager {
 	}
 
 	/**
+	 * 分发读卡器命令
+	 * 
+	 * @param selectionKey
+	 * @param b
+	 *            26 27指令 00 获取机器号序列号，01读卡，
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void dispatchCardReaderCommand(SelectionKey selectionKey, byte[] b) {
+		if (b == null)
+			return;
+		String sn = getSN(b);
+		// 帧
+		byte[] frameByte = getFrame(b);
+		// 命令码
+		int commandCode = getCommandCode(b);
+		// 状态码 1读卡器读写成功、2读卡器寻卡失败、3读卡器卡校验失败、4读卡器物理卡号不匹配、5读卡器读写卡失败
+		byte b35 = 0;
+		if (b.length > 35) {
+			b35 = b[35];
+		}
+		// 物理卡号
+		String cardSN = null;
+		if (b.length > 33) {
+			cardSN = getCardSN(b);
+		}
+		Map map = new HashMap();
+		// 获取机器号序列号
+		if (Arrays.equals(frameByte, new byte[] { 0x03, (byte) 0xff, (byte) 0xaa, 0x01 })) {
+			byte frame = FrameCardReader.Status;
+			if (b[27] == 1) {
+				frame = FrameCardReader.HeartStatus;
+			} else {
+				TerminalManager.getUuidToSNList().put(selectionKey.attachment().toString(), sn);
+				TerminalManager.getSNToSocketChannelList().put(sn, (SocketChannel) selectionKey.channel());
+			}
+			map.put("'f1'", frame);
+			map.put("'r'", 1);
+			// 写卡回复
+		} else if (Arrays.equals(frameByte, new byte[] { 0x03, (byte) 0xcd, 0x01, 0x01 })) {
+			// 单个发卡完成
+			if (commandCode == CommandCodeCardReader.SingleCard) {
+				map.put("'f1'", FrameCardReader.SingleCardDone);
+				map.put("'r'", b35);
+			}
+			// 信息发卡完成
+			else if (commandCode == CommandCodeCardReader.InfoCard) {
+				map.put("'f1'", FrameCardReader.InfoCardDone);
+				map.put("'r'", b35);
+			}
+			// 解挂完成
+			else if (commandCode == CommandCodeCardReader.Unloss) {
+				map.put("'f1'", FrameCardReader.UnlossDone);
+				map.put("'r'", b35);
+			}
+			// 补卡完成
+			else if (commandCode == CommandCodeCardReader.RemakeCard) {
+				map.put("'f1'", FrameCardReader.RemakeCardDone);
+				map.put("'r'", b35);
+			}
+			// 换新卡完成
+			else if (commandCode == CommandCodeCardReader.ChangeNewCard) {
+				map.put("'f1'", FrameCardReader.ChangeNewCardDone);
+				map.put("'r'", b35);
+			}
+			// 读卡回复
+		} else if (Arrays.equals(frameByte, new byte[] { 0x03, (byte) 0xcd, 0x00, 0x01 })) {
+			// 发送单个发卡命令
+			if (commandCode == CommandCodeCardReader.SingleCard) {
+				map.put("'f1'", FrameCardReader.SingleCardCmd);
+				map.put("'r'", b35);
+				map.put("'cardSN'", cardSN);
+			}
+			// 发送信息发卡命令
+			else if (commandCode == CommandCodeCardReader.InfoCard) {
+				map.put("'f1'", FrameCardReader.InfoCardCmd);
+				map.put("'r'", b35);
+				map.put("'cardSN'", cardSN);
+			}
+			// 发解挂命令
+			else if (commandCode == CommandCodeCardReader.Unloss) {
+				map.put("'f1'", FrameCardReader.UnlossCmd);
+				map.put("'r'", b35);
+				map.put("'cardInfoStr'", cardAllInfo(b));
+				map.put("'cardSN'", cardSN);
+				map.put("'userId'", Integer.parseInt(getUserId(b), 16));
+			}
+			// 发补卡命令
+			else if (commandCode == CommandCodeCardReader.RemakeCard) {
+				map.put("'f1'", FrameCardReader.RemakeCardCmd);
+				map.put("'r'", b35);
+				map.put("'cardSN'", cardSN);
+			}
+			// 换卡读原卡命令
+			else if (commandCode == CommandCodeCardReader.ReadOldCard) {
+				map.put("'f1'", FrameCardReader.ReadOldCardCmd);
+				map.put("'r'", b35);
+				map.put("'cardSN'", cardSN);
+				map.put("'userId'", Integer.parseInt(getUserId(b), 16));
+				map.put("'cardInfoStr'", cardAllInfo(b));
+			}
+			// 换卡换新卡命令
+			else if (commandCode == CommandCodeCardReader.ChangeNewCard) {
+				map.put("'f1'", FrameCardReader.ChangeNewCardCmd);
+				map.put("'r'", b35);
+				map.put("'newCardSN'", cardSN);
+			}
+		}
+		if (map.size() > 0) {
+			String msg = JSONUtil.convertToJson(map);
+			TerminalManager.getEngineInstance().sendToAll("c" + sn, msg);
+		}
+	}
+
+	/**
 	 * 获取卡号序列号
 	 * 
 	 * @param socketChannel
@@ -348,7 +343,8 @@ public class TerminalManager {
 		String deviceNum = StringUtil.leftPad(device.getDeviceNum(), 8);
 		String commandCodeStr = StringUtil.leftPad(commandCode, 4);
 		String sectionStr = StringUtil.leftPad(section, 2);
-		String buf = device.getSn() + deviceNum + "0020cd00" + commandCodeStr + "0044444444" + sectionStr + "0000000000000000000000000000000000000000";
+		String buf = device.getSn() + deviceNum + "0020" + CommandCardReader.ReadCard + commandCodeStr + CommandCardReader.NoValidateCardSN + "44444444" + sectionStr
+				+ "0000000000000000000000000000000000000000";
 		byte[] sendBuf = StringUtil.strTobytes(buf);
 		CRC16.generate(sendBuf);
 		ByteBuffer byteBuffer = ByteBuffer.wrap(sendBuf);
@@ -367,7 +363,8 @@ public class TerminalManager {
 		String deviceNum = StringUtil.leftPad(device.getDeviceNum(), 8);
 		String sectionStr = StringUtil.leftPad(section, 2);
 		String commandCodeStr = StringUtil.leftPad(CommandCodeCardReader.Unloss, 4);
-		String buf = device.getSn() + deviceNum + "0020CD00" + commandCodeStr + "0044444444" + sectionStr + "0000000000000000000000000000000000000000";
+		String buf = device.getSn() + deviceNum + "0020" + CommandCardReader.ReadCard + commandCodeStr + CommandCardReader.NoValidateCardSN + "44444444" + sectionStr
+				+ "0000000000000000000000000000000000000000";
 		byte[] sendBuf = StringUtil.strTobytes(buf);
 		CRC16.generate(sendBuf);
 		ByteBuffer byteBuffer = ByteBuffer.wrap(sendBuf);
@@ -388,11 +385,32 @@ public class TerminalManager {
 		String consumeSectionStr = StringUtil.leftPad(section + 1, 2);
 		String subsidySectionStr = StringUtil.leftPad(section + 2, 2);
 		String commandCodeStr = StringUtil.leftPad(CommandCodeCardReader.ReadOldCard, 4);
-		String sendBufStr = "CD00" + commandCodeStr + "0044444444" + baseSectionStr + "000000000000000000000000000000000000" + baseSectionStr + "010000000000000000000000000000000000" + baseSectionStr
-				+ "020000000000000000000000000000000000" + consumeSectionStr + "000000000000000000000000000000000000" + subsidySectionStr + "000000000000000000000000000000000000" + "0000";
+		String sendBufStr = CommandCardReader.ReadCard + commandCodeStr + CommandCardReader.NoValidateCardSN + "44444444" + baseSectionStr + "000000000000000000000000000000000000" + baseSectionStr
+				+ "010000000000000000000000000000000000" + baseSectionStr + "020000000000000000000000000000000000" + consumeSectionStr + "000000000000000000000000000000000000" + subsidySectionStr
+				+ "000000000000000000000000000000000000" + "0000";
 		String bufLen = StringUtil.leftPad(2 + sendBufStr.length() / 2, 4);
 		sendBufStr = device.getSn() + deviceNum + bufLen + sendBufStr;
 		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
+		CRC16.generate(sendBuf);
+		ByteBuffer byteBuffer = ByteBuffer.wrap(sendBuf);
+		socketChannel.write(byteBuffer);
+	}
+
+	/**
+	 * 先获取物理卡号后换新卡
+	 * 
+	 * @param socketChannel
+	 * @param section
+	 *            扇区号
+	 * @throws IOException
+	 */
+	public static void getCardSNToChangeCard(SocketChannel socketChannel, Device device, int section) throws IOException {
+		String deviceNum = StringUtil.leftPad(device.getDeviceNum(), 8);
+		String sectionStr = StringUtil.leftPad(section, 2);
+		String commandCodeStr = StringUtil.leftPad(CommandCodeCardReader.ChangeNewCard, 4);
+		String buf = device.getSn() + deviceNum + "0020" + CommandCardReader.ReadCard + commandCodeStr + CommandCardReader.NoValidateCardSN + "44444444" + sectionStr
+				+ "0000000000000000000000000000000000000000";
+		byte[] sendBuf = StringUtil.strTobytes(buf);
 		CRC16.generate(sendBuf);
 		ByteBuffer byteBuffer = ByteBuffer.wrap(sendBuf);
 		socketChannel.write(byteBuffer);

@@ -27,4 +27,8 @@ public class CompanyService {
 
 		return this.companyDAO.selectById(id);
 	}
+	
+	public int getSection(Integer companyId){
+		return 1;
+	}
 }
