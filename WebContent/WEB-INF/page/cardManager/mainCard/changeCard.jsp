@@ -253,7 +253,11 @@
 					<input name="userId" type="hidden" value="${user.userId }" /> 
 					<input name="editType" type="hidden" value="${editType }" />
 					<input name="cardSN" type="hidden" value="${user.cardSN }" /> 
+<<<<<<< HEAD
 					<input name="cardInfoStr" type="hidden"/> 
+=======
+					<input name="baseInfoStr" type="hidden"/> 
+>>>>>>> branch 'master' of https://github.com/ycsty2008/singbonICCard.git
 					<input name="batchId" type="hidden" value="${batch.id }" /> 
 					
 				</dd>
