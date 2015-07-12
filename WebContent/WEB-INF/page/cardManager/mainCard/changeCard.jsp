@@ -45,42 +45,44 @@
 		});
 		$("#userinfo .unloss").click(function() {
 			if(isOnline){
-				if($("#userinfo").valid()){
+// 				if($("#userinfo").valid()){
 					$.post("${base }/command.do?comm=unlossInit",function(e){
 					});
-				}
+// 				}
 			}else{
 				alertMsg.warn('读卡机当前处于离线状态不能解挂！');
 			}
 		});
 		$("#userinfo .remakeCard").click(function() {
 			if(isOnline){
-				if($("#userinfo").valid()){
+// 				if($("#userinfo").valid()){
 					$.post("${base }/command.do?comm=remakeCardInit",function(e){
 					});
-				}
+// 				}
 			}else{
 				alertMsg.warn('读卡机当前处于离线状态不能补卡！');
 			}
 		});
 		$("#userinfo .readOldCard").click(function() {
 			if(isOnline){
-				if($("#userinfo").valid()){
-					$.post("${base }/command.do?comm=readOldCard",function(e){
-					});
-				}
+				alertMsg.confirm("换卡后要回收原卡，确定换卡吗？", {
+					okCall : function() {
+						$.post("${base }/command.do?comm=readOldCardInit",function(e){
+						});
+					}
+				});
 			}else{
-				alertMsg.warn('读卡机当前处于离线状态不能换卡！');
+				alertMsg.warn('读卡机当前处于离线状态不能读原卡！');
 			}
 		});
 		$("#userinfo .changeNewCard").click(function() {
 			if(isOnline){
-				if($("#userinfo").valid()){
-					$.post("${base }/command.do?comm=changeNewCard",function(e){
+// 				if($("#userinfo").valid()){
+					$.post("${base }/command.do?comm=changeNewCardInit",function(e){
 					});
-				}
+// 				}
 			}else{
-				alertMsg.warn('读卡机当前处于离线状态不能换卡！');
+				alertMsg.warn('读卡机当前处于离线状态不能换新卡！');
 			}
 		});
 	});
@@ -96,7 +98,7 @@
 					alertMsg.warn('该卡片已经发行，请放置新卡！');
 				}
 				//读卡器状态
-				else if (e2.f1 == 1) {
+				else if (e2.f1 == 0x01) {
 					if (e2.r == 1) {
 						heartTime=new Date();
 						$(".dialogHeader_c h1").html(title + "——读卡机状态：在线");
@@ -112,14 +114,13 @@
 						$('#userinfo').stopTime();
 					}
 				//心跳
-				} else if (e2.f1 == 2) {
+				} else if (e2.f1 == 0x02) {
 					heartTime=new Date();
 				//解挂命令
-				} else if (e2.f1 == 7) {
+				} else if (e2.f1 == 0x07) {
 					if(e2.r==1){
 						var userId= $("#userinfo input[name=userId]").val();
 						var cardSN= $("#userinfo input[name=cardSN]").val();
-// 						alert(userId+" "+cardSN+" "+e2.userId+" "+e2.cardSN);
 						if(userId==e2.userId && cardSN==e2.cardSN){
 							$("#userinfo input[name=cardInfoStr]").val(e2.cardInfoStr);
 							validateCallback($("#userinfo"), function(e) {
@@ -131,7 +132,7 @@
 						opCardResult(e2.r);
 					}
 				//解挂完成
-				}else if(e2.f1==8){
+				}else if(e2.f1==0x08){
 					if(e2.r==1){
 						refreshUserList();
 						$("#userinfo .close").click();								
@@ -140,9 +141,8 @@
 						opCardResult(e2.r);
 					}	
 				//补卡命令
-				} else if (e2.f1 == 9) {
+				} else if (e2.f1 == 0x09) {
 					if(e2.r==1){
-// 						alert(e2.cardSN);
 						$("#userinfo input[name=cardSN]").val(e2.cardSN);
 						validateCallback($("#userinfo"), function(e) {
 						}, null);
@@ -150,35 +150,46 @@
 						opCardResult(e2.r);
 					}
 				//补卡完成
-				} else if (e2.f1 == 10) {
+				} else if (e2.f1 == 0x0a) {
 					if(e2.r==1){
 						refreshUserList();
-// 						$("#userinfo").clearForm();
 						$("#userinfo .close").click();
 						alertMsg.correct('补卡完成！');
 					}else{
 						opCardResult(e2.r);
 					}
-				//换卡读老卡命令
-				} else if (e2.f1 == 11) {
+				//换卡读原卡命令
+				} else if (e2.f1 == 0x0b) {
 					if(e2.r==1){
 						var userId= $("#userinfo input[name=userId]").val();
 						var cardSN= $("#userinfo input[name=cardSN]").val();
-// 						alert(userId+" "+cardSN+" "+e2.userId+" "+e2.cardSN);
 						if(userId==e2.userId && cardSN==e2.cardSN){
+							$("#userinfo input[name=cardInfoStr]").val(e2.cardInfoStr);
 							$("#userinfo .readOldCard").hide();
 							$("#userinfo .changeNewCard").show();
-							$("#userinfo input[name=cardInfoStr]").val(e2.cardInfoStr);
-							validateCallback($("#userinfo"), function(e) {
-							}, null);
+							alertMsg.correct('原卡读卡完毕，请放置新卡！');
 						}else{
 							alertMsg.warn('该原卡与人员信息不匹配请换卡！');
 						}
 					}else{
 						opCardResult(e2.r);
 					}
-				//换卡读老卡完成
-				} else if (e2.f1 == 12) {
+				//换卡换新卡命令
+				} else if (e2.f1 == 0x0c) {
+					if(e2.r==1){
+						var cardSN= $("#userinfo input[name=cardSN]").val();
+						if(cardSN==e2.newCardSN){
+								alertMsg.warn('该卡片是原卡请放置新卡！');
+						}else{
+							$("#userinfo input[name=newCardSN]").val(e2.newCardSN);
+							validateCallback($("#userinfo"), function(e) {
+							}, null);
+						}
+					}else{
+						opCardResult(e2.r);
+					}
+				//换卡换新卡完成
+				} else if (e2.f1 == 0x0d) {
 					if(e2.r==1){
 						refreshUserList();
 						$("#userinfo .close").click();
@@ -253,13 +264,9 @@
 					<input name="userId" type="hidden" value="${user.userId }" /> 
 					<input name="editType" type="hidden" value="${editType }" />
 					<input name="cardSN" type="hidden" value="${user.cardSN }" /> 
-<<<<<<< HEAD
+					<input name="newCardSN" type="hidden" /> 
 					<input name="cardInfoStr" type="hidden"/> 
-=======
-					<input name="baseInfoStr" type="hidden"/> 
->>>>>>> branch 'master' of https://github.com/ycsty2008/singbonICCard.git
 					<input name="batchId" type="hidden" value="${batch.id }" /> 
-					
 				</dd>
 			</dl>
 			<dl>

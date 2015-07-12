@@ -113,4 +113,13 @@ public interface MainCardDAO {
 	 */
 	public void changeStatus(@Param("userId") Integer userId, @Param("status") Integer status) throws Exception;
 
+	/**
+	 * 换新卡
+	 * 
+	 * @param userId
+	 * @param cardNO
+	 * @param cardSN
+	 */
+	public void changeNewCard(@Param("userId") Integer userId, @Param("cardNO") Integer cardNO, @Param("cardSN") String cardSN) throws Exception;
+
 }
