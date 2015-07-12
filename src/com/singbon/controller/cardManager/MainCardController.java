@@ -480,6 +480,17 @@ public class MainCardController extends BaseController {
 				}
 			}
 		}
+		// 换卡换新卡
+		else if ("changeNewCard".equals(comm)) {
+			SocketChannel socketChannel = TerminalManager.getSNToSocketChannelList().get(sn);
+			if (socketChannel != null) {
+				try {
+					TerminalManager.getCardSNToChangeCard(socketChannel, device, section);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 
 	/**
