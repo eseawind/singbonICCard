@@ -12,7 +12,7 @@ public class User implements Serializable {
 
 	private static final long serialVersionUID = -4349415810057681133L;
 
-	String[] statusDescList = { "未发卡", "正常卡", "挂失", "异常卡" };
+	String[] statusDescList = { "未发卡", "正常", "挂失", "未开户或注销", "异常" };
 
 	// 卡基本信息
 	// 用户帐号
@@ -60,7 +60,7 @@ public class User implements Serializable {
 	// 制卡日期
 	private Date cardMakeDate;
 	// 卡总额
-	private Integer cardTotalFare;
+	private Integer totalFare;
 	// 卡状态
 	private Integer status;
 	// 卡状态描述
@@ -68,25 +68,25 @@ public class User implements Serializable {
 
 	// 大钱包内容
 	// 卡余额
-	private Integer cardOddFare;
+	private Integer oddFare;
 	// 上次消费时间
 	private Date lastConsumeTime;
 	// 当日操作金额
 	private Integer daySumFare;
 	// 卡操作计数器(大钱包)
-	private Integer cardOPCounter;
+	private Integer opCount;
 
 	// 小钱包内容
 	// 卡补助余额
-	private Integer cardOddSubsidy;
+	private Integer subsidyOddFare;
 	// 上次补助消费时间
 	private Date lastSubsidyConsumeTime;
 	// 当日补助操作金额
-	private Integer daySumSubsidy;
+	private Integer subsidyDaySum;
 	// 卡操作计数器(小钱包)
-	private Integer subsidyCardOPCounter;
-	// 补助计数器
-	private Integer subsidyTimesCounter;
+	private Integer subsidyOpCount;
+	// 补助版本
+	private Integer subsidyVersion;
 	// 补助失效日期
 	private Date subsidyInvalidDate;
 
@@ -270,14 +270,6 @@ public class User implements Serializable {
 		this.invalidDate = invalidDate;
 	}
 
-	public Integer getCardTotalFare() {
-		return cardTotalFare;
-	}
-
-	public void setCardTotalFare(Integer cardTotalFare) {
-		this.cardTotalFare = cardTotalFare;
-	}
-
 	public Integer getStatus() {
 		return status;
 	}
@@ -292,14 +284,6 @@ public class User implements Serializable {
 
 	public void setStatusDesc(String statusDesc) {
 		this.statusDesc = statusDesc;
-	}
-
-	public Integer getCardOddFare() {
-		return cardOddFare;
-	}
-
-	public void setCardOddFare(Integer cardOddFare) {
-		this.cardOddFare = cardOddFare;
 	}
 
 	public Date getLastConsumeTime() {
@@ -318,22 +302,6 @@ public class User implements Serializable {
 		this.daySumFare = daySumFare;
 	}
 
-	public Integer getCardOPCounter() {
-		return cardOPCounter;
-	}
-
-	public void setCardOPCounter(Integer cardOPCounter) {
-		this.cardOPCounter = cardOPCounter;
-	}
-
-	public Integer getCardOddSubsidy() {
-		return cardOddSubsidy;
-	}
-
-	public void setCardOddSubsidy(Integer cardOddSubsidy) {
-		this.cardOddSubsidy = cardOddSubsidy;
-	}
-
 	public Date getLastSubsidyConsumeTime() {
 		return lastSubsidyConsumeTime;
 	}
@@ -342,28 +310,12 @@ public class User implements Serializable {
 		this.lastSubsidyConsumeTime = lastSubsidyConsumeTime;
 	}
 
-	public Integer getDaySumSubsidy() {
-		return daySumSubsidy;
+	public Integer getSubsidyVersion() {
+		return subsidyVersion;
 	}
 
-	public void setDaySumSubsidy(Integer daySumSubsidy) {
-		this.daySumSubsidy = daySumSubsidy;
-	}
-
-	public Integer getSubsidyCardOPCounter() {
-		return subsidyCardOPCounter;
-	}
-
-	public void setSubsidyCardOPCounter(Integer subsidyCardOPCounter) {
-		this.subsidyCardOPCounter = subsidyCardOPCounter;
-	}
-
-	public Integer getSubsidyTimesCounter() {
-		return subsidyTimesCounter;
-	}
-
-	public void setSubsidyTimesCounter(Integer subsidyTimesCounter) {
-		this.subsidyTimesCounter = subsidyTimesCounter;
+	public void setSubsidyVersion(Integer subsidyVersion) {
+		this.subsidyVersion = subsidyVersion;
 	}
 
 	public Date getSubsidyInvalidDate() {
@@ -392,6 +344,54 @@ public class User implements Serializable {
 
 	public void setCardMakeDate(Date cardMakeDate) {
 		this.cardMakeDate = cardMakeDate;
+	}
+
+	public Integer getTotalFare() {
+		return totalFare;
+	}
+
+	public void setTotalFare(Integer totalFare) {
+		this.totalFare = totalFare;
+	}
+
+	public Integer getOddFare() {
+		return oddFare;
+	}
+
+	public void setOddFare(Integer oddFare) {
+		this.oddFare = oddFare;
+	}
+
+	public Integer getOpCount() {
+		return opCount;
+	}
+
+	public void setOpCount(Integer opCount) {
+		this.opCount = opCount;
+	}
+
+	public Integer getSubsidyOddFare() {
+		return subsidyOddFare;
+	}
+
+	public void setSubsidyOddFare(Integer subsidyOddFare) {
+		this.subsidyOddFare = subsidyOddFare;
+	}
+
+	public Integer getSubsidyDaySum() {
+		return subsidyDaySum;
+	}
+
+	public void setSubsidyDaySum(Integer subsidyDaySum) {
+		this.subsidyDaySum = subsidyDaySum;
+	}
+
+	public Integer getSubsidyOpCount() {
+		return subsidyOpCount;
+	}
+
+	public void setSubsidyOpCount(Integer subsidyOpCount) {
+		this.subsidyOpCount = subsidyOpCount;
 	}
 
 }

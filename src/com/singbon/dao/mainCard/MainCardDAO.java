@@ -47,6 +47,14 @@ public interface MainCardDAO {
 	public User selectById(@Param("userId") Integer userId);
 
 	/**
+	 * 根据主键和物理卡号查询人员
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public User selectByUserIdCardSN(@Param("companyId") Integer companyId, @Param("userId") Integer userId, @Param("cardSN") String cardSN);
+
+	/**
 	 * 人员列表
 	 * 
 	 * @param deptId
@@ -121,5 +129,14 @@ public interface MainCardDAO {
 	 * @param cardSN
 	 */
 	public void changeNewCard(@Param("userId") Integer userId, @Param("cardNO") Integer cardNO, @Param("cardSN") String cardSN) throws Exception;
+
+	/**
+	 * 按卡修正
+	 * 
+	 * @param userId
+	 * @param cardNO
+	 * @param cardSN
+	 */
+	public void updateByCard(User user) throws Exception;
 
 }

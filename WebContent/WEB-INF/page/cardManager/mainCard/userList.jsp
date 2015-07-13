@@ -79,6 +79,10 @@
 			},
 			'batch' : function(t, target) {
 			},
+			'readCard' : function(t, target) {
+				var url = "${base}/readCard.do";
+				$.pdialog.open(url, "dialog", "读卡修正", cardOptions);
+			},
 			'loss' : function(t, target) {
 				if($(t).attr("status")==1){
 					var url = "${base}/changeCard.do?editType=0&userId="
@@ -162,6 +166,7 @@
 		<li id="infoCard">信息发卡</li>
 		<li id="batch">批量发卡</li>
 		<li class="divide" />
+		<li id="readCard">读卡</li>
 		<li id="loss">挂失</li>
 		<li id="unloss">解挂</li>
 		<li id="remakeCard">补卡</li>

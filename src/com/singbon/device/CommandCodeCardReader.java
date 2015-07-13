@@ -29,8 +29,12 @@ public class CommandCodeCardReader {
 	 */
 	public static byte ReadOldCard = 0x05;
 	/**
-	 * 换卡换新卡 0x05
+	 * 换卡换新卡 0x06
 	 */
 	public static byte ChangeNewCard = 0x06;
+	/**
+	 * 读卡修正 0x07
+	 */
+	public static byte ReadCard = 0x07;
 
 }

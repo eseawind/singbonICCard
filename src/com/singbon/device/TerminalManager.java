@@ -159,20 +159,17 @@ public class TerminalManager {
 		return sn;
 	}
 
-	// 获取userId
-	private String getUserId(byte[] b) {
-		String userId = "";
-		for (int i = 36; i < 39; i++) {
-			String hex = Integer.toHexString(b[i] & 0xFF);
-			userId += hex;
-		}
-		return userId;
-	}
-
-	// cardAllInfo
-	private String cardAllInfo(byte[] b) {
+	/**
+	 * 获取卡字节数据
+	 * 
+	 * @param begin
+	 * @param end
+	 * @param b
+	 * @return
+	 */
+	private String cardInfo(int begin, int end, byte[] b) {
 		String baseInfoStr = "";
-		for (int i = 33; i < b.length; i++) {
+		for (int i = begin; i <= end; i++) {
 			String hex = Integer.toHexString(b[i] & 0xFF);
 			if (hex.length() == 1) {
 				hex = '0' + hex;
@@ -247,8 +244,14 @@ public class TerminalManager {
 				map.put("'f1'", FrameCardReader.ChangeNewCardDone);
 				map.put("'r'", b35);
 			}
+			// 读卡修正完成
+			else if (commandCode == CommandCodeCardReader.ReadCard) {
+				map.put("'f1'", FrameCardReader.ReadCardDone);
+				map.put("'r'", b35);
+			}
 			// 读卡回复
 		} else if (Arrays.equals(frameByte, new byte[] { 0x03, (byte) 0xcd, 0x00, 0x01 })) {
+			int baseLen = 33;
 			// 发送单个发卡命令
 			if (commandCode == CommandCodeCardReader.SingleCard) {
 				map.put("'f1'", FrameCardReader.SingleCardCmd);
@@ -265,9 +268,9 @@ public class TerminalManager {
 			else if (commandCode == CommandCodeCardReader.Unloss) {
 				map.put("'f1'", FrameCardReader.UnlossCmd);
 				map.put("'r'", b35);
-				map.put("'cardInfoStr'", cardAllInfo(b));
+				map.put("'cardInfoStr'", cardInfo(33, b.length - 1, b));
 				map.put("'cardSN'", cardSN);
-				map.put("'userId'", Integer.parseInt(getUserId(b), 16));
+				map.put("'userId'", Integer.parseInt(cardInfo(baseLen + 3, baseLen + 3 + 2, b), 16));
 			}
 			// 发补卡命令
 			else if (commandCode == CommandCodeCardReader.RemakeCard) {
@@ -280,14 +283,52 @@ public class TerminalManager {
 				map.put("'f1'", FrameCardReader.ReadOldCardCmd);
 				map.put("'r'", b35);
 				map.put("'cardSN'", cardSN);
-				map.put("'userId'", Integer.parseInt(getUserId(b), 16));
-				map.put("'cardInfoStr'", cardAllInfo(b));
+				map.put("'userId'", Integer.parseInt(cardInfo(baseLen + 3, baseLen + 3 + 2, b), 16));
+				map.put("'cardInfoStr'", cardInfo(33, b.length - 1, b));
 			}
 			// 换卡换新卡命令
 			else if (commandCode == CommandCodeCardReader.ChangeNewCard) {
 				map.put("'f1'", FrameCardReader.ChangeNewCardCmd);
 				map.put("'r'", b35);
 				map.put("'newCardSN'", cardSN);
+			}
+			// 读卡修正命令
+			else if (commandCode == CommandCodeCardReader.ReadCard) {
+				map.put("'f1'", FrameCardReader.ReadCardCmd);
+				map.put("'r'", b35);
+				map.put("'cardSN'", cardSN);
+				int base0 = baseLen + 3;
+				map.put("'userId'", Integer.parseInt(cardInfo(base0, base0 + 2, b), 16));
+				map.put("'cardNO'", Integer.parseInt(cardInfo(base0 + 3, base0 + 5, b), 16));
+				map.put("'invalidDate'", StringUtil.dateFromHexString(cardInfo(base0 + 11, base0 + 12, b)));
+				int status = Integer.parseInt(cardInfo(base0 + 13, base0 + 13, b), 16);
+				String statusDesc = "正常";
+				if (status == 241) {
+					statusDesc = "正常";
+				} else if (status == 242) {
+					statusDesc = "未开户或注销";
+				} else if (status == 243) {
+					statusDesc = "挂失";
+				} else {
+					statusDesc = "异常";
+				}
+
+				map.put("'status'", status);
+				map.put("'statusDesc'", statusDesc);
+
+				int base2 = baseLen + 19 + 3;
+				map.put("'cardSeq'", Integer.parseInt(cardInfo(base2 + 4, base2 + 4, b), 16));
+				map.put("'cardType'", Integer.parseInt(cardInfo(base2 + 5, base2 + 5, b), 16));
+				map.put("'totalFare'", (float) Integer.parseInt(cardInfo(base2 + 10, base2 + 13, b), 16) / 100);
+
+				int consume0 = baseLen + 19 * 2 + 3;
+				map.put("'opCount'", Integer.parseInt(cardInfo(consume0, consume0 + 1, b), 16));
+				map.put("'oddFare'", (float) Integer.parseInt(cardInfo(consume0 + 3, consume0 + 5, b), 16) / 100);
+
+				int subsidy0 = baseLen + 19 * 3 + 3;
+				map.put("'subsidyOpCount'", (float) Integer.parseInt(cardInfo(subsidy0, subsidy0 + 1, b), 16) / 100);
+				map.put("'subsidyOddFare'", (float) Integer.parseInt(cardInfo(subsidy0 + 2, subsidy0 + 4, b), 16) / 100);
+				map.put("'subsidyVersion'", Integer.parseInt(cardInfo(subsidy0 + 7, subsidy0 + 7, b), 16));
 			}
 		}
 		if (map.size() > 0) {
@@ -331,86 +372,29 @@ public class TerminalManager {
 	}
 
 	/**
-	 * 先获取物理卡号后发卡
+	 * 先获取卡信息后操作
 	 * 
 	 * @param socketChannel
 	 * @param device
 	 * @param commandCode
-	 * @param section
+	 * @param sectionBlocks
 	 * @throws IOException
 	 */
-	public static void getCardSNToMakeCard(SocketChannel socketChannel, Device device, int commandCode, int section) throws IOException {
-		String deviceNum = StringUtil.leftPad(device.getDeviceNum(), 8);
-		String commandCodeStr = StringUtil.leftPad(commandCode, 4);
-		String sectionStr = StringUtil.leftPad(section, 2);
-		String buf = device.getSn() + deviceNum + "0020" + CommandCardReader.ReadCard + commandCodeStr + CommandCardReader.NoValidateCardSN + "44444444" + sectionStr
-				+ "0000000000000000000000000000000000000000";
-		byte[] sendBuf = StringUtil.strTobytes(buf);
-		CRC16.generate(sendBuf);
-		ByteBuffer byteBuffer = ByteBuffer.wrap(sendBuf);
-		socketChannel.write(byteBuffer);
-	}
-
-	/**
-	 * 先获取基本信息后解挂
-	 * 
-	 * @param socketChannel
-	 * @param section
-	 *            扇区号
-	 * @throws IOException
-	 */
-	public static void getBaseCardInfoToUnloss(SocketChannel socketChannel, Device device, int section) throws IOException {
-		String deviceNum = StringUtil.leftPad(device.getDeviceNum(), 8);
-		String sectionStr = StringUtil.leftPad(section, 2);
-		String commandCodeStr = StringUtil.leftPad(CommandCodeCardReader.Unloss, 4);
-		String buf = device.getSn() + deviceNum + "0020" + CommandCardReader.ReadCard + commandCodeStr + CommandCardReader.NoValidateCardSN + "44444444" + sectionStr
-				+ "0000000000000000000000000000000000000000";
-		byte[] sendBuf = StringUtil.strTobytes(buf);
-		CRC16.generate(sendBuf);
-		ByteBuffer byteBuffer = ByteBuffer.wrap(sendBuf);
-		socketChannel.write(byteBuffer);
-	}
-
-	/**
-	 * 先获取原卡信息后换卡
-	 * 
-	 * @param socketChannel
-	 * @param section
-	 *            扇区号
-	 * @throws IOException
-	 */
-	public static void getOldCardInfoToChangeCard(SocketChannel socketChannel, Device device, int section) throws IOException {
-		String deviceNum = StringUtil.leftPad(device.getDeviceNum(), 8);
-		String baseSectionStr = StringUtil.leftPad(section, 2);
-		String consumeSectionStr = StringUtil.leftPad(section + 1, 2);
-		String subsidySectionStr = StringUtil.leftPad(section + 2, 2);
-		String commandCodeStr = StringUtil.leftPad(CommandCodeCardReader.ReadOldCard, 4);
-		String sendBufStr = CommandCardReader.ReadCard + commandCodeStr + CommandCardReader.NoValidateCardSN + "44444444" + baseSectionStr + "000000000000000000000000000000000000" + baseSectionStr
-				+ "010000000000000000000000000000000000" + baseSectionStr + "020000000000000000000000000000000000" + consumeSectionStr + "000000000000000000000000000000000000" + subsidySectionStr
-				+ "000000000000000000000000000000000000" + "0000";
-		String bufLen = StringUtil.leftPad(2 + sendBufStr.length() / 2, 4);
+	public static void getCardInfo(SocketChannel socketChannel, Device device, byte commandCode, List<Integer> sectionBlocks) throws IOException {
+		String deviceNum = StringUtil.hexLeftPad(device.getDeviceNum(), 8);
+		String commandCodeStr = StringUtil.hexLeftPad(commandCode, 4);
+		String sendBufStr = CommandCardReader.ReadCard + commandCodeStr + CommandCardReader.NoValidateCardSN + "44444444";
+		for (int i : sectionBlocks) {
+			int section = i / 10;
+			int block = i % 10;
+			String sectionStr = StringUtil.hexLeftPad(section, 2);
+			String blockStr = StringUtil.hexLeftPad(block, 2);
+			sendBufStr += sectionStr + blockStr + "0000000000000000000000000000000000";
+		}
+		sendBufStr += "0000";
+		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
 		sendBufStr = device.getSn() + deviceNum + bufLen + sendBufStr;
 		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
-		CRC16.generate(sendBuf);
-		ByteBuffer byteBuffer = ByteBuffer.wrap(sendBuf);
-		socketChannel.write(byteBuffer);
-	}
-
-	/**
-	 * 先获取物理卡号后换新卡
-	 * 
-	 * @param socketChannel
-	 * @param section
-	 *            扇区号
-	 * @throws IOException
-	 */
-	public static void getCardSNToChangeCard(SocketChannel socketChannel, Device device, int section) throws IOException {
-		String deviceNum = StringUtil.leftPad(device.getDeviceNum(), 8);
-		String sectionStr = StringUtil.leftPad(section, 2);
-		String commandCodeStr = StringUtil.leftPad(CommandCodeCardReader.ChangeNewCard, 4);
-		String buf = device.getSn() + deviceNum + "0020" + CommandCardReader.ReadCard + commandCodeStr + CommandCardReader.NoValidateCardSN + "44444444" + sectionStr
-				+ "0000000000000000000000000000000000000000";
-		byte[] sendBuf = StringUtil.strTobytes(buf);
 		CRC16.generate(sendBuf);
 		ByteBuffer byteBuffer = ByteBuffer.wrap(sendBuf);
 		socketChannel.write(byteBuffer);
