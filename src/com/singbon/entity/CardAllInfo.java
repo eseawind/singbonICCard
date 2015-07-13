@@ -25,6 +25,8 @@ public class CardAllInfo implements Serializable {
 	private Integer giveCash;
 	// 限次时间段定义
 	private Integer[] LimitPeriods;
+	// 补助限次时间段定义
+	private Integer[] SubsidyLimitPeriods;
 
 	public Integer getCardBatch() {
 		return cardBatch;
@@ -88,6 +90,14 @@ public class CardAllInfo implements Serializable {
 
 	public void setGiveCash(Integer giveCash) {
 		this.giveCash = giveCash;
+	}
+
+	public Integer[] getSubsidyLimitPeriods() {
+		return SubsidyLimitPeriods;
+	}
+
+	public void setSubsidyLimitPeriods(Integer[] subsidyLimitPeriods) {
+		SubsidyLimitPeriods = subsidyLimitPeriods;
 	}
 
 }

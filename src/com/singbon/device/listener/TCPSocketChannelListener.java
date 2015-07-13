@@ -112,15 +112,15 @@ public class TCPSocketChannelListener implements ServletContextListener {
 					return;
 				}
 
-				if (b[23] == (byte) 0xff && b[24] == (byte) 0xaa) {
-					System.out.println(11);
-				}
-
 				byteBuffer.clear();
 
 				// 分发数据
 				TerminalManager s = new TerminalManager();
-				s.dispatchCardReaderCommand(selectionKey, b);
+				try {
+					s.dispatchCardReaderCommand(selectionKey, b);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			} else {
 				// 输入结束，关闭 socketChannel
 				String uuid = selectionKey.attachment().toString();

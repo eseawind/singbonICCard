@@ -64,5 +64,13 @@ public class FrameCardReader {
 	 * 换卡换新卡完成 0x0d
 	 */
 	public static byte ChangeNewCardDone = 0x0d;
+	/**
+	 * 读卡修正命令 0x0e
+	 */
+	public static byte ReadCardCmd = 0x0e;
+	/**
+	 * 读卡修正完成 0x0f
+	 */
+	public static byte ReadCardDone = 0x0f;
 
 }

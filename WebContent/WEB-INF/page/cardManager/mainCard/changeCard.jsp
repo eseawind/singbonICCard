@@ -121,6 +121,8 @@
 					if(e2.r==1){
 						var userId= $("#userinfo input[name=userId]").val();
 						var cardSN= $("#userinfo input[name=cardSN]").val();
+						
+// 						alert(userId+" "+e2.userId +" "+ cardSN+" "+e2.cardSN);
 						if(userId==e2.userId && cardSN==e2.cardSN){
 							$("#userinfo input[name=cardInfoStr]").val(e2.cardInfoStr);
 							validateCallback($("#userinfo"), function(e) {

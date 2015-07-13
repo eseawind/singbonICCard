@@ -47,6 +47,14 @@ public interface MainCardDAO {
 	public User selectById(@Param("userId") Integer userId);
 
 	/**
+	 * 根据主键和物理卡号查询人员
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public User selectByUserIdCardSN(@Param("companyId") Integer companyId, @Param("userId") Integer userId, @Param("cardSN") String cardSN);
+
+	/**
 	 * 人员列表
 	 * 
 	 * @param deptId
