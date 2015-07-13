@@ -66,7 +66,7 @@ public class MainCardService {
 	public User selectById(Integer userId) {
 		return this.mainCardDAO.selectById(userId);
 	}
-
+	
 	/**
 	 * 根据主键和物理卡号查询人员
 	 * 

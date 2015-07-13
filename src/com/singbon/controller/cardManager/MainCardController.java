@@ -818,5 +818,4 @@ public class MainCardController extends BaseController {
 			}
 		}
 	}
-
 }
