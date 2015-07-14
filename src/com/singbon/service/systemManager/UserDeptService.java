@@ -55,7 +55,8 @@ public class UserDeptService {
 	 * 
 	 * @return
 	 */
-	public List<UserDept> selectByParentId(Integer parentId) {
+	@SuppressWarnings("rawtypes")
+	public List selectByParentId(Integer parentId) {
 		if (parentId == null) {
 			parentId = 0;
 		}
@@ -67,7 +68,8 @@ public class UserDeptService {
 	 * 
 	 * @return
 	 */
-	public List<UserDept> selectTreeList(Integer companyId) {
+	@SuppressWarnings("rawtypes")
+	public List selectTreeList(Integer companyId) {
 		return this.userDeptDAO.selectTreeList(companyId);
 	}
 }

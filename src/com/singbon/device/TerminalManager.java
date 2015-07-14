@@ -89,10 +89,6 @@ public class TerminalManager {
 		TerminalManager.cmdList = cmdList;
 	}
 
-	private int btoInt(byte b) {
-		return b & 0xff;
-	}
-
 	/**
 	 * 注册通道
 	 * 

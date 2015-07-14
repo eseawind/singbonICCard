@@ -2,8 +2,6 @@ package com.singbon.dao;
 
 import java.util.List;
 
-import org.springframework.stereotype.Repository;
-
 /**
  * 基础数据库操作类
  * 
@@ -42,6 +40,7 @@ public interface BaseDAO {
 	 * @param obj
 	 * @return
 	 */
+	@SuppressWarnings("rawtypes")
 	public List list(String hql, List<Object> paras);
 
 	/**

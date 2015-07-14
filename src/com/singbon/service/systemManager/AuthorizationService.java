@@ -73,6 +73,7 @@ public class AuthorizationService {
 	 * 
 	 * @return
 	 */
+	@SuppressWarnings("rawtypes")
 	public List<Map> selectUserGroupList(Integer companyId) {
 		return this.authorizationDAO.selectUserGroupList(companyId);
 	}

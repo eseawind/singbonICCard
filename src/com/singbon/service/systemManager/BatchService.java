@@ -2,13 +2,11 @@ package com.singbon.service.systemManager;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.singbon.dao.systemManager.BatchDAO;
 import com.singbon.entity.Batch;
-import com.singbon.entity.Company;
 
 /**
  * 批次业务层

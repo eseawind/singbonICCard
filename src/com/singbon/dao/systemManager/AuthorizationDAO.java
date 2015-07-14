@@ -57,6 +57,7 @@ public interface AuthorizationDAO {
 	 * 
 	 * @return
 	 */
+	@SuppressWarnings("rawtypes")
 	public List<Map> selectUserGroupList(@Param("companyId") Integer companyId);
 	
 

@@ -4,15 +4,11 @@ import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
 import java.nio.channels.DatagramChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.charset.Charset;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -42,7 +38,6 @@ public class UDPSocketChannelListener implements ServletContextListener {
 			e.printStackTrace();
 		}
 
-		int i = 0;
 		ByteBuffer byteBuffer = ByteBuffer.allocate(65536);
 		while (true) {
 			try {
@@ -57,29 +52,7 @@ public class UDPSocketChannelListener implements ServletContextListener {
 						DatagramChannel datagramChannel = (DatagramChannel) sk.channel();
 						SocketAddress sa = datagramChannel.receive(byteBuffer);
 						byteBuffer.flip();
-						// System.out.print(++i);
-						// System.out.println(sa);
-						// 测试：通过将收到的ByteBuffer首先通过缺省的编码解码成CharBuffer 再输出
-						String s = new String(byteBuffer.array()).trim();
-
-						// datagramChannel.w
-						// CharBuffer charBuffer = Charset.defaultCharset()
-						// .decode(byteBuffer);
-						// String k = charBuffer.toString();
-						// if
-						// (!"11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 12"
-						// .equals(s)) {
-						// continue;
-						// }
-						// int n = 0;
-						// if (TerminalManager.list.containsKey(sa)) {
-						// n = TerminalManager.list.get(sa) + 1;
-						// }
-						// TerminalManager.list.put(sa, n);
-						// byteBuffer.clear();
-
-						// System.out.println(sa + " " + n);
-						//
+						
 						String echo = "This is the reply messageThis is the reply messageThis is the reply messageThis is the reply message";
 						ByteBuffer buffer = Charset.defaultCharset().encode(echo);
 						datagramChannel.send(buffer, sa);
@@ -163,6 +136,7 @@ public class UDPSocketChannelListener implements ServletContextListener {
 	// }
 	// }
 
+	@SuppressWarnings("unused")
 	private void removeSockeckChannel(String uuid) {
 		if (TerminalManager.getUuidToSNList().containsKey(uuid)) {
 			String sn = TerminalManager.getUuidToSNList().get(uuid);

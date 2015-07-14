@@ -7,6 +7,7 @@ import java.io.Serializable;
 //@author 郝威
 //
 
+@SuppressWarnings("serial")
 public class CardAllInfo implements Serializable {
 
 	// 卡批次号

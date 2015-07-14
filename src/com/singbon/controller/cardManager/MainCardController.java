@@ -92,6 +92,7 @@ public class MainCardController extends BaseController {
 	 * @param request
 	 * @param model
 	 */
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/treeList.do")
 	public String treeList(HttpServletRequest request, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
@@ -109,7 +110,6 @@ public class MainCardController extends BaseController {
 	 */
 	@RequestMapping(value = "/list.do", method = RequestMethod.GET)
 	public String userList(HttpServletRequest request, Integer deptId, String searchStr, Model model) throws Exception {
-		Company company = (Company) request.getSession().getAttribute("company");
 		if ("".equals(searchStr) || "null".equals(searchStr)) {
 			searchStr = null;
 		}
@@ -133,9 +133,9 @@ public class MainCardController extends BaseController {
 	 * @param model
 	 * @return
 	 */
+	@SuppressWarnings("unused")
 	@RequestMapping(value = "/userInfo.do", method = RequestMethod.GET)
 	public String userInfo(Integer userId, Integer deptId, Integer batchId, Integer editType, HttpServletRequest request, Model model) {
-		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
 		Company company = (Company) request.getSession().getAttribute("company");
 		Device device = (Device) request.getSession().getAttribute("device");
 		String sn = device.getSn();
@@ -214,6 +214,7 @@ public class MainCardController extends BaseController {
 	 * @param sn
 	 * @return
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private int getCardSNCount(int companyId, String cardSN, String sn) {
 		int cardSNCount = this.mainCardService.selectCountByCardSN(companyId, cardSN);
 		if (cardSNCount > 0) {
@@ -240,7 +241,6 @@ public class MainCardController extends BaseController {
 	 * @param response
 	 * @param model
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value = "/addEdit.do", method = RequestMethod.POST)
 	public void addEdit(@ModelAttribute User user, @ModelAttribute CardAllInfo cardAllInfo, Integer editType, Integer batchId, String cardSN, HttpServletRequest request, HttpServletResponse response,
 			Model model) {
@@ -413,11 +413,9 @@ public class MainCardController extends BaseController {
 	 * @return
 	 * @throws IOException
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value = "/command.do", method = RequestMethod.POST)
 	public void command(String comm, HttpServletRequest request, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
-		SysUser user = (SysUser) request.getSession().getAttribute("sysUser");
 		Device device = (Device) request.getSession().getAttribute("device");
 		String sn = device.getSn();
 		int section = TerminalManager.getSection(company.getId());
@@ -587,11 +585,9 @@ public class MainCardController extends BaseController {
 	 * @param model
 	 * @return
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value = "/doChangeCard.do", method = RequestMethod.POST)
 	public void doChangeCard(Integer userId, Integer editType, Integer lossReason, String cardSN, String newCardSN, String cardInfoStr, HttpServletRequest request, HttpServletResponse response,
 			Model model) {
-		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
 		Company company = (Company) request.getSession().getAttribute("company");
 		Device device = (Device) request.getSession().getAttribute("device");
 		String sn = device.getSn();

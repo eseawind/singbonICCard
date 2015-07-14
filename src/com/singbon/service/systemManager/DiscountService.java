@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.singbon.dao.systemManager.DiscountDAO;
 import com.singbon.entity.Discount;
-import com.singbon.entity.Company;
 
 /**
  * 优惠方案业务层

@@ -127,6 +127,7 @@ public class AuthorizationController extends BaseController {
 	 * @param module
 	 * @return
 	 */
+	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/userIndex.do")
 	public String userIndex(HttpServletRequest request, Model model) {
 		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
@@ -152,8 +153,6 @@ public class AuthorizationController extends BaseController {
 	 */
 	@RequestMapping(value = "/saveUser.do")
 	public void saveUser(Integer userId, String groupIds, HttpServletRequest request, HttpServletResponse response, Model model) {
-		Company company = (Company) request.getSession().getAttribute("company");
-
 		PrintWriter p = null;
 		try {
 			p = response.getWriter();

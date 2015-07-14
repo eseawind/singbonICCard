@@ -58,6 +58,7 @@ public class TCPSocketChannelListener implements ServletContextListener {
 
 	int i = 0;
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void handleSelectionKey(SelectionKey selectionKey) throws Exception {
 		if (selectionKey.isAcceptable()) {
 			ServerSocketChannel ssc = (ServerSocketChannel) selectionKey.channel();

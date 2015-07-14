@@ -5,13 +5,11 @@ import java.util.List;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.singbon.device.TerminalManager;
 import com.singbon.entity.Device;
-import com.singbon.service.CardManagerService;
 import com.singbon.service.systemManager.DeviceService;
 
 /**
@@ -21,9 +19,6 @@ import com.singbon.service.systemManager.DeviceService;
  * 
  */
 public class SystemListener implements ServletContextListener {
-
-	@Autowired
-	CardManagerService userService;
 
 	@Override
 	public void contextDestroyed(ServletContextEvent arg0) {

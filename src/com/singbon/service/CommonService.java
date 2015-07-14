@@ -23,6 +23,7 @@ public class CommonService {
 	public void addUser() {
 	}
 
+	@SuppressWarnings("rawtypes")
 	public List getUserDeptList(Company company) {
 		return null;
 	}

@@ -38,6 +38,7 @@ public class User implements Serializable {
 	// 性别
 	private Integer sex;
 	// 性别描述
+	@SuppressWarnings("unused")
 	private String sexDesc;
 	// 卡型号(0~15类卡)
 	private Integer cardType;
@@ -64,6 +65,7 @@ public class User implements Serializable {
 	// 卡状态
 	private Integer status;
 	// 卡状态描述
+	@SuppressWarnings("unused")
 	private String statusDesc;
 
 	// 大钱包内容

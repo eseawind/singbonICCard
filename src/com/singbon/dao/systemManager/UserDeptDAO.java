@@ -43,6 +43,7 @@ public interface UserDeptDAO {
 	 * 
 	 * @return
 	 */
+	@SuppressWarnings("rawtypes")
 	public List selectTreeList(@Param("companyId") Integer companyId);
 
 	/**
@@ -50,6 +51,7 @@ public interface UserDeptDAO {
 	 * 
 	 * @return
 	 */
-	public List<UserDept> selectByParentId(@Param("parentId") Integer parentId);
+	@SuppressWarnings("rawtypes")
+	public List selectByParentId(@Param("parentId") Integer parentId);
 
 }

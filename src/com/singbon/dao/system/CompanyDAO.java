@@ -2,7 +2,6 @@ package com.singbon.dao.system;
 
 import java.util.List;
 
-import com.singbon.entity.Batch;
 import com.singbon.entity.Company;
 
 /**

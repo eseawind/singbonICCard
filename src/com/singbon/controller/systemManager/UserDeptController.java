@@ -67,6 +67,7 @@ public class UserDeptController {
 	 * @param request
 	 * @param model
 	 */
+	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/delete.do")
 	public void delete(HttpServletRequest request, HttpServletResponse response, Model model, Integer id) {
 
@@ -93,6 +94,7 @@ public class UserDeptController {
 	 * @param request
 	 * @param model
 	 */
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/treeList.do")
 	public String treeList(HttpServletRequest request, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
@@ -108,6 +110,7 @@ public class UserDeptController {
 	 * @param request
 	 * @param model
 	 */
+	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/list.do")
 	public String list(HttpServletRequest request, Model model, Integer parentId) {
 

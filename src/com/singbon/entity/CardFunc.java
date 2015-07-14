@@ -1,7 +1,6 @@
 package com.singbon.entity;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * 卡功能

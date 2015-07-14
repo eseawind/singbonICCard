@@ -35,7 +35,6 @@
 				alertMsg.warn('读卡机当前处于离线状态不能读卡！');
 			}
 		});
-<<<<<<< HEAD
 		$("#userinfo .update").click(function() {
 			if(isOnline){
 				validateCallback($("#userinfo"), function(e) {
