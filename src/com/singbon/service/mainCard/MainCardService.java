@@ -76,6 +76,17 @@ public class MainCardService {
 	public User selectByUserIdCardSN(Integer companyId, Integer userId, String cardSN) {
 		return this.mainCardDAO.selectByUserIdCardSN(companyId, userId, cardSN);
 	}
+	
+	/**
+	 * 根据部门查询未发卡人员
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	public List selectNoCardByDeptId(Integer deptId) {
+		return this.mainCardDAO.selectNoCardByDeptId(deptId);
+	}
 
 	/**
 	 * 以物理卡号查询绑定数量

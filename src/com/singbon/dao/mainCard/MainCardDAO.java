@@ -55,6 +55,15 @@ public interface MainCardDAO {
 	public User selectByUserIdCardSN(@Param("companyId") Integer companyId, @Param("userId") Integer userId, @Param("cardSN") String cardSN);
 
 	/**
+	 * 根据部门查询未发卡人员
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	public List selectNoCardByDeptId(@Param("deptId") Integer deptId);
+	
+	/**
 	 * 人员列表
 	 * 
 	 * @param deptId

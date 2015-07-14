@@ -62,6 +62,14 @@
 					if ($input.val() != $this.attr("value")) {
 						$("select", box).val($this.attr("value")).trigger("change");
 					}
+					
+					var cardTypeSelect=$("select[name=cardType]");
+					if(cardTypeSelect!=null && cardTypeSelect.length==1){
+						var value=$this.attr("value");
+						var cash=cardTypeSelect.find("option[value="+value+"]").attr("cash");
+						$("#userinfo input[name=giveCash]").val(cash);
+					}
+					
 				});
 			});
 		},
@@ -78,7 +86,6 @@
 			allSelectBox = _selectBox;
 			
 			return this.each(function(i){		
-//				alert($(this).parent().find("select").attr("w"));
 				var $this = $(this).removeClass("combox");
 				var name = $this.attr("name");
 				var value= $this.val();

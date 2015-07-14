@@ -15,6 +15,17 @@
 		drawable : true,
 		fresh : false
 	};
+	var batchCardOptions = {
+		width : 850,
+		height : 500,
+		max : false,
+		mask : true,
+		mixable : false,
+		minable : false,
+		resizable : true,
+		drawable : true,
+		fresh : false
+	};
 	var userListOps = {
 		bindings : {
 			'info' : function(t, target) {
@@ -78,6 +89,17 @@
 				}
 			},
 			'batch' : function(t, target) {
+				if (selectedDeptId <= "0") {
+					alertMsg.warn('请选择部门！');
+					return;
+				}
+				if (!checkDeviceSn()) {
+					return;
+				}
+				
+				var url = "${base}/userInfo.do?editType=4&deptId="
+						+ selectedDeptId + "&batchId=" + selectedBatchId;
+				$.pdialog.open(url, "dialog", "批量发卡", batchCardOptions);
 			},
 			'readCard' : function(t, target) {
 				var url = "${base}/readCard.do";
@@ -214,9 +236,9 @@
 			</tr>
 		</thead>
 		<tbody class="userList">
-			<c:forEach var="user" items="${list}">
+			<c:forEach var="user" items="${list}" varStatus="status">
 				<tr userId="${user.userId }" status="${user.status }">
-					<td>${index+1}</td>
+					<td>${status.index+1}</td>
 					<td>${user.userNO}</td>
 					<td>${user.username}</td>
 					<td>${user.sexDesc}</td>

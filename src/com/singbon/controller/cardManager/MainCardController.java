@@ -133,7 +133,7 @@ public class MainCardController extends BaseController {
 	 * @param model
 	 * @return
 	 */
-	@SuppressWarnings("unused")
+	@SuppressWarnings({ "rawtypes", "unused" })
 	@RequestMapping(value = "/userInfo.do", method = RequestMethod.GET)
 	public String userInfo(Integer userId, Integer deptId, Integer batchId, Integer editType, HttpServletRequest request, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
@@ -201,6 +201,13 @@ public class MainCardController extends BaseController {
 			}
 		} else {
 			model.addAttribute("cardStatus", 0);
+		}
+		if (editType == 4) {
+			List list = this.mainCardService.selectNoCardByDeptId(deptId);
+			model.addAttribute("list", list);
+			if (list.size() > 0) {
+				model.addAttribute("user", list.get(0));
+			}
 		}
 
 		return StringUtil.requestPath(request, "userInfo");
@@ -281,8 +288,8 @@ public class MainCardController extends BaseController {
 				}
 			}
 		}
-		// 信息发卡
-		else if (editType == 3) {
+		// 信息发卡批量发卡
+		else if (editType == 3 || editType==4) {
 			int cardSNCount = getCardSNCount(company.getId(), user.getCardSN(), sn);
 			if (cardSNCount > 0) {
 				return;
@@ -635,8 +642,8 @@ public class MainCardController extends BaseController {
 					user.setCardSeq(user.getCardSeq() + 1);
 
 					CardAllInfo cardAllInfo = new CardAllInfo();
-					initUserInfo(user,cardAllInfo);
-					
+					initUserInfo(user, cardAllInfo);
+
 					cardAllInfo.setLimitDayFare(0);
 					cardAllInfo.setLimitTimesFare(0);
 					cardAllInfo.setLimitPeriods(new Integer[] { 0, 0, 0, 0, 0, 0 });

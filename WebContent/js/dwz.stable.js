@@ -74,6 +74,8 @@
 						authGroupClick($(this));
 					}else if(target=="authUser"){
 						authUserClick($(this));
+					}else if(target=="batchCard"){
+						batchCardClick($(this));
 					}
 					$trs.filter(".selected").removeClass("selected");
 					$tr.addClass("selected");

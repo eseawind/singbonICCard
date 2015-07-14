@@ -80,6 +80,9 @@
 						JS.Engine.stop();
 						$('#userinfo').stopTime ();
 					}
+					if(title.indexOf("批量发卡")!=-1){
+						refreshUserList();
+					}
 					$.pdialog.close(dialog);
 					return false;
 				});
@@ -133,6 +136,9 @@
 						if(title.indexOf("读卡机")!=-1){
 							JS.Engine.stop();
 							$('#userinfo').stopTime ();
+						}
+						if(title.indexOf("批量发卡")!=-1){
+							refreshUserList();
 						}
 						$.pdialog.close(dialog);
 						return false;

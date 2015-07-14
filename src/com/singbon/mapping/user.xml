@@ -45,6 +45,9 @@
 	<select id="selectByUserIdCardSN" resultMap="user">
 		select * from user where companyId=#{companyId} and userId=#{userId} and cardSN=#{cardSN}
 	</select>
+	<select id="selectNoCardByDeptId" resultMap="user">
+		select * from user where status=0 and deptId=#{deptId}
+	</select>
 	<select id="selectMaxCardNO" resultType="java.lang.Integer">
 		select ifnull(max(cardNO),0)+1 cardNO from user where companyId=#{companyId}
 	</select>

@@ -64,18 +64,43 @@
 			}
 		});
 		$("#userinfo .infoCard").click(function() {
-			alertMsg.warn($("#userinfo .infoCard").length);
-			if(isOnline){
-				$.post("${base }/command.do?comm=infoCardInit");
-			}else{
-				alertMsg.warn('读卡机当前处于离线状态不能发卡！');
-			}
+			infoCard();
+		});
+		$("#userinfo .makeCard").click(function() {
+			infoCard();
+		});
+		$("#userinfo .next").click(function() {
+			next();
 		});
 		$("#userinfo .delete").click(function() {
 			$('#userinfo').stopTime();
 		});
 	});
 
+	function infoCard(){
+		if(isOnline){
+			if($("#userinfo").valid()){
+				$.post("${base }/command.do?comm=infoCardInit");
+			}
+		}else{
+			alertMsg.warn('读卡机当前处于离线状态不能发卡！');
+		}
+	}
+	
+	function next(){
+		var userId=$("#userinfo input[name=userId]").val();
+		var list= $("#batchCardUserList tr[userId="+userId+"]").nextAll("[status=0]");
+		if(list.length>0){
+			list.eq(0).click();
+		}else{
+			$("#userinfo input[name=userId]").val("");
+			$("#userinfo input[name=cardSN]").val("");
+			$("#userinfo input[name=username]").val("");
+			$("#userinfo input[name=shortName]").val("");
+			$("#userinfo input[name=userNO]").val("");
+		}
+	}
+	
 	function init() {
 		JS.Engine.stop();
 		JS.Engine.start('/conn');
@@ -119,7 +144,6 @@
 					if(e2.r==1){
 						refreshUserList();
  						$("#userinfo").clearForm();
-						//$("#userinfo .close").click();
 						alertMsg.correct('单个发卡完成！');
 					}else{
 						opCardResult(e2.r);
@@ -136,10 +160,18 @@
 				//信息发卡完成
 				} else if (e2.f1 == 6) {
 					if(e2.r==1){
-						refreshUserList();
-// 						$("#userinfo").clearForm();
-						$("#userinfo .close").click();
-						alertMsg.correct('信息发卡完成！');
+						if("${editType}"==3){
+							refreshUserList();
+							$("#userinfo .close").click();
+							alertMsg.correct('信息发卡完成！');
+						}else{
+							var userId=$("#userinfo input[name=userId]").val();
+							var tr= $("#batchCardUserList tr[userId="+userId+"]");
+							tr.attr("status",1);
+							tr.find("div").eq(3).html("已发卡");
+							alertMsg.correct('发卡完成！');
+							next();
+						}
 					}else{
 						opCardResult(e2.r);
 					}
@@ -174,6 +206,19 @@
 		}
 		alertMsg.warn(msg);		
 	}
+	function batchCardClick(tr){
+		var status=tr.attr("status");
+		if(status==0){
+			$("#userinfo input[name=userId]").val(tr.attr("userId"));
+			$("#userinfo input[name=cardSN]").val("");
+			$("#userinfo input[name=username]").val(tr.attr("username"));
+			$("#userinfo input[name=shortName]").val(tr.attr("shortName"));
+			$("#userinfo input[name=userNO]").val(tr.attr("userNO"));
+			$("#userinfo input[name=sex][value="+tr.attr("sex")+"]").attr("checked",true);
+		}else{
+			alertMsg.warn("该用户已发卡！");		
+		}
+	}
 </script>
 <link href="/themes/css/custom.css" rel="stylesheet" type="text/css" />
 <style type="text/css">
@@ -198,6 +243,31 @@
 	left: 85px;
 }
 </style>
+<c:if test="${editType==4 }">
+	<div id="batchCardUserList" style="float: left; display: block; overflow: auto; width: 250px; line-height: 21px;padding:10px 0;">
+		<table class="table" width="108%">
+		<thead>
+			<tr>
+				<th width="50">序号</th>
+				<th width="100">姓名</th>
+				<th width="100">编号</th>
+				<th width="100">状态</th>
+			</tr>
+		</thead>
+		<tbody>
+			<c:forEach var="user" items="${list}" varStatus="status">
+				<tr target="batchCard" <c:if test="${status.index==0}">class="selected"</c:if> 
+					userId="${user.userId}" status="0" username="${user.username}" shortName="${user.shortName}" userNO="${user.userNO}" cardID="${user.cardID}" sex="${user.sex}">
+					<td>${status.index+1}</td>
+					<td>${user.username}</td>
+					<td>${user.userNO}</td>
+					<td>${user.statusDesc}</td>
+				</tr>
+			</c:forEach>
+		</tbody>
+	</table>
+	</div>
+</c:if>
 <form id="userinfo" method="post" action="${base }/addEdit.do" class="pageForm required-validate">
 	<div class="pageFormContent" layoutH="60">
 		<fieldset>
@@ -250,7 +320,7 @@
 				<dd>
 					<select class="combox" name="cardType" class="required" outerw="105" innerw="122">
 						<c:forEach items="${discountList }" var="d">
-							<option value="${d.discountType }"
+							<option value="${d.discountType }" cash=${d.giveCash }
 								<c:if test="${d.discountType==user.cardType}">selected="selected"</c:if>>${d.discountType}类卡</option>
 						</c:forEach>
 					</select>
@@ -287,7 +357,7 @@
 			<dl>
 				<dt>赠送金额：</dt>
 				<dd>
-					<input class="number" name="giveCash" type="text" value="0" />
+					<input class="number" name="giveCash" type="text" value="${discountList[0].giveCash }" />
 				</dd>
 			</dl>
 		</fieldset>
@@ -362,6 +432,18 @@
 				<li><div class="button">
 						<div class="buttonContent infoCard">
 							<button type="button">信息发卡</button>
+						</div>
+					</div></li>
+			</c:if>
+			<c:if test="${editType==4 }">
+				<li><div class="button">
+						<div class="buttonContent next">
+							<button type="button">下一个</button>
+						</div>
+					</div></li>
+				<li><div class="button">
+						<div class="buttonContent makeCard">
+							<button type="button">发卡</button>
 						</div>
 					</div></li>
 			</c:if>
