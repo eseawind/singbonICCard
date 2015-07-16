@@ -109,7 +109,7 @@ public class MainCardController extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/list.do", method = RequestMethod.GET)
-	public String userList(HttpServletRequest request, Integer deptId, String searchStr, Model model) throws Exception {
+	public String userList(HttpServletRequest request, Integer deptId, String searchStr, Model model) {
 		if ("".equals(searchStr) || "null".equals(searchStr)) {
 			searchStr = null;
 		}
@@ -851,7 +851,7 @@ public class MainCardController extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/adjustUserList.do")
-	public String adjustUserList(Integer deptId, String searchStr,Integer selectedUserId, Integer[] userIds, boolean load, HttpServletRequest request, Model model) throws Exception {
+	public String adjustUserList(Integer deptId, String searchStr, Integer selectedUserId, Integer[] userIds, boolean load, HttpServletRequest request, Model model) {
 		if ("".equals(searchStr) || "null".equals(searchStr)) {
 			searchStr = null;
 		}
@@ -864,9 +864,11 @@ public class MainCardController extends BaseController {
 		model.addAttribute("searchStr", searchStr);
 		return StringUtil.requestPath(request, "deptAdjustUserList");
 	}
-	
+
 	/**
 	 * 部门调整
+	 * 
+	 * @param adjustType
 	 * @param fromDeptId
 	 * @param toDeptId
 	 * @param selectedUserId
@@ -876,7 +878,34 @@ public class MainCardController extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/doDeptAdjust.do")
-	public void doDeptAdjust(Integer fromDeptId, Integer toDeptId, Integer selectedUserId, Integer[] userIds, HttpServletRequest request, Model model) throws Exception {
-		
+	public void doDeptAdjust(Integer adjustType, Integer fromDeptId, Integer toDeptId, Integer selectedUserId, Integer[] userIds, HttpServletRequest request, HttpServletResponse response, Model model) {
+		PrintWriter p = null;
+		try {
+			p = response.getWriter();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		if (adjustType == 0 || adjustType == 2) {
+			if (adjustType == 0) {
+				userIds = new Integer[1];
+				userIds[0] = selectedUserId;
+			}
+			try {
+				this.mainCardService.changeToNewDept(userIds, toDeptId);
+				p.print(1);
+			} catch (Exception e) {
+				p.print(0);
+				e.printStackTrace();
+			}
+		} else if (adjustType == 1) {
+			try {
+				this.mainCardService.changeFromDeptToNew(fromDeptId, toDeptId);
+				p.print(1);
+			} catch (Exception e) {
+				p.print(0);
+				e.printStackTrace();
+			}
+		}
+
 	}
 }

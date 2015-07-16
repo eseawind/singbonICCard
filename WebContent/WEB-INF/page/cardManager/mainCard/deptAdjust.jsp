@@ -19,8 +19,44 @@ $(function(){
 		}
 	});
 	$("#deptAdjustForm .ok").click(function() {
+		var adjustType=$("#deptAdjustForm input[name=adjustType]:checked").val();
+		var fromDeptId=$("#deptAdjustForm .fromDeptTree :radio:checked").val();
+		var toDeptId=$("#deptAdjustForm .toDeptTree :radio:checked").val();
+		if(adjustType==0){
+			if($("#deptAdjustForm input[name=selectedUserId]").val()==""){
+				alertMsg.warn("没有选中人员！");
+				return;								
+			}
+			if(toDeptId==null){
+				alertMsg.warn("请选择新部门！");
+				return;				
+			}
+		}else if(adjustType==1){
+			if(fromDeptId==null){
+				alertMsg.warn("请选择原部门！");
+				return;				
+			}
+			if(toDeptId==null){
+				alertMsg.warn("请选择新部门！");
+				return;				
+			}
+		}else if(adjustType==2){
+			if($("#adjustUserList input[name=userIds]").length==0){
+				alertMsg.warn("没有查询到人员！");
+				return;								
+			}
+			if(toDeptId==null){
+				alertMsg.warn("请选择新部门！");
+				return;
+			}
+		}
 		validateCallback($(this).parents("form"), function(e) {
-			
+			if(e==1){
+				refreshUserList();
+				alertMsg.correct('部门调整完成！');
+			}else{
+				alertMsg.warn('部门调整失败！');				
+			}
 		}, null);
 	});
 // 	$("#deptAdjust input:radio[name=adjustType]").click(function(){
@@ -71,7 +107,7 @@ $(function(){
 <div class="pageFormContent" style="float: left;">
 	<div layoutH="170"
 		style="float: left; overflow: auto; width: 242px; border: solid 1px #CCC; line-height: 21px; background: #fff">
-			<ul class="tree radio expand fromDeptTree" radioName="fromRadioName">
+			<ul class="tree radio expand fromDeptTree" radioName="fromDeptId">
 				<li deptId="0"><a href="javascript:;" deptId="0">原部门列表</a>
 					<ul>
 			
@@ -80,7 +116,7 @@ $(function(){
 	</div>
 	<div layoutH="170"
 		style="float: left; margin-left:10px; overflow: auto; width: 242px; border: solid 1px #CCC; line-height: 21px; background: #fff">
-			<ul class="tree radio expand toDeptTree" radioName="toRadioName">
+			<ul class="tree radio expand toDeptTree" radioName="toDeptId">
 				<li deptId="0"><a href="javascript:;" deptId="0">新部门列表</a>
 					<ul>
 			

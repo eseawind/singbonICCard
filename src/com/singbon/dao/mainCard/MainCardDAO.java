@@ -62,7 +62,7 @@ public interface MainCardDAO {
 	 */
 	@SuppressWarnings("rawtypes")
 	public List selectNoCardByDeptId(@Param("deptId") Integer deptId);
-	
+
 	/**
 	 * 人员列表
 	 * 
@@ -148,4 +148,21 @@ public interface MainCardDAO {
 	 */
 	public void updateByCard(User user) throws Exception;
 
+	/**
+	 * 指定人员调整到新部门
+	 * 
+	 * @param userId
+	 * @param toDeptId
+	 * @throws Exception
+	 */
+	public void changeToNewDept(@Param("userIds") Integer[] userIds, @Param("toDeptId") Integer toDeptId) throws Exception;
+
+	/**
+	 * 调整人员从原部门到新部门
+	 * 
+	 * @param fromDeptId
+	 * @param toDeptId
+	 * @throws Exception
+	 */
+	public void changeFromDeptToNew(@Param("fromDeptId") Integer fromDeptId, @Param("toDeptId") Integer toDeptId) throws Exception;
 }
