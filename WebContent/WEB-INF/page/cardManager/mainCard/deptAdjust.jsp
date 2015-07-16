@@ -23,7 +23,7 @@ $(function(){
 		var fromDeptId=$("#deptAdjustForm .fromDeptTree :radio:checked").val();
 		var toDeptId=$("#deptAdjustForm .toDeptTree :radio:checked").val();
 		if(adjustType==0){
-			if($("#deptAdjustForm input[name=selectedUserId]").val()==""){
+			if($("#deptAdjustForm input[name=selectedUserId]").val()==null){
 				alertMsg.warn("没有选中人员！");
 				return;								
 			}
