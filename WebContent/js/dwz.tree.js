@@ -99,6 +99,14 @@
 			var op = $.extend({icon:options.icon,ckbox:options.ckbox,exp:"", coll:"", showSub:false, level:0, options:null, isLast:false}, options);
 			return this.each(function(){
 				var node = $(this);
+				var radioClass=node.parents().find(">ul.radio");
+				var radioHtml="";
+				if(radioClass.length>0){
+					var radioName=node.parents().find("ul.radio").attr("radioName");
+					var aValue=node.find(">a").attr("value");
+					radioHtml=(aValue!=null?"<input type='radio' name='"+radioName+"' style='float:left;' value='"+aValue+"'/>":"");
+				}
+				
 				var tree = $(">ul", node);
 				var parent = node.parent().prev();
 				var checked = 'unchecked';
@@ -108,7 +116,7 @@
 				if (tree.size()>0) {
 					var expand=tree.hasClass("expand");
 					node.children(":first").wrap("<div></div>");
-					$(">div", node).prepend("<div class='" + (expand || op.showSub ? op.coll : op.exp) + "'></div>"+(op.ckbox ?"<div class='ckbox " + checked + "'></div>":"")+(op.icon?"<div class='"+ (expand || op.showSub ? op.options.folderColl : op.options.folderExp) +"'></div>":""));
+					$(">div", node).prepend("<div class='" + (expand || op.showSub ? op.coll : op.exp) + "'></div>"+radioHtml+(op.ckbox ?"<div class='ckbox " + checked + "'></div>":"")+(op.icon?"<div class='"+ (expand || op.showSub ? op.options.folderColl : op.options.folderExp) +"'></div>":""));
 					expand || op.showSub ? tree.show() : tree.hide();
 					$(">div>div:first,>div>a", node).click(function(){
 						var $fnode = $(">li:first",tree);
@@ -129,7 +137,7 @@
 					if(open || op.showSub) tree.subTree(op, op.level + 1);
 				} else {
 					node.children().wrap("<div></div>");			
-					$(">div", node).prepend("<div class='node'></div>"+(op.ckbox?"<div class='ckbox "+checked+"'></div>":"")+(op.icon?"<div class='file'></div>":""));
+					$(">div", node).prepend("<div class='node'></div>"+radioHtml+(op.ckbox?"<div class='ckbox "+checked+"'></div>":"")+(op.icon?"<div class='file'></div>":""));
 					addSpace(op.level, node);
 					if(op.isLast)$(node).addClass("last");
 				}

@@ -289,7 +289,7 @@ public class MainCardController extends BaseController {
 			}
 		}
 		// 信息发卡批量发卡
-		else if (editType == 3 || editType==4) {
+		else if (editType == 3 || editType == 4) {
 			int cardSNCount = getCardSNCount(company.getId(), user.getCardSN(), sn);
 			if (cardSNCount > 0) {
 				return;
@@ -820,5 +820,63 @@ public class MainCardController extends BaseController {
 				}
 			}
 		}
+	}
+
+	/**
+	 * 部门调整首页
+	 * 
+	 * @param userDept
+	 * @param request
+	 * @param model
+	 */
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "/deptAdjust.do")
+	public String deptAdjust(Integer userId, HttpServletRequest request, Model model) {
+		Company company = (Company) request.getSession().getAttribute("company");
+		List<UserDept> list = this.userDeptService.selectTreeList(company.getId());
+		model.addAttribute("list", list);
+		if (userId != -1) {
+			User user = this.mainCardService.selectById(userId);
+			model.addAttribute("user", user);
+		}
+		model.addAttribute("base", StringUtil.requestBase(request));
+		return StringUtil.requestPath(request, "deptAdjust");
+	}
+
+	/**
+	 * 部门调整用户列表
+	 * 
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/adjustUserList.do")
+	public String adjustUserList(Integer deptId, String searchStr,Integer selectedUserId, Integer[] userIds, boolean load, HttpServletRequest request, Model model) throws Exception {
+		if ("".equals(searchStr) || "null".equals(searchStr)) {
+			searchStr = null;
+		}
+		List<User> list = new ArrayList<User>();
+		if (load) {
+			list = this.mainCardService.selectByCondition(deptId, searchStr);
+		}
+		model.addAttribute("list", list);
+		model.addAttribute("base", StringUtil.requestBase(request));
+		model.addAttribute("searchStr", searchStr);
+		return StringUtil.requestPath(request, "deptAdjustUserList");
+	}
+	
+	/**
+	 * 部门调整
+	 * @param fromDeptId
+	 * @param toDeptId
+	 * @param selectedUserId
+	 * @param userIds
+	 * @param request
+	 * @param model
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/doDeptAdjust.do")
+	public void doDeptAdjust(Integer fromDeptId, Integer toDeptId, Integer selectedUserId, Integer[] userIds, HttpServletRequest request, Model model) throws Exception {
+		
 	}
 }
