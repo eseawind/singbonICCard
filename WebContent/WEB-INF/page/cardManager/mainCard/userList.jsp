@@ -15,6 +15,17 @@
 		drawable : true,
 		fresh : false
 	};
+	var deptAdjustOptions = {
+		width : 900,
+		height : 550,
+		max : false,
+		mask : true,
+		mixable : false,
+		minable : false,
+		resizable : true,
+		drawable : true,
+		fresh : false
+	};
 	var batchCardOptions = {
 		width : 850,
 		height : 500,
@@ -57,11 +68,12 @@
 				});
 			},
 			'dept' : function(t, target) {
-				if (selectedDeptId <= "0") {
-					alertMsg.warn('请选择部门');
-					return;
+				var userId=-1;
+				if($(t).attr("userId")!=null){
+					userId=$(t).attr("userId");
 				}
-				
+				var url = "${base}/deptAdjust.do?userId="+userId
+				$.pdialog.open(url, "dialog", "部门调整", deptAdjustOptions);
 			},
 			'single' : function(t, target) {
 				if (selectedDeptId <= "0") {

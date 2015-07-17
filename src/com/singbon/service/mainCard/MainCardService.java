@@ -66,7 +66,7 @@ public class MainCardService {
 	public User selectById(Integer userId) {
 		return this.mainCardDAO.selectById(userId);
 	}
-	
+
 	/**
 	 * 根据主键和物理卡号查询人员
 	 * 
@@ -76,7 +76,7 @@ public class MainCardService {
 	public User selectByUserIdCardSN(Integer companyId, Integer userId, String cardSN) {
 		return this.mainCardDAO.selectByUserIdCardSN(companyId, userId, cardSN);
 	}
-	
+
 	/**
 	 * 根据部门查询未发卡人员
 	 * 
@@ -133,7 +133,7 @@ public class MainCardService {
 	 * 
 	 * @return
 	 */
-	public List<User> selectByCondition(Integer deptId, String searchStr) throws Exception {
+	public List<User> selectByCondition(Integer deptId, String searchStr) {
 		return this.mainCardDAO.selectByCondition(deptId, searchStr);
 	}
 
@@ -307,5 +307,27 @@ public class MainCardService {
 	 */
 	public void updateByCard(User user) throws Exception {
 		this.mainCardDAO.updateByCard(user);
+	}
+
+	/**
+	 * 指定人员调整到新部门
+	 * 
+	 * @param userId
+	 * @param toDeptId
+	 * @throws Exception
+	 */
+	public void changeToNewDept(Integer[] userIds, Integer toDeptId) throws Exception {
+		this.mainCardDAO.changeToNewDept(userIds, toDeptId);
+	}
+
+	/**
+	 * 调整人员从原部门到新部门
+	 * 
+	 * @param fromDeptId
+	 * @param toDeptId
+	 * @throws Exception
+	 */
+	public void changeFromDeptToNew(Integer fromDeptId, Integer toDeptId) throws Exception {
+		this.mainCardDAO.changeFromDeptToNew(fromDeptId, toDeptId);
 	}
 }

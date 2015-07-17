@@ -36,6 +36,16 @@
 		oddFare=#{oddFare},opCount=#{opCount},subsidyOddFare=#{subsidyOddFare},subsidyOpCount=#{subsidyOpCount},subsidyVersion=#{subsidyVersion}
 		where userId=#{userId}
 	</update>
+	<update id="changeToNewDept">
+		update user set deptId=#{toDeptId} where userId in (		
+		<foreach collection="userIds" item="item" index="index" separator=",">  
+    		(#{item})
+		</foreach>
+		)
+	</update>
+	<update id="changeFromDeptToNew">
+		update user set deptId=#{toDeptId} where deptId=#{fromDeptId}
+	</update>
 	<delete id="delete" parameterType="int">
 		delete from user where status=0 and deptId=#{deptId}
 	</delete>
