@@ -245,6 +245,12 @@ public class TerminalManager {
 				map.put("'f1'", FrameCardReader.ReadCardDone);
 				map.put("'r'", b35);
 			}
+			// 制出纳卡命令
+			else if (commandCode == CommandCodeCardReader.MakeCashierCard) {
+				map.put("'f1'", FrameCardReader.MakeCashierCardDone);
+				map.put("'r'", b35);
+				map.put("'newCardSN'", cardSN);
+			}
 			// 读卡回复
 		} else if (Arrays.equals(frameByte, new byte[] { 0x03, (byte) 0xcd, 0x00, 0x01 })) {
 			int baseLen = 33;
@@ -325,6 +331,12 @@ public class TerminalManager {
 				map.put("'subsidyOpCount'", (float) Integer.parseInt(cardInfo(subsidy0, subsidy0 + 1, b), 16) / 100);
 				map.put("'subsidyOddFare'", (float) Integer.parseInt(cardInfo(subsidy0 + 2, subsidy0 + 4, b), 16) / 100);
 				map.put("'subsidyVersion'", Integer.parseInt(cardInfo(subsidy0 + 7, subsidy0 + 7, b), 16));
+			}
+			// 制出纳卡命令
+			else if (commandCode == CommandCodeCardReader.MakeCashierCard) {
+				map.put("'f1'", FrameCardReader.MakeCashierCardCmd);
+				map.put("'r'", b35);
+				map.put("'cardSN'", cardSN);
 			}
 		}
 		if (map.size() > 0) {

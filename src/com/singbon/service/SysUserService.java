@@ -22,12 +22,12 @@ public class SysUserService {
 	public SysUserDAO sysUserDAO;
 
 	public SysUser login(SysUser user) {
-		
+
 		return (SysUser) this.sysUserDAO.selectByLoginInfo(user);
 	}
-	
+
 	public SysUser login(String compayName, String loginName, String loginPwd) {
-		
+
 		return (SysUser) this.sysUserDAO.login(compayName, loginName, loginPwd);
 	}
 
@@ -37,7 +37,17 @@ public class SysUserService {
 	 * @param user
 	 * @return
 	 */
-	public List<SysUser> selectList(@Param("companyId") Integer companyId){
+	public List<SysUser> selectList(Integer companyId) {
 		return this.sysUserDAO.selectList(companyId);
+	}
+
+	/**
+	 * 获取出纳员列表
+	 * 
+	 * @param user
+	 * @return
+	 */
+	public List<SysUser> selectCashierList(Integer companyId) {
+		return this.sysUserDAO.selectCashierList(companyId);
 	}
 }

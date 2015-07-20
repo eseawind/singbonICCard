@@ -37,4 +37,36 @@ public interface SysUserDAO extends BaseDAO {
 	 * @return
 	 */
 	public List<SysUser> selectList(@Param("companyId") Integer companyId);
+
+	/**
+	 * 获取出纳员列表
+	 * 
+	 * @param user
+	 * @return
+	 */
+	public List<SysUser> selectCashierList(@Param("companyId") Integer companyId);
+
+	/**
+	 * 制出纳卡
+	 * 
+	 * @param user
+	 * @return
+	 */
+	public void makeSpecailCard(SysUser user) throws Exception;
+
+	/**
+	 * 以物理卡号查询绑定数量
+	 * 
+	 * @param user
+	 * @return
+	 */
+	public int selectCountByCardSN(@Param("companyId") Integer companyId, @Param("cardSN") String cardSN);
+
+	/**
+	 * 查询最大卡号+1
+	 * 
+	 * @param user
+	 * @return
+	 */
+	public int selectMaxCardNO(@Param("companyId") Integer companyId) throws Exception;
 }

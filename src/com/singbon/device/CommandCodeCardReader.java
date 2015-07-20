@@ -36,5 +36,9 @@ public class CommandCodeCardReader {
 	 * 读卡修正 0x07
 	 */
 	public static byte ReadCard = 0x07;
+	/**
+	 * 制出纳卡 0x08
+	 */
+	public static byte MakeCashierCard = 0x08;
 
 }

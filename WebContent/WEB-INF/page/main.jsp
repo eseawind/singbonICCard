@@ -165,7 +165,7 @@
 					</div>
 					<div class="accordionContent">
 						<ul class="tree">
-							<li><a href="newPage1.html" target="navTab">功能卡制作</a></li>
+							<li><a href="/cardManager/specialCard/index.do" target="navTab">功能卡制作</a></li>
 							<li><a href="/cardManager/mainCard/index.do" target="navTab">卡管理</a></li>
 						</ul>
 					</div>

@@ -92,14 +92,6 @@ public class User implements Serializable {
 	// 补助失效日期
 	private Date subsidyInvalidDate;
 
-	public String[] getStatusDescList() {
-		return statusDescList;
-	}
-
-	public void setStatusDescList(String[] statusDescList) {
-		this.statusDescList = statusDescList;
-	}
-
 	public Integer getUserId() {
 		return userId;
 	}

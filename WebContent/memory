@@ -1,0 +1,9 @@
+-Xms512M -Xmx512M -XX:PermSize=64M -XX:MaxPermSize=64M
+
+-Dfile.encoding=UTF-8 
+-Xms512m
+-Xmx512m
+-XX:PermSize=64M
+-XX:MaxPermSize=64M
+-XX:+UseParallelGC
+-XX:+DisableExplicitGC

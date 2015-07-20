@@ -72,5 +72,13 @@ public class FrameCardReader {
 	 * 读卡修正完成 0x0f
 	 */
 	public static byte ReadCardDone = 0x0f;
+	/**
+	 * 制出纳卡命令 0x10
+	 */
+	public static byte MakeCashierCardCmd = 0x10;
+	/**
+	 * 制出纳卡完成 0x11
+	 */
+	public static byte MakeCashierCardDone = 0x11;
 
 }

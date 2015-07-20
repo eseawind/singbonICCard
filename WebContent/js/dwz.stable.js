@@ -76,6 +76,8 @@
 						authUserClick($(this));
 					}else if(target=="batchCard"){
 						batchCardClick($(this));
+					}else if(target=="cashierCard"){
+						cashierCardClick($(this));
 					}
 					$trs.filter(".selected").removeClass("selected");
 					$tr.addClass("selected");
