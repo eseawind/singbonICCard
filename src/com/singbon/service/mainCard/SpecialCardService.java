@@ -67,7 +67,7 @@ public class SpecialCardService {
 		String lSysID = StringUtil.hexLeftPad(companyId, 4);// 2
 		String lCardType = "00";
 		String lStatus = StringUtil.hexLeftPad(user.getStatus(), 3);
-		String lAccountNO = StringUtil.hexLeftPad(user.getId(), 3);
+		String lAccountNO = StringUtil.hexLeftPad(user.getOperId(), 3);
 		String lCardBat = "00";
 		// 使用标识 0 启用， 1 停用
 		String lUseID = StringUtil.hexLeftPad(0, 5);
@@ -108,5 +108,38 @@ public class SpecialCardService {
 		System.out.print(StringUtil.hexLeftPad(buf[buf.length - 1], 2));
 		System.out.println();
 		TerminalManager.sendToCardReader(socketChannel, buf);
+	}
+	
+	/**
+	 * 更改状态
+	 * 
+	 * @param userId
+	 * @param status
+	 *            2挂失、1解挂
+	 * @return
+	 * @throws Exception
+	 */
+	public void changeStatus(Integer operId, Integer status) throws Exception {
+		this.sysUserDAO.changeStatus(operId, status);
+	}
+
+	/**
+	 * 解挂
+	 * 
+	 * @param userId
+	 * @return
+	 * @throws Exception
+	 */
+	public void unloss(Integer userId, SocketChannel socketChannel, Device device, String cardSN, String cardInfoStr) throws Exception {
+//		this.mainCardDAO.changeStatus(userId, 1);
+
+		String commandCodeStr = StringUtil.hexLeftPad(CommandCodeCardReader.Unloss, 4);
+		String sendBufStr = CommandCardReader.WriteCard + commandCodeStr + CommandCardReader.ValidateCardSN + cardSN + cardInfoStr;
+		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
+		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + bufLen + sendBufStr;
+		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
+		sendBuf[sendBuf.length - 5] = (byte) 0xf1;
+		CRC16.generate(sendBuf);
+		TerminalManager.sendToCardReader(socketChannel, sendBuf);
 	}
 }

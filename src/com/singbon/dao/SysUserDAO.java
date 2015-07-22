@@ -69,4 +69,14 @@ public interface SysUserDAO extends BaseDAO {
 	 * @return
 	 */
 	public int selectMaxCardNO(@Param("companyId") Integer companyId) throws Exception;
+	
+	/**
+	 * 改变卡状态
+	 * 
+	 * @param userId
+	 * @param status
+	 *            2挂失、1解挂
+	 * @return
+	 */
+	public void changeStatus(@Param("operId") Integer operId, @Param("status") Integer status) throws Exception;
 }

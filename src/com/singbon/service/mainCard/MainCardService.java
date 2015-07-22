@@ -53,8 +53,8 @@ public class MainCardService {
 	 * 
 	 * @param user
 	 */
-	public void delete(Integer deptId) throws Exception {
-		this.mainCardDAO.delete(deptId);
+	public void delete(Integer userId) throws Exception {
+		this.mainCardDAO.delete(userId);
 	}
 
 	/**

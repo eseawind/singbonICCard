@@ -19,8 +19,10 @@
 		minlength: $.validator.format("长度最少是 {0} 的字符串"),
 		rangelength: $.validator.format("长度介于 {0} 和 {1} 之间的字符串"),
 		range: $.validator.format("请输入一个介于 {0} 和 {1} 之间的值"),
-		max: $.validator.format("请输入一个最大为 {0} 的值"),
-		min: $.validator.format("请输入一个最小为 {0} 的值"),
+//		max: $.validator.format("超出最大值"),
+//		min: $.validator.format("超出最小值"),
+		max: $.validator.format("最大为 {0}"),
+		min: $.validator.format("最小为 {0}"),
 		
 		alphanumeric: "字母、数字、下划线",
 		lettersonly: "必须是字母",

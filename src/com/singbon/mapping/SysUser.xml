@@ -24,6 +24,10 @@
 	</select>
 	<update id="makeSpecailCard" parameterMap="sysUser2">
 		update sysUser set cardNO=#{cardNO},cardSN=#{cardSN},status=1
-		where id=#{id}
+		where operId=#{operId}
+	</update>
+	<update id="changeStatus">
+		update sysUser set status=#{status}
+		where operId=#{operId}
 	</update>
 </mapper>

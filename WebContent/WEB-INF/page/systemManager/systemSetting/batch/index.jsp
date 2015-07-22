@@ -77,7 +77,7 @@
 		$("#batchList").loadUrl("${base}/list.do");
 	}
 </script>
-<link href="/themes/css/custom.css" rel="stylesheet" type="text/css" />
+
 <style type="text/css">
 </style>
 <div class="form" layoutH="30"

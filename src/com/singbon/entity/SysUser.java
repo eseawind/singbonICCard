@@ -14,7 +14,7 @@ public class SysUser implements Serializable {
 	private static final long serialVersionUID = -4349415810057681133L;
 
 	String[] statusDescList = { "未发卡", "正常", "挂失" };
-	private Integer id;
+	private Integer operId;
 	private Integer companyId;
 	private String name;
 	private Integer cardNO;
@@ -127,12 +127,12 @@ public class SysUser implements Serializable {
 		this.name = name;
 	}
 
-	public Integer getId() {
-		return id;
+	public Integer getOperId() {
+		return operId;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	public void setOperId(Integer operId) {
+		this.operId = operId;
 	}
 
 	public Integer getCompanyId() {

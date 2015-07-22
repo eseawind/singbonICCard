@@ -138,7 +138,7 @@
 			</ul>
 		</div>
 	</div>
-	<div class="tabsContent" style="padding: 0;" layoutH="0">
+	<div class="tabsContent" style="padding: 0;" layoutH="50">
 		<!-- 出纳卡 -->
 		<div>
 			<jsp:include page="${base }/cashierList.do"/>
@@ -155,15 +155,16 @@
 						</ul>
 					</div>
 				</div>
-				<div class="tabsContent" style="padding: 0;">
+				<div class="tabsContent" style="padding: 0;height: 70px;">
 					<!-- 出纳卡 -->
 					<div>
-						<form id="cashierForm" method="post" action="${base }/makeCashierCard.do" class="pageForm required-validate">
-							<div class="pageFormContent" layoutH="60">
+						<form id="cashierForm" method="post" action="${base }/doCashierCard.do" class="pageForm required-validate">
+							<div class="pageFormContent" >
 								<dl>
 									<dt>失效期：</dt>
 									<dd>
-										<input name="id" type="hidden" /> 
+										<input name="id" type="hidden" />
+										<input name="editType" type="0" />
 										<input name="cardSN" type="hidden" /> 
 										<input type="text" name="invalidDate" maxlength="20" class="required" readonly="readonly" pattern="yyyy-MM-dd"/>
 									</dd>
@@ -180,7 +181,30 @@
 							</div>
 						</form>
 					</div>
-					<div>2</div>
+					<!-- 挂失 -->
+					<div>
+						<form id="cashierForm" method="post" action="${base }/doCashierCard.do" class="pageForm required-validate">
+							<div class="pageFormContent" >
+								<dl>
+									<dt>失效期：</dt>
+									<dd>
+										<input name="id" type="hidden" /> 
+										<input name="editType" type="1" />
+										<input type="text" name="invalidDate" maxlength="20" class="required" readonly="readonly" pattern="yyyy-MM-dd"/>
+									</dd>
+								</dl>
+								<dl>
+									<ul>
+										<li><div class="buttonActive">
+												<div class="buttonContent makeCashierCard">
+													<button type="button">制卡</button>
+												</div>
+											</div></li>
+									</ul>
+								</dl>
+							</div>
+						</form>
+					</div>
 					<div>3</div>
 					<div>4</div>
 					<div>5</div>

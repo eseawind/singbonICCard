@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -101,33 +102,46 @@ public class SpecialCardController extends BaseController {
 	}
 
 	/**
-	 * 制出纳员
+	 * 出纳卡编辑
 	 * 
+	 * @param user
+	 * @param editType
+	 *            0制卡、1挂失、2解挂、3补卡、4有效期
+	 * @param unlossType
+	 * @param invalidDate
 	 * @param request
+	 * @param response
 	 * @param model
-	 * @param module
-	 * @return
 	 */
-	@RequestMapping(value = "/makeCashierCard.do", method = RequestMethod.POST)
-	public void makeCashierCard(@ModelAttribute SysUser user, HttpServletRequest request, HttpServletResponse response, Model model) {
+	@RequestMapping(value = "/doCashierCard.do", method = RequestMethod.POST)
+	public void makeCashierCard(@ModelAttribute SysUser user, Integer editType, Integer unlossType, Date invalidDate, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
 		Device device = (Device) request.getSession().getAttribute("device");
 		String sn = device.getSn();
 		int section = companyService.getSection(company.getId());
 		PrintWriter p = null;
 
-		int cardSNCount = getCardSNCount(company.getId(), user.getCardSN(), sn);
-		if (cardSNCount > 0) {
-			return;
-		}
-		SocketChannel socketChannel = TerminalManager.getSNToSocketChannelList().get(sn);
-		if (socketChannel != null) {
+		if (editType == 0) {
+			int cardSNCount = getCardSNCount(company.getId(), user.getCardSN(), sn);
+			if (cardSNCount > 0) {
+				return;
+			}
+			SocketChannel socketChannel = TerminalManager.getSNToSocketChannelList().get(sn);
+			if (socketChannel != null) {
+				try {
+					int cardNO = this.specialCardService.selectMaxCardNO(company.getId());
+					user.setCardNO(cardNO);
+					user.setStatus(1);
+					this.specialCardService.makeCashierCard(company.getId(), device, socketChannel, user, CommandCodeCardReader.MakeCashierCard, section);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}else if(editType==1){
 			try {
-				int cardNO = this.specialCardService.selectMaxCardNO(company.getId());
-				user.setCardNO(cardNO);
-				user.setStatus(1);
-				this.specialCardService.makeCashierCard(company.getId(), device, socketChannel, user, CommandCodeCardReader.MakeCashierCard, section);
+				this.specialCardService.changeStatus(user.getOperId(), 2);
 			} catch (Exception e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

@@ -54,13 +54,14 @@
 				$.pdialog.open(url, "dialog", "信息修改", cardOptions);
 			},
 			'delete' : function(t, target) {
-				if (selectedDeptId <= "0") {
-					alertMsg.warn('请选择部门！');
+				var userId=$(t).attr("userId");
+				if (userId== null) {
+					alertMsg.warn('请选择人员！');
 					return;
 				}
-				alertMsg.confirm("确定要删除未发卡人员吗？", {
+				alertMsg.confirm("确定要删除该人员吗？", {
 					okCall : function() {
-						$.post("${base}/delete.do?deptId=" + selectedDeptId,
+						$.post("${base}/delete.do?userId=" + userId,
 								function(e) {
 									refreshUserList();
 								});

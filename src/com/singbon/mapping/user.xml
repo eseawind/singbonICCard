@@ -47,7 +47,7 @@
 		update user set deptId=#{toDeptId} where deptId=#{fromDeptId}
 	</update>
 	<delete id="delete" parameterType="int">
-		delete from user where status=0 and deptId=#{deptId}
+		delete from user where status=0 and userId=#{userId}
 	</delete>
 	<select id="selectById" resultMap="user">
 		select * from user where userId=#{userId}

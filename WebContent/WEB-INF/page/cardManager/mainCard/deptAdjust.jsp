@@ -70,7 +70,7 @@ $(function(){
 });
 	
 </script>
-<link href="/themes/css/custom.css" rel="stylesheet" type="text/css" />
+
 <style type="text/css">
 	.dialog .pageFormContent {
 		border-width: 0;

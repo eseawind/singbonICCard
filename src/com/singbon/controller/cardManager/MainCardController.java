@@ -366,11 +366,11 @@ public class MainCardController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/delete.do", method = RequestMethod.POST)
-	public void delete(HttpServletRequest request, HttpServletResponse response, Integer deptId, Model model) {
+	public void delete(HttpServletRequest request, HttpServletResponse response, Integer userId, Model model) {
 		PrintWriter p = null;
 		try {
 			p = response.getWriter();
-			this.mainCardService.delete(deptId);
+			this.mainCardService.delete(userId);
 			p.print(1);
 		} catch (Exception e) {
 			p.print(0);
