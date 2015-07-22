@@ -71,8 +71,9 @@ public class StringUtil {
 		if (tmpStr.length() == 1) {
 			tmpStr = "0" + tmpStr;
 		}
-
+		
 		String tmpStr2 = Integer.toHexString((byte) (tmMonth << 5 | tmDay));
+		tmpStr2=tmpStr2.substring(tmpStr2.length()-2);
 		if (tmpStr2.length() == 1) {
 			tmpStr2 = "0" + tmpStr2;
 		}
