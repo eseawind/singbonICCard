@@ -21,7 +21,7 @@
 			$('#specialStatus').html('读卡机状态：离线');
 			isOnline=false;
 			isHeart=false;
-			$('#userinfo').stopTime();
+			$('#cashierCard').stopTime();
 		}
 		init();
 		
@@ -128,17 +128,17 @@
 				else if (e2.f1 == 1) {
 					if (e2.r == 1) {
 						heartTime=new Date();
-// 						$('#specialStatus').html('读卡机状态：在线');
+						$('#specialStatus').html('读卡机状态：在线');
 						isOnline=true;
 						if(!isHeart){
 							heart();
 							isHeart=true;
 						}
 					} else {
-// 						$('#specialStatus').html('读卡机状态：离线');
+						$('#specialStatus').html('读卡机状态：离线');
 						isOnline=false;
 						isHeart=false;
-						$('#userinfo').stopTime();
+						$('#cashierCard').stopTime();
 					}
 				//心跳
 				} else if (e2.f1 == 2) {
@@ -260,19 +260,19 @@
 	}
 	
 	function heart(){
-	//		$('#userinfo').everyTime('10s','getCardReaderStatus', function() {
-	//			$.post('${base }/command.do?comm=getCardReaderStatus');
-	//			var d=new Date();
-	//			var t=(d.getTime()-heartTime.getTime())/1000;
-	//			$('#cardno2').html(t);
-	//			if(t>=15){
-	//				$.post('${base }/command.do?comm=closeSocketChannel');
-	//				$('#specialStatus').html('读卡机状态：离线');
-	//				isOnline=false;
-	//				isHeart=false;
-	//				$('#userinfo').stopTime();
-	//			}
-	//		},0,true);
+			$('#cashierCard').everyTime('10s','getCardReaderStatus', function() {
+				$.post('${base }/command.do?comm=getCardReaderStatus');
+				var d=new Date();
+				var t=(d.getTime()-heartTime.getTime())/1000;
+// 				$('#cardno2').html(t);
+				if(t>=15){
+					$.post('${base }/command.do?comm=closeSocketChannel');
+					$('#specialStatus').html('读卡机状态：离线');
+					isOnline=false;
+					isHeart=false;
+					$('#cashierCard').stopTime();
+				}
+			},0,true);
 	}
 	
 	function opCardResult(r){

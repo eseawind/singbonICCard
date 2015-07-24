@@ -181,19 +181,19 @@
 	}
 	
 	function heart(){
-// 		$('#userinfo').everyTime('10s','getCardReaderStatus', function() {
-// 			$.post('${base }/command.do?comm=getCardReaderStatus');
-// 			var d=new Date();
-// 			var t=(d.getTime()-heartTime.getTime())/1000;
-// 			$('#cardno2').html(t);
-// 			if(t>=15){
-// 				$.post('${base }/command.do?comm=closeSocketChannel');
-// 				$('.dialogHeader_c h1').html(title + '——读卡机状态：离线');
-// 				isOnline=false;
-// 				isHeart=false;
-// 				$('#userinfo').stopTime();
-// 			}
-// 		},0,true);
+		$('#userinfo').everyTime('10s','getCardReaderStatus', function() {
+			$.post('${base }/command.do?comm=getCardReaderStatus');
+			var d=new Date();
+			var t=(d.getTime()-heartTime.getTime())/1000;
+			$('#cardno2').html(t);
+			if(t>=15){
+				$.post('${base }/command.do?comm=closeSocketChannel');
+				$('.dialogHeader_c h1').html(title + '——读卡机状态：离线');
+				isOnline=false;
+				isHeart=false;
+				$('#userinfo').stopTime();
+			}
+		},0,true);
 	}
 	
 	function opCardResult(r){

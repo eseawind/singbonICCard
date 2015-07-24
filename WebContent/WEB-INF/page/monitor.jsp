@@ -44,7 +44,6 @@
 				if(e2.f1==3 && e2.f2==8){
 					var list=e2.msg;
 					$.each(list, function (sn, v) {
-						//alert(sn);
 						if(v==1){
 							$('#"+sn).css("color","blue");
 						}else{
