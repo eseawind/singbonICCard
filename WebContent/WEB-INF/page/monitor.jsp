@@ -20,18 +20,18 @@
 		init();
 		getDeviceStatus();		
 		//校验时间
-		$("#time").click(function() {
+		$('#time").click(function() {
 			$.post("/monitor/command.do?comm=time");
 		});
 
 		//打开采集
-		$("#collect").click(function() {
+		$('#collect").click(function() {
 			$.post("/monitor/command.do?comm=start");
 		});
 
 		//清空
-		$("#clear").click(function() {
-			$("#record").html("<tr><td>消息</td></tr>");
+		$('#clear").click(function() {
+			$('#record").html("<tr><td>消息</td></tr>");
 		});
 	});
 
@@ -46,9 +46,9 @@
 					$.each(list, function (sn, v) {
 						//alert(sn);
 						if(v==1){
-							$("#"+sn).css("color","blue");
+							$('#"+sn).css("color","blue");
 						}else{
-							$("#"+sn).css("color","black");							
+							$('#"+sn).css("color","black");							
 						}
 					});
 				}

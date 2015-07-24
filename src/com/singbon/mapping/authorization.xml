@@ -28,8 +28,8 @@
 	</update>
 	
 	<select id="selectUserGroupList" resultType="java.util.Map">
-		select s.id,s.loginName,GROUP_CONCAT(a.groupid) groupIds from sysuser s left join authusergroup a on s.id=a.userId where
-		companyId=#{companyId} group by s.id
+		select s.operId,s.loginName,GROUP_CONCAT(a.groupid) groupIds from sysuser s left join authusergroup a on s.operId=a.userId where
+		companyId=#{companyId} group by s.operId
 	</select>
 
 	<insert id="insertUserGroup" parameterMap="userGroup2">

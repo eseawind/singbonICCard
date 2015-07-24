@@ -5,15 +5,15 @@
 
 <script type="text/javascript">
 	function discountClick(tr) {
-		$("#discountForm input").eq(0).val(tr.attr("discountId"));
-		var tds = tr.find("td");
-		$("#discountForm input").eq(1).val(tds.eq(2).find("div").html());
-		var select = $("#discountForm select");
-		var rate = tds.eq(1).find("div").html();
+		$('#discountForm input').eq(0).val(tr.attr('discountId'));
+		var tds = tr.find('td');
+		$('#discountForm input').eq(1).val(tds.eq(2).find('div').html());
+		var select = $('#discountForm select');
+		var rate = tds.eq(1).find('div').html();
 		select.prev().val(rate).html(
-				$("option[value=" + rate + "]", select).html());
-		var giveCash = tds.eq(3).find("div").html();
-		$("#discountForm input[name=giveCash]").val(giveCash);
+				$('option[value=' + rate + ']', select).html());
+		var giveCash = tds.eq(3).find('div').html();
+		$('#discountForm input[name=giveCash]').val(giveCash);
 	}
 </script>
 <style type="text/css">

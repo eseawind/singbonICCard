@@ -2,7 +2,6 @@ package com.singbon.service;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +19,16 @@ public class SysUserService {
 
 	@Autowired
 	public SysUserDAO sysUserDAO;
+
+	/**
+	 * 根据operId获取出纳员
+	 * 
+	 * @param user
+	 * @return
+	 */
+	public SysUser selectByOperId(Integer operId) {
+		return this.sysUserDAO.selectByOperId(operId);
+	}
 
 	public SysUser login(SysUser user) {
 
@@ -50,4 +59,5 @@ public class SysUserService {
 	public List<SysUser> selectCashierList(Integer companyId) {
 		return this.sysUserDAO.selectCashierList(companyId);
 	}
+
 }

@@ -366,11 +366,16 @@ public class MainCardController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/delete.do", method = RequestMethod.POST)
-	public void delete(HttpServletRequest request, HttpServletResponse response, Integer userId, Model model) {
+	public void delete(HttpServletRequest request, HttpServletResponse response, String checkedUserIds, Model model) {
 		PrintWriter p = null;
 		try {
 			p = response.getWriter();
-			this.mainCardService.delete(userId);
+			String[] userIds2 = checkedUserIds.split(",");
+			Integer[] userIds = new Integer[userIds2.length];
+			for (int i = 0; i < userIds2.length; i++) {
+				userIds[i] = Integer.parseInt(userIds2[i]);
+			}
+			this.mainCardService.delete(userIds);
 			p.print(1);
 		} catch (Exception e) {
 			p.print(0);
@@ -733,7 +738,13 @@ public class MainCardController extends BaseController {
 		if (user == null) {
 			map.put("'r'", 0);
 		} else {
+			UserDept userDept = this.userDeptService.selectById(user.getDeptId());
 			map.put("'r'", 1);
+
+			map.put("deptName", userDept.getDeptName());
+			map.put("'userName'", user.getUsername());
+			map.put("'userNO'", user.getUserNO());
+
 			map.put("'cardSN'", user.getCardSN());
 			map.put("'userId'", user.getUserId());
 			map.put("'cardNO'", user.getCardNO());

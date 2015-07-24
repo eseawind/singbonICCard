@@ -5,23 +5,23 @@
 
 <script type="text/javascript">
 	$(function() {
-		$("#discountForm .save").click(function() {
-			validateCallback($(this).parents("form"), function(e) {
+		$('#discountForm .save').click(function() {
+			validateCallback($(this).parents('form'), function(e) {
 				if (e == 1) {
-					alertMsg.correct("保存成功！");
-					$("#discountForm input").eq(0).val("");
+					alertMsg.correct('保存成功！');
+					$('#discountForm input').eq(0).val('');
 					refreshdiscountList();
-					$("#discountForm input").each(function(){
-						$(this).val("");
+					$('#discountForm input').each(function(){
+						$(this).val('');
 					});
 				} else {
-					alertMsg.error("保存失败！");
+					alertMsg.error('保存失败！');
 				}
 			}, null);
 		});
 	});
 	function refreshdiscountList() {
-		$("#discountList").loadUrl("${base}/list.do");
+		$('#discountList').loadUrl('${base}/list.do');
 	}
 </script>
 

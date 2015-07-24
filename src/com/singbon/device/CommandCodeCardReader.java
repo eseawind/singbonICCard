@@ -40,5 +40,25 @@ public class CommandCodeCardReader {
 	 * 制出纳卡 0x08
 	 */
 	public static byte MakeCashierCard = 0x08;
+	/**
+	 * 挂失出纳卡 0x09
+	 */
+	public static byte LossCashierCard = 0x09;
+	/**
+	 * 解挂出纳卡 0x0a
+	 */
+	public static byte UnLossCashierCard = 0x0a;
+	/**
+	 * 补办出纳卡 0x0b
+	 */
+	public static byte RemakeCashierCard = 0x0b;
+	/**
+	 * 读取出纳卡 0x0c
+	 */
+	public static byte ReadCashierCard = 0x0c;
+	/**
+	 * 修改出纳卡有效期 0x0d
+	 */
+	public static byte InvalidDateCashierCard = 0x0d;
 
 }

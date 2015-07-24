@@ -54,4 +54,10 @@ public interface UserDeptDAO {
 	@SuppressWarnings("rawtypes")
 	public List selectByParentId(@Param("parentId") Integer parentId);
 
+	/**
+	 * 根据主键获取部门
+	 * 
+	 * @return
+	 */
+	public UserDept selectById(@Param("id") Integer id);
 }

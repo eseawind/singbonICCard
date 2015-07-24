@@ -2,21 +2,21 @@
 	pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<script type="text/javascript">
+<script type='text/javascript'>
 	
 	$(function() {
-		$("#adjustSearchList .searchAdjust").click(function() {
+		$('#adjustSearchList .searchAdjust').click(function() {
 			searchAdjustUserList();
 		});
-		$("#adjustSearchList .clearAdjust").click(function() {
-			$("input[name='searchStr']").val("");
+		$('#adjustSearchList .clearAdjust').click(function() {
+			$('input[name='searchStr']').val('');
 			searchAdjustUserList();
 		});
 	});
 	function searchAdjustUserList(){
-		$("#adjustUserList")
-		.loadUrl("${base}/adjustUserList.do?load=true&searchStr="+$("#adjustSearchList input[name='searchStr']").val(), {}, function(){
-			$("#adjustUserList").find("[layoutH]").layoutH();
+		$('#adjustUserList')
+		.loadUrl('${base}/adjustUserList.do?load=true&searchStr='+$('#adjustSearchList input[name='searchStr']').val(), {}, function(){
+			$('#adjustUserList').find('[layoutH]').layoutH();
 		});
 	}
 </script>

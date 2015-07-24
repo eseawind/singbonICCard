@@ -6,16 +6,16 @@
 
 <script type="text/javascript">
 	$(function() {
-		$("#authGroupForm .add").click(
+		$('#authGroupForm .add').click(
 				function() {
-					$("#authGroupForm input").eq(0).val("");
-					var roles = "";
-					$("#authTree .indeterminate,#authTree .checked").each(
+					$('#authGroupForm input').eq(0).val('');
+					var roles = '';
+					$('#authTree .indeterminate,#authTree .checked').each(
 							function(i, e2) {
-								roles += $(this).find("input").val() + ",";
+								roles += $(this).find('input').val() + ',';
 							});
-					$("#authGroupForm input").eq(1).val(roles);
-					validateCallback($(this).parents("form"), function(e) {
+					$('#authGroupForm input').eq(1).val(roles);
+					validateCallback($(this).parents('form'), function(e) {
 						if (e == 1) {
 							refreshAuthGroupList();
 						} else {
@@ -23,15 +23,15 @@
 						}
 					}, null);
 				});
-		$("#authGroupForm .edit").click(
+		$('#authGroupForm .edit').click(
 				function() {
-					var roles = "";
-					$("#authTree .indeterminate,#authTree .checked").each(
+					var roles = '';
+					$('#authTree .indeterminate,#authTree .checked').each(
 							function(i, e2) {
-								roles += $(this).find("input").val() + ",";
+								roles += $(this).find('input').val() + ',';
 							});
-					$("#authGroupForm input").eq(1).val(roles);
-					validateCallback($(this).parents("form"), function(e) {
+					$('#authGroupForm input').eq(1).val(roles);
+					validateCallback($(this).parents('form'), function(e) {
 						if (e == 1) {
 							refreshAuthGroupList();
 						} else {
@@ -39,23 +39,23 @@
 						}
 					}, null);
 				});
-		$("#authGroupForm .delete").click(function() {
-			var groupId= $("#authGroupForm input").eq(0).val();
-			if(groupId==""){
-				alertMsg.warn("请选择分组");
+		$('#authGroupForm .delete').click(function() {
+			var groupId= $('#authGroupForm input').eq(0).val();
+			if(groupId==''){
+				alertMsg.warn('请选择分组');
 				return;
 			}
-			alertMsg.confirm("确定要删除吗？", {
+			alertMsg.confirm('确定要删除吗？', {
 				okCall : function() {
-					$.post("${base }/deleteGroup.do?groupId=" + groupId,
+					$.post('${base }/deleteGroup.do?groupId=' + groupId,
 							function(e) {
 								//0失败1成功2已经授权
 								if (e == 1) {
 									refreshAuthGroupList();
 								} else if (e == 0) {
-									alertMsg.warn("删除失败");
+									alertMsg.warn('删除失败');
 								} else if (e == 2) {
-									alertMsg.warn("该分组已被授权给用户不能删除！");
+									alertMsg.warn('该分组已被授权给用户不能删除！');
 								}
 							});
 				}
@@ -63,22 +63,22 @@
 		});
 	});
 	function refreshAuthGroupList() {
-		$("#groupList").loadUrl("${base}/groupList.do", {}, function() {
-			$("#groupList").find("[layoutH]").layoutH();
+		$('#groupList').loadUrl('${base}/groupList.do', {}, function() {
+			$('#groupList').find('[layoutH]').layoutH();
 		});
 	}
 
 	function authGroupClick(tr) {
-		var roles = tr.attr("roles");
-		$("#authGroupForm input").eq(0).val(tr.attr("groupId"));
-		$("#authGroupForm input").eq(1).val(roles);
-		$("#authGroupForm input").eq(2).val(tr.find("div:first").html());
-		$("#authGroupForm input").eq(3).val(tr.find("div:last").html());
-		$("#authTree .indeterminate,#authTree .checked").removeClass(
-				"indeterminate").removeClass("checked").addClass("unchecked");
-		$("#authTree li:not(:has(li))").each(function() {
-			var ckbox = $(".ckbox", this);
-			if (roles.indexOf($("input", ckbox).val()) != -1) {
+		var roles = tr.attr('roles');
+		$('#authGroupForm input').eq(0).val(tr.attr('groupId'));
+		$('#authGroupForm input').eq(1).val(roles);
+		$('#authGroupForm input').eq(2).val(tr.find('div:first').html());
+		$('#authGroupForm input').eq(3).val(tr.find('div:last').html());
+		$('#authTree .indeterminate,#authTree .checked').removeClass(
+				'indeterminate').removeClass('checked').addClass('unchecked');
+		$('#authTree li:not(:has(li))').each(function() {
+			var ckbox = $('.ckbox', this);
+			if (roles.indexOf($('input', ckbox).val()) != -1) {
 				ckbox.click();
 			}
 		});

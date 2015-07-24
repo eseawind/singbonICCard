@@ -40,44 +40,50 @@
 	var userListOps = {
 		bindings : {
 			'info' : function(t, target) {
-				if (selectedDeptId <= "0") {
+				if (selectedDeptId <= '0') {
 					alertMsg.warn('请选择部门');
 					return;
 				}
-				var url = "${base}/userInfo.do?editType=0&deptId="
-						+ selectedDeptId + "&batchId=" + selectedBatchId;
-				$.pdialog.open(url, "dialog", "信息录入", cardOptions);
+				var url = '${base}/userInfo.do?editType=0&deptId='
+						+ selectedDeptId + '&batchId=' + selectedBatchId;
+				$.pdialog.open(url, 'dialog', '信息录入', cardOptions);
 			},
 			'edit' : function(t, target) {
-				var url = "${base}/userInfo.do?editType=1&userId="
-						+ $(t).attr("userId");
-				$.pdialog.open(url, "dialog", "信息修改", cardOptions);
+				var url = '${base}/userInfo.do?editType=1&userId='
+						+ $(t).attr('userId');
+				$.pdialog.open(url, 'dialog', '信息修改', cardOptions);
 			},
 			'delete' : function(t, target) {
-				var userId=$(t).attr("userId");
-				if (userId== null) {
-					alertMsg.warn('请选择人员！');
-					return;
-				}
-				alertMsg.confirm("确定要删除该人员吗？", {
-					okCall : function() {
-						$.post("${base}/delete.do?userId=" + userId,
-								function(e) {
-									refreshUserList();
-								});
+				var userIds='';
+				$('.userList input:checkbox').each(function(){
+					if($(this).attr('checked') && $(this).attr('status')==0){
+						userIds+=$(this).val()+',';
 					}
 				});
+				if(userIds!=''){
+					userIds=userIds.substring(0,userIds.length-1);
+					alertMsg.confirm('确定要删除该人员吗？', {
+						okCall : function() {
+							$.post('${base}/delete.do?checkedUserIds=' + userIds,
+									function(e) {
+										refreshUserList();
+									});
+						}
+					});
+				}else{
+					alertMsg.warn('请选择未发卡人员！');
+				}
 			},
 			'dept' : function(t, target) {
 				var userId=-1;
-				if($(t).attr("userId")!=null){
-					userId=$(t).attr("userId");
+				if($(t).attr('userId')!=null){
+					userId=$(t).attr('userId');
 				}
-				var url = "${base}/deptAdjust.do?userId="+userId
-				$.pdialog.open(url, "dialog", "部门调整", deptAdjustOptions);
+				var url = '${base}/deptAdjust.do?userId='+userId
+				$.pdialog.open(url, 'dialog', '部门调整', deptAdjustOptions);
 			},
 			'single' : function(t, target) {
-				if (selectedDeptId <= "0") {
+				if (selectedDeptId <= '0') {
 					alertMsg.warn('请选择部门！');
 					return;
 				}
@@ -85,24 +91,24 @@
 					return;
 				}
 				
-				var url = "${base}/userInfo.do?editType=2&deptId="
-						+ selectedDeptId + "&batchId=" + selectedBatchId;
-				$.pdialog.open(url, "dialog", "单个发卡", cardOptions);
+				var url = '${base}/userInfo.do?editType=2&deptId='
+						+ selectedDeptId + '&batchId=' + selectedBatchId;
+				$.pdialog.open(url, 'dialog', '单个发卡', cardOptions);
 			},
 			'infoCard' : function(t, target) {
 				if (!checkDeviceSn()) {
 					return;
 				}
-				if($(t).attr("status")==0){
-					var url = "${base}/userInfo.do?editType=3&userId="
-							+ $(t).attr("userId");
-					$.pdialog.open(url, "dialog", "信息发卡", cardOptions);
+				if($(t).attr('status')==0){
+					var url = '${base}/userInfo.do?editType=3&userId='
+							+ $(t).attr('userId');
+					$.pdialog.open(url, 'dialog', '信息发卡', cardOptions);
 				}else{
 					alertMsg.warn('该用户已发卡不能重复操作！');
 				}
 			},
 			'batch' : function(t, target) {
-				if (selectedDeptId <= "0") {
+				if (selectedDeptId <= '0') {
 					alertMsg.warn('请选择部门！');
 					return;
 				}
@@ -110,19 +116,19 @@
 					return;
 				}
 				
-				var url = "${base}/userInfo.do?editType=4&deptId="
-						+ selectedDeptId + "&batchId=" + selectedBatchId;
-				$.pdialog.open(url, "dialog", "批量发卡", batchCardOptions);
+				var url = '${base}/userInfo.do?editType=4&deptId='
+						+ selectedDeptId + '&batchId=' + selectedBatchId;
+				$.pdialog.open(url, 'dialog', '批量发卡', batchCardOptions);
 			},
 			'readCard' : function(t, target) {
-				var url = "${base}/readCard.do";
-				$.pdialog.open(url, "dialog", "读卡修正", cardOptions);
+				var url = '${base}/readCard.do';
+				$.pdialog.open(url, 'dialog', '读卡修正', cardOptions);
 			},
 			'loss' : function(t, target) {
-				if($(t).attr("status")==1){
-					var url = "${base}/changeCard.do?editType=0&userId="
-							+ $(t).attr("userId");
-					$.pdialog.open(url, "dialog", "挂失", cardOptions);
+				if($(t).attr('status')==1){
+					var url = '${base}/changeCard.do?editType=0&userId='
+							+ $(t).attr('userId');
+					$.pdialog.open(url, 'dialog', '挂失', cardOptions);
 				}else{
 					alertMsg.warn('该卡不是正常卡，不能进行挂失操作！');
 				}				
@@ -131,10 +137,10 @@
 				if (!checkDeviceSn()) {
 					return;
 				}
-				if($(t).attr("status")==2){
-					var url = "${base}/changeCard.do?editType=1&userId="
-							+ $(t).attr("userId");
-					$.pdialog.open(url, "dialog", "解挂", cardOptions);
+				if($(t).attr('status')==2){
+					var url = '${base}/changeCard.do?editType=1&userId='
+							+ $(t).attr('userId');
+					$.pdialog.open(url, 'dialog', '解挂', cardOptions);
 				}else{
 					alertMsg.warn('该卡不是挂失卡，不能进行解挂操作！');
 				}				
@@ -143,10 +149,10 @@
 				if (!checkDeviceSn()) {
 					return;
 				}
-				if($(t).attr("status")==2){
-					var url = "${base}/changeCard.do?editType=2&userId="
-							+ $(t).attr("userId");
-					$.pdialog.open(url, "dialog", "补卡", cardOptions);
+				if($(t).attr('status')==2){
+					var url = '${base}/changeCard.do?editType=2&userId='
+							+ $(t).attr('userId');
+					$.pdialog.open(url, 'dialog', '补卡', cardOptions);
 				}else{
 					alertMsg.warn('该卡不是挂失卡，不能进行补卡操作！');
 				}				
@@ -155,17 +161,17 @@
 				if (!checkDeviceSn()) {
 					return;
 				}
-				if($(t).attr("status")==1){
-					var url = "${base}/changeCard.do?editType=3&userId="
-							+ $(t).attr("userId");
-					$.pdialog.open(url, "dialog", "换卡", cardOptions);
+				if($(t).attr('status')==1){
+					var url = '${base}/changeCard.do?editType=3&userId='
+							+ $(t).attr('userId');
+					$.pdialog.open(url, 'dialog', '换卡', cardOptions);
 				}else{
 					alertMsg.warn('该卡不是正常卡，不能进行换卡操作！');
 				}				
 			}
 		},
 		onShowMenu : function(e, menu) {
-			if (!$(e.target).parents("tbody").hasClass("userList")) {
+			if (!$(e.target).parents('tbody').hasClass('userList')) {
 				$('#edit', menu).remove();
 			}
 			return menu;
@@ -173,19 +179,19 @@
 	};
 
 	function checkDeviceSn() {
-		if (deviceSn == "") {
+		if (deviceSn == '') {
 			alertMsg.warn('请先绑定读卡机再进行操作！');
 			return false;
 		}
 		return true;
 	}
 	$(function() {
-		$(".searchBar .search").click(function() {
-			searchStr = $("input[name='searchStr']").val();
+		$('.searchBar .search').click(function() {
+			searchStr = $('input[name=searchStr]').val();
 			refreshUserList();
 		});
-		$(".searchBar .clear").click(function() {
-			searchStr = $("input[name='searchStr']").val("");
+		$('.searchBar .clear').click(function() {
+			searchStr = $('input[name=searchStr]').val('');
 			searchStr = null;
 			refreshUserList();
 		});
@@ -206,7 +212,7 @@
 		<li id="unloss">解挂</li>
 		<li id="remakeCard">补卡</li>
 		<li id="changeCard">换卡</li>		
-		<li id="delete">删除未发卡人员</li>
+		<li id="delete">删除选中未发卡人员</li>
 	</ul>
 </div>
 <div class="pageHeader" style="border: 1px #B8D0D6 solid">
@@ -239,6 +245,8 @@
 	<table class="table" width="99%" layoutH="95">
 		<thead>
 			<tr>
+				<th width="10"><input type="checkbox" group="userIds"
+					class="checkboxCtrl"></th>
 				<th width="80">序号</th>
 				<th width="100">编号</th>
 				<th width="100">姓名</th>
@@ -251,6 +259,7 @@
 		<tbody class="userList">
 			<c:forEach var="user" items="${list}" varStatus="status">
 				<tr userId="${user.userId }" status="${user.status }">
+					<td><input name="userIds" value="${user.userId }" status="${user.status}" type="checkbox"></td>
 					<td>${status.index+1}</td>
 					<td>${user.userNO}</td>
 					<td>${user.username}</td>

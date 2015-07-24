@@ -3,21 +3,21 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <script type="text/javascript">
-	var deviceSn="${device.sn}";
+	var deviceSn='${device.sn}';
 	var selectedDeptId = -1;
 	var selectedBatchId = -1;
 	var searchStr=null;
 
 	//选择部门
 	function selectUserDept(a) {
-		selectedDeptId = a.attr("deptId");
-		selectedBatchId = a.attr("batchId");
+		selectedDeptId = a.attr('deptId');
+		selectedBatchId = a.attr('batchId');
 		refreshUserList();
 	};
 	function refreshUserList() {
-		$("#userList")
-				.loadUrl("${base}/list.do?deptId=" + selectedDeptId+"&searchStr="+searchStr, {}, function(){
-					$("#userList").find("[layoutH]").layoutH();
+		$('#userList')
+				.loadUrl('${base}/list.do?deptId=' + selectedDeptId+'&searchStr='+searchStr, {}, function(){
+					$('#userList').find('[layoutH]').layoutH();
 				});
 	}
 </script>

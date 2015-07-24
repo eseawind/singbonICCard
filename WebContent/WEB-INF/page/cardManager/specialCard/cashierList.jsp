@@ -5,8 +5,36 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <script type="text/javascript">
 	function cashierCardClick(tr){
-		$("#cashierForm input[name=id]").val(tr.attr("id"));
-		$("#cashierForm input[name=invalidDate]").val(tr.attr("invalidDate"));
+		var form=$('#cashierCard form:visible').attr('id');
+		var status=tr.attr('status');
+		if(form=='makeCashierForm'){
+			if(status!=0){
+				alertMsg.warn('该用户已制卡！');
+				return;
+			}
+			$('#makeCashierForm input[name=invalidDate]:visible').val(tr.attr('invalidDate'));
+			$('#makeCashierForm input[name=operId]').val(tr.attr('operId'));
+		}else if(form=='lossForm'){
+			if(status!=1){
+				alertMsg.warn('该用户为非正常卡不能挂失！');
+				return;
+			}
+			$('#lossForm input[name=cardSN]').val(tr.attr('cardSN'));
+			$('#lossForm input[name=operId]').val(tr.attr('operId'));
+		}else if(form=='unLossForm'){
+			if(status!=2){
+				alertMsg.warn('该用户没有挂失！');
+				return;
+			}
+			$('#unLossForm input[name=cardSN]').val(tr.attr('cardSN'));
+			$('#unLossForm input[name=operId]').val(tr.attr('operId'));
+		}else if(form=='remakeCashierCardForm'){
+			if(status!=2){
+				alertMsg.warn('该用户没有挂失！');
+				return;
+			}
+			$('#remakeCashierCardForm input[name=operId]').val(tr.attr('operId'));
+		}
 	}
 </script>
 
@@ -26,7 +54,7 @@
 		</thead>
 		<tbody>
 			<c:forEach var="user" items="${list}" varStatus="status">
-				<tr target="cashierCard" id="${user.id}" status="${user.status}" invalidDate="<fmt:formatDate value="${user.invalidDate}" pattern="yyyy-MM-dd HH:mm:ss"/>">
+				<tr target="cashierCard" operId="${user.operId}" status="${user.status}" cardSN="${user.cardSN}" invalidDate="<fmt:formatDate value="${user.invalidDate}" pattern="yyyy-MM-dd HH:mm:ss"/>">
 					<td>${status.index+1}</td>
 					<td>${user.loginName}</td>
 					<td>${user.name}</td>

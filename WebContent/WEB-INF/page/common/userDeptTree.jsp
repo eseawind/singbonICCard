@@ -2,18 +2,18 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <script type="text/javascript">
-	var list = $("#list li");
+	var list = $('#list li');
 	list.each(function() {
 		var $this = $(this);
-		var parendDeptId = $this.attr("parentDeptId");
-		if (parendDeptId == "") {
-			$(".expand").append($this);
+		var parendDeptId = $this.attr('parentDeptId');
+		if (parendDeptId == '') {
+			$('.expand').append($this);
 		} else {
-			var $li = $("li[deptId='" + parendDeptId + "']");
-			if ($(">ul", $li).size() == 0) {
-				$("<ul></ul>").appendTo($li);
+			var $li = $('li[deptId="' + parendDeptId + '"]');
+			if ($('>ul', $li).size() == 0) {
+				$('<ul></ul>').appendTo($li);
 			}
-			$(">ul", $li).append($(this));
+			$('>ul', $li).append($(this));
 		}
 	});
 </script>

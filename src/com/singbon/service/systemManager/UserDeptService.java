@@ -72,4 +72,13 @@ public class UserDeptService {
 	public List selectTreeList(Integer companyId) {
 		return this.userDeptDAO.selectTreeList(companyId);
 	}
+
+	/**
+	 * 根据主键获取部门
+	 * 
+	 * @return
+	 */
+	public UserDept selectById(Integer id) {
+		return this.userDeptDAO.selectById(id);
+	}
 }

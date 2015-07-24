@@ -4,6 +4,9 @@
 	<resultMap id="sysUser" type="com.singbon.entity.SysUser">
 	</resultMap>
 	<parameterMap type="com.singbon.entity.SysUser" id="sysUser2" />
+	<select id="selectByOperId" resultMap="sysUser">
+		select * from sysuser where operId=#{operId}
+	</select>
 	<select id="login" resultMap="sysUser">
 		select u.* from sysuser u,company c where u.companyId=c.id and u.loginName =#{loginName} and u.loginPwd=#{loginPwd} and c.companyName =#{companyName}
 	</select>
@@ -20,7 +23,7 @@
 		select ifnull(max(cardNO),0)+1 cardNO from sysUser where companyId=#{companyId}
 	</select>
 	<select id="selectCountByCardSN" resultType="java.lang.Integer">
-		select count(id) from sysUser where companyId=#{companyId} and cardSN=#{cardSN}
+		select count(operId) from sysUser where companyId=#{companyId} and cardSN=#{cardSN}
 	</select>
 	<update id="makeSpecailCard" parameterMap="sysUser2">
 		update sysUser set cardNO=#{cardNO},cardSN=#{cardSN},status=1
@@ -28,6 +31,10 @@
 	</update>
 	<update id="changeStatus">
 		update sysUser set status=#{status}
+		where operId=#{operId}
+	</update>
+	<update id="changeCashierInvalidDate">
+		update sysUser set invalidDate=#{invalidDate}
 		where operId=#{operId}
 	</update>
 </mapper>

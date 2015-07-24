@@ -102,46 +102,124 @@ public class SpecialCardController extends BaseController {
 	}
 
 	/**
-	 * 出纳卡编辑
+	 * 制出纳卡
 	 * 
 	 * @param user
 	 * @param editType
-	 *            0制卡、1挂失、2解挂、3补卡、4有效期
-	 * @param unlossType
+	 *            0制卡、1补卡
 	 * @param invalidDate
 	 * @param request
 	 * @param response
 	 * @param model
 	 */
-	@RequestMapping(value = "/doCashierCard.do", method = RequestMethod.POST)
-	public void makeCashierCard(@ModelAttribute SysUser user, Integer editType, Integer unlossType, Date invalidDate, HttpServletRequest request, HttpServletResponse response, Model model) {
+	@RequestMapping(value = "/makeCashierCard.do", method = RequestMethod.POST)
+	public void makeCashierCard(@ModelAttribute SysUser user, Integer editType, Date invalidDate, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
 		Device device = (Device) request.getSession().getAttribute("device");
 		String sn = device.getSn();
 		int section = companyService.getSection(company.getId());
-		PrintWriter p = null;
 
-		if (editType == 0) {
-			int cardSNCount = getCardSNCount(company.getId(), user.getCardSN(), sn);
-			if (cardSNCount > 0) {
-				return;
+		int cardSNCount = getCardSNCount(company.getId(), user.getCardSN(), sn);
+		if (cardSNCount > 0) {
+			return;
+		}
+		SocketChannel socketChannel = TerminalManager.getSNToSocketChannelList().get(sn);
+		if (socketChannel != null) {
+			try {
+				int cardNO = this.specialCardService.selectMaxCardNO(company.getId());
+				byte commandCode = CommandCodeCardReader.MakeCashierCard;
+				if (editType == 1) {
+					commandCode = CommandCodeCardReader.RemakeCashierCard;
+					String cardSN = user.getCardSN();
+					user = this.sysUserService.selectByOperId(user.getOperId());
+					user.setCardSN(cardSN);
+				}
+				user.setCardNO(cardNO);
+				user.setStatus(1);
+				this.specialCardService.makeCashierCard(company.getId(), device, socketChannel, user, commandCode, section);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-			SocketChannel socketChannel = TerminalManager.getSNToSocketChannelList().get(sn);
+		}
+	}
+
+	/**
+	 * 挂失
+	 * 
+	 * @param user
+	 * @param invalidDate
+	 * @param request
+	 * @param response
+	 * @param model
+	 */
+	@RequestMapping(value = "/loss.do", method = RequestMethod.POST)
+	public void loss(@ModelAttribute SysUser sysUser, Integer lossType, String cardInfoStr, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Device device = (Device) request.getSession().getAttribute("device");
+		PrintWriter p = null;
+		try {
+			p = response.getWriter();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		if (lossType == 0) {
+			try {
+				this.specialCardService.changeStatus(sysUser.getOperId(), 2);
+				p.print(1);
+			} catch (Exception e) {
+				p.print(0);
+				e.printStackTrace();
+			}
+		} else {
+			SocketChannel socketChannel = TerminalManager.getSNToSocketChannelList().get(device.getSn());
 			if (socketChannel != null) {
 				try {
-					int cardNO = this.specialCardService.selectMaxCardNO(company.getId());
-					user.setCardNO(cardNO);
-					user.setStatus(1);
-					this.specialCardService.makeCashierCard(company.getId(), device, socketChannel, user, CommandCodeCardReader.MakeCashierCard, section);
+					this.specialCardService.loss(sysUser, socketChannel, device, cardInfoStr);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
-		}else if(editType==1){
+		}
+	}
+
+	/**
+	 * 解挂
+	 * 
+	 * @param user
+	 * @param invalidDate
+	 * @param request
+	 * @param response
+	 * @param model
+	 */
+	@RequestMapping(value = "/unLoss.do", method = RequestMethod.POST)
+	public void unLoss(@ModelAttribute SysUser sysUser, String cardInfoStr, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Device device = (Device) request.getSession().getAttribute("device");
+		SocketChannel socketChannel = TerminalManager.getSNToSocketChannelList().get(device.getSn());
+		if (socketChannel != null) {
 			try {
-				this.specialCardService.changeStatus(user.getOperId(), 2);
+				this.specialCardService.unloss(sysUser, socketChannel, device, cardInfoStr);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+	/**
+	 * 修改出纳卡有效期
+	 * 
+	 * @param user
+	 * @param invalidDate
+	 * @param request
+	 * @param response
+	 * @param model
+	 */
+	@RequestMapping(value = "/doInvalidDate.do", method = RequestMethod.POST)
+	public void doInvalidDate(@ModelAttribute SysUser sysUser, String cardInfoStr, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Device device = (Device) request.getSession().getAttribute("device");
+		SocketChannel socketChannel = TerminalManager.getSNToSocketChannelList().get(device.getSn());
+		if (socketChannel != null) {
+			try {
+				this.specialCardService.doInvalidDate(sysUser, cardInfoStr, socketChannel, device);
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
@@ -200,19 +278,45 @@ public class SpecialCardController extends BaseController {
 				e.printStackTrace();
 			}
 		}
-		// 制出纳卡初始化
-		else if ("makeCashierCardInit".equals(comm)) {
+		// 出纳卡
+		else if ("makeCashierCardInit".equals(comm) || "lossCashierCardInit".equals(comm) || "unLossCashierCardInit".equals(comm) || "remakeCashierCardInit".equals(comm)) {
 			SocketChannel socketChannel = TerminalManager.getSNToSocketChannelList().get(sn);
 			if (socketChannel != null) {
 				try {
 					// 获取基本信息区0块
 					List<Integer> sectionBlocks = new ArrayList<Integer>();
 					sectionBlocks.add(section * 10);
-					TerminalManager.getCardInfo(socketChannel, device, CommandCodeCardReader.MakeCashierCard, sectionBlocks);
+					byte commandCode = 0;
+					if ("makeCashierCardInit".equals(comm)) {
+						commandCode = CommandCodeCardReader.MakeCashierCard;
+					} else if ("lossCashierCardInit".equals(comm)) {
+						commandCode = CommandCodeCardReader.LossCashierCard;
+					} else if ("unLossCashierCardInit".equals(comm)) {
+						commandCode = CommandCodeCardReader.UnLossCashierCard;
+					} else if ("remakeCashierCardInit".equals(comm)) {
+						commandCode = CommandCodeCardReader.RemakeCashierCard;
+					}
+					TerminalManager.getCardInfo(socketChannel, device, commandCode, sectionBlocks);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		// 读取出纳卡
+		else if ("readCashierCardInit".equals(comm)) {
+			SocketChannel socketChannel = TerminalManager.getSNToSocketChannelList().get(sn);
+			if (socketChannel != null) {
+				try {
+					// 获取基本信息区2块
+					List<Integer> sectionBlocks = new ArrayList<Integer>();
+					sectionBlocks.add(section * 10);
+					sectionBlocks.add(section * 12);
+					TerminalManager.getCardInfo(socketChannel, device, CommandCodeCardReader.ReadCashierCard, sectionBlocks);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			}
 		}
 	}
+
 }

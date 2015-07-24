@@ -1,5 +1,6 @@
 package com.singbon.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -13,6 +14,14 @@ import com.singbon.entity.SysUser;
  * 
  */
 public interface SysUserDAO extends BaseDAO {
+
+	/**
+	 * 根据operId获取出纳员
+	 * 
+	 * @param user
+	 * @return
+	 */
+	public SysUser selectByOperId(Integer operId);
 
 	/**
 	 * 获取登录信息
@@ -69,7 +78,7 @@ public interface SysUserDAO extends BaseDAO {
 	 * @return
 	 */
 	public int selectMaxCardNO(@Param("companyId") Integer companyId) throws Exception;
-	
+
 	/**
 	 * 改变卡状态
 	 * 
@@ -79,4 +88,13 @@ public interface SysUserDAO extends BaseDAO {
 	 * @return
 	 */
 	public void changeStatus(@Param("operId") Integer operId, @Param("status") Integer status) throws Exception;
+
+	/**
+	 * 修改出纳卡有效期
+	 * 
+	 * @param userId
+	 * @return
+	 */
+	public void changeCashierInvalidDate(@Param("operId") Integer operId, @Param("invalidDate") Date invalidDate) throws Exception;
+
 }

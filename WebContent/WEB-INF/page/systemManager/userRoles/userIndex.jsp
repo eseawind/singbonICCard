@@ -5,43 +5,43 @@
 
 <script type="text/javascript">
 	function authUserClick(tr) {
-		$("#authUserForm input:first").val(tr.attr("userId"));
-		$("#authUserGroup input").attr("checked",false);
-		var groupIds=","+tr.attr("groupIds")+",";
-		$("#authUserGroup input:checkbox").each(function(){
-			var index=groupIds.indexOf(","+$(this).val()+",");
+		$('#authUserForm input:first').val(tr.attr('userId'));
+		$('#authUserGroup input').attr('checked',false);
+		var groupIds=','+tr.attr('groupIds')+',';
+		$('#authUserGroup input:checkbox').each(function(){
+			var index=groupIds.indexOf(','+$(this).val()+',');
 			if(index>-1){
-				$(this).attr("checked",true);
+				$(this).attr('checked',true);
 			}
 		});
 	}
 	$(function(){
-		$("#authUserForm .save").click(function(){
-			var userId=$("#authUserForm input:first").val();
-			if(userId==""){
-				alertMsg.warn("请选择授权用户");
+		$('#authUserForm .save').click(function(){
+			var userId=$('#authUserForm input:first').val();
+			if(userId==''){
+				alertMsg.warn('请选择授权用户');
 				return;
 			}
-			var groupIds="";
-			$("#authUserGroup input:checkbox").each(function(){
-				if($(this).attr("checked")){
-					groupIds+=$(this).val()+",";
+			var groupIds='';
+			$('#authUserGroup input:checkbox').each(function(){
+				if($(this).attr('checked')){
+					groupIds+=$(this).val()+',';
 				}
 			});
-			if(groupIds!=""){
-				groupIds=groupIds.replace("on,","");
+			if(groupIds!=''){
+				groupIds=groupIds.replace('on,','');
 				groupIds=groupIds.substring(0,groupIds.length-1);
-				$("#authUserForm input:last").val(groupIds);
+				$('#authUserForm input:last').val(groupIds);
 			}
-			$("#authUserForm input:last").val(groupIds);
-			validateCallback($(this).parents("form"), function(e) {
+			$('#authUserForm input:last').val(groupIds);
+			validateCallback($(this).parents('form'), function(e) {
 				if (e == 1) {
-					$("#authUser tr[userId="+userId+"]").attr("groupIds",groupIds);
-					$("#authUserForm input:first").val("");
-					$("#authUserForm input:last").val("");
-					alertMsg.correct("授权成功！");
+					$('#authUser tr[userId='+userId+']').attr('groupIds',groupIds);
+					$('#authUserForm input:first').val('');
+					$('#authUserForm input:last').val('');
+					alertMsg.correct('授权成功！');
 				} else {
-					alertMsg.error("授权失败！");
+					alertMsg.error('授权失败！');
 				}
 			}, null);
 		});
@@ -83,7 +83,7 @@
 		</thead>
 		<tbody>
 			<c:forEach items="${sysUserList }" var="u">
-				<tr userId="${u.id }" target="authUser" groupIds="${u.groupIds}">
+				<tr userId="${u.operId }" target="authUser" groupIds="${u.groupIds}">
 					<td>${u.loginName }</td>
 				</tr>
 			</c:forEach>

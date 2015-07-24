@@ -7,9 +7,9 @@
 <script type="text/javascript">
 	function batchClick(tr){
 		var i=0;
-		$("#batchForm input").eq(i++).val(tr.attr("batchId"));
-		tr.find("td").each(function(){
-			$("#batchForm input").eq(i++).val($("div",this).html());
+		$('#batchForm input').eq(i++).val(tr.attr('batchId'));
+		tr.find('td').each(function(){
+			$('#batchForm input').eq(i++).val($('div',this).html());
 		});
 	}
 </script>

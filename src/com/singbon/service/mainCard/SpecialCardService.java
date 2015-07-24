@@ -59,15 +59,13 @@ public class SpecialCardService {
 	 * @throws Exception
 	 */
 	public void makeCashierCard(Integer companyId, Device device, SocketChannel socketChannel, SysUser user, int commandCode, int section) throws Exception {
-		if (commandCode == CommandCodeCardReader.MakeCashierCard) {
-			this.sysUserDAO.makeSpecailCard(user);
-		}
+		this.sysUserDAO.makeSpecailCard(user);
 		Calendar c = Calendar.getInstance();
 
 		String lSysID = StringUtil.hexLeftPad(companyId, 4);// 2
 		String lCardType = "00";
-		String lStatus = StringUtil.hexLeftPad(user.getStatus(), 3);
-		String lAccountNO = StringUtil.hexLeftPad(user.getOperId(), 3);
+		String lStatus = StringUtil.hexLeftPad(241, 3);
+		String lAccountNO = StringUtil.hexLeftPad(user.getOperId(), 5);
 		String lCardBat = "00";
 		// 使用标识 0 启用， 1 停用
 		String lUseID = StringUtil.hexLeftPad(0, 5);
@@ -109,7 +107,7 @@ public class SpecialCardService {
 		System.out.println();
 		TerminalManager.sendToCardReader(socketChannel, buf);
 	}
-	
+
 	/**
 	 * 更改状态
 	 * 
@@ -124,21 +122,66 @@ public class SpecialCardService {
 	}
 
 	/**
+	 * 挂失
+	 * 
+	 * @param userId
+	 * @returncardInfoStr
+	 * @throws Exception
+	 */
+	public void loss(SysUser sysUser, SocketChannel socketChannel, Device device, String cardInfoStr) throws Exception {
+		this.sysUserDAO.changeStatus(sysUser.getOperId(), 2);
+
+		cardInfoStr = cardInfoStr.substring(0, 12) + "0f0" + cardInfoStr.substring(15);
+		String commandCodeStr = StringUtil.hexLeftPad(CommandCodeCardReader.LossCashierCard, 4);
+		String sendBufStr = CommandCardReader.WriteCard + commandCodeStr + CommandCardReader.ValidateCardSN + sysUser.getCardSN() + cardInfoStr;
+		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
+		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + bufLen + sendBufStr;
+		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
+		CRC16.generate(sendBuf);
+		TerminalManager.sendToCardReader(socketChannel, sendBuf);
+	}
+
+	/**
 	 * 解挂
 	 * 
 	 * @param userId
 	 * @return
 	 * @throws Exception
 	 */
-	public void unloss(Integer userId, SocketChannel socketChannel, Device device, String cardSN, String cardInfoStr) throws Exception {
-//		this.mainCardDAO.changeStatus(userId, 1);
+	public void unloss(SysUser sysUser, SocketChannel socketChannel, Device device, String cardInfoStr) throws Exception {
+		this.sysUserDAO.changeStatus(sysUser.getOperId(), 1);
 
-		String commandCodeStr = StringUtil.hexLeftPad(CommandCodeCardReader.Unloss, 4);
-		String sendBufStr = CommandCardReader.WriteCard + commandCodeStr + CommandCardReader.ValidateCardSN + cardSN + cardInfoStr;
+		cardInfoStr = cardInfoStr.substring(0, 12) + "0f1" + cardInfoStr.substring(15);
+		String commandCodeStr = StringUtil.hexLeftPad(CommandCodeCardReader.UnLossCashierCard, 4);
+		String sendBufStr = CommandCardReader.WriteCard + commandCodeStr + CommandCardReader.ValidateCardSN + sysUser.getCardSN() + cardInfoStr;
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
 		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + bufLen + sendBufStr;
 		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
-		sendBuf[sendBuf.length - 5] = (byte) 0xf1;
+		CRC16.generate(sendBuf);
+		TerminalManager.sendToCardReader(socketChannel, sendBuf);
+	}
+
+	/**
+	 * 修改出纳卡有效期
+	 * 
+	 * @param userId
+	 * @return
+	 * @throws Exception
+	 */
+	public void doInvalidDate(SysUser sysUser, String cardInfoStr, SocketChannel socketChannel, Device device) throws Exception {
+		this.sysUserDAO.changeCashierInvalidDate(sysUser.getOperId(), sysUser.getInvalidDate());
+
+		Calendar c = Calendar.getInstance();
+
+		c.setTime(sysUser.getInvalidDate());
+		String invalidDate = StringUtil.dateToHexString(c);// 4
+
+		cardInfoStr = cardInfoStr.substring(0, 26) + invalidDate + cardInfoStr.substring(30);
+		String commandCodeStr = StringUtil.hexLeftPad(CommandCodeCardReader.InvalidDateCashierCard, 4);
+		String sendBufStr = CommandCardReader.WriteCard + commandCodeStr + CommandCardReader.ValidateCardSN + sysUser.getCardSN() + cardInfoStr;
+		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
+		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + bufLen + sendBufStr;
+		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
 		CRC16.generate(sendBuf);
 		TerminalManager.sendToCardReader(socketChannel, sendBuf);
 	}

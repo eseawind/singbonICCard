@@ -18,13 +18,13 @@
 	$(function() {
 		init();
 		getCardReaderStatus();
-		$("#test").click(function(){
+		$('#test").click(function(){
 			$.post("/cardManager/command.do?comm=test");
 		});
-		$("#search").click(function(){
+		$('#search").click(function(){
 			$.post("/cardManager/command.do?comm=search");
 		});
-		$("#cardno").click(function(){
+		$('#cardno").click(function(){
 			$.post("/cardManager/command.do?comm=cardno");
 		});
 	});
@@ -37,12 +37,12 @@
 				//读卡器状态
 				if (e2.f1 == 1) {
 					if (e2.r == 1) {
-						$("#status").html("在线");
+						$('#status").html("在线");
 					}else{
-						$("#status").html("离线");						
+						$('#status").html("离线");						
 					}
 				}else if(e2.f1==4){
-						$("#cardno2").html(e2.r);											
+						$('#cardno2").html(e2.r);											
 				}
 			}
 		});

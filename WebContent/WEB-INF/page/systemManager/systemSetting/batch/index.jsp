@@ -1,84 +1,119 @@
 <!-- 批次设置 -->
-<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+	pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="security"
+	uri="http://www.springframework.org/security/tags"%>
 
 <script type="text/javascript">
 	$(function() {
-		$("#batchForm .add").click(function() {
-			$("#batchForm input").eq(0).val("");
-			
-			var form=$(this).parents("form");
-			if(form.valid()){
-				var batchName=$("#batchForm input[name='batchName']").val();
-				var len= $("#batchList td[batchName='"+batchName+"']").length;
-				if(len>0){
-					alertMsg.warn("批次名称重复！");
-					return;					
-				}
-				if(!comparaDate()){
-					return;
-				}
-			}else{
-				return;
-			}
-			validateCallback(form, function(e) {
-				if (e == 1) {
-					alertMsg.correct("添加成功！");
-					form.clearForm();
-					refreshBatchList();
-				} else {
-					alertMsg.error("添加失败！");
-				}
-			}, null,true);
-		});
-		
-		$("#batchForm .edit").click(function() {
-			var form=$(this).parents("form");
-			if(form.valid()){
-				var batchId=$("#batchForm input[name='id']").val();
-				var batchName=$("#batchForm input[name='batchName']").val();
-				var len= $("#batchList td[batchId!="+batchId+"][batchName='"+batchName+"']").length;
-				if(len>0){
-					alertMsg.warn("批次名称重复！");
-					return;					
-				}
-				if(!comparaDate()){
-					return;
-				}
-			}else{
-				return;
-			}
-			validateCallback(form, function(e) {
-				if (e == 1) {
-					alertMsg.correct("修改成功！");
-					form.clearForm();
-					refreshBatchList();
-				} else {
-					alertMsg.error("修改失败！");
-				}
-			}, null,true);
-		});
+		$('#batchForm .add').click(
+				function() {
+					$('#batchForm input').eq(0).val('');
+
+					var form = $(this).parents('form');
+					if (form.valid()) {
+						var batchName = $('#batchForm input[name=batchName]').val();
+						var len = $('#batchList td[batchName="' + batchName + '"]').length;
+						if (len > 0) {
+							alertMsg.warn('批次名称重复！');
+							return;
+						}
+						if (!comparaDate()) {
+							return;
+						}
+					} else {
+						return;
+					}
+					validateCallback(form, function(e) {
+						if (e == 1) {
+							alertMsg.correct('添加成功！');
+							form.clearForm();
+							refreshBatchList();
+						} else {
+							alertMsg.error('添加失败！');
+						}
+					}, null, true);
+				});
+
+		$('#batchForm .edit').click(
+				function() {
+					var form = $(this).parents('form');
+					if (form.valid()) {
+						var batchId = $('#batchForm input[name=id]').val();
+						var batchName = $('#batchForm input[name=batchName]').val();
+						var len = $('#batchList td[batchId!=' + batchId+ '][batchName="' + batchName + '"]').length;
+						if (len > 0) {
+							alertMsg.warn('批次名称重复！');
+							return;
+						}
+						if (!comparaDate()) {
+							return;
+						}
+					} else {
+						return;
+					}
+					validateCallback(form, function(e) {
+						if (e == 1) {
+							alertMsg.correct('修改成功！');
+							form.clearForm();
+							refreshBatchList();
+						} else {
+							alertMsg.error('修改失败！');
+						}
+					}, null, true);
+				});
 	});
-	
-	function comparaDate(){
-		if($("#batchForm input[name='beginDate']").val()>=$("#batchForm input[name='endDate']").val()){
-			alertMsg.warn("开始日期应小于结束日期！");
+
+	function comparaDate() {
+		if ($('#batchForm input[name=beginDate]').val() >= $(
+				'#batchForm input[name=endDate]').val()) {
+			alertMsg.warn('开始日期应小于结束日期！');
 			return false;
 		}
-		if($("#batchForm input[name='endDate']").val()>=$("#batchForm input[name='invalidDate']").val()){
-			alertMsg.warn("结束日期应小于失效日期！");
+		if ($('#batchForm input[name=endDate]').val() >= $(
+				'#batchForm input[name=invalidDate]').val()) {
+			alertMsg.warn('结束日期应小于失效日期！');
 			return false;
 		}
 		return true;
 	}
-	
+
 	function refreshBatchList() {
-		$("#batchList").loadUrl("${base}/list.do");
+		$('#batchList').loadUrl('${base}/list.do');
 	}
 </script>
 
 <style type="text/css">
+.form .pageFormContent {
+	overflow: hidden;
+	padding: 0;
+}
+
+.form dl {
+	width: 240px;
+}
+
+.form dt {
+	margin: 0 0 0 5px;
+	padding: 0;
+	width: 60px;
+}
+
+.form dd {
+	width: 170px;
+}
+
+.form .error { /* 	position: relative; */
+	/* 	top: 0; */
+	left: 0;
+	width: 100px;
+}
+
+.form input {
+	width: 100px;
+	position: relative;
+}
 </style>
 <div class="form" layoutH="30"
 	style="float: left; display: block; overflow: auto; width: 240px; border: solid 1px #CCC; line-height: 21px; background: #fff">

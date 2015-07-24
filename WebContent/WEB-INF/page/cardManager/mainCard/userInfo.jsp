@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<script src="/js/comet4j.js" type="text/javascript"></script>
+<!-- <script src="/js/comet4j.js" type="text/javascript"></script> -->
 <script type="text/javascript">
 	var isOnline=false;
 	var isHeart=false;
@@ -9,30 +9,30 @@
 	var heartTime=new Date();
 
 	$(function() {
-		if("${editType}"!=0 && "${editType}"!=1){
-			title = $(".dialogHeader_c h1").html().split("——")[0];
-			if ("${cardStatus}" == 1) {
-				$(".dialogHeader_c h1").html(title + "——读卡机状态：在线");
+		if('${editType}'!=0 && '${editType}'!=1){
+			title = $('.dialogHeader_c h1').html().split('——')[0];
+			if ('${cardStatus}' == 1) {
+				$('.dialogHeader_c h1').html(title + '——读卡机状态：在线');
 				isOnline=true;
 				if(!isHeart){
 					heart();
 					isHeart=true;
 				}
 			} else {
-				$(".dialogHeader_c h1").html(title + "——读卡机状态：离线");
+				$('.dialogHeader_c h1').html(title + '——读卡机状态：离线');
 				isOnline=false;
 				isHeart=false;
 				$('#userinfo').stopTime();
 			}
 			init();
 		}
-		$("#userinfo .add").click(function() {
-			validateCallback($(this).parents("form"), function(e) {
+		$('#userinfo .add').click(function() {
+			validateCallback($(this).parents('form'), function(e) {
 				if (e == 1) {
 					refreshUserList();
-					$("#userinfo input[name=username]").val("");
-					$("#userinfo input[name=shortName]").val("");
-					$("#userinfo input[name=userNO]").val("");
+					$('#userinfo input[name=username]').val('');
+					$('#userinfo input[name=shortName]').val('');
+					$('#userinfo input[name=userNO]').val('');
 					
 					alertMsg.correct('录入成功！');
 				} else if(e==2) {
@@ -40,8 +40,8 @@
 				}
 			}, null);
 		});
-		$("#userinfo .edit").click(function() {
-			validateCallback($(this).parents("form"), function(e) {
+		$('#userinfo .edit').click(function() {
+			validateCallback($(this).parents('form'), function(e) {
 				if (e == 1) {
 					refreshUserList();
 					alertMsg.correct('修改成功！');
@@ -50,10 +50,10 @@
 				}
 			}, null);
 		});
-		$("#userinfo .singleCard").click(function() {
+		$('#userinfo .singleCard').click(function() {
 			if(isOnline){
-				if($("#userinfo").valid()){
-					$.post("${base }/singleCardInit.do?userNO="+$('#userinfo input[name=userNO]').val(),function(e){
+				if($('#userinfo').valid()){
+					$.post('${base }/singleCardInit.do?userNO='+$('#userinfo input[name=userNO]').val(),function(e){
 						if(e==2){
 							alertMsg.warn('该用户编号已存在请更改！');					
 						}
@@ -63,24 +63,24 @@
 				alertMsg.warn('读卡机当前处于离线状态不能发卡！');
 			}
 		});
-		$("#userinfo .infoCard").click(function() {
+		$('#userinfo .infoCard').click(function() {
 			infoCard();
 		});
-		$("#userinfo .makeCard").click(function() {
+		$('#userinfo .makeCard').click(function() {
 			infoCard();
 		});
-		$("#userinfo .next").click(function() {
+		$('#userinfo .next').click(function() {
 			next();
 		});
-		$("#userinfo .delete").click(function() {
+		$('#userinfo .delete').click(function() {
 			$('#userinfo').stopTime();
 		});
 	});
 
 	function infoCard(){
 		if(isOnline){
-			if($("#userinfo").valid()){
-				$.post("${base }/command.do?comm=infoCardInit");
+			if($('#userinfo').valid()){
+				$.post('${base }/command.do?comm=infoCardInit');
 			}
 		}else{
 			alertMsg.warn('读卡机当前处于离线状态不能发卡！');
@@ -88,16 +88,16 @@
 	}
 	
 	function next(){
-		var userId=$("#userinfo input[name=userId]").val();
-		var list= $("#batchCardUserList tr[userId="+userId+"]").nextAll("[status=0]");
+		var userId=$('#userinfo input[name=userId]').val();
+		var list= $('#batchCardUserList tr[userId='+userId+']').nextAll('[status=0]');
 		if(list.length>0){
 			list.eq(0).click();
 		}else{
-			$("#userinfo input[name=userId]").val("");
-			$("#userinfo input[name=cardSN]").val("");
-			$("#userinfo input[name=username]").val("");
-			$("#userinfo input[name=shortName]").val("");
-			$("#userinfo input[name=userNO]").val("");
+			$('#userinfo input[name=userId]').val('');
+			$('#userinfo input[name=cardSN]').val('');
+			$('#userinfo input[name=username]').val('');
+			$('#userinfo input[name=shortName]').val('');
+			$('#userinfo input[name=userNO]').val('');
 		}
 	}
 	
@@ -115,14 +115,14 @@
 				else if (e2.f1 == 1) {
 					if (e2.r == 1) {
 						heartTime=new Date();
-						$(".dialogHeader_c h1").html(title + "——读卡机状态：在线");
+						$('.dialogHeader_c h1').html(title + '——读卡机状态：在线');
 						isOnline=true;
 						if(!isHeart){
 							heart();
 							isHeart=true;
 						}
 					} else {
-						$(".dialogHeader_c h1").html(title + "——读卡机状态：离线");
+						$('.dialogHeader_c h1').html(title + '——读卡机状态：离线');
 						isOnline=false;
 						isHeart=false;
 						$('#userinfo').stopTime();
@@ -133,8 +133,8 @@
 				//单个发卡命令
 				} else if (e2.f1 == 3) {
 					if(e2.r==1){
-						$("#userinfo input[name=cardSN]").val(e2.cardSN);
-						validateCallback($("#userinfo"), function(e) {
+						$('#userinfo input[name=cardSN]').val(e2.cardSN);
+						validateCallback($('#userinfo'), function(e) {
 						}, null);
 					}else{
 						opCardResult(e2.r);
@@ -143,7 +143,7 @@
 				}else if(e2.f1==4){
 					if(e2.r==1){
 						refreshUserList();
- 						$("#userinfo").clearForm();
+ 						$('#userinfo').clearForm();
 						alertMsg.correct('单个发卡完成！');
 					}else{
 						opCardResult(e2.r);
@@ -151,8 +151,8 @@
 				//信息发卡命令
 				} else if (e2.f1 == 5) {
 					if(e2.r==1){
-						$("#userinfo input[name=cardSN]").val(e2.cardSN);
-						validateCallback($("#userinfo"), function(e) {
+						$('#userinfo input[name=cardSN]').val(e2.cardSN);
+						validateCallback($('#userinfo'), function(e) {
 						}, null);
 					}else{
 						opCardResult(e2.r);
@@ -160,15 +160,15 @@
 				//信息发卡完成
 				} else if (e2.f1 == 6) {
 					if(e2.r==1){
-						if("${editType}"==3){
+						if('${editType}'==3){
 							refreshUserList();
-							$("#userinfo .close").click();
+							$('#userinfo .close').click();
 							alertMsg.correct('信息发卡完成！');
 						}else{
-							var userId=$("#userinfo input[name=userId]").val();
-							var tr= $("#batchCardUserList tr[userId="+userId+"]");
-							tr.attr("status",1);
-							tr.find("div").eq(3).html("已发卡");
+							var userId=$('#userinfo input[name=userId]').val();
+							var tr= $('#batchCardUserList tr[userId='+userId+']');
+							tr.attr('status',1);
+							tr.find('div').eq(3).html('已发卡');
 							alertMsg.correct('发卡完成！');
 							next();
 						}
@@ -182,13 +182,13 @@
 	
 	function heart(){
 // 		$('#userinfo').everyTime('10s','getCardReaderStatus', function() {
-// 			$.post("${base }/command.do?comm=getCardReaderStatus");
+// 			$.post('${base }/command.do?comm=getCardReaderStatus');
 // 			var d=new Date();
 // 			var t=(d.getTime()-heartTime.getTime())/1000;
-// 			$("#cardno2").html(t);
+// 			$('#cardno2').html(t);
 // 			if(t>=15){
-// 				$.post("${base }/command.do?comm=closeSocketChannel");
-// 				$(".dialogHeader_c h1").html(title + "——读卡机状态：离线");
+// 				$.post('${base }/command.do?comm=closeSocketChannel');
+// 				$('.dialogHeader_c h1').html(title + '——读卡机状态：离线');
 // 				isOnline=false;
 // 				isHeart=false;
 // 				$('#userinfo').stopTime();
@@ -198,25 +198,25 @@
 	
 	function opCardResult(r){
 		//1读卡器读写成功、2读卡器寻卡失败、3读卡器卡校验失败、4读卡器物理卡号不匹配、5读卡器读写卡失败。
-		var msg="读卡机寻卡失败，请检查是否放卡！";
+		var msg='读卡机寻卡失败，请检查是否放卡！';
 		if(r==3){
-			msg="读卡机卡校验失败！";
+			msg='读卡机卡校验失败！';
 		}else if(r==5){
-			msg="读卡机读写卡失败！";			
+			msg='读卡机读写卡失败！';			
 		}
 		alertMsg.warn(msg);		
 	}
 	function batchCardClick(tr){
-		var status=tr.attr("status");
+		var status=tr.attr('status');
 		if(status==0){
-			$("#userinfo input[name=userId]").val(tr.attr("userId"));
-			$("#userinfo input[name=cardSN]").val("");
-			$("#userinfo input[name=username]").val(tr.attr("username"));
-			$("#userinfo input[name=shortName]").val(tr.attr("shortName"));
-			$("#userinfo input[name=userNO]").val(tr.attr("userNO"));
-			$("#userinfo input[name=sex][value="+tr.attr("sex")+"]").attr("checked",true);
+			$('#userinfo input[name=userId]').val(tr.attr('userId'));
+			$('#userinfo input[name=cardSN]').val('');
+			$('#userinfo input[name=username]').val(tr.attr('username'));
+			$('#userinfo input[name=shortName]').val(tr.attr('shortName'));
+			$('#userinfo input[name=userNO]').val(tr.attr('userNO'));
+			$('#userinfo input[name=sex][value='+tr.attr('sex')+']').attr('checked',true);
 		}else{
-			alertMsg.warn("该用户已发卡！");		
+			alertMsg.warn('该用户已发卡！');		
 		}
 	}
 </script>

@@ -36,7 +36,7 @@ public interface MainCardDAO {
 	 * @param id
 	 * @return
 	 */
-	public void delete(@Param("userId") Integer userId) throws Exception;
+	public void delete(@Param("userIds") Integer[] userIds) throws Exception;
 
 	/**
 	 * 根据主键查询人员

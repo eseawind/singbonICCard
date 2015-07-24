@@ -213,7 +213,9 @@ public class TerminalManager {
 			}
 			map.put("'f1'", frame);
 			map.put("'r'", 1);
-			// 写卡回复
+			// //////////////////////////////////////////////////////////////////////////////
+			// /////////////////////////////////////////////写卡回复
+			// //////////////////////////////////////////////////////////////////////////////
 		} else if (Arrays.equals(frameByte, new byte[] { 0x03, (byte) 0xcd, 0x01, 0x01 })) {
 			// 单个发卡完成
 			if (commandCode == CommandCodeCardReader.SingleCard) {
@@ -245,13 +247,40 @@ public class TerminalManager {
 				map.put("'f1'", FrameCardReader.ReadCardDone);
 				map.put("'r'", b35);
 			}
-			// 制出纳卡命令
+			// 制出纳卡完成
 			else if (commandCode == CommandCodeCardReader.MakeCashierCard) {
 				map.put("'f1'", FrameCardReader.MakeCashierCardDone);
 				map.put("'r'", b35);
 				map.put("'newCardSN'", cardSN);
 			}
-			// 读卡回复
+			// 挂失出纳卡完成
+			else if (commandCode == CommandCodeCardReader.LossCashierCard) {
+				map.put("'f1'", FrameCardReader.LossCashierCardDone);
+				map.put("'r'", b35);
+			}
+			// 解挂出纳卡完成
+			else if (commandCode == CommandCodeCardReader.UnLossCashierCard) {
+				map.put("'f1'", FrameCardReader.UnLossCashierCardDone);
+				map.put("'r'", b35);
+			}
+			// 解挂出纳卡完成
+			else if (commandCode == CommandCodeCardReader.UnLossCashierCard) {
+				map.put("'f1'", FrameCardReader.UnLossCashierCardDone);
+				map.put("'r'", b35);
+			}
+			// 补办出纳卡完成
+			else if (commandCode == CommandCodeCardReader.RemakeCashierCard) {
+				map.put("'f1'", FrameCardReader.RemakeCashierCardDone);
+				map.put("'r'", b35);
+			}
+			// 修改出纳卡有效期完成
+			else if (commandCode == CommandCodeCardReader.InvalidDateCashierCard) {
+				map.put("'f1'", FrameCardReader.InvalidDateCashierCardDone);
+				map.put("'r'", b35);
+			}
+			// //////////////////////////////////////////////////////////////////////////////
+			// /////////////////////////////////////////////读卡回复
+			// //////////////////////////////////////////////////////////////////////////////
 		} else if (Arrays.equals(frameByte, new byte[] { 0x03, (byte) 0xcd, 0x00, 0x01 })) {
 			int baseLen = 33;
 			// 发送单个发卡命令
@@ -338,11 +367,61 @@ public class TerminalManager {
 				map.put("'r'", b35);
 				map.put("'cardSN'", cardSN);
 			}
+			// 挂失出纳卡命令
+			else if (commandCode == CommandCodeCardReader.LossCashierCard) {
+				map.put("'f1'", FrameCardReader.LossCashierCardCmd);
+				map.put("'r'", b35);
+				map.put("'operId'", Integer.parseInt(getCashierOperId(b), 16));
+				map.put("'cardSN'", cardSN);
+				map.put("'cardInfoStr'", cardInfo(33, b.length - 1, b));
+			}
+			// 解挂出纳卡命令
+			else if (commandCode == CommandCodeCardReader.UnLossCashierCard) {
+				map.put("'f1'", FrameCardReader.UnLossCashierCardCmd);
+				map.put("'r'", b35);
+				map.put("'operId'", Integer.parseInt(getCashierOperId(b), 16));
+				map.put("'cardSN'", cardSN);
+				map.put("'cardInfoStr'", cardInfo(33, b.length - 1, b));
+			}
+			// 补办出纳卡命令
+			else if (commandCode == CommandCodeCardReader.RemakeCashierCard) {
+				map.put("'f1'", FrameCardReader.RemakeCashierCardCmd);
+				map.put("'r'", b35);
+				map.put("'cardSN'", cardSN);
+			}
+			// 读取出纳卡命令
+			else if (commandCode == CommandCodeCardReader.ReadCashierCard) {
+				map.put("'f1'", FrameCardReader.ReadCashierCardCmd);
+				map.put("'r'", b35);
+
+				map.put("'operId'", Integer.parseInt(getCashierOperId(b), 16));
+				String date = StringUtil.dateFromHexString(cardInfo(33 + 3 + 19 + 10, 33 + 3 + 19 + 11, b));
+				map.put("'date'", date);
+				map.put("'cardSN'", cardSN);
+				map.put("'cardInfoStr'", cardInfo(33, b.length - 1, b));
+			}
 		}
 		if (map.size() > 0) {
 			String msg = JSONUtil.convertToJson(map);
 			TerminalManager.getEngineInstance().sendToAll("c" + sn, msg);
 		}
+	}
+
+	private String getCashierOperId(byte[] b) {
+		String operId = "";
+		String hex = Integer.toHexString(b[40] & 0x0F);
+		operId += hex;
+		hex = Integer.toHexString(b[41] & 0xFF);
+		if (hex.length() == 1) {
+			hex = '0' + hex;
+		}
+		operId += hex;
+		hex = Integer.toHexString(b[42] & 0xFF);
+		if (hex.length() == 1) {
+			hex = '0' + hex;
+		}
+		operId += hex;
+		return operId;
 	}
 
 	/**

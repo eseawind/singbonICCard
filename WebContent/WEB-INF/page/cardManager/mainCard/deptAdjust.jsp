@@ -4,53 +4,53 @@
 
 <script type="text/javascript">
 $(function(){
-	var adjustDeptTree = $("#adjustDeptTree li");
+	var adjustDeptTree = $('#adjustDeptTree li');
 	adjustDeptTree.each(function() {
 		var $this = $(this);
-		var parentId = $this.attr("parentId");
-		if (parentId == "0") {
-			$("#deptAdjustForm .expand").append($this);
+		var parentId = $this.attr('parentId');
+		if (parentId == '0') {
+			$('#deptAdjustForm .expand').append($this);
 		} else {
-			var $li = $("#deptAdjustForm li[deptId='" + parentId + "']");
-			if ($(">ul", $li).size() == 0) {
-				$("<ul></ul>").appendTo($li);
+			var $li = $('#deptAdjustForm li[deptId='' + parentId + '']');
+			if ($('>ul', $li).size() == 0) {
+				$('<ul></ul>').appendTo($li);
 			}
-			$(">ul", $li).append($(this));
+			$('>ul', $li).append($(this));
 		}
 	});
-	$("#deptAdjustForm .ok").click(function() {
-		var adjustType=$("#deptAdjustForm input[name=adjustType]:checked").val();
-		var fromDeptId=$("#deptAdjustForm .fromDeptTree :radio:checked").val();
-		var toDeptId=$("#deptAdjustForm .toDeptTree :radio:checked").val();
+	$('#deptAdjustForm .ok').click(function() {
+		var adjustType=$('#deptAdjustForm input[name=adjustType]:checked').val();
+		var fromDeptId=$('#deptAdjustForm .fromDeptTree :radio:checked').val();
+		var toDeptId=$('#deptAdjustForm .toDeptTree :radio:checked').val();
 		if(adjustType==0){
-			if($("#deptAdjustForm input[name=selectedUserId]").val()==""){
-				alertMsg.warn("没有选中人员！");
+			if($('#deptAdjustForm input[name=selectedUserId]').val()==''){
+				alertMsg.warn('没有选中人员！');
 				return;								
 			}
 			if(toDeptId==null){
-				alertMsg.warn("请选择新部门！");
+				alertMsg.warn('请选择新部门！');
 				return;				
 			}
 		}else if(adjustType==1){
 			if(fromDeptId==null){
-				alertMsg.warn("请选择原部门！");
+				alertMsg.warn('请选择原部门！');
 				return;				
 			}
 			if(toDeptId==null){
-				alertMsg.warn("请选择新部门！");
+				alertMsg.warn('请选择新部门！');
 				return;				
 			}
 		}else if(adjustType==2){
-			if($("#adjustUserList input[name=userIds]").length==0){
-				alertMsg.warn("没有查询到人员！");
+			if($('#adjustUserList input[name=userIds]').length==0){
+				alertMsg.warn('没有查询到人员！');
 				return;								
 			}
 			if(toDeptId==null){
-				alertMsg.warn("请选择新部门！");
+				alertMsg.warn('请选择新部门！');
 				return;
 			}
 		}
-		validateCallback($(this).parents("form"), function(e) {
+		validateCallback($(this).parents('form'), function(e) {
 			if(e==1){
 				refreshUserList();
 				alertMsg.correct('部门调整完成！');
@@ -59,14 +59,14 @@ $(function(){
 			}
 		}, null);
 	});
-// 	$("#deptAdjust input:radio[name=adjustType]").click(function(){
+// 	$('#deptAdjust input:radio[name=adjustType]').click(function(){
 // 		if($(this).val()==2){
-// 			$.pdialog.resizeDialog({style: {width: 900}}, $.pdialog.getCurrent(), "");
+// 			$.pdialog.resizeDialog({style: {width: 900}}, $.pdialog.getCurrent(), '');
 // 		}else{
-// 			$.pdialog.resizeDialog({style: {width: 520}}, $.pdialog.getCurrent(), "");			
+// 			$.pdialog.resizeDialog({style: {width: 520}}, $.pdialog.getCurrent(), '');			
 // 		}
 // 	});
-	//$.pdialog.resizeDialog({style: {width: 520}}, $.pdialog.getCurrent(), "");			
+	//$.pdialog.resizeDialog({style: {width: 520}}, $.pdialog.getCurrent(), '');			
 });
 	
 </script>

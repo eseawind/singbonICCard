@@ -80,5 +80,37 @@ public class FrameCardReader {
 	 * 制出纳卡完成 0x11
 	 */
 	public static byte MakeCashierCardDone = 0x11;
+	/**
+	 * 挂失出纳卡命令 0x12
+	 */
+	public static byte LossCashierCardCmd = 0x12;
+	/**
+	 * 挂失出纳卡完成 0x13
+	 */
+	public static byte LossCashierCardDone = 0x13;
+	/**
+	 * 解挂出纳卡命令 0x14
+	 */
+	public static byte UnLossCashierCardCmd = 0x14;
+	/**
+	 * 解挂出纳卡完成 0x15
+	 */
+	public static byte UnLossCashierCardDone = 0x15;
+	/**
+	 * 补办出纳卡命令 0x16
+	 */
+	public static byte RemakeCashierCardCmd = 0x16;
+	/**
+	 * 补办出纳卡完成 0x17
+	 */
+	public static byte RemakeCashierCardDone = 0x17;
+	/**
+	 * 读取出纳卡命令 0x18
+	 */
+	public static byte ReadCashierCardCmd = 0x18;
+	/**
+	 * 修改出纳卡有效期完成 0x19
+	 */
+	public static byte InvalidDateCashierCardDone = 0x19;
 
 }

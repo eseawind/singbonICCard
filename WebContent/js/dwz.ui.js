@@ -189,6 +189,10 @@ function initUI(_box){
 	$("a[target=navTab]", $p).each(function(){
 		$(this).click(function(event){
 			var $this = $(this);
+			var href=$this.attr("href");
+			if(href.indexOf('specialCard/index.do')!=-1){
+				JS.Engine.stop();
+			}
 			var title = $this.attr("title") || $this.text();
 			var tabid = $this.attr("rel") || "_blank";
 			var fresh = eval($this.attr("fresh") || "true");
