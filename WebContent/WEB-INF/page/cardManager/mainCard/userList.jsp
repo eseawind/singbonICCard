@@ -168,6 +168,13 @@
 				}else{
 					alertMsg.warn('该卡不是正常卡，不能进行换卡操作！');
 				}				
+			},
+			'charge' : function(t, target) {
+				if (!checkDeviceSn()) {
+					return;
+				}
+				var url = '${base}/charge.do';
+				$.pdialog.open(url, 'dialog', '存取款', cardOptions);
 			}
 		},
 		onShowMenu : function(e, menu) {
@@ -212,6 +219,7 @@
 		<li id="unloss">解挂</li>
 		<li id="remakeCard">补卡</li>
 		<li id="changeCard">换卡</li>		
+		<li id="charge">存、取款</li>		
 		<li id="delete">删除选中未发卡人员</li>
 	</ul>
 </div>

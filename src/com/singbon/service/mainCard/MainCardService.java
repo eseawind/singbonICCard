@@ -330,4 +330,35 @@ public class MainCardService {
 	public void changeFromDeptToNew(Integer fromDeptId, Integer toDeptId) throws Exception {
 		this.mainCardDAO.changeFromDeptToNew(fromDeptId, toDeptId);
 	}
+
+	/**
+	 * 存取款
+	 * 
+	 * @param userId
+	 * @return
+	 * @throws Exception
+	 */
+	public void doCharge(User user, float oddFare2, float opCash, SocketChannel socketChannel, Device device, Integer chargeType, String cardInfoStr) throws Exception {
+		String totalFareString = cardInfoStr.substring(26, 34);
+		int totalFare = Integer.parseInt(totalFareString, 16);
+		int oddFare = 0;
+		if (chargeType == 0) {
+			oddFare = (int) (100 * (oddFare2 + opCash));
+			totalFare += opCash * 100;
+			this.mainCardDAO.changeFare(user.getUserId(), (int) opCash * 100);
+		} else {
+			oddFare = (int) (100 * (oddFare2 - opCash));
+			totalFare -= opCash * 100;
+			this.mainCardDAO.changeFare(user.getUserId(), -(int) opCash * 100);
+		}
+
+		cardInfoStr = cardInfoStr.substring(0, 26) + StringUtil.hexLeftPad(totalFare, 8) + cardInfoStr.substring(34, 50) + StringUtil.hexLeftPad(oddFare, 6) + cardInfoStr.substring(56);
+		String commandCodeStr = StringUtil.hexLeftPad(CommandCodeCardReader.Charge, 4);
+		String sendBufStr = CommandCardReader.WriteCard + commandCodeStr + CommandCardReader.ValidateCardSN + user.getCardSN() + cardInfoStr;
+		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
+		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + bufLen + sendBufStr;
+		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
+		CRC16.generate(sendBuf);
+		TerminalManager.sendToCardReader(socketChannel, sendBuf);
+	}
 }

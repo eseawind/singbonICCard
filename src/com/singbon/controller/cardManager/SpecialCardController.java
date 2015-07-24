@@ -310,7 +310,7 @@ public class SpecialCardController extends BaseController {
 					// 获取基本信息区2块
 					List<Integer> sectionBlocks = new ArrayList<Integer>();
 					sectionBlocks.add(section * 10);
-					sectionBlocks.add(section * 12);
+					sectionBlocks.add(section * 10 + 2);
 					TerminalManager.getCardInfo(socketChannel, device, CommandCodeCardReader.ReadCashierCard, sectionBlocks);
 				} catch (IOException e) {
 					e.printStackTrace();

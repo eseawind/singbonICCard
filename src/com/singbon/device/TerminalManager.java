@@ -278,6 +278,11 @@ public class TerminalManager {
 				map.put("'f1'", FrameCardReader.InvalidDateCashierCardDone);
 				map.put("'r'", b35);
 			}
+			// 存取款完成
+			else if (commandCode == CommandCodeCardReader.Charge) {
+				map.put("'f1'", FrameCardReader.ChargeDone);
+				map.put("'r'", b35);
+			}
 			// //////////////////////////////////////////////////////////////////////////////
 			// /////////////////////////////////////////////读卡回复
 			// //////////////////////////////////////////////////////////////////////////////
@@ -399,6 +404,35 @@ public class TerminalManager {
 				map.put("'date'", date);
 				map.put("'cardSN'", cardSN);
 				map.put("'cardInfoStr'", cardInfo(33, b.length - 1, b));
+			}
+			// 读取卡余额命令
+			else if (commandCode == CommandCodeCardReader.ReadCardOddFare) {
+				map.put("'f1'", FrameCardReader.ReadCardOddFareCmd);
+				map.put("'r'", b35);
+
+				int base0 = baseLen + 3;
+				map.put("'userId'", Integer.parseInt(cardInfo(base0, base0 + 2, b), 16));
+				map.put("'cardNO'", Integer.parseInt(cardInfo(base0 + 3, base0 + 5, b), 16));
+				map.put("'cardSN'", cardSN);
+
+				int status = Integer.parseInt(cardInfo(base0 + 13, base0 + 13, b), 16);
+				String statusDesc = "正常";
+				if (status == 241) {
+					statusDesc = "正常";
+				} else if (status == 242) {
+					statusDesc = "未开户或注销";
+				} else if (status == 243) {
+					statusDesc = "挂失";
+				} else {
+					statusDesc = "异常";
+				}
+
+				map.put("'status'", status);
+				map.put("'statusDesc'", statusDesc);
+
+				int consume0 = baseLen + 19 * 2 + 3;
+				map.put("'oddFare'", (float) Integer.parseInt(cardInfo(consume0 + 3, consume0 + 5, b), 16) / 100);
+				map.put("'cardInfoStr'", cardInfo(baseLen + 19, b.length - 1, b));
 			}
 		}
 		if (map.size() > 0) {

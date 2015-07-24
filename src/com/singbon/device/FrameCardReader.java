@@ -112,5 +112,13 @@ public class FrameCardReader {
 	 * 修改出纳卡有效期完成 0x19
 	 */
 	public static byte InvalidDateCashierCardDone = 0x19;
+	/**
+	 * 读取卡余额命令 0x1a
+	 */
+	public static byte ReadCardOddFareCmd = 0x1a;
+	/**
+	 * 存取款完成 0x1b
+	 */
+	public static byte ChargeDone = 0x1b;
 
 }

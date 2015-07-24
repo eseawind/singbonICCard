@@ -46,6 +46,9 @@
 	<update id="changeFromDeptToNew">
 		update user set deptId=#{toDeptId} where deptId=#{fromDeptId}
 	</update>
+	<update id="changeFare">
+		update user set totalFare=totalFare+#{opFare},oddFare=oddFare+#{opFare} where userId=#{userId}
+	</update>
 	<delete id="delete" parameterType="int">
 		delete from user where status=0 and userId in (		
 		<foreach collection="userIds" item="item" index="index" separator=",">  

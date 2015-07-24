@@ -90,7 +90,7 @@
 				<dt>赠送金额：</dt>
 				<dd>
 					<input type="text" name="giveCash" maxlength="20"
-						class="digits required" max="42949672"/>元
+						class="digits required" max="167772"/>元
 				</dd>
 			</dl>
 		</div>

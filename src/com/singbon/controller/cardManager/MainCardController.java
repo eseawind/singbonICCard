@@ -542,6 +542,22 @@ public class MainCardController extends BaseController {
 				}
 			}
 		}
+		// 读取卡余额
+		else if ("readCardOddFareInit".equals(comm)) {
+			SocketChannel socketChannel = TerminalManager.getSNToSocketChannelList().get(sn);
+			if (socketChannel != null) {
+				try {
+					// 获取基本扇区0块2块
+					List<Integer> sectionBlocks = new ArrayList<Integer>();
+					sectionBlocks.add(section * 10);
+					sectionBlocks.add(section * 10 + 2);
+					sectionBlocks.add(section * 20);
+					TerminalManager.getCardInfo(socketChannel, device, CommandCodeCardReader.ReadCardOddFare, sectionBlocks);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 
 	/**
@@ -917,6 +933,98 @@ public class MainCardController extends BaseController {
 				e.printStackTrace();
 			}
 		}
+	}
 
+	/**
+	 * 存取款首页
+	 * 
+	 * @param request
+	 * @param model
+	 * @param module
+	 * @return
+	 */
+	@RequestMapping(value = "/charge.do")
+	public String charge(HttpServletRequest request, Model model) {
+		Device device = (Device) request.getSession().getAttribute("device");
+		model.addAttribute("device", device);
+		String sn = device.getSn();
+		model.addAttribute("sn", sn);
+
+		String url = request.getRequestURI();
+		model.addAttribute("base", url.replace("/charge.do", ""));
+
+		// 读卡机状态
+		if (TerminalManager.getSNToSocketChannelList().containsKey(sn)) {
+			model.addAttribute("cardStatus", 1);
+		} else {
+			model.addAttribute("cardStatus", 0);
+		}
+		return url.replace(".do", "");
+	}
+
+	/**
+	 * 通过userId和cardSN获取卡余额
+	 * 
+	 * @param userId
+	 * @param cardSN
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@RequestMapping(value = "/selectOddFareByUserIdCardSN.do", method = RequestMethod.POST)
+	public void selectOddFareByUserIdCardSN(Integer userId, String cardSN, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Company company = (Company) request.getSession().getAttribute("company");
+		PrintWriter p = null;
+		try {
+			p = response.getWriter();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		Map map = new HashMap();
+		User user = this.mainCardService.selectByUserIdCardSN(company.getId(), userId, cardSN);
+		if (user == null) {
+			map.put("'r'", 0);
+		} else {
+			map.put("'r'", 1);
+
+			map.put("'username'", user.getUsername());
+
+			map.put("'userId'", user.getUserId());
+			map.put("'userNO'", user.getUserNO());
+			map.put("'cardNO'", user.getCardNO());
+			map.put("'cardSN'", user.getCardSN());
+			map.put("'status'", user.getStatus());
+			map.put("'statusDesc'", user.getStatusDesc());
+
+			map.put("'oddFare'", (float) user.getOddFare() / 100);
+		}
+		String msg = JSONUtil.convertToJson(map);
+		p.print(msg);
+	}
+
+	/**
+	 * 存取款
+	 * 
+	 * @param user
+	 * @param chargeType
+	 * @param opCash
+	 * @param allOpCash
+	 * @param cardInfoStr
+	 * @param request
+	 * @param model
+	 */
+	@RequestMapping(value = "/doCharge.do", method = RequestMethod.POST)
+	public void doCharge(@ModelAttribute User user, Integer chargeType, Float opCash2, Float oddFare2, String cardInfoStr, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Device device = (Device) request.getSession().getAttribute("device");
+		SocketChannel socketChannel = TerminalManager.getSNToSocketChannelList().get(device.getSn());
+		if (socketChannel != null) {
+			try {
+				this.mainCardService.doCharge(user, oddFare2, opCash2, socketChannel, device, chargeType, cardInfoStr);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }

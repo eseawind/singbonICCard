@@ -60,5 +60,13 @@ public class CommandCodeCardReader {
 	 * 修改出纳卡有效期 0x0d
 	 */
 	public static byte InvalidDateCashierCard = 0x0d;
+	/**
+	 * 读取卡余额 0x0e
+	 */
+	public static byte ReadCardOddFare = 0x0e;
+	/**
+	 * 存取款 0x0f
+	 */
+	public static byte Charge = 0x0f;
 
 }
