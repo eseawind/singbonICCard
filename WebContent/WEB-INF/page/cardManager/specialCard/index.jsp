@@ -2,7 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<!-- <script src="/js/comet4j.js" type="text/javascript"></script> -->
+<script src="/js/comet4j.js" type="text/javascript"></script>
 <script type="text/javascript">
 	var isOnline=false;
 	var isHeart=false;
@@ -10,18 +10,19 @@
 	var heartTime=new Date();
 	
 	$(function() {
+		title = $('.dialogHeader_c h1').html().split('——')[0];
 		if ('${cardStatus}' == 1) {
-			$('#specialStatus').html('读卡机状态：在线');
+			$('.dialogHeader_c h1').html(title + '——读卡机状态：在线');
 			isOnline=true;
 			if(!isHeart){
 				heart();
 				isHeart=true;
 			}
 		} else {
-			$('#specialStatus').html('读卡机状态：离线');
+			$('.dialogHeader_c h1').html(title + '——读卡机状态：离线');
 			isOnline=false;
 			isHeart=false;
-			$('#userinfo').stopTime();
+			$('body').stopTime();
 		}
 		init();
 		
@@ -115,7 +116,7 @@
 	});
 	
 	function init() {
-// 		JS.Engine.stop();
+		JS.Engine.stop();
 		JS.Engine.start('/conn');
 		JS.Engine.on({
 			'c${sn}' : function(e) {//侦听一个channel
@@ -128,17 +129,17 @@
 				else if (e2.f1 == 1) {
 					if (e2.r == 1) {
 						heartTime=new Date();
-// 						$('#specialStatus').html('读卡机状态：在线');
+						$('#specialStatus').html('读卡机状态：在线');
 						isOnline=true;
 						if(!isHeart){
 							heart();
 							isHeart=true;
 						}
 					} else {
-// 						$('#specialStatus').html('读卡机状态：离线');
+						$('#specialStatus').html('读卡机状态：离线');
 						isOnline=false;
 						isHeart=false;
-						$('#userinfo').stopTime();
+						$('body').stopTime();
 					}
 				//心跳
 				} else if (e2.f1 == 2) {
@@ -260,19 +261,18 @@
 	}
 	
 	function heart(){
-	//		$('#userinfo').everyTime('10s','getCardReaderStatus', function() {
-	//			$.post('${base }/command.do?comm=getCardReaderStatus');
-	//			var d=new Date();
-	//			var t=(d.getTime()-heartTime.getTime())/1000;
-	//			$('#cardno2').html(t);
-	//			if(t>=15){
-	//				$.post('${base }/command.do?comm=closeSocketChannel');
-	//				$('#specialStatus').html('读卡机状态：离线');
-	//				isOnline=false;
-	//				isHeart=false;
-	//				$('#userinfo').stopTime();
-	//			}
-	//		},0,true);
+		$('body').everyTime('10s','getCardReaderStatus', function() {
+			$.post('${base }/command.do?comm=getCardReaderStatus');
+			var d=new Date();
+			var t=(d.getTime()-heartTime.getTime())/1000;
+			if(t>=15){
+				$.post('${base }/command.do?comm=closeSocketChannel');
+				$('.dialogHeader_c h1').html('读卡机状态：离线');
+				isOnline=false;
+				isHeart=false;
+				$('body').stopTime();
+			}
+		},0,true);
 	}
 	
 	function opCardResult(r){
@@ -287,8 +287,16 @@
 	}
 	
 </script>
+<style type="text/css">
+	.dialog .dialogContent{
+		padding: 1px;
+	}
+	.dialog .pageFormContent{
+		border-style: none;
+	}
+</style>
 <div class="tabs" currentIndex="0" eventType="click"
-	style="margin: 1px;" layoutH="20">
+	style="margin: 1px;" layoutH="0">
 	<div class="tabsHeader">
 		<div class="tabsHeaderContent">
 			<ul>
@@ -298,7 +306,7 @@
 			</ul>
 		</div>
 	</div>
-	<div class="tabsContent" style="padding: 0;" layoutH="50">
+	<div class="tabsContent" style="padding: 0;" layoutH="30">
 		<!-- tab出纳卡 -->
 		<div>
 			<div id="cashierList">
@@ -318,9 +326,9 @@
 				</div>
 				<div id="cashierCard" class="tabsContent" style="padding: 0;height: 70px;">
 					<!-- 制出纳卡 -->
-					<div>
+					<div class="cashierTabsContent">
 						<form id="makeCashierForm" method="post" action="${base }/makeCashierCard.do" class="pageForm required-validate">
-						<div class="pageFormContent" >
+						<div class="pageFormContent">
 							<dl>
 								<dt>失效期：</dt>
 								<dd>
@@ -343,7 +351,7 @@
 						</form>
 					</div>
 					<!-- 挂失 -->
-					<div>
+					<div class="cashierTabsContent">
 						<form id="lossForm" method="post" action="${base }/loss.do" class="pageForm required-validate">
 						<div class="pageFormContent" >
 							<dl>
@@ -368,7 +376,7 @@
 						</form>
 					</div>
 					<!-- 解挂 -->
-					<div>
+					<div class="cashierTabsContent">
 						<form id="unLossForm" method="post" action="${base }/unLoss.do" class="pageForm required-validate">
 						<input name="operId" type="hidden" /> 
 						<input name="cardSN" type="hidden" /> 
@@ -387,7 +395,7 @@
 						</form>
 					</div>
 					<!-- 补卡 -->
-					<div>
+					<div class="cashierTabsContent">
 						<form id="remakeCashierCardForm" method="post" action="${base }/makeCashierCard.do" class="pageForm required-validate">
 						<input name="operId" type="hidden" /> 
 						<input name="cardSN" type="hidden" /> 
@@ -421,7 +429,7 @@
 							<dl>
 								<ul>
 									<li><div class="buttonActive">
-											<div class="buttonContent readCashierCard">
+											<div class="buttonContent readCashierCard"  style="margin-right: 5px;">
 												<button type="button">读卡</button>
 											</div>
 										</div></li>
@@ -442,6 +450,4 @@
 		<div>2</div>
 		<div>3</div>
 	</div>
-</div>
-<div id="specialStatus" style="color: #15428B;padding:2px 0 0 5px;">
 </div>

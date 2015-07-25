@@ -264,7 +264,7 @@ public class MainCardService {
 	 * @throws Exception
 	 */
 	public void unloss(Integer userId, SocketChannel socketChannel, Device device, String cardSN, String cardInfoStr) throws Exception {
-		this.mainCardDAO.changeStatus(userId, 1);
+//		this.mainCardDAO.changeStatus(userId, 1);
 
 		String commandCodeStr = StringUtil.hexLeftPad(CommandCodeCardReader.Unloss, 4);
 		String sendBufStr = CommandCardReader.WriteCard + commandCodeStr + CommandCardReader.ValidateCardSN + cardSN + cardInfoStr;

@@ -189,15 +189,27 @@ function initUI(_box){
 	$("a[target=navTab]", $p).each(function(){
 		$(this).click(function(event){
 			var $this = $(this);
-			var href=$this.attr("href");
-			if(href.indexOf('specialCard/index.do')!=-1){
-				JS.Engine.stop();
+			var url=$this.attr('url');
+			if(url!=null && url.indexOf('specialCard/index.do')!=-1){
+				var specialOptions = {
+					width : 900,
+					height : 550,
+					max : false,
+					mask : true,
+					mixable : false,
+					minable : false,
+					resizable : true,
+					drawable : true,
+					fresh : false
+				};
+				$.pdialog.open(url, 'dialog', '功能卡制作', specialOptions);
+				return;
 			}
 			var title = $this.attr("title") || $this.text();
 			var tabid = $this.attr("rel") || "_blank";
 			var fresh = eval($this.attr("fresh") || "true");
 			var external = eval($this.attr("external") || "false");
-			var url = unescape($this.attr("href")).replaceTmById($(event.target).parents(".unitBox:first"));
+			url = unescape($this.attr("href")).replaceTmById($(event.target).parents(".unitBox:first"));
 			DWZ.debug(url);
 			if (!url.isFinishedTm()) {
 				alertMsg.error($this.attr("warn") || DWZ.msg("alertSelectMsg"));

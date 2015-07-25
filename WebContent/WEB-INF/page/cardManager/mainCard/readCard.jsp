@@ -2,7 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<!-- <script src="/js/comet4j.js" type="text/javascript"></script> -->
+<script src="/js/comet4j.js" type="text/javascript"></script>
 <script type="text/javascript">
 
 	var isOnline=false;
@@ -70,7 +70,6 @@
 					if (e2.r == 1) {
 						heartTime=new Date();
 						$('.dialogHeader_c h1').html(title + '——读卡机状态：在线');
-						alert();
 						isOnline=true;
 						if(!isHeart){
 							heart();
@@ -140,19 +139,19 @@
 	}
 	
 	function heart(){
-// 		$('#userinfo').everyTime('10s','getCardReaderStatus', function() {
-// 			$.post('${base }/command.do?comm=getCardReaderStatus');
-// 			var d=new Date();
-// 			var t=(d.getTime()-heartTime.getTime())/1000;
-// 			$('#cardno2').html(t);
-// 			if(t>=15){
-// 				$.post('${base }/command.do?comm=closeSocketChannel');
-// 				$('.dialogHeader_c h1').html(title + '——读卡机状态：离线');
-// 				isOnline=false;
-// 				isHeart=false;
-// 				$('#userinfo').stopTime();
-// 			}
-// 		},0,true);
+		$('body').everyTime('10s','getCardReaderStatus', function() {
+			$.post('${base }/command.do?comm=getCardReaderStatus');
+			var d=new Date();
+			var t=(d.getTime()-heartTime.getTime())/1000;
+			$('#cardno2').html(t);
+			if(t>=15){
+				$.post('${base }/command.do?comm=closeSocketChannel');
+				$('.dialogHeader_c h1').html(title + '——读卡机状态：离线');
+				isOnline=false;
+				isHeart=false;
+				$('#userinfo').stopTime();
+			}
+		},0,true);
 	}
 	
 	function opCardResult(r){

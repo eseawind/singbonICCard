@@ -2,7 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<!-- <script src="/js/comet4j.js" type="text/javascript"></script> -->
+<script src="/js/comet4j.js" type="text/javascript"></script>
 <script type="text/javascript">
 
 	var isOnline=false;
@@ -24,7 +24,7 @@
 				$('.dialogHeader_c h1').html(title + '——读卡机状态：离线');
 				isOnline=false;
 				isHeart=false;
-				$('#userinfo').stopTime();
+				$('body').stopTime();
 			}
 			init();
 		}
@@ -111,7 +111,7 @@
 						$('.dialogHeader_c h1').html(title + '——读卡机状态：离线');
 						isOnline=false;
 						isHeart=false;
-						$('#userinfo').stopTime();
+						$('body').stopTime();
 					}
 				//心跳
 				} else if (e2.f1 == 0x02) {
@@ -122,7 +122,6 @@
 						var userId= $('#userinfo input[name=userId]').val();
 						var cardSN= $('#userinfo input[name=cardSN]').val();
 						
-// 						alert(userId+' '+e2.userId +' '+ cardSN+' '+e2.cardSN);
 						if(userId==e2.userId && cardSN==e2.cardSN){
 							$('#userinfo input[name=cardInfoStr]').val(e2.cardInfoStr);
 							validateCallback($('#userinfo'), function(e) {
@@ -206,19 +205,18 @@
 	}
 	
 	function heart(){
-// 		$('#userinfo').everyTime('10s','getCardReaderStatus', function() {
-// 			$.post('${base }/command.do?comm=getCardReaderStatus');
-// 			var d=new Date();
-// 			var t=(d.getTime()-heartTime.getTime())/1000;
-// 			$('#cardno2').html(t);
-// 			if(t>=15){
-// 				$.post('${base }/command.do?comm=closeSocketChannel');
-// 				$('.dialogHeader_c h1').html(title + '——读卡机状态：离线');
-// 				isOnline=false;
-// 				isHeart=false;
-// 				$('#userinfo').stopTime();
-// 			}
-// 		},0,true);
+		$('body').everyTime('10s','getCardReaderStatus', function() {
+			$.post('${base }/command.do?comm=getCardReaderStatus');
+			var d=new Date();
+			var t=(d.getTime()-heartTime.getTime())/1000;
+			if(t>=15){
+				$.post('${base }/command.do?comm=closeSocketChannel');
+				$('.dialogHeader_c h1').html(title + '——读卡机状态：离线');
+				isOnline=false;
+				isHeart=false;
+				$('body').stopTime();
+			}
+		},0,true);
 	}
 	
 	function opCardResult(r){

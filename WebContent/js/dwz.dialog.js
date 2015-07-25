@@ -78,7 +78,7 @@
 					var title=dialog.find(".dialogHeader").find("h1").html();
 					if(title.indexOf("读卡机")!=-1){
 						JS.Engine.stop();
-						$('#userinfo').stopTime ();
+						$('body').stopTime ();
 					}
 					if(title.indexOf("批量发卡")!=-1){
 						refreshUserList();
@@ -135,7 +135,7 @@
 						var title=dialog.find(".dialogHeader").find("h1").html();
 						if(title.indexOf("读卡机")!=-1){
 							JS.Engine.stop();
-							$('#userinfo').stopTime ();
+							$('body').stopTime ();
 						}
 						if(title.indexOf("批量发卡")!=-1){
 							refreshUserList();
