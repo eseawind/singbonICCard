@@ -22,7 +22,7 @@
 				$('.dialogHeader_c h1').html(title + '——读卡机状态：离线');
 				isOnline=false;
 				isHeart=false;
-				$('#userinfo').stopTime();
+				$('body').stopTime();
 			}
 			init();
 		}
@@ -73,7 +73,7 @@
 			next();
 		});
 		$('#userinfo .delete').click(function() {
-			$('#userinfo').stopTime();
+			$('body').stopTime();
 		});
 	});
 
@@ -125,7 +125,7 @@
 						$('.dialogHeader_c h1').html(title + '——读卡机状态：离线');
 						isOnline=false;
 						isHeart=false;
-						$('#userinfo').stopTime();
+						$('body').stopTime();
 					}
 				//心跳
 				} else if (e2.f1 == 2) {
@@ -191,7 +191,7 @@
 				$('.dialogHeader_c h1').html(title + '——读卡机状态：离线');
 				isOnline=false;
 				isHeart=false;
-				$('#userinfo').stopTime();
+				$('body').stopTime();
 			}
 		},0,true);
 	}

@@ -23,7 +23,7 @@
 			$('.dialogHeader_c h1').html(title + '——读卡机状态：离线');
 			isOnline=false;
 			isHeart=false;
-			$('#userinfo').stopTime();
+			$('body').stopTime();
 		}
 		init();
 		
@@ -80,7 +80,7 @@
 						$('.dialogHeader_c h1').html(title + '——读卡机状态：离线');
 						isOnline=false;
 						isHeart=false;
-						$('#userinfo').stopTime();
+						$('body').stopTime();
 					}
 				//心跳
 				} else if (e2.f1 == 0x02) {
@@ -141,13 +141,12 @@
 			$.post('${base }/command.do?comm=getCardReaderStatus');
 			var d=new Date();
 			var t=(d.getTime()-heartTime.getTime())/1000;
-			$('#cardno2').html(t);
 			if(t>=15){
 				$.post('${base }/command.do?comm=closeSocketChannel');
 				$('.dialogHeader_c h1').html(title + '——读卡机状态：离线');
 				isOnline=false;
 				isHeart=false;
-				$('#userinfo').stopTime();
+				$('body').stopTime();
 			}
 		},0,true);
 	}
