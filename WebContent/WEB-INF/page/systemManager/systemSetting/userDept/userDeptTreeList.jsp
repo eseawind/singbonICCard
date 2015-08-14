@@ -2,16 +2,17 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <script type="text/javascript">
+	var userDeptTree=$('.userDeptTree');
 	var list = $('#userDeptTree li');
 	list.each(function() {
 		var $this = $(this);
-		var parentId = $this.attr('parentId');
+		var parentId = $this.attr('parentId');		
 		if (parentId == '0') {
-			$('.expand').append($this);
+			$('.expand', userDeptTree).append($this);
 		} else {
-			var $li = $('li[deptId="' + parentId + '"]');
+			var $li = $('li[deptId="' + parentId + '"]', userDeptTree);
 			if ($('>ul', $li).size() == 0) {
-				$('<ul></ul>').appendTo($li);
+				$('<ul></ul>', userDeptTree).appendTo($li);
 			}
 			$('>ul', $li).append($(this));
 		}

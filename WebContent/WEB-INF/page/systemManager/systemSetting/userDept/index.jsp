@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <script type="text/javascript">
-	var selectedDeptId = -1;
+	var selectedUserDeptId = -1;
 	$(function() {
 		$('#userDeptForm .add').click(function() {
 			if ($('#userDeptForm input').eq(1).val() == -1) {
@@ -36,20 +36,18 @@
 		});
 		$('#userDeptForm .delete').click(
 				function() {
-					if (selectedDeptId < 0) {
+					if (selectedUserDeptId < 0) {
 						alertMsg.warn('请选择人员部门');
 						return;
 					}
-					var size = $(
-							'.userDeptTree li[deptId=' + selectedDeptId
-									+ '] ul').size();
+					var size = $('.userDeptTree li[deptId=' + selectedUserDeptId+ '] ul').size();
 					if (size > 0) {
 						alertMsg.warn('包含有下级部门不能删除');
 						return;
 					}
 					alertMsg.confirm('确定要删除吗？', {
 						okCall : function() {
-							$.post('${base }/delete.do?id=' + selectedDeptId,
+							$.post('${base }/delete.do?id=' + selectedUserDeptId,
 									function(e) {
 										//0失败1成功2包含下级部门3包含人员
 										if (e == 1) {
@@ -73,37 +71,66 @@
 		$('#userDeptTree').loadUrl('${base }/treeList.do');
 	}
 	function refreshUserDeptList() {
-		$('#userDeptList')
-				.loadUrl('${base}/list.do?parentId=' + selectedDeptId);
+		$('#userDeptList').loadUrl('${base}/list.do?parentId=' + selectedUserDeptId);
 	}
 	function emptyForm() {
 		$('#userDeptForm input').eq(0).val('');
 		$('#userDeptForm input').eq(1).val(-1);
 		$('#userDeptForm input').eq(2).val('');
-		// 		$('#userDeptForm select').eq(0).val(0);
 	}
 
 	//选择部门
 	function selectUserDept(a) {
-		selectedDeptId = a.attr('deptId');
+		selectedUserDeptId = a.attr('deptId');
 		emptyForm();
-		$('#userDeptForm input').eq(1).val(selectedDeptId);
-		if (selectedDeptId != 0) {
-			$('#userDeptForm input').eq(0).val(selectedDeptId);
+		$('#userDeptForm input').eq(1).val(selectedUserDeptId);
+		if (selectedUserDeptId != 0) {
+			$('#userDeptForm input').eq(0).val(selectedUserDeptId);
 			$('#userDeptForm input').eq(2).val(a.html());
 			var select = $('#userDeptForm select');
-			select
-					.prev()
-					.val(a.attr('batchId'))
-					.html(
-							$('option[value=' + a.attr('batchId') + ']', select)
-									.html());
+			select.prev().val(a.attr('batchId')).html(
+							$('option[value=' + a.attr('batchId') + ']', select).html());
 		}
 		refreshUserDeptList();
 	};
 </script>
 
 <style type="text/css">
+	.form .pageFormContent {
+		overflow: hidden;
+		padding: 0;
+	}
+	
+	.form dl {
+		width: 240px;
+	}
+	
+	.form dt {
+		margin: 0 0 0 5px;
+		padding: 0;
+		width: 60px;
+	}
+	
+	.form dd {
+		width: 170px;
+	}
+	
+	.form .error {
+	/* 	position: relative; */
+	/* 	top: 0; */
+		left: 0;
+		width: 100px;
+	}
+	
+	.form input {
+		width: 100px;
+		position: relative;
+	}
+	
+	.pageFormContent dd span.error {
+		width: 100px;
+		left: 40px;
+	}
 </style>
 
 <div>

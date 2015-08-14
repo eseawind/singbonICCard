@@ -117,6 +117,7 @@ function _iframeResponse(iframe, callback){
  * 
  */
 function navTabAjaxDone(json){
+	alert();
 	DWZ.ajaxDone(json);
 	if (json.statusCode == DWZ.statusCode.ok){
 		if (json.navTabId){ //把指定navTab页面标记为需要“重新载入”。注意navTabId不能是当前navTab页面的

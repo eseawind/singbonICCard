@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.singbon.dao.systemManager.DeviceGroupDAO">
+	<resultMap id="deviceGroup" type="com.singbon.entity.DeviceGroup">
+	</resultMap>
+	<parameterMap type="com.singbon.entity.DeviceGroup" id="deviceGroup2" />
+	<insert id="insert" parameterMap="deviceGroup2">
+		insert into deviceGroup (companyId,deptName,parentId,batchId)
+		values (#{companyId},#{deptName},#{parentId},#{batchId})
+	</insert>
+	<update id="update" parameterMap="deviceGroup2">
+		update deviceGroup set deptName=#{deptName},batchId=#{batchId}
+		where id=#{id}
+	</update>
+	<delete id="delete" parameterType="int">
+		delete from deviceGroup where id=#{0}
+	</delete>
+	<select id="selectById" resultMap="deviceGroup">
+		select * from deviceGroup where id=#{id}
+	</select>
+	<select id="selectByParentId" resultType="java.util.HashMap">
+		select deptName,batchName,beginDate,endDate,invalidDate from deviceGroup d,batch b where d.parentId=#{parentId}
+		and d.batchId=b.id
+	</select>
+	<select id="selectTreeList" resultMap="deviceGroup">
+		select * from deviceGroup where companyId=#{companyId}
+	</select>
+</mapper>

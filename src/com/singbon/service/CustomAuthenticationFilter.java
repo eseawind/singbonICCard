@@ -117,11 +117,11 @@ public class CustomAuthenticationFilter extends AbstractAuthenticationProcessing
 		if (user == null) {
 			username = 0 + USERNAME_LOGINID_SPLIT + username;
 		} else {
-			Company company = this.companyService.getById(user.getCompanyId());
+			Company company = this.companyService.selectById(user.getCompanyId());
 			request.getSession().setAttribute("company", company);
 			request.getSession().setAttribute("sysUser", user);
 			username = user.getOperId() + USERNAME_LOGINID_SPLIT + username + USERNAME_LOGINID_SPLIT + password + USERNAME_LOGINID_SPLIT + user.getEnabled();
-			Device device= this.deviceService.selectByUserId(user.getOperId());
+			Device device= this.deviceService.selectByOperId(user.getOperId());
 			request.getSession().setAttribute("device", device);
 		}
 

@@ -23,9 +23,7 @@
 				var $input = $(this), inputName = $input.attr("name");
 				
 				for (var key in args) {
-					var name = (_lookup.pk == key) ? _util.lookupPk(key) : _util.lookupField(key);
-
-					if (name == inputName) {
+					if (key == inputName) {
 						$input.val(args[key]);
 						break;
 					}
@@ -59,7 +57,6 @@
 						alertMsg.error($this.attr("warn") || DWZ.msg("alertSelectMsg"));
 						return false;
 					}
-					alert();
 					$.pdialog.open(url, "_blank", $this.attr("title") || $this.text(), options);
 					return false;
 				});

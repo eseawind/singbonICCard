@@ -78,6 +78,8 @@
 						batchCardClick($(this));
 					}else if(target=="cashierCard"){
 						cashierCardClick($(this));
+					}else if(target=="meal"){
+						mealClick($(this));
 					}
 					$trs.filter(".selected").removeClass("selected");
 					$tr.addClass("selected");

@@ -54,8 +54,7 @@ public class BatchService {
 	 * @return
 	 */
 	public Batch selectById(Integer id) {
-
-		return this.batchDAO.selectById(id);
+		return (Batch) this.batchDAO.selectById(id);
 	}
 
 	/**

@@ -288,8 +288,15 @@ public class TerminalManager {
 			// //////////////////////////////////////////////////////////////////////////////
 		} else if (Arrays.equals(frameByte, new byte[] { 0x03, (byte) 0xcd, 0x00, 0x01 })) {
 			int baseLen = 33;
+			// 获取出纳卡基本信息命令
+			if (commandCode == CommandCodeCardReader.CashierCardBaseInfo) {
+				map.put("'f1'", FrameCardReader.CashierCardBaseInfoCmd);
+				map.put("'r'", b35);
+				map.put("'cardSN'", cardSN);
+				map.put("'cardNO'", cardSN);
+			}
 			// 发送单个发卡命令
-			if (commandCode == CommandCodeCardReader.SingleCard) {
+			else if (commandCode == CommandCodeCardReader.SingleCard) {
 				map.put("'f1'", FrameCardReader.SingleCardCmd);
 				map.put("'r'", b35);
 				map.put("'cardSN'", cardSN);

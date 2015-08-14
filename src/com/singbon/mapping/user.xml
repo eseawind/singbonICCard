@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.singbon.dao.mainCard.MainCardDAO">
+<mapper namespace="com.singbon.dao.common.UserDAO">
 	<resultMap id="user" type="com.singbon.entity.User">
 	</resultMap>
 	<parameterMap type="com.singbon.entity.User" id="user2" />
 	<insert id="insert" parameterMap="user2" useGeneratedKeys="true" keyProperty="userId">
 		insert into user
-		(companyId,deptId,username,shortName,userNO,sex,cardID,cardNO,cardSN,cardSeq,cardType,cardFunc,cardIdentity,status,beginDate,invalidDate,cardMakeDate,consumePwd,identityPwd,totalFare,oddFare,opCount)
+		(companyId,deptId,username,shortName,userNO,sex,cardID,cardNO,cardSN,cardSeq,cardTypeId,cardFunc,cardIdentity,status,beginDate,invalidDate,cardMakeDate,consumePwd,identityPwd,totalFare,oddFare,opCount)
 		values
-		(#{companyId},#{deptId},#{username},#{shortName},#{userNO},#{sex},#{cardID},#{cardNO},#{cardSN},#{cardSeq},#{cardType},#{cardFunc},#{cardIdentity},#{status},#{beginDate},#{invalidDate},#{cardMakeDate},#{consumePwd},#{identityPwd},#{totalFare},#{oddFare},#{opCount})
+		(#{companyId},#{deptId},#{username},#{shortName},#{userNO},#{sex},#{cardID},#{cardNO},#{cardSN},#{cardSeq},#{cardTypeId},#{cardFunc},#{cardIdentity},#{status},#{beginDate},#{invalidDate},#{cardMakeDate},#{consumePwd},#{identityPwd},#{totalFare},#{oddFare},#{opCount})
 	</insert>
 	<update id="update" parameterMap="user2">
 		update user set
-		username=#{username},shortName=#{shortName},userNO=#{userNO},sex=#{sex},cardID=#{cardID},cardType=#{cardType},cardFunc=#{cardFunc},cardIdentity=#{cardIdentity},endDate=#{endDate},consumePwd=#{consumePwd},identityPwd=#{identityPwd}
+		username=#{username},shortName=#{shortName},userNO=#{userNO},sex=#{sex},cardID=#{cardID},cardTypeId=#{cardTypeId},cardFunc=#{cardFunc},cardIdentity=#{cardIdentity},endDate=#{endDate},consumePwd=#{consumePwd},identityPwd=#{identityPwd}
 		where userId=#{userId}
 	</update>
 	<update id="infoCard" parameterMap="user2">
@@ -32,7 +32,7 @@
 		where userId=#{userId}
 	</update>
 	<update id="updateByCard" parameterMap="user2">
-		update user set invalidDate=#{invalidDate},status=#{status},cardSeq=#{cardSeq},cardType=#{cardType},totalFare=#{totalFare},
+		update user set invalidDate=#{invalidDate},status=#{status},cardSeq=#{cardSeq},cardTypeId=#{cardTypeId},totalFare=#{totalFare},
 		oddFare=#{oddFare},opCount=#{opCount},subsidyOddFare=#{subsidyOddFare},subsidyOpCount=#{subsidyOpCount},subsidyVersion=#{subsidyVersion}
 		where userId=#{userId}
 	</update>
@@ -56,7 +56,7 @@
 		</foreach>
 		)
 	</delete>
-	<select id="selectById" resultMap="user">
+	<select id="selectByUserId" resultMap="user">
 		select * from user where userId=#{userId}
 	</select>
 	<select id="selectByUserIdCardSN" resultMap="user">
@@ -91,5 +91,45 @@
 				)
 			</if>
 		</where>
+	</select>
+	<sql id="whereSelectByPage">
+		where companyId=#{companyId}
+		<if test="nameStr!=null and nameStr!=''">
+		 and (userNO like '%${nameStr}%' or username like '%${nameStr}%' or shortName like '%${nameStr}%')
+		</if>
+		<if test="deptId!=null and deptId!=-1">
+		 and deptId=#{deptId}
+		</if>
+		<if test="cardTypeId!=null and cardTypeId!=-1">
+		 and cardTypeId=#{cardTypeId}
+		</if>
+		<if test="sex!=null and sex!=-1">
+		 and sex=#{sex}
+		</if>
+		<if test="status!=null and status!=-1">
+		 and status=#{status}
+		</if>
+		<if test="dateType!=null and dateType!=-1">
+			<if test="dateType==0">
+				<if test="beginDate!=null and beginDate!=''">
+					and cardMakeDate&gt;=#{beginDate}
+				</if>
+				<if test="endDate!=null and endDate!=''">
+					and cardMakeDate&lt;=#{endDate}
+				</if>
+			</if>
+			<if test="dateType==1">
+				<if test="beginDate!=null and beginDate!=''">
+					and invalidDate&gt;=#{beginDate}
+				</if>
+				<if test="endDate!=null and endDate!=''">
+					and invalidDate&lt;=#{endDate}
+				</if>
+			</if>
+		</if>
+	</sql>
+	<select id="selectByPage" resultMap="user">
+		select count(userId) userId,null userNO,null username,null sex,null cardID,null cardTypeId,null status from user <include refid="whereSelectByPage"/> union 
+		(select userId,userNO,username,sex,cardID,cardTypeId,status from user <include refid="whereSelectByPage"/> limit #{offset},#{numPerPage});
 	</select>
 </mapper>

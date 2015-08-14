@@ -43,8 +43,8 @@ public class DeviceService {
 	 * 
 	 * @return
 	 */
-	public Device selectByUserId(Integer userId) {
-		return this.deviceDAO.selectByUserId(userId);
+	public Device selectByOperId(Integer operId) {
+		return this.deviceDAO.selectByOperId(operId);
 	}
 
 	/**

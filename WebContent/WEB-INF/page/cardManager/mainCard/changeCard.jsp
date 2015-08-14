@@ -94,7 +94,7 @@
 			'c${sn}' : function(e) {//侦听一个channel
 				var e2 = eval('(' + e + ')');
 				//存在物理卡号
-				if(e2.f1==0x7f){
+				if(e2.f1==0x70){
 					alertMsg.warn('该卡片已经发行，请放置新卡！');
 				}
 				//读卡器状态

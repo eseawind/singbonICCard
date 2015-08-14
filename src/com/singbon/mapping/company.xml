@@ -4,7 +4,7 @@
 	<resultMap id="company" type="com.singbon.entity.Company">
 	</resultMap>
 	
-	<select id="selectById" resultMap="company" parameterType="int">
-		select * from company where id=#{0}
+	<select id="selectById" resultMap="company">
+		select * from company where id=#{id}
 	</select>
 </mapper>

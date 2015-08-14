@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.singbon.entity.UserDept;
+import com.singbon.dao.BaseDAO;
 
 /**
  * 人员部门dao层
@@ -12,31 +12,7 @@ import com.singbon.entity.UserDept;
  * @author 郝威
  * 
  */
-public interface UserDeptDAO {
-
-	/**
-	 * 添加部门
-	 * 
-	 * @param batch
-	 * @return
-	 */
-	public void insert(UserDept userDept);
-
-	/**
-	 * 修改部门
-	 * 
-	 * @param batch
-	 * @return
-	 */
-	public void update(UserDept userDept);
-
-	/**
-	 * 删除部门
-	 * 
-	 * @param batch
-	 * @return
-	 */
-	public void delete(Integer id);
+public interface UserDeptDAO extends BaseDAO{
 
 	/**
 	 * 人员部门树列表
@@ -54,10 +30,4 @@ public interface UserDeptDAO {
 	@SuppressWarnings("rawtypes")
 	public List selectByParentId(@Param("parentId") Integer parentId);
 
-	/**
-	 * 根据主键获取部门
-	 * 
-	 * @return
-	 */
-	public UserDept selectById(@Param("id") Integer id);
 }

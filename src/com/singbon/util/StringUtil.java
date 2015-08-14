@@ -71,9 +71,9 @@ public class StringUtil {
 		if (tmpStr.length() == 1) {
 			tmpStr = "0" + tmpStr;
 		}
-		
+
 		String tmpStr2 = Integer.toHexString((byte) (tmMonth << 5 | tmDay));
-		tmpStr2=tmpStr2.substring(tmpStr2.length()-2);
+		tmpStr2 = tmpStr2.substring(tmpStr2.length() - 2);
 		if (tmpStr2.length() == 1) {
 			tmpStr2 = "0" + tmpStr2;
 		}
@@ -136,6 +136,8 @@ public class StringUtil {
 	 * 获取转发路径
 	 * 
 	 * @param request
+	 * @param path
+	 *            后缀路径
 	 * @return
 	 */
 	public static String requestPath(HttpServletRequest request, String path) {

@@ -41,7 +41,7 @@ public class User implements Serializable {
 	@SuppressWarnings("unused")
 	private String sexDesc;
 	// 卡型号(0~15类卡)
-	private Integer cardType;
+	private Integer cardTypeId;
 	// 卡功能
 	private Integer cardFunc;
 	// 卡功能描述
@@ -91,6 +91,8 @@ public class User implements Serializable {
 	private Integer subsidyVersion;
 	// 补助失效日期
 	private Date subsidyInvalidDate;
+	// 总数量
+	private Integer totalCount;
 
 	public Integer getUserId() {
 		return userId;
@@ -184,12 +186,12 @@ public class User implements Serializable {
 		this.sexDesc = sexDesc;
 	}
 
-	public Integer getCardType() {
-		return cardType;
+	public Integer getCardTypeId() {
+		return cardTypeId;
 	}
 
-	public void setCardType(Integer cardType) {
-		this.cardType = cardType;
+	public void setCardTypeId(Integer cardTypeId) {
+		this.cardTypeId = cardTypeId;
 	}
 
 	public Integer getCardFunc() {
@@ -386,6 +388,14 @@ public class User implements Serializable {
 
 	public void setSubsidyOpCount(Integer subsidyOpCount) {
 		this.subsidyOpCount = subsidyOpCount;
+	}
+
+	public Integer getTotalCount() {
+		return totalCount;
+	}
+
+	public void setTotalCount(Integer totalCount) {
+		this.totalCount = totalCount;
 	}
 
 }

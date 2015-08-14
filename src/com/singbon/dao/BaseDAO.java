@@ -1,6 +1,6 @@
 package com.singbon.dao;
 
-import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 基础数据库操作类
@@ -16,7 +16,7 @@ public interface BaseDAO {
 	 * @param obj
 	 * @return
 	 */
-	public void insert(Object obj);
+	public Object insert(Object obj);
 
 	/**
 	 * 修改对象
@@ -32,26 +32,14 @@ public interface BaseDAO {
 	 * @param obj
 	 * @return
 	 */
-	public void deleteObject(Object obj);
+	public void delete(Object obj);
 
 	/**
-	 * 查询对象
+	 * 根据主键获取对象
 	 * 
-	 * @param obj
+	 * @param id
 	 * @return
 	 */
-	@SuppressWarnings("rawtypes")
-	public List list(String hql, List<Object> paras);
+	public Object selectById(@Param("id") Integer id);
 
-	/**
-	 * 查询单一实体对象
-	 * 
-	 * @param t泛型
-	 * @param hql
-	 * @param paras
-	 * @return
-	 */
-	public <T> T getObject(Class<T> t, List<Object> paras);
-	
-	public Object selectByPrimaryKey();
 }
