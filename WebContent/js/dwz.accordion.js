@@ -16,7 +16,6 @@ $(window).resize(function(){
 });
 $.fn.extend({
 	accordion: function(options, data) {
-
 		var args = Array.prototype.slice.call(arguments, 1);
 
 		return this.each(function() {
@@ -39,7 +38,6 @@ $.fn.extend({
 });
 
 $.dwz.accordion = function(container, options) {
-	
 	// setup configuration
 	this.options = options = $.extend({}, $.dwz.accordion.defaults, options);
 	this.element = container;
@@ -203,7 +201,6 @@ function clickHandler(event) {
 	}
 	// get the click target
 	var clicked = $(event.target);
-	
 	// due to the event delegation model, we have to check if one
 	// of the parent elements is our actual header, and find that
 	if ( clicked.parents(options.header).length )
@@ -220,7 +217,9 @@ function clickHandler(event) {
 
 	// switch classes
 	options.active.find("h2").toggleClass(options.selectedClass);
+	var aLen=0;
 	if ( !clickedActive ) {
+		aLen=clicked.find("h2").find("a").length;
 		clicked.find("h2").addClass(options.selectedClass);
 	}
 
@@ -239,8 +238,9 @@ function clickHandler(event) {
 		down = options.headers.index( options.active[0] ) > options.headers.index( clicked[0] );
 	
 	options.active = clickedActive ? $([]) : clicked;
-	toggle.call(this, toShow, toHide, data, clickedActive, down );
-
+//	if(aLen==0 || clicked.find("h2").find("a").attr("href").indexOf("monitor")==-1){
+		toggle.call(this, toShow, toHide, data, clickedActive, down );
+//	}
 	return false;
 };
 

@@ -71,7 +71,7 @@
 	<!-- 登录失败处理 -->
 	<bean id="failureHandler"
 		class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
-		<property name="defaultFailureUrl" value="/index.jsp" />
+		<property name="defaultFailureUrl" value="/index.jsp?error=true" />
 	</bean>
 
 	<!-- 登录入口 -->

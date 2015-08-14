@@ -73,7 +73,7 @@
 <script src="js/dwz.history.js" type="text/javascript"></script>
 <script src="js/dwz.combox.js" type="text/javascript"></script>
 <script src="js/dwz.print.js" type="text/javascript"></script>
-<script src="/js/comet4j.js" type="text/javascript"></script>
+<!-- <script src="/js/comet4j.js" type="text/javascript"></script> -->
 <script src="/js/jquery.contextmenu.r2.js" type="text/javascript"></script>
 <script src="/js/jQuery.Hz2Py-min.js" type="text/javascript"></script>
 <script src="/js/common.js" type="text/javascript"></script>
@@ -165,7 +165,7 @@
 					</div>
 					<div class="accordionContent">
 						<ul class="tree">
-							<li><a href="/cardManager/specialCard/index.do" target="navTab" fresh="true">功能卡制作</a></li>
+							<li><a url="/cardManager/specialCard/index.do" target="navTab">功能卡制作</a></li>
 							<li><a href="/cardManager/mainCard/index.do" target="navTab">卡管理</a></li>
 						</ul>
 					</div>
@@ -176,10 +176,29 @@
 					</div>
 					<div class="accordionContent">
 						<ul class="tree">
-							<li><a href="newPage1.html" target="dialog" rel="dlg_page">菜单1</a></li>
-							<li><a href="newPage1.html" target="dialog" rel="dlg_page">菜单2</a></li>
-							<li><a href="newPage1.html" target="dialog" rel="dlg_page">菜单3</a></li>
+							<li><a href="/balanceCenter/userInfo/index.do" target="navTab">用户信息查询</a></li>
+							<li><a href="/balanceCenter/consume/index.do" target="navTab">消费记录查询</a></li>
+							<li><a href="/balanceCenter/personRecord/index.do" target="navTab">个人记录查询</a></li>
+							<li><a href="/balanceCenter/personStat/index.do" target="navTab">个人统计查询</a></li>
+							<li><a href="/balanceCenter/subsidyRecord/index.do" target="navTab">补助记录查询</a></li>
+							<li><a href="/balanceCenter/deptStat/index.do" target="navTab">部门营业统计</a></li>
+							<li><a href="/balanceCenter/deviceStat/index.do" target="navTab">终端营业统计</a></li>
+							<li><a href="/balanceCenter/deptMeal/index.do" target="navTab">部门就餐统计</a></li>
+							<li><a href="/balanceCenter/cardOp/index.do" target="navTab">卡操作统计</a></li>
+							<li><a href="/balanceCenter/balance/index.do" target="navTab">结算汇总</a></li>
+							<li><a href="/balanceCenter" target="navTab">出纳汇总</a></li>
+							<li><a href="/balanceCenter" target="navTab">平衡汇总</a></li>
+							<li><a href="/balanceCenter" target="navTab">订餐查询</a></li>
+							<li><a href="/balanceCenter" target="navTab">结算</a></li>
+							<li><a href="/balanceCenter" target="navTab">终端营业分析</a></li>
+							<li><a href="/balanceCenter" target="navTab">部门营业分析</a></li>
 						</ul>
+					</div>
+					<div class="accordionHeader">
+						<h2>
+							<span>Folder</span><a href="/monitor/index.do"
+									target="navTab" rel="monitor">监控平台</a>
+						</h2>
 					</div>
 				</div>
 			</div>
@@ -197,7 +216,6 @@
 				</div>
 				<div class="navTab-panel tabsPageContent layoutBox">
 					<div class="page unitBox">
-
 						<div class="pageFormContent" layoutH="80"
 							style="margin-right: 230px"></div>
 					</div>

@@ -13,7 +13,11 @@
 				<li><a href=":;" class="j-ajax"><span>系统参数</span></a></li>
 				<li><a href="${base }/batch/index.do" class="j-ajax"><span>批次设置</span></a></li>
 				<li><a href="${base }/userDept/index.do" class="j-ajax"><span>人员部门设置</span></a></li>
+				<li><a href="${base }/dept/index.do" class="j-ajax"><span>营业部门设置</span></a></li>
+				<li><a href="${base }/meal/index.do" class="j-ajax"><span>餐别设置</span></a></li>
+				<li><a href="${base }/cookbook/index.do" class="j-ajax"><span>菜谱设置</span></a></li>
 				<li><a href="${base }/discount/index.do" class="j-ajax"><span>优惠方案设置</span></a></li>
+				<li><a href="${base }/waterRate/index.do" class="j-ajax"><span>水控费率2、3、4设置</span></a></li>
 			</ul>
 		</div>
 	</div>
@@ -21,6 +25,10 @@
 		<div></div>
 		<div></div>
 		<div class="refresh"></div>
+		<div></div>
+		<div></div>
+		<div></div>
+		<div></div>
 		<div></div>
 	</div>
 </div>

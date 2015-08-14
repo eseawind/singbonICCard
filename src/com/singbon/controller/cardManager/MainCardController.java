@@ -53,7 +53,7 @@ import com.singbon.util.StringUtil;
 public class MainCardController extends BaseController {
 
 	@Autowired
-	MainCardService mainCardService;
+	public MainCardService mainCardService;
 	@Autowired
 	public UserDeptService userDeptService;
 	@Autowired
@@ -768,7 +768,7 @@ public class MainCardController extends BaseController {
 			map.put("'invalidDate'", myFormatter.format(user.getInvalidDate()));
 			map.put("'statusDesc'", user.getStatusDesc());
 			map.put("'cardSeq'", user.getCardSeq());
-			map.put("'cardType'", user.getCardType());
+			map.put("'cardType'", user.getCardTypeId());
 			map.put("'totalFare'", (float) user.getTotalFare() / 100);
 			map.put("'oddFare'", (float) user.getOddFare() / 100);
 			map.put("'opCount'", user.getOpCount());

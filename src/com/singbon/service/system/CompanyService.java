@@ -23,9 +23,8 @@ public class CompanyService {
 	 * 
 	 * @return
 	 */
-	public Company getById(Integer id) {
-
-		return this.companyDAO.selectById(id);
+	public Company selectById(Integer id) {
+		return (Company) this.companyDAO.selectById(id);
 	}
 	
 	public int getSection(Integer companyId){

@@ -112,8 +112,7 @@ public class UserDeptController {
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/list.do")
-	public String list(HttpServletRequest request, Model model, Integer parentId) {
-
+	public String list(Integer parentId, HttpServletRequest request, Model model) {
 		List list = this.userDeptService.selectByParentId(parentId);
 		model.addAttribute("list", list);
 		return StringUtil.requestPath(request, "userDeptList");

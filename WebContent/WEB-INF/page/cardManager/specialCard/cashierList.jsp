@@ -5,7 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <script type="text/javascript">
 	function cashierCardClick(tr){
-		var form=$('#cashierCard form:visible').attr('id');
+		var form=$('#cashierCard .cashierTabsContent[style*=block] form').attr('id');
 		var status=tr.attr('status');
 		if(form=='makeCashierForm'){
 			if(status!=0){
@@ -40,7 +40,7 @@
 
 <div class="pageContent"
 	style="border-left: 1px #B8D0D6 solid; border-right: 1px #B8D0D6 solid">
-	<table class="table" width="99%" layoutH="180">
+	<table class="table" width="99%" layoutH="160">
 		<thead>
 			<tr>
 				<th width="80">序号</th>

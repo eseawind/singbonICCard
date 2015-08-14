@@ -9,9 +9,14 @@ package com.singbon.device;
 public class FrameCardReader {
 
 	/**
-	 * 存在物理卡号 0x7f
+	 * 存在物理卡号 0x70
 	 */
-	public static byte ExsitCardSN = 0x7f;
+	public static byte ExsitCardSN = 0x70;
+	/**
+	 * 获取出纳员基本信息命令 0x71
+	 */
+	public static byte CashierCardBaseInfoCmd = 0x71;
+	
 	/**
 	 * 状态 0x01
 	 */

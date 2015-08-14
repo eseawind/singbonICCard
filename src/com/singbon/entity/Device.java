@@ -13,6 +13,14 @@ public class Device implements Serializable {
 	private static final long serialVersionUID = -4349415810057681133L;
 
 	private Integer id;
+	private Integer companyId;
+	private Integer operId;
+	private Integer groupId;
+	private String deviceName;
+	private Integer deviceNum;
+	private Integer deviceType;
+	private Integer enable;
+	private String sn;
 
 	public Integer getId() {
 		return id;
@@ -22,8 +30,6 @@ public class Device implements Serializable {
 		this.id = id;
 	}
 
-	private Integer companyId;
-
 	public Integer getCompanyId() {
 		return companyId;
 	}
@@ -32,7 +38,21 @@ public class Device implements Serializable {
 		this.companyId = companyId;
 	}
 
-	private String sn;
+	public Integer getOperId() {
+		return operId;
+	}
+
+	public void setOperId(Integer operId) {
+		this.operId = operId;
+	}
+
+	public Integer getGroupId() {
+		return groupId;
+	}
+
+	public void setGroupId(Integer groupId) {
+		this.groupId = groupId;
+	}
 
 	public String getDeviceName() {
 		return deviceName;
@@ -40,14 +60,6 @@ public class Device implements Serializable {
 
 	public void setDeviceName(String deviceName) {
 		this.deviceName = deviceName;
-	}
-
-	public String getSn() {
-		return sn;
-	}
-
-	public void setSn(String sn) {
-		this.sn = sn;
 	}
 
 	public Integer getDeviceNum() {
@@ -74,19 +86,12 @@ public class Device implements Serializable {
 		this.enable = enable;
 	}
 
-	private Integer deviceNum;
-	private Integer deviceType;
-	private Integer enable;
-
-	private String deviceName;
-	private Integer userId;
-
-	public Integer getUserId() {
-		return userId;
+	public String getSn() {
+		return sn;
 	}
 
-	public void setUserId(Integer userId) {
-		this.userId = userId;
+	public void setSn(String sn) {
+		this.sn = sn;
 	}
 
 }

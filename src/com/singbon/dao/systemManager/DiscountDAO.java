@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.singbon.dao.BaseDAO;
 import com.singbon.entity.Discount;
 
 /**
@@ -12,7 +13,7 @@ import com.singbon.entity.Discount;
  * @author 郝威
  * 
  */
-public interface DiscountDAO {
+public interface DiscountDAO extends BaseDAO{
 
 	/**
 	 * 添加优惠方案
@@ -21,14 +22,6 @@ public interface DiscountDAO {
 	 * @return
 	 */
 	public void insert(@Param("companyId") Integer companyId);
-
-	/**
-	 * 修改优惠方案
-	 * 
-	 * @param Discount
-	 * @return
-	 */
-	public void update(Discount discount);
 
 	/**
 	 * 优惠方案列表

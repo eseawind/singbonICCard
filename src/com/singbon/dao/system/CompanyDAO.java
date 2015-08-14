@@ -2,6 +2,7 @@ package com.singbon.dao.system;
 
 import java.util.List;
 
+import com.singbon.dao.BaseDAO;
 import com.singbon.entity.Company;
 
 /**
@@ -10,23 +11,7 @@ import com.singbon.entity.Company;
  * @author 郝威
  * 
  */
-public interface CompanyDAO {
-
-	/**
-	 * 添加公司
-	 * 
-	 * @param obj
-	 * @return
-	 */
-	public void insert(Company company);
-
-	/**
-	 * 获取公司
-	 * 
-	 * @param obj
-	 * @return
-	 */
-	public Company selectById(Integer id);
+public interface CompanyDAO extends BaseDAO{
 
 	/**
 	 * 公司列表

@@ -16,7 +16,7 @@ public class SysUser implements Serializable {
 	String[] statusDescList = { "未发卡", "正常", "挂失" };
 	private Integer operId;
 	private Integer companyId;
-	private String name;
+	private String operName;
 	private Integer cardNO;
 	private String cardSN;
 	private String superAdmin;
@@ -119,12 +119,12 @@ public class SysUser implements Serializable {
 		this.deptDesc = deptDesc;
 	}
 
-	public String getName() {
-		return name;
+	public String getOperName() {
+		return operName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setOperName(String operName) {
+		this.operName = operName;
 	}
 
 	public Integer getOperId() {

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.singbon.dao.systemManager.DeptDAO">
+	<resultMap id="dept" type="com.singbon.entity.Dept">
+	</resultMap>
+	<parameterMap type="com.singbon.entity.Dept" id="dept2" />
+	<insert id="insert" parameterMap="dept2">
+		insert into dept (companyId,deptName,parentId)
+		values (#{companyId},#{deptName},#{parentId})
+	</insert>
+	<update id="update" parameterMap="dept2">
+		update dept set deptName=#{deptName}
+		where id=#{id}
+	</update>
+	<delete id="delete" parameterType="int">
+		delete from dept where id=#{0}
+	</delete>
+	<select id="selectById" resultMap="dept">
+		select * from dept where id=#{id}
+	</select>
+	<select id="selectByParentId" resultType="java.util.HashMap">
+		select d.deptName,p.deptName parentName from dept d,dept p where d.parentId=p.id and p.id=#{parentId}
+	</select>
+	<select id="selectTreeList" resultMap="dept">
+		select * from dept where companyId=#{companyId}
+	</select>
+</mapper>

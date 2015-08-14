@@ -2,7 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<!-- <script src="/js/comet4j.js" type="text/javascript"></script> -->
+<script src="/js/comet4j.js" type="text/javascript"></script>
 <script type="text/javascript">
 
 	var isOnline=false;
@@ -23,7 +23,7 @@
 			$('.dialogHeader_c h1').html(title + '——读卡机状态：离线');
 			isOnline=false;
 			isHeart=false;
-			$('#userinfo').stopTime();
+			$('body').stopTime();
 		}
 		init();
 		
@@ -62,7 +62,7 @@
 			'c${sn}' : function(e) {//侦听一个channel
 				var e2 = eval('(' + e + ')');
 				//存在物理卡号
-				if(e2.f1==0x7f){
+				if(e2.f1==0x70){
 					alertMsg.warn('该卡片已经发行，请放置新卡！');
 				}
 				//读卡器状态
@@ -79,7 +79,7 @@
 						$('.dialogHeader_c h1').html(title + '——读卡机状态：离线');
 						isOnline=false;
 						isHeart=false;
-						$('#userinfo').stopTime();
+						$('body').stopTime();
 					}
 				//心跳
 				} else if (e2.f1 == 0x02) {
@@ -139,17 +139,16 @@
 	}
 	
 	function heart(){
-		$('#userinfo').everyTime('10s','getCardReaderStatus', function() {
+		$('body').everyTime('10s','getCardReaderStatus', function() {
 			$.post('${base }/command.do?comm=getCardReaderStatus');
 			var d=new Date();
 			var t=(d.getTime()-heartTime.getTime())/1000;
-			$('#cardno2').html(t);
 			if(t>=15){
 				$.post('${base }/command.do?comm=closeSocketChannel');
 				$('.dialogHeader_c h1').html(title + '——读卡机状态：离线');
 				isOnline=false;
 				isHeart=false;
-				$('#userinfo').stopTime();
+				$('body').stopTime();
 			}
 		},0,true);
 	}

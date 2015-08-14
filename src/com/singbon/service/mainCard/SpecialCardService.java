@@ -149,7 +149,7 @@ public class SpecialCardService {
 	 * @throws Exception
 	 */
 	public void unloss(SysUser sysUser, SocketChannel socketChannel, Device device, String cardInfoStr) throws Exception {
-		this.sysUserDAO.changeStatus(sysUser.getOperId(), 1);
+//		this.sysUserDAO.changeStatus(sysUser.getOperId(), 1);
 
 		cardInfoStr = cardInfoStr.substring(0, 12) + "0f1" + cardInfoStr.substring(15);
 		String commandCodeStr = StringUtil.hexLeftPad(CommandCodeCardReader.UnLossCashierCard, 4);

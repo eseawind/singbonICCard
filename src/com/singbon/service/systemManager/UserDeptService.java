@@ -79,6 +79,6 @@ public class UserDeptService {
 	 * @return
 	 */
 	public UserDept selectById(Integer id) {
-		return this.userDeptDAO.selectById(id);
+		return (UserDept) this.userDeptDAO.selectById(id);
 	}
 }

@@ -12,8 +12,8 @@
 		update device set deviceName=#{deviceName},beginDate=#{beginDate},endDate=#{endDate},invalidDate=#{invalidDate}
 		where id=#{id}
 	</update>
-	<select id="selectByUserId" resultMap="device">
-		select * from device where userId=#{userId}
+	<select id="selectByOperId" resultMap="device">
+		select * from device where operId=#{operId}
 	</select>
 	<select id="selectList" resultMap="device">
 		select * from device where companyId=#{companyId}

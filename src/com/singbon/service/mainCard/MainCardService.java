@@ -7,7 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.singbon.dao.mainCard.MainCardDAO;
+import com.singbon.dao.common.UserDAO;
 import com.singbon.device.CRC16;
 import com.singbon.device.CommandCardReader;
 import com.singbon.device.CommandCodeCardReader;
@@ -27,7 +27,7 @@ import com.singbon.util.StringUtil;
 public class MainCardService {
 
 	@Autowired
-	public MainCardDAO mainCardDAO;
+	public UserDAO mainCardDAO;
 
 	/**
 	 * 添加人员
@@ -64,7 +64,7 @@ public class MainCardService {
 	 * @return
 	 */
 	public User selectById(Integer userId) {
-		return this.mainCardDAO.selectById(userId);
+		return this.mainCardDAO.selectByUserId(userId);
 	}
 
 	/**
@@ -175,7 +175,7 @@ public class MainCardService {
 		String tmLimitDayFare = StringUtil.hexLeftPad(cardAllInfo.getLimitDayFare(), 2);// 1
 		String tmLimitTimesFare = StringUtil.hexLeftPad(cardAllInfo.getLimitTimesFare(), 4);// 2
 		String tmCardSeq = "01";// 1
-		String tmCardType = StringUtil.hexLeftPad(user.getCardType(), 2);// 1
+		String tmCardType = StringUtil.hexLeftPad(user.getCardTypeId(), 2);// 1
 		String tmDeptId = StringUtil.hexLeftPad(user.getDeptId(), 8);// 4
 		String tmTotalFare = StringUtil.hexLeftPad(user.getTotalFare(), 8);// 4
 		String tmStandby = "06"; // 备用字段//1
@@ -264,7 +264,7 @@ public class MainCardService {
 	 * @throws Exception
 	 */
 	public void unloss(Integer userId, SocketChannel socketChannel, Device device, String cardSN, String cardInfoStr) throws Exception {
-		this.mainCardDAO.changeStatus(userId, 1);
+//		this.mainCardDAO.changeStatus(userId, 1);
 
 		String commandCodeStr = StringUtil.hexLeftPad(CommandCodeCardReader.Unloss, 4);
 		String sendBufStr = CommandCardReader.WriteCard + commandCodeStr + CommandCardReader.ValidateCardSN + cardSN + cardInfoStr;

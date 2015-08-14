@@ -1,34 +1,19 @@
-package com.singbon.dao.mainCard;
+package com.singbon.dao.common;
 
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.singbon.dao.BaseDAO;
 import com.singbon.entity.User;
 
 /**
- * 制卡dao层
+ * UserDao层(制卡、用户信息查询)
  * 
  * @author 郝威
  * 
  */
-public interface MainCardDAO {
-
-	/**
-	 * 添加人员
-	 * 
-	 * @param user
-	 * @return
-	 */
-	public Object insert(User user) throws Exception;
-
-	/**
-	 * 修改人员
-	 * 
-	 * @param user
-	 * @return
-	 */
-	public void update(User user) throws Exception;
+public interface UserDAO extends BaseDAO {
 
 	/**
 	 * 删除未发卡人员
@@ -44,7 +29,7 @@ public interface MainCardDAO {
 	 * @param id
 	 * @return
 	 */
-	public User selectById(@Param("userId") Integer userId);
+	public User selectByUserId(@Param("userId") Integer userId);
 
 	/**
 	 * 根据主键和物理卡号查询人员
@@ -174,4 +159,20 @@ public interface MainCardDAO {
 	 * @param cardSN
 	 */
 	public void changeFare(@Param("userId") Integer userId, @Param("opFare") Integer opFare) throws Exception;
+
+	/**
+	 * 分页查询
+	 * 
+	 * @param nameStr
+	 * @param deptId
+	 * @param cardTypeId
+	 * @param sex
+	 * @param beginDate
+	 * @param endDate
+	 * @param status
+	 * @return
+	 */
+	public List<User> selectByPage(@Param("companyId") Integer companyId, @Param("offset") Integer offset, @Param("numPerPage") Integer numPerPage, @Param("nameStr") String nameStr,
+			@Param("deptId") Integer deptId, @Param("cardTypeId") Integer cardTypeId, @Param("sex") Integer sex, @Param("status") Integer status, @Param("dateType") Integer dateType,
+			@Param("beginDate") String beginDate, @Param("endDate") String endDate);
 }

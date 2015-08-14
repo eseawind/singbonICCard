@@ -9,6 +9,11 @@ package com.singbon.device;
 public class CommandCodeCardReader {
 
 	/**
+	 * 获取出纳卡基本信息 0x70
+	 */
+	public static byte CashierCardBaseInfo = 0x70;
+
+	/**
 	 * 单个发卡 0x01
 	 */
 	public static byte SingleCard = 0x01;

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.singbon.dao.BaseDAO;
 import com.singbon.entity.Device;
 
 /**
@@ -12,30 +13,15 @@ import com.singbon.entity.Device;
  * @author 郝威
  * 
  */
-public interface DeviceDAO {
+public interface DeviceDAO extends BaseDAO{
+
 
 	/**
-	 * 添加
-	 * 
-	 * @param device
-	 * @return
-	 */
-	public void insert(Device device);
-
-	/**
-	 * 修改
-	 * 
-	 * @param device
-	 * @return
-	 */
-	public void update(Device device);
-
-	/**
-	 * 通过userId查找
+	 * 通过operId查找
 	 * 
 	 * @return
 	 */
-	public Device selectByUserId(@Param("userId") Integer userId);
+	public Device selectByOperId(@Param("operId") Integer operId);
 	
 	/**
 	 * 列表

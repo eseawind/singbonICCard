@@ -55,6 +55,8 @@
 						var module=$(this).attr("module");
 						if(module=="userDept" || module=="mainCard"){
 							selectUserDept($(this));
+						}else if(module=="dept"){
+							selectDept($(this));
 						}
 						$("div." + op.selected, $this).removeClass(op.selected);
 						var parent = $(this).parent().addClass(op.selected);

@@ -62,7 +62,7 @@
 						<td>${user.userNO}</td>
 						<td>${user.username}</td>
 						<td>${user.sexDesc}</td>
-						<td>${user.cardType}类卡</td>
+						<td>${user.cardTypeId}类卡</td>
 						<td>${user.statusDesc}</td>
 					</tr>
 				</c:forEach>
