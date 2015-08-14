@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <script src="/js/comet4j.js" type="text/javascript"></script>
 <script type="text/javascript">
+
 	var isOnline=false;
 	var isHeart=false;
 	var title=null;
