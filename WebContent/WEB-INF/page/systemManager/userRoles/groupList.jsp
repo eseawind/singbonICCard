@@ -86,7 +86,7 @@
 </script>
 <style type="text/css">
 </style>
-<table class="table" width="99%" layoutH="120" rel="jbsxBox">
+<table class="table" width="99%" layoutH="140" rel="jbsxBox">
 	<thead>
 		<tr>
 			<th width="100">分组名称</th>

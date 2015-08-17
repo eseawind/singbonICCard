@@ -15,6 +15,8 @@
 
 package com.singbon.service;
 
+import java.io.UnsupportedEncodingException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -94,7 +96,12 @@ public class CustomAuthenticationFilter extends AbstractAuthenticationProcessing
 
 		String username = obtainUsername(request);
 		String password = obtainPassword(request);
-		String companyName = obtainCompanyName(request);
+		String companyName = null;
+		try {
+			companyName = new String(obtainCompanyName(request).getBytes("ISO-8859-1"), "utf-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
 
 		if (username == null) {
 			username = "";
@@ -121,7 +128,7 @@ public class CustomAuthenticationFilter extends AbstractAuthenticationProcessing
 			request.getSession().setAttribute("company", company);
 			request.getSession().setAttribute("sysUser", user);
 			username = user.getOperId() + USERNAME_LOGINID_SPLIT + username + USERNAME_LOGINID_SPLIT + password + USERNAME_LOGINID_SPLIT + user.getEnabled();
-			Device device= this.deviceService.selectByOperId(user.getOperId());
+			Device device = this.deviceService.selectByOperId(user.getOperId());
 			request.getSession().setAttribute("device", device);
 		}
 

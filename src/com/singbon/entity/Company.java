@@ -12,6 +12,10 @@ public class Company implements Serializable {
 
 	private static final long serialVersionUID = -4349415810057681133L;
 	private Integer id;
+	private String companyName;
+	private Integer serialNumber;
+	private Integer authNumber;
+	private Integer baseSection;
 
 	public Integer getId() {
 		return id;
@@ -21,13 +25,36 @@ public class Company implements Serializable {
 		this.id = id;
 	}
 
-	private String compayName;
-
-	public String getCompayName() {
-		return compayName;
+	public String getCompanyName() {
+		return companyName;
 	}
 
-	public void setCompayName(String compayName) {
-		this.compayName = compayName;
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
 	}
+
+	public Integer getSerialNumber() {
+		return serialNumber;
+	}
+
+	public void setSerialNumber(Integer serialNumber) {
+		this.serialNumber = serialNumber;
+	}
+
+	public Integer getAuthNumber() {
+		return authNumber;
+	}
+
+	public void setAuthNumber(Integer authNumber) {
+		this.authNumber = authNumber;
+	}
+
+	public Integer getBaseSection() {
+		return baseSection;
+	}
+
+	public void setBaseSection(Integer baseSection) {
+		this.baseSection = baseSection;
+	}
+
 }

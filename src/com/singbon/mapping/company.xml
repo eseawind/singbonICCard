@@ -3,8 +3,13 @@
 <mapper namespace="com.singbon.dao.system.CompanyDAO">
 	<resultMap id="company" type="com.singbon.entity.Company">
 	</resultMap>
+	<parameterMap type="com.singbon.entity.Company" id="company2" />
 	
 	<select id="selectById" resultMap="company">
 		select * from company where id=#{id}
 	</select>
+	<update id="updateSystemPwd" parameterMap="company2">
+		update company set companyName=#{companyName},serialNumber=#{serialNumber},authNumber=#{authNumber},baseSection=#{baseSection}
+		where id=#{id}
+	</update>
 </mapper>

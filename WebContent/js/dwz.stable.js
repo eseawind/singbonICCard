@@ -80,6 +80,8 @@
 						cashierCardClick($(this));
 					}else if(target=="meal"){
 						mealClick($(this));
+					}else if(target=="waterRate"){
+						waterRateClick($(this));
 					}
 					$trs.filter(".selected").removeClass("selected");
 					$tr.addClass("selected");

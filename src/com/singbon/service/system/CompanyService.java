@@ -26,8 +26,18 @@ public class CompanyService {
 	public Company selectById(Integer id) {
 		return (Company) this.companyDAO.selectById(id);
 	}
-	
-	public int getSection(Integer companyId){
+
+	/**
+	 * 保存系统密码设置
+	 * 
+	 * @param obj
+	 * @return
+	 */
+	public void updateSystemPwd(Company company) {
+		this.companyDAO.updateSystemPwd(company);
+	}
+
+	public int getSection(Integer companyId) {
 		return 1;
 	}
 }

@@ -71,9 +71,9 @@
 			alertMsg.warn('开始日期应小于结束日期！');
 			return false;
 		}
-		if ($('#batchForm input[name=endDate]').val() >= $(
+		if ($('#batchForm input[name=endDate]').val() > $(
 				'#batchForm input[name=invalidDate]').val()) {
-			alertMsg.warn('结束日期应小于失效日期！');
+			alertMsg.warn('结束日期应不大于失效日期！');
 			return false;
 		}
 		return true;

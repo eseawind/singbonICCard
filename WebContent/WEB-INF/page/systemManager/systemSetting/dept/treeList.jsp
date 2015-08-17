@@ -25,7 +25,7 @@
 			deptId="${d.id }">${d.deptName }</a></li>
 	</c:forEach>
 </div>
-<ul class="tree collapse deptTree">
+<ul class="tree expand deptTree">
 	<li deptId="0"><a href="javascript:;" module="userDept" deptId="0">营业部门列表</a>
 		<ul class="expand">
 
