@@ -319,10 +319,10 @@
 			<dl>
 				<dt>补助类型：</dt>
 				<dd>
-					<select class="combox" name="cardType" class="required" outerw="105" innerw="122">
+					<select class="combox" name="cardTypeId" class="required" outerw="105" innerw="122">
 						<c:forEach items="${discountList }" var="d">
 							<option value="${d.discountType }" cash=${d.giveCash }
-								<c:if test="${d.discountType==user.cardType}">selected="selected"</c:if>>${d.discountType}类卡</option>
+								<c:if test="${d.discountType==user.cardTypeId}">selected="selected"</c:if>>${d.discountType}类卡</option>
 						</c:forEach>
 					</select>
 				</dd>
