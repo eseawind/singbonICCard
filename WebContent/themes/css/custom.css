@@ -1,2 +1,29 @@
 @charset "utf-8";
 
+.form .pageFormContent {
+	overflow: hidden;
+	padding: 0;
+}
+
+.form dl {
+	width: 240px;
+}
+
+.form dt {
+	margin: 0 0 0 5px;
+	padding: 0;
+	width: 60px;
+}
+
+.form dd {
+	width: 170px;
+}
+
+.form input {
+	width: 100px;
+	position: relative;
+}
+
+.form dd span.error {
+	left: 100px;
+}

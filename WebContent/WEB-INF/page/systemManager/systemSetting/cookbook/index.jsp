@@ -24,43 +24,8 @@
 		$('#cookbookList').loadUrl('${base}/list.do');
 	}
 </script>
-
+<link href="themes/css/custom.css" rel="stylesheet" type="text/css"/>
 <style type="text/css">
-.form .pageFormContent {
-	overflow: hidden;
-	padding: 0;
-}
-
-.form dl {
-	width: 240px;
-}
-
-.form dt {
-	margin: 0 0 0 5px;
-	padding: 0;
-	width: 60px;
-}
-
-.form dd {
-	width: 170px;
-}
-
-.form .error {
-/* 	position: relative; */
-/* 	top: 0; */
-	left: 0;
-	width: 100px;
-}
-
-.form input {
-	width: 100px;
-	position: relative;
-}
-
-.pageFormContent dd span.error {
-	width: 100px;
-/* 	left: 0px; */
-}
 </style>
 
 <div class="form"
