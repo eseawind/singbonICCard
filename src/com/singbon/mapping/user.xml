@@ -60,7 +60,8 @@
 		select * from user where userId=#{userId}
 	</select>
 	<select id="selectByUserIdCardSN" resultMap="user">
-		select * from user where companyId=#{companyId} and userId=#{userId} and cardSN=#{cardSN}
+		select * from user where companyId=#{companyId} and cardSN=#{cardSN}
+<!-- 		select * from user where companyId=#{companyId} and userId=#{userId} and cardSN=#{cardSN} -->
 	</select>
 	<select id="selectNoCardByDeptId" resultMap="user">
 		select * from user where status=0 and deptId=#{deptId}
