@@ -82,6 +82,8 @@
 						mealClick($(this));
 					}else if(target=="waterRate"){
 						waterRateClick($(this));
+					}else if(target=="cookbook"){
+						cookbookClick($(this));
 					}
 					$trs.filter(".selected").removeClass("selected");
 					$tr.addClass("selected");
