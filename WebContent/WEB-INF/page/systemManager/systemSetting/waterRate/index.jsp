@@ -35,53 +35,18 @@
 		$('#waterRateList').loadUrl('${base}/list.do');
 	}
 </script>
-
+<link href="themes/css/custom.css" rel="stylesheet" type="text/css"/>
 <style type="text/css">
-.form .pageFormContent {
-	overflow: hidden;
-	padding: 0;
-}
-
-.form dl {
-	width: 240px;
-}
-
-.form dt {
-	margin: 0 0 0 5px;
-	padding: 0;
-	width: 60px;
-}
-
-.form dd {
-	width: 170px;
-}
-
-.form .error {
-/* 	position: relative; */
-/* 	top: 0; */
-	left: 0;
-	width: 100px;
-}
-
-.form input {
-	width: 100px;
-	position: relative;
-}
-
-.pageFormContent dd span.error {
-	width: 80px;
-	left: 0px;
-}
-#authCard input{
-	width:13px;
-}
+	#authCard input{
+		width:13px;
+	}
 </style>
 
 <div class="form"
 	style="float: left; display: block; overflow: auto; width: 240px; border: solid 1px #CCC; line-height: 21px; background: #fff">
 	<form id="waterRateForm" method="post" action="${base}/save.do"
 		class="pageForm required-validate">
-		<div class="pageFormContent" style="padding-top: 30px;">
+		<div class="pageFormContent" style="padding-top: 20px;">
 			<dl style="margin: 5px 0;">
 				<dt>费率名称：</dt>
 				<dd>
@@ -106,12 +71,12 @@
 			<dl style="margin: 5px 0;">
 				<dt>费率值：</dt>
 				<dd>
-					<input type="text" name="rate1" maxlength="5" class="digits required" style="width: 40px;"/>
-					<div style="float: left;margin: 4px 5px;">/</div>
-					<input type="text" name="rate2" maxlength="5" class="digits required" style="width: 40px;"/>
+					<input type="text" name="rate1" maxlength="5" class="digits required"/>
+					<br>
+					<input type="text" name="rate2" maxlength="5" class="digits required"/>
 				</dd>
 			</dl>
-			<dl style="margin: 5px 0 140px;">
+			<dl style="margin: 20px 0 140px;">
 				<dt>授权卡：</dt>
 				<dd id="authCard">
 					<input type="checkbox" name="authCard" value="0"/>0类卡
