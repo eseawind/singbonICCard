@@ -5,6 +5,7 @@
 <html>
 <head>
 <meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>用户登录</title>
 <script type="text/javascript" src="js/jquery-1.7.2.js"></script>
