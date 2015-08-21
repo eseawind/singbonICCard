@@ -2,8 +2,6 @@ package com.singbon.dao.system;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
-
 import com.singbon.dao.BaseDAO;
 import com.singbon.entity.Company;
 

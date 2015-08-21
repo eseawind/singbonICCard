@@ -56,7 +56,7 @@
 					validateCallback(form, function(e) {
 						if (e == 1) {
 							alertMsg.correct('修改成功！');
-							form.clearForm();
+// 							form.clearForm();
 							refreshBatchList();
 						} else {
 							alertMsg.error('修改失败！');
@@ -71,11 +71,11 @@
 			alertMsg.warn('开始日期应小于结束日期！');
 			return false;
 		}
-		if ($('#batchForm input[name=endDate]').val() > $(
-				'#batchForm input[name=invalidDate]').val()) {
-			alertMsg.warn('结束日期应不大于失效日期！');
-			return false;
-		}
+// 		if ($('#batchForm input[name=endDate]').val() > $(
+// 				'#batchForm input[name=invalidDate]').val()) {
+// 			alertMsg.warn('结束日期应不大于失效日期！');
+// 			return false;
+// 		}
 		return true;
 	}
 
@@ -91,7 +91,7 @@
 	style="float: left; display: block; overflow: auto; width: 240px; border: solid 1px #CCC; line-height: 21px; background: #fff">
 	<form id="batchForm" method="post" action="${base}/addEdit.do"
 		class="pageForm required-validate">
-		<div class="pageFormContent" style="padding-top: 100px;">
+		<div class="pageFormContent" style="padding-top: 200px;">
 			<dl style="margin: 10px 0;">
 				<dt>批次名称：</dt>
 				<dd>
@@ -106,20 +106,20 @@
 						class="date required" readonly="readonly" />
 				</dd>
 			</dl>
-			<dl style="margin: 10px 0;">
+			<dl style="margin: 10px 0 50px">
 				<dt>结束日期：</dt>
 				<dd>
 					<input type="text" name="endDate" maxlength="20"
 						class="date required" readonly="readonly" />
 				</dd>
 			</dl>
-			<dl style="margin: 10px 0 50px;">
-				<dt>失效日期：</dt>
-				<dd>
-					<input type="text" name="invalidDate" maxlength="20"
-						class="date required" readonly="readonly" />
-				</dd>
-			</dl>
+<!-- 			<dl style="margin: 10px 0 50px;"> -->
+<!-- 				<dt>失效日期：</dt> -->
+<!-- 				<dd> -->
+<!-- 					<input type="text" name="invalidDate" maxlength="20" -->
+<!-- 						class="date required" readonly="readonly" /> -->
+<!-- 				</dd> -->
+<!-- 			</dl> -->
 		</div>
 		<div class="formBar">
 			<div class="panelBar" style="border-style: none;">

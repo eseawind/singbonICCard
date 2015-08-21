@@ -6,14 +6,15 @@
 	var selectedUserDeptId = -1;
 	$(function() {
 		$('#userDeptForm .add').click(function() {
-			if ($('#userDeptForm input').eq(1).val() == -1) {
+			var parentId=$('#userDeptForm input').eq(1).val();
+			if (parentId==null || parentId=='' || parentId == -1) {
 				alertMsg.warn('请选择上级人员部门');
 				return;
 			}
 			$('#userDeptForm input').eq(0).val('');
 			validateCallback($(this).parents('form'), function(e) {
 				if (e == 1) {
-					$('#userDeptForm input').eq(1).val(-1);
+					//$('#userDeptForm input').eq(1).val(-1);
 					refreshUserDeptList();
 					refreshUserDeptTreeList();
 					emptyForm();
@@ -25,7 +26,7 @@
 		$('#userDeptForm .edit').click(function() {
 			validateCallback($(this).parents('form'), function(e) {
 				if (e == 1) {
-					$('#userDeptForm input').eq(1).val(-1);
+					//$('#userDeptForm input').eq(1).val(-1);
 					refreshUserDeptList();
 					refreshUserDeptTreeList();
 					emptyForm();
@@ -51,7 +52,7 @@
 									function(e) {
 										//0失败1成功2包含下级部门3包含人员
 										if (e == 1) {
-											$('#userDeptForm input').eq(1).val(-1);
+											//$('#userDeptForm input').eq(1).val(-1);
 											refreshUserDeptList();
 											refreshUserDeptTreeList();
 											emptyForm();
@@ -68,14 +69,14 @@
 				});
 	});
 	function refreshUserDeptTreeList() {
-		$('#userDeptTree').loadUrl('${base }/treeList.do');
+		$('#userDeptTree').loadUrl('${base }/treeList.do?selectedUserDeptId='+$('#userDeptForm input').eq(1).val());
 	}
 	function refreshUserDeptList() {
 		$('#userDeptList').loadUrl('${base}/list.do?parentId=' + selectedUserDeptId);
 	}
 	function emptyForm() {
 		$('#userDeptForm input').eq(0).val('');
-		$('#userDeptForm input').eq(1).val(-1);
+		//$('#userDeptForm input').eq(1).val(-1);
 		$('#userDeptForm input').eq(2).val('');
 	}
 
@@ -112,7 +113,7 @@
 					<dl>
 						<dt>部门名称：</dt>
 						<dd>
-							<input type="hidden" name="id" /> <input type="hidden" name="parentId" /> <input
+							<input type="hidden" name="id" /> <input type="hidden" name="parentId"/> <input
 								type="text" name="deptName" maxlength="20" class="required" />
 						</dd>
 					</dl>

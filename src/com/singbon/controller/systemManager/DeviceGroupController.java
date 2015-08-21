@@ -21,7 +21,7 @@ import com.singbon.util.StringUtil;
  * 
  */
 @Controller
-@RequestMapping(value = "/systemManager/deviceManager/")
+@RequestMapping(value = "/systemManager/deviceGroupManager")
 public class DeviceGroupController {
 
 	@Autowired

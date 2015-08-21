@@ -361,7 +361,7 @@ public class TerminalManager {
 
 				int base2 = baseLen + 19 + 3;
 				map.put("'cardSeq'", Integer.parseInt(cardInfo(base2 + 4, base2 + 4, b), 16));
-				map.put("'cardType'", Integer.parseInt(cardInfo(base2 + 5, base2 + 5, b), 16));
+				map.put("'cardTypeId'", Integer.parseInt(cardInfo(base2 + 5, base2 + 5, b), 16));
 				map.put("'totalFare'", (float) Integer.parseInt(cardInfo(base2 + 10, base2 + 13, b), 16) / 100);
 
 				int consume0 = baseLen + 19 * 2 + 3;
@@ -496,6 +496,8 @@ public class TerminalManager {
 	 * @throws IOException
 	 */
 	public static void closeSocketChannel(String sn) throws IOException {
+		SocketChannel socketChannel= TerminalManager.getSNToSocketChannelList().get(sn);
+		socketChannel.close();
 		TerminalManager.getSNToSocketChannelList().remove(sn);
 	}
 

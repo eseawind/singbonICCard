@@ -21,7 +21,7 @@
 		range: $.validator.format("请输入一个介于 {0} 和 {1} 之间的值"),
 //		max: $.validator.format("超出最大值"),
 //		min: $.validator.format("超出最小值"),
-		max: $.validator.format("最大为 {0}"),
+		max: $.validator.format("输入数值不能大于{0}"),
 		min: $.validator.format("最小为 {0}"),
 		
 		alphanumeric: "字母、数字、下划线",

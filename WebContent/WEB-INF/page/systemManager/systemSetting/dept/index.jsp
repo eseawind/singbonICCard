@@ -13,7 +13,7 @@
 			$('#deptForm input').eq(0).val('');
 			validateCallback($(this).parents('form'), function(e) {
 				if (e == 1) {
-					$('#deptForm input').eq(1).val(-1);
+					//$('#userDeptForm input').eq(1).val(-1);
 					refreshDeptList();
 					refreshdeptTreeList();
 					emptyForm();
@@ -25,7 +25,7 @@
 		$('#deptForm .edit').click(function() {
 			validateCallback($(this).parents('form'), function(e) {
 				if (e == 1) {
-					$('#deptForm input').eq(1).val(-1);
+					//$('#userDeptForm input').eq(1).val(-1);
 					refreshDeptList();
 					refreshdeptTreeList();
 					emptyForm();
@@ -53,7 +53,7 @@
 									function(e) {
 										//0失败1成功2包含下级部门3包含人员
 										if (e == 1) {
-											$('#deptForm input').eq(1).val(-1);
+											//$('#userDeptForm input').eq(1).val(-1);
 											refreshDeptList();
 											refreshdeptTreeList();
 											emptyForm();
@@ -77,7 +77,7 @@
 	}
 	function emptyForm() {
 		$('#deptForm input').eq(0).val('');
-		$('#deptForm input').eq(1).val(-1);
+		//$('#userDeptForm input').eq(1).val(-1);
 		$('#deptForm input').eq(2).val('');
 		// 		$('#deptForm select').eq(0).val(0);
 	}

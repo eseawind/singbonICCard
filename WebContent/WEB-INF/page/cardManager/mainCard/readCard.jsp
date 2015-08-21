@@ -237,7 +237,7 @@
 				<td></td>
 			</tr>
 			<tr>
-				<td id="cardType">卡类型</td>
+				<td id="cardTypeId">卡类型</td>
 				<td></td>
 				<td></td>
 			</tr>
@@ -280,7 +280,7 @@
 	<input name="invalidDate" type="hidden" />
 	<input name="status" type="hidden" />
 	<input name="cardSeq" type="hidden" />
-	<input name="cardType" type="hidden" />
+	<input name="cardTypeId" type="hidden" />
 	<input name="totalFare" type="hidden" />
 	<input name="oddFare" type="hidden" />
 	<input name="opCount" type="hidden" />

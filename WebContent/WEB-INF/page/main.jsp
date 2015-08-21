@@ -148,8 +148,8 @@
 									<li><a href="/systemManager/systemSetting/index.do"
 										target="navTab">系统设置</a></li>
 								</security:authorize>
-								<li><a href="#" target="navTab">设备管理</a></li>
-								<li><a href="#" target="navTab">参数设置</a></li>
+								<li><a href="/systemManager/deviceManager/index.do" target="navTab">设备管理</a></li>
+								<li><a href="/systemManager/paramSetting/index.do" target="navTab">参数设置</a></li>
 								<li><a href="#" target="navTab">用户管理</a></li>
 								<li><a href="#" target="navTab">用户管理</a></li>
 								<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_USERROLES">

@@ -130,7 +130,7 @@
 				<tr>
 					<td>&nbsp;</td>
 					<td>
-						<div id="error" class="error">用户名或密码错误</div>
+						<div id="error" class="error">公司名称、用户名或密码错误</div>
 						<div id="noDevice" class="error">该用户没有绑定读卡机</div>
 						<div id="offline" class="error">读卡机不在线</div>
 						<div id="errInfo" class="error">卡信息和用户信息不匹配</div>

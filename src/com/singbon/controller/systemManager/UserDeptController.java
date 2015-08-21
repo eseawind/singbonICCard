@@ -96,7 +96,7 @@ public class UserDeptController {
 	 */
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/treeList.do")
-	public String treeList(HttpServletRequest request, Model model) {
+	public String treeList(HttpServletRequest request, HttpServletResponse response, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
 		List<UserDept> list = this.userDeptService.selectTreeList(company.getId());
 		model.addAttribute("list", list);

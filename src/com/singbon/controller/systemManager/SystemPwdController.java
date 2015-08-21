@@ -16,7 +16,6 @@ import com.singbon.controller.BaseController;
 import com.singbon.entity.Company;
 import com.singbon.entity.SysUser;
 import com.singbon.service.system.CompanyService;
-import com.singbon.util.StringUtil;
 
 /**
  * 系统密码控制类

@@ -21,7 +21,7 @@
 			<th width="100">批次名称</th>
 			<th width="100">开始日期</th>
 			<th width="100">结束日期</th>
-			<th width="100">失效日期</th>
+<!-- 			<th width="100">失效日期</th> -->
 		</tr>
 	</thead>
 	<tbody>
@@ -30,7 +30,7 @@
 				<td batchId="${b.id}" batchName="${b.batchName}">${b.batchName }</td>
 				<td><fmt:formatDate value="${b.beginDate}" pattern="yyyy-MM-dd"/></td>
 				<td><fmt:formatDate value="${b.endDate}" pattern="yyyy-MM-dd"/></td>
-				<td><fmt:formatDate value="${b.invalidDate}" pattern="yyyy-MM-dd"/></td>
+<%-- 				<td><fmt:formatDate value="${b.invalidDate}" pattern="yyyy-MM-dd"/></td> --%>
 			</tr>
 		</c:forEach>
 	</tbody>
