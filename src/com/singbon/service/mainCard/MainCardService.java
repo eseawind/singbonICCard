@@ -175,6 +175,9 @@ public class MainCardService {
 		String tmLimitDayFare = StringUtil.hexLeftPad(cardAllInfo.getLimitDayFare(), 2);// 1
 		String tmLimitTimesFare = StringUtil.hexLeftPad(cardAllInfo.getLimitTimesFare(), 4);// 2
 		String tmCardSeq = "01";// 1
+		if (commandCode != CommandCodeCardReader.SingleCard && commandCode != CommandCodeCardReader.InfoCard) {
+			tmCardSeq=StringUtil.hexLeftPad(user.getCardSeq(), 2);// 1
+		}
 		String tmCardType = StringUtil.hexLeftPad(user.getCardTypeId(), 2);// 1
 		String tmDeptId = StringUtil.hexLeftPad(user.getDeptId(), 8);// 4
 		String tmTotalFare = StringUtil.hexLeftPad(user.getTotalFare(), 8);// 4

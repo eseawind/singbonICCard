@@ -369,7 +369,7 @@ public class TerminalManager {
 				map.put("'oddFare'", (float) Integer.parseInt(cardInfo(consume0 + 3, consume0 + 5, b), 16) / 100);
 
 				int subsidy0 = baseLen + 19 * 3 + 3;
-				map.put("'subsidyOpCount'", (float) Integer.parseInt(cardInfo(subsidy0, subsidy0 + 1, b), 16) / 100);
+				map.put("'subsidyOpCount'", Integer.parseInt(cardInfo(subsidy0, subsidy0 + 1, b), 16));
 				map.put("'subsidyOddFare'", (float) Integer.parseInt(cardInfo(subsidy0 + 2, subsidy0 + 4, b), 16) / 100);
 				map.put("'subsidyVersion'", Integer.parseInt(cardInfo(subsidy0 + 7, subsidy0 + 7, b), 16));
 			}

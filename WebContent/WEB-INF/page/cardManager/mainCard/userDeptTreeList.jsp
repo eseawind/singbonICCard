@@ -25,7 +25,7 @@
 	</c:forEach>
 </div>
 <ul class="tree collapse userDeptTree" layotH="10">
-	<li deptId="0"><a href="javascript:;" module="userDept" deptId="0">部门列表</a>
+	<li deptId="-1"><a href="javascript:;" module="userDept" deptId="-1">部门列表</a>
 		<ul class="expand">
 
 		</ul></li>

@@ -162,6 +162,5 @@
 
 		<div class="pagination" rel="userList" totalCount="${totalCount }" numPerPage="${numPerPage }"
 			pageNumShown="10" currentPage="${pageNum }"></div>
-
 	</div>
 </div>

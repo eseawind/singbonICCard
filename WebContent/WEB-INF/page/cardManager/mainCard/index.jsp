@@ -6,7 +6,6 @@
 	var deviceSn='${device.sn}';
 	var selectedDeptId = -1;
 	var selectedBatchId = -1;
-	var searchStr=null;
 
 	//选择部门
 	function selectUserDept(a) {
@@ -15,8 +14,7 @@
 		refreshUserList();
 	};
 	function refreshUserList() {
-		$('#userList')
-				.loadUrl('${base}/list.do?deptId=' + selectedDeptId+'&searchStr='+searchStr, {}, function(){
+		$('#userList').loadUrl('${base}/list.do?pageNum=1&numPerPage=50&deptId=' + selectedDeptId, {}, function(){
 					$('#userList').find('[layoutH]').layoutH();
 				});
 	}
@@ -36,7 +34,7 @@
 			</div>
 
 			<div id="userList" class="unitBox" style="margin-left: 246px;">
-				<jsp:include page="${base }/list.do" />
+				<jsp:include page="${base }/list.do?deptId=-1&pageNum=1&numPerPage=50" />
 			</div>
 
 		</div>

@@ -32,9 +32,11 @@ import com.singbon.entity.CardIdentity;
 import com.singbon.entity.Company;
 import com.singbon.entity.Device;
 import com.singbon.entity.Discount;
+import com.singbon.entity.Pagination;
 import com.singbon.entity.SysUser;
 import com.singbon.entity.User;
 import com.singbon.entity.UserDept;
+import com.singbon.service.balanceCenter.UserInfoService;
 import com.singbon.service.mainCard.MainCardService;
 import com.singbon.service.system.CompanyService;
 import com.singbon.service.systemManager.BatchService;
@@ -62,6 +64,8 @@ public class MainCardController extends BaseController {
 	public DiscountService discountService;
 	@Autowired
 	public CompanyService companyService;
+	@Autowired
+	public UserInfoService userInfoService;
 
 	/**
 	 * 首页
@@ -108,15 +112,21 @@ public class MainCardController extends BaseController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/list.do", method = RequestMethod.GET)
-	public String userList(HttpServletRequest request, Integer deptId, String searchStr, Model model) {
-		if ("".equals(searchStr) || "null".equals(searchStr)) {
-			searchStr = null;
-		}
-		List<User> list = this.mainCardService.selectByCondition(deptId, searchStr);
-		model.addAttribute("list", list);
+	@RequestMapping(value = "/list.do")
+	public String userList(@ModelAttribute Pagination pagination, Integer deptId, String nameStr, HttpServletRequest request, Model model) {
+		Company company = (Company) request.getSession().getAttribute("company");
+		List<User> userList = this.userInfoService.selectByPage(company.getId(), pagination, nameStr, deptId, null, null, null, null, null, null);
+		int totalCount = userList.get(0).getUserId();
+		userList.remove(0);
+
+		model.addAttribute("list", userList);
+		model.addAttribute("pageNum", pagination.getPageNum());
+		model.addAttribute("numPerPage", pagination.getNumPerPage());
+		model.addAttribute("totalCount", totalCount);
+		model.addAttribute("nameStr", nameStr);
+		model.addAttribute("deptId", deptId);
+
 		model.addAttribute("base", StringUtil.requestBase(request));
-		model.addAttribute("searchStr", searchStr);
 		return StringUtil.requestPath(request, "userList");
 	}
 
