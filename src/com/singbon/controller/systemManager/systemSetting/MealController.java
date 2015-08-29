@@ -1,4 +1,4 @@
-package com.singbon.controller.systemManager;
+package com.singbon.controller.systemManager.systemSetting;
 
 import java.io.PrintWriter;
 import java.util.List;
@@ -14,44 +14,36 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.singbon.controller.BaseController;
 import com.singbon.entity.Company;
-import com.singbon.entity.Cookbook;
-import com.singbon.service.systemManager.CookbookService;
+import com.singbon.entity.Meal;
+import com.singbon.service.systemManager.systemSetting.MealService;
 import com.singbon.util.StringUtil;
 
 /**
- * 菜肴清单控制类
+ * 餐别设置控制类
  * 
  * @author 郝威
  * 
  */
 @Controller
-@RequestMapping(value = "/systemManager/systemSetting/cookbook")
-public class CookbookController extends BaseController {
+@RequestMapping(value = "/systemManager/systemSetting/meal")
+public class MealController extends BaseController {
 
 	@Autowired
-	public CookbookService cookbookService;
+	public MealService mealService;
 
 	/**
 	 * 保存修改
 	 * 
-	 * @param cookbook
+	 * @param meal
 	 * @param request
 	 * @param model
 	 */
 	@RequestMapping(value = "/save.do")
-	public void save(@ModelAttribute Cookbook cookbook, HttpServletRequest request, HttpServletResponse response, Model model) {
-		Company company = (Company) request.getSession().getAttribute("company");
+	public void save(@ModelAttribute Meal meal, HttpServletRequest request, HttpServletResponse response, Model model) {
 		PrintWriter p = null;
 		try {
 			p = response.getWriter();
-			if (cookbook.getId() == null) {
-				Integer maxCode = this.cookbookService.selectMaxCode(company.getId());
-				cookbook.setCookbookCode(maxCode);
-				cookbook.setCompanyId(company.getId());
-				this.cookbookService.insert(cookbook);
-			} else {
-				this.cookbookService.update(cookbook);
-			}
+			this.mealService.update(meal);
 			p.print(1);
 		} catch (Exception e) {
 			p.print(0);
@@ -61,14 +53,19 @@ public class CookbookController extends BaseController {
 	/**
 	 * 列表
 	 * 
-	 * @param cookbook
+	 * @param meal
 	 * @param request
 	 * @param model
 	 */
 	@RequestMapping(value = "/list.do")
-	public String cookbookList(HttpServletRequest request, Model model) {
+	public String mealList(HttpServletRequest request, Model model) {
+
 		Company company = (Company) request.getSession().getAttribute("company");
-		List<Cookbook> list = this.cookbookService.selectList(company.getId());
+		List<Meal> list = this.mealService.selectList(company.getId());
+		if (list.size() == 0) {
+			this.mealService.insert(company.getId());
+			list = this.mealService.selectList(company.getId());
+		}
 		model.addAttribute("list", list);
 		return StringUtil.requestPath(request, "list");
 	}

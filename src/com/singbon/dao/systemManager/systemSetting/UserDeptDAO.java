@@ -1,4 +1,4 @@
-package com.singbon.dao.systemManager;
+package com.singbon.dao.systemManager.systemSetting;
 
 import java.util.List;
 

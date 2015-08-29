@@ -1,11 +1,11 @@
-package com.singbon.service.systemManager;
+package com.singbon.service.systemManager.systemSetting;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.singbon.dao.systemManager.WaterRateDAO;
+import com.singbon.dao.systemManager.systemSetting.WaterRateDAO;
 import com.singbon.entity.WaterRate;
 
 /**

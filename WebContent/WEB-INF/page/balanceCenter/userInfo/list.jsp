@@ -50,7 +50,7 @@
 						<select class="combox" outerw="50" innerw="70"
 							name="cardTypeId">
 							<option value="-1" width="70">全部</option>
-							<c:forEach var="i" begin="1" end="16" step="1">
+							<c:forEach var="i" begin="0" end="15" step="1">
 								<option value="${i}" width="70" <c:if test="${i==cardTypeId}">selected</c:if> >${i}类卡</option>
 							</c:forEach>
 						</select>

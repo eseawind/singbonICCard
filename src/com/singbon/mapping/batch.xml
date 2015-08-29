@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.singbon.dao.systemManager.BatchDAO">
+<mapper namespace="com.singbon.dao.systemManager.systemSetting.BatchDAO">
 	<resultMap id="batch" type="com.singbon.entity.Batch">
 	</resultMap>
 	<parameterMap type="com.singbon.entity.Batch" id="batch2" />

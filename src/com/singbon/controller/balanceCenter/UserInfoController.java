@@ -18,7 +18,7 @@ import com.singbon.entity.Pagination;
 import com.singbon.entity.User;
 import com.singbon.entity.UserDept;
 import com.singbon.service.balanceCenter.UserInfoService;
-import com.singbon.service.systemManager.UserDeptService;
+import com.singbon.service.systemManager.systemSetting.UserDeptService;
 import com.singbon.util.ExportUtil;
 import com.singbon.util.StringUtil;
 

@@ -1,11 +1,11 @@
-package com.singbon.service.systemManager;
+package com.singbon.service.systemManager.systemSetting;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.singbon.dao.systemManager.BatchDAO;
+import com.singbon.dao.systemManager.systemSetting.BatchDAO;
 import com.singbon.entity.Batch;
 
 /**

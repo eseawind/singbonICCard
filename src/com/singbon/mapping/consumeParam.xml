@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.singbon.dao.systemManager.systemSetting.ConsumeParamDAO">
+	<resultMap id="consumeParam" type="com.singbon.entity.ConsumeParam">
+	</resultMap>
+	<parameterMap type="com.singbon.entity.ConsumeParam" id="consumeParam2" />
+	<insert id="insert">
+		insert into consumeParam (companyId,cardMinFare,cardMinFareCardTypes,dayLimitFare,dayLimitFareCardTypes,timeLimitFare,timeLimitFareCardTypes,consumeType,userPwd)
+			select #{companyId},cardMinFare,cardMinFareCardTypes,dayLimitFare,dayLimitFareCardTypes,timeLimitFare,timeLimitFareCardTypes,consumeType,userPwd from consumeParamBase
+	</insert>
+	<update id="update" parameterMap="consumeParam2">
+		update consumeParam set cardMinFare=#{cardMinFare},cardMinFareCardTypes=#{cardMinFareCardTypes},dayLimitFare=#{dayLimitFare},dayLimitFareCardTypes=#{dayLimitFareCardTypes},timeLimitFare=#{timeLimitFare},timeLimitFareCardTypes=#{timeLimitFareCardTypes},consumeType=#{consumeType},userPwd=#{userPwd}
+		where id=#{id}
+	</update>
+	<select id="selectByCompanyId" resultMap="consumeParam">
+		select * from consumeParam where companyId=#{companyId}
+	</select>
+</mapper>

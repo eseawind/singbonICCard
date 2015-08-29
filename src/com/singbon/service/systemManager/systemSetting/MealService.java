@@ -1,11 +1,11 @@
-package com.singbon.service.systemManager;
+package com.singbon.service.systemManager.systemSetting;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.singbon.dao.systemManager.MealDAO;
+import com.singbon.dao.systemManager.systemSetting.MealDAO;
 import com.singbon.entity.Meal;
 
 /**

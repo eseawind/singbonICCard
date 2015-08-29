@@ -1,4 +1,4 @@
-package com.singbon.controller.systemManager;
+package com.singbon.controller.systemManager.systemSetting;
 
 import java.io.IOException;
 import java.io.PrintWriter;

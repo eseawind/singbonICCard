@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.singbon.dao.systemManager.CookbookDAO">
+<mapper namespace="com.singbon.dao.systemManager.systemSetting.CookbookDAO">
 	<resultMap id="cookbook" type="com.singbon.entity.Cookbook">
 	</resultMap>
 	<parameterMap type="com.singbon.entity.Cookbook" id="cookbook2" />
 	<insert id="insert">
-		insert into cookbook (companyId,cookbookCode,cookbookName,price,remark,status)
-		values (#{companyId},#{cookbookCode},#{cookbookName},#{price},#{remark},#{status})
+		insert into cookbook (companyId,cookbookCode,cookbookName,price,remark,isEnable)
+		values (#{companyId},#{cookbookCode},#{cookbookName},#{price},#{remark},#{isEnable})
 	</insert>
 	<update id="update" parameterMap="cookbook2">
-		update cookbook set cookbookName=#{cookbookName},price=#{price},remark=#{remark},status=#{status}
+		update cookbook set cookbookName=#{cookbookName},price=#{price},remark=#{remark},isEnable=#{isEnable}
 		where id=#{id}
 	</update>
 	<select id="selectMaxCode" resultType="java.lang.Integer">

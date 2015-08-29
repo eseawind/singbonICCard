@@ -17,7 +17,7 @@ public class Cookbook implements Serializable {
 	private String cookbookName;
 	private Integer price;
 	private String remark;
-	private boolean status;
+	private boolean isEnable;
 
 	public Integer getId() {
 		return id;
@@ -67,12 +67,12 @@ public class Cookbook implements Serializable {
 		this.remark = remark;
 	}
 
-	public boolean getStatus() {
-		return status;
+	public boolean isEnable() {
+		return isEnable;
 	}
 
-	public void setStatus(boolean status) {
-		this.status = status;
+	public void setEnable(boolean isEnable) {
+		this.isEnable = isEnable;
 	}
 
 }

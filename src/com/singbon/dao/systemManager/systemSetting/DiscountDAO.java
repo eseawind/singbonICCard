@@ -1,22 +1,22 @@
-package com.singbon.dao.systemManager;
+package com.singbon.dao.systemManager.systemSetting;
 
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
 import com.singbon.dao.BaseDAO;
-import com.singbon.entity.Meal;
+import com.singbon.entity.Discount;
 
 /**
- * 餐别设置dao层
+ * 优惠方案dao层
  * 
  * @author 郝威
  * 
  */
-public interface MealDAO extends BaseDAO{
+public interface DiscountDAO extends BaseDAO{
 
 	/**
-	 * 添加
+	 * 添加优惠方案
 	 * 
 	 * @param companyId
 	 * @return
@@ -24,9 +24,9 @@ public interface MealDAO extends BaseDAO{
 	public void insert(@Param("companyId") Integer companyId);
 
 	/**
-	 * 列表
+	 * 优惠方案列表
 	 * 
 	 * @return
 	 */
-	public List<Meal> selectList(@Param("companyId") Integer companyId);
+	public List<Discount> selectList(@Param("companyId") Integer companyId);
 }

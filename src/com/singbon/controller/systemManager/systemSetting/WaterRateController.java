@@ -1,4 +1,4 @@
-package com.singbon.controller.systemManager;
+package com.singbon.controller.systemManager.systemSetting;
 
 import java.io.PrintWriter;
 import java.util.List;
@@ -13,37 +13,47 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.singbon.controller.BaseController;
-import com.singbon.entity.Discount;
 import com.singbon.entity.Company;
-import com.singbon.service.systemManager.DiscountService;
+import com.singbon.entity.WaterRate;
+import com.singbon.service.systemManager.systemSetting.WaterRateService;
 import com.singbon.util.StringUtil;
 
 /**
- * 优惠方案控制类
+ * 水控费率2、3、4控制类
  * 
  * @author 郝威
  * 
  */
 @Controller
-@RequestMapping(value = "/systemManager/systemSetting/discount")
-public class DiscountController extends BaseController {
+@RequestMapping(value = "/systemManager/systemSetting/waterRate")
+public class WaterRateController extends BaseController {
 
 	@Autowired
-	public DiscountService discountService;
+	public WaterRateService waterRateService;
 
 	/**
 	 * 保存修改
 	 * 
-	 * @param Discount
+	 * @param waterRate
 	 * @param request
 	 * @param model
 	 */
 	@RequestMapping(value = "/save.do")
-	public void save(@ModelAttribute Discount discount, HttpServletRequest request, HttpServletResponse response, Model model) {
+	public void save(@ModelAttribute WaterRate waterRate, HttpServletRequest request, HttpServletResponse response, Model model) {
 		PrintWriter p = null;
 		try {
 			p = response.getWriter();
-			this.discountService.update(discount);
+			String authCard = "," + waterRate.getAuthCard() + ",";
+			String tempAuthCard = "";
+			for (int i = 0; i < 16; i++) {
+				if (authCard.indexOf("," + i + ",") != -1) {
+					tempAuthCard += "1";
+				} else {
+					tempAuthCard += "0";
+				}
+			}
+			waterRate.setAuthCard(tempAuthCard);
+			this.waterRateService.update(waterRate);
 			p.print(1);
 		} catch (Exception e) {
 			p.print(0);
@@ -53,18 +63,18 @@ public class DiscountController extends BaseController {
 	/**
 	 * 列表
 	 * 
-	 * @param Discount
+	 * @param waterRate
 	 * @param request
 	 * @param model
 	 */
 	@RequestMapping(value = "/list.do")
-	public String discountList(HttpServletRequest request, Model model) {
+	public String waterRateList(HttpServletRequest request, Model model) {
 
 		Company company = (Company) request.getSession().getAttribute("company");
-		List<Discount> list = this.discountService.selectList(company.getId());
+		List<WaterRate> list = this.waterRateService.selectList(company.getId());
 		if (list.size() == 0) {
-			this.discountService.insert(company.getId());
-			list = this.discountService.selectList(company.getId());
+			this.waterRateService.insert(company.getId());
+			list = this.waterRateService.selectList(company.getId());
 		}
 		model.addAttribute("list", list);
 		return StringUtil.requestPath(request, "list");

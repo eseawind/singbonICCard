@@ -1,4 +1,4 @@
-package com.singbon.controller.systemManager;
+package com.singbon.controller.systemManager.systemSetting;
 
 import java.io.PrintWriter;
 import java.util.List;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.singbon.controller.BaseController;
 import com.singbon.entity.Batch;
 import com.singbon.entity.Company;
-import com.singbon.service.systemManager.BatchService;
+import com.singbon.service.systemManager.systemSetting.BatchService;
 import com.singbon.util.StringUtil;
 
 /**

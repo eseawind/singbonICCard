@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.singbon.dao.systemManager.WaterRateDAO">
+<mapper namespace="com.singbon.dao.systemManager.systemSetting.WaterRateDAO">
 	<resultMap id="waterRate" type="com.singbon.entity.WaterRate">
 	</resultMap>
 	<parameterMap type="com.singbon.entity.WaterRate" id="waterRate2" />
 	<insert id="insert">
 		insert into waterRate (companyId,waterRateName,beginTime,endTime,rate1,rate2,authCard)
-		select #{companyId},'费率2','07:30','09:30',0,0,'0000000000000000' union
-		select #{companyId},'费率3','09:30','12:30',0,0,'0000000000000000' union
-		select #{companyId},'费率4','12:00','14:31',0,0,'0000000000000000'
+			select #{companyId},waterRateName,beginTime,endTime,rate1,rate2,authCard from waterRateBase
 	</insert>
 	<update id="update" parameterMap="waterRate2">
 		update waterRate set waterRateName=#{waterRateName},beginTime=#{beginTime},endTime=#{endTime},rate1=#{rate1},rate2=#{rate2},authCard=#{authCard}

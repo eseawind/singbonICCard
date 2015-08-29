@@ -55,7 +55,7 @@
 			<dl>
 				<dt>&nbsp;</dt>
 				<dd>
-					<input type="checkbox" name="status" checked="checked" style="width:13px;"/>是否启用
+					<input type="checkbox" name="isEnable" checked="checked" style="width:13px;"/>是否启用
 				</dd>
 			</dl>
 		</div>

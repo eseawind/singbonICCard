@@ -39,9 +39,9 @@ import com.singbon.entity.UserDept;
 import com.singbon.service.balanceCenter.UserInfoService;
 import com.singbon.service.mainCard.MainCardService;
 import com.singbon.service.system.CompanyService;
-import com.singbon.service.systemManager.BatchService;
-import com.singbon.service.systemManager.DiscountService;
-import com.singbon.service.systemManager.UserDeptService;
+import com.singbon.service.systemManager.systemSetting.BatchService;
+import com.singbon.service.systemManager.systemSetting.DiscountService;
+import com.singbon.service.systemManager.systemSetting.UserDeptService;
 import com.singbon.util.StringUtil;
 
 /**

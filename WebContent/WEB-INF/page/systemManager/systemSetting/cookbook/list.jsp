@@ -10,11 +10,11 @@
 		$('#cookbookForm input').eq(1).val(tds.eq(1).find('div').html());
 		$('#cookbookForm input').eq(2).val(tds.eq(2).find('div').html());
 		$('#cookbookForm input').eq(3).val(tds.eq(3).find('div').html());
-		var status = tr.attr('status');
-		if(status=='false'){
-			$('#cookbookForm input[name=status]').attr('checked',false);
+		var isEnable = tr.attr('isEnable');
+		if(isEnable=='false'){
+			$('#cookbookForm input[name=isEnable]').attr('checked',false);
 		}else{
-			$('#cookbookForm input[name=status]').attr('checked',true);			
+			$('#cookbookForm input[name=isEnable]').attr('checked',true);			
 		}
 	}
 	
@@ -28,7 +28,7 @@
 				$("#coookbookList .item[cookbookCode*="+val+"],#coookbookList .item[cookbookName*="+val+"]").removeClass('hide');				
 			}
 		});
-		$('#coookbookList .item[status=false]').addClass('red');
+		$('#coookbookList .item[isEnable=false]').addClass('red');
 	});
 </script>
 <style type="text/css">
@@ -66,7 +66,7 @@
 		</thead>
 		<tbody>
 			<c:forEach items="${list }" var="c">
-				<tr class="item" target="cookbook" cookbookId="${c.id }" cookbookCode="${c.cookbookCode}" cookbookName="${c.cookbookName }" status="${c.status }">
+				<tr class="item" target="cookbook" cookbookId="${c.id }" cookbookCode="${c.cookbookCode}" cookbookName="${c.cookbookName }" isEnable="${c.isEnable }">
 					<td>${c.cookbookCode }</td>
 					<td>${c.cookbookName }</td>
 					<td>${c.price }</td>
