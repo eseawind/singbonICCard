@@ -17,7 +17,8 @@
 				<li><a href="${base }/meal/index.do" class="j-ajax"><span>餐别设置</span></a></li>
 				<li><a href="${base }/cookbook/index.do" class="j-ajax"><span>菜谱设置</span></a></li>
 				<li><a href="${base }/discount/index.do" class="j-ajax"><span>优惠方案设置</span></a></li>
-				<li><a href="${base }/waterRate/index.do" class="j-ajax"><span>水控费率设置</span></a></li>
+				<li><a href="${base }/waterRate/index.do" class="j-ajax"><span>一控一水控设置</span></a></li>
+				<li><a href="${base }/multiWaterRate/index.do" class="j-ajax"><span>一控多水控设置</span></a></li>
 			</ul>
 		</div>
 	</div>
@@ -25,7 +26,7 @@
 		<div class="tabsHeaderContent">
 			<ul>
 				<li><a href="${base }/consumeParam/index.do" class="j-ajax"><span>消费参数设置</span></a></li>
-				<li><a href="${base }/waterRate/index.do" class="j-ajax"><span>水控费率设置</span></a></li>
+				<li><a href="${base }/cardParam/index.do" class="j-ajax"><span>制卡参数设置</span></a></li>
 				<li><a href="${base }/waterRate/index.do" class="j-ajax"><span>水控费率设置</span></a></li>
 				<li><a href="${base }/waterRate/index.do" class="j-ajax"><span>水控费率设置</span></a></li>
 				<li><a href="${base }/waterRate/index.do" class="j-ajax"><span>水控费率设置</span></a></li>

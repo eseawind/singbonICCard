@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.singbon.dao.systemManager.systemSetting.CardParamDAO">
+	<resultMap id="cardParam" type="com.singbon.entity.CardParam">
+	</resultMap>
+	<parameterMap type="com.singbon.entity.CardParam" id="cardParam2" />
+	<insert id="insert">
+		insert into cardParam (companyId,cardCost,cardDeposit,prepayFare)
+			select #{companyId},cardCost,cardDeposit,prepayFare from cardParamBase
+	</insert>
+	<update id="update" parameterMap="cardParam2">
+		update cardParam set cardCost=#{cardCost},cardDeposit=#{cardDeposit},prepayFare=#{prepayFare}
+		where id=#{id}
+	</update>
+	<select id="selectByCompanyId" resultMap="cardParam">
+		select * from cardParam where companyId=#{companyId}
+	</select>
+</mapper>

@@ -46,7 +46,7 @@ function initEnv() {
 }
 function initLayout(){
 	var iContentW = $(window).width() - (DWZ.ui.sbar ? $("#sidebar").width() + 10 : 34) - 5;
-	var iContentH = $(window).height() - $("#header").height() - 34;
+	var iContentH = $(window).height() - $("#header").height() - 3;
 
 	$("#container").width(iContentW);
 	$("#container .tabsPageContent").height(iContentH - 34).find("[layoutH]").layoutH();

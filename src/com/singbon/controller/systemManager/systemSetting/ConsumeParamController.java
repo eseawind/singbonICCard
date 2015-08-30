@@ -42,16 +42,36 @@ public class ConsumeParamController extends BaseController {
 		PrintWriter p = null;
 		try {
 			p = response.getWriter();
-//			String authCard = "," + consumeParam.getAuthCard() + ",";
-//			String tempAuthCard = "";
-//			for (int i = 0; i < 16; i++) {
-//				if (authCard.indexOf("," + i + ",") != -1) {
-//					tempAuthCard += "1";
-//				} else {
-//					tempAuthCard += "0";
-//				}
-//			}
-//			consumeParam.setAuthCard(tempAuthCard);
+			String cardMinFareCardTypes = "," + consumeParam.getCardMinFareCardTypes() + ",";
+			String tempCardMinFareCardTypes = ",";
+			for (int i = 0; i < 16; i++) {
+				if (cardMinFareCardTypes.indexOf("," + i + ",") != -1) {
+					tempCardMinFareCardTypes += i+",";
+				}
+			}
+			tempCardMinFareCardTypes += ",";
+			consumeParam.setCardMinFareCardTypes(tempCardMinFareCardTypes);
+
+			String dayLimitFareCardTypes = "," + consumeParam.getDayLimitFareCardTypes() + ",";
+			String tempDayLimitFareCardTypes = ",";
+			for (int i = 0; i < 16; i++) {
+				if (dayLimitFareCardTypes.indexOf("," + i + ",") != -1) {
+					tempDayLimitFareCardTypes += i+",";
+				}
+			}
+			tempDayLimitFareCardTypes += ",";
+			consumeParam.setDayLimitFareCardTypes(tempDayLimitFareCardTypes);
+
+			String timeLimitFareCardTypes = "," + consumeParam.getTimeLimitFareCardTypes() + ",";
+			String tempTimeLimitFareCardTypes = ",";
+			for (int i = 0; i < 16; i++) {
+				if (timeLimitFareCardTypes.indexOf("," + i + ",") != -1) {
+					tempTimeLimitFareCardTypes += i+",";
+				}
+			}
+			tempTimeLimitFareCardTypes += ",";
+			consumeParam.setTimeLimitFareCardTypes(tempTimeLimitFareCardTypes);
+
 			this.consumeParamService.update(consumeParam);
 			p.print(1);
 		} catch (Exception e) {
@@ -76,6 +96,8 @@ public class ConsumeParamController extends BaseController {
 			consumeParam = this.consumeParamService.selectByCompanyId(company.getId());
 		}
 		model.addAttribute("consumeParam", consumeParam);
+		String url = request.getRequestURI();
+		model.addAttribute("base", url.replace("/index.do", ""));
 		return StringUtil.requestPath(request, "index");
 	}
 

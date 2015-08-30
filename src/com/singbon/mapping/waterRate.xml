@@ -5,14 +5,14 @@
 	</resultMap>
 	<parameterMap type="com.singbon.entity.WaterRate" id="waterRate2" />
 	<insert id="insert">
-		insert into waterRate (companyId,waterRateName,beginTime,endTime,rate1,rate2,authCard)
-			select #{companyId},waterRateName,beginTime,endTime,rate1,rate2,authCard from waterRateBase
+		insert into waterRate (companyId,consumeType,goWaterType,stopWaterType,rate1Status,rate1ConsumeFare,rate1ConsumeCycle,rate1NextDayReset,rate2Status,rate2BeginTime,rate2EndTime,rate2Value1,rate2Value2,rate2CardTypes,rate3Status,rate3BeginTime,rate3EndTime,rate3Value1,rate3Value2,rate3CardTypes,rate4Status,rate4BeginTime,rate4EndTime,rate4Value1,rate4Value2,rate4CardTypes,rate5DeductFare,rate5DeductCycle)
+			select #{companyId},consumeType,goWaterType,stopWaterType,rate1Status,rate1ConsumeFare,rate1ConsumeCycle,rate1NextDayReset,rate2Status,rate2BeginTime,rate2EndTime,rate2Value1,rate2Value2,rate2CardTypes,rate3Status,rate3BeginTime,rate3EndTime,rate3Value1,rate3Value2,rate3CardTypes,rate4Status,rate4BeginTime,rate4EndTime,rate4Value1,rate4Value2,rate4CardTypes,rate5DeductFare,rate5DeductCycle from waterRateBase
 	</insert>
 	<update id="update" parameterMap="waterRate2">
-		update waterRate set waterRateName=#{waterRateName},beginTime=#{beginTime},endTime=#{endTime},rate1=#{rate1},rate2=#{rate2},authCard=#{authCard}
+		update waterRate set consumeType=#{consumeType},goWaterType=#{goWaterType},stopWaterType=#{stopWaterType},rate1Status=#{rate1Status},rate1ConsumeFare=#{rate1ConsumeFare},rate1ConsumeCycle=#{rate1ConsumeCycle},rate1NextDayReset=#{rate1NextDayReset},rate2Status=#{rate2Status},rate2BeginTime=#{rate2BeginTime},rate2EndTime=#{rate2EndTime},rate2Value1=#{rate2Value1},rate2Value2=#{rate2Value2},rate2CardTypes=#{rate2CardTypes},rate3Status=#{rate3Status},rate3BeginTime=#{rate3BeginTime},rate3EndTime=#{rate3EndTime},rate3Value1=#{rate3Value1},rate3Value2=#{rate3Value2},rate3CardTypes=#{rate3CardTypes},rate4Status=#{rate4Status},rate4BeginTime=#{rate4BeginTime},rate4EndTime=#{rate4EndTime},rate4Value1=#{rate4Value1},rate4Value2=#{rate4Value2},rate4CardTypes=#{rate4CardTypes},rate5DeductFare=#{rate5DeductFare},rate5DeductCycle=#{rate5DeductCycle}
 		where id=#{id}
 	</update>
-	<select id="selectList" resultMap="waterRate">
+	<select id="selectByCompanyId" resultMap="waterRate">
 		select * from waterRate where companyId=#{companyId}
 	</select>
 </mapper>

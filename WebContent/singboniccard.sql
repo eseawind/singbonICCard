@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50528
 File Encoding         : 65001
 
-Date: 2015-08-29 08:11:29
+Date: 2015-08-31 07:40:36
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -90,6 +90,41 @@ INSERT INTO `batch` VALUES ('14', '0731', '2015-05-28 00:00:00', '2015-08-28 00:
 INSERT INTO `batch` VALUES ('15', 'sdssfsdf', '2015-05-07 00:00:00', '2015-05-29 00:00:00', null, '1');
 
 -- ----------------------------
+-- Table structure for `cardparam`
+-- ----------------------------
+DROP TABLE IF EXISTS `cardparam`;
+CREATE TABLE `cardparam` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `companyId` int(11) DEFAULT NULL,
+  `cardCost` int(11) DEFAULT NULL,
+  `cardDeposit` int(11) DEFAULT NULL,
+  `prepayFare` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of cardparam
+-- ----------------------------
+INSERT INTO `cardparam` VALUES ('1', '1', '10', '5', '20');
+
+-- ----------------------------
+-- Table structure for `cardparambase`
+-- ----------------------------
+DROP TABLE IF EXISTS `cardparambase`;
+CREATE TABLE `cardparambase` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `cardCost` int(11) DEFAULT NULL,
+  `cardDeposit` int(11) DEFAULT NULL,
+  `prepayFare` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of cardparambase
+-- ----------------------------
+INSERT INTO `cardparambase` VALUES ('1', '0', '0', '0');
+
+-- ----------------------------
 -- Table structure for `company`
 -- ----------------------------
 DROP TABLE IF EXISTS `company`;
@@ -146,7 +181,7 @@ CREATE TABLE `consumeparam` (
 -- ----------------------------
 -- Records of consumeparam
 -- ----------------------------
-INSERT INTO `consumeparam` VALUES ('1', '1', '0', ',,', '0', ',,', '0', ',,', '2', '88888');
+INSERT INTO `consumeparam` VALUES ('1', '1', '10', ',11,14,,', '11', ',11,,', '12', ',4,14,,', '1', '88887');
 
 -- ----------------------------
 -- Table structure for `consumeparambase`
@@ -420,168 +455,6 @@ INSERT INTO `mealbase` VALUES ('3', '晚餐', '15:30:01', '18:30:00', '0');
 INSERT INTO `mealbase` VALUES ('4', '夜宵', '18:30:01', '20:30:00', '0');
 INSERT INTO `mealbase` VALUES ('5', '加班一', '20:30:01', '22:30:00', '0');
 INSERT INTO `mealbase` VALUES ('6', '加班二', '22:00:01', '23:59:59', '0');
-
--- ----------------------------
--- Table structure for `param`
--- ----------------------------
-DROP TABLE IF EXISTS `param`;
-CREATE TABLE `param` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `companyId` int(11) NOT NULL,
-  `groupId` int(11) NOT NULL,
-  `paramName` varchar(255) DEFAULT NULL,
-  `paramValue` varchar(255) DEFAULT NULL,
-  `displayName` varchar(255) DEFAULT NULL,
-  `description` varchar(255) DEFAULT NULL,
-  `isEnable` bit(1) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of param
--- ----------------------------
-
--- ----------------------------
--- Table structure for `parambase`
--- ----------------------------
-DROP TABLE IF EXISTS `parambase`;
-CREATE TABLE `parambase` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `groupId` int(11) NOT NULL,
-  `paramName` varchar(255) DEFAULT NULL,
-  `paramValue` varchar(255) DEFAULT NULL,
-  `displayName` varchar(255) DEFAULT NULL,
-  `description` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=88 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of parambase
--- ----------------------------
-INSERT INTO `parambase` VALUES ('1', '1', 'KDJ', '10', '卡底金额', '卡上保留的最少金额 0为不限制');
-INSERT INTO `parambase` VALUES ('2', '1', 'XFCXE', '36', '消费次限额', '当次消费限额最大1000，为0时不限制');
-INSERT INTO `parambase` VALUES ('3', '1', 'XFRXE', '200', '日消费限额', '当日消费限额最大10000，为0时不限制');
-INSERT INTO `parambase` VALUES ('4', '1', 'prioritySubsidy', '0', '优先消费补助', '0是优先消费补助，1优先消费大钱包');
-INSERT INTO `parambase` VALUES ('5', '1', 'IsCard', '0', '参数判断标准', '0代表以POS为参数标准，1以卡为准');
-INSERT INTO `parambase` VALUES ('6', '1', 'IsOne', '0', '领取补助存放钱包', '指定补助存款发放钱包：0代表大钱包1代表补助钱包 ');
-INSERT INTO `parambase` VALUES ('7', '1', 'IsGrantReg', '0', '授权注册有效期', '是否授权开始注册有效期0授权1未授权');
-INSERT INTO `parambase` VALUES ('8', '1', 'SubsidyTimeENd', '10', '补助发放的结束时间', '补助发放的结束时间 10 代表10号之前');
-INSERT INTO `parambase` VALUES ('9', '1', 'ISXC', '0', '启用限次消费', '启用限次,模式0代表不启用,1代表起用');
-INSERT INTO `parambase` VALUES ('10', '1', 'Brate', '40', '通讯波特率', '通讯波特率，可以设置：10,20,40,50,100,250,500');
-INSERT INTO `parambase` VALUES ('11', '2', 'Watermodule ', '93', '水控模式', '水控消费模式：93余额模式:73时间模式:33流量模式');
-INSERT INTO `parambase` VALUES ('12', '2', 'XFRXE', '200', '日消费限额', '当日消费限额,单位：元；最大值【65535】');
-INSERT INTO `parambase` VALUES ('13', '2', 'KDJ', '10', '卡底金额', '卡上保留的最少金额，单位：元；最大值【255】');
-INSERT INTO `parambase` VALUES ('14', '2', 'XFCXE', '36', '消费次限额', '当次消费限额，单位：元；最大值【65535】');
-INSERT INTO `parambase` VALUES ('15', '2', 'SKPrice', '10/5', '水控费率', '【费率5】费率:10/5 代表5秒扣除10分钱:单位：分，时间和金额最大值各：【65535】');
-INSERT INTO `parambase` VALUES ('16', '2', 'SKpulse', '10/5', '流量模式扣费', '【费率5】费率:10/5 代表每隔5个脉冲扣除10分钱');
-INSERT INTO `parambase` VALUES ('17', '2', 'SKStopWater', '0', '拿卡是否停水', '水控拿卡是否停水:1停水 0不停水');
-INSERT INTO `parambase` VALUES ('18', '2', 'IScard', '0', '参数判断标准', '是以卡的参数为准,还是以POS的参数为准 0 POS,1卡');
-INSERT INTO `parambase` VALUES ('19', '2', 'SKSZPWD', '0000', '水控设置密码', '水控设置操作密码，设置4位密码');
-INSERT INTO `parambase` VALUES ('20', '2', 'prioritySubsidy', '0', '优先消费补助', '0是优先消费补助，1优先消费大钱包');
-INSERT INTO `parambase` VALUES ('21', '2', 'SKOpenWater', '0', '刷卡流水模式', '0代表刷卡就开始流水，1代表刷卡需要按键才流水');
-INSERT INTO `parambase` VALUES ('22', '2', 'IsuseMoreRate', '0', '是否启用最低消费', '【费率1】是否启用最低消费设置，0代表不启用，1代表启用');
-INSERT INTO `parambase` VALUES ('23', '2', 'MoreRateOneTime', '50', '最低消费的周期', '【费率1】最低消费的周期即一次消费的总时间，单位：分钟，最大1000分钟');
-INSERT INTO `parambase` VALUES ('24', '2', 'FisrtXFRate', '500', '最低消费金额', '【费率1】最低消费的金额,单位：分，最大60000分');
-INSERT INTO `parambase` VALUES ('25', '2', 'Brate', '40', '通讯波特率', '通讯波特率，可以设置：10,20,40,50,100,250,500');
-INSERT INTO `parambase` VALUES ('26', '2', 'ZDXFCRCZ', '0', '最低消费次日重置', '【费率1】最低消费次日重置(1、启用；0、不启用)');
-INSERT INTO `parambase` VALUES ('27', '2', 'SJDSKXC', '0', '是否启用时间段限次', '时间段刷卡限次【餐别限次】(1、启用；0、不启用)');
-INSERT INTO `parambase` VALUES ('28', '2', 'SFQYHC', '0', '是否启用宏冲', '是否启用宏冲；(1、启用；0、不启用)');
-INSERT INTO `parambase` VALUES ('29', '3', 'NOCARDZXSXF', '0', '无卡注销手续费', '无卡注销手续费（无卡注销卡时收取的手续费）');
-INSERT INTO `parambase` VALUES ('30', '3', 'KHF', '0', '开户费', '开户费（发行新卡时收取的开户手续费）');
-INSERT INTO `parambase` VALUES ('31', '3', 'KHKCB', '0', '开户卡成本费', '开户卡成本费（发行新卡时收取的卡成本费）');
-INSERT INTO `parambase` VALUES ('32', '3', 'GSF', '0', '挂失费', '挂失费（挂失卡操作时收取的手续费）');
-INSERT INTO `parambase` VALUES ('33', '3', 'JGF', '0', '解挂费', '解挂费（解挂卡操作时收取的手续费）');
-INSERT INTO `parambase` VALUES ('34', '3', 'BKF', '0', '补卡费', '补卡费（补卡操作时收取的手续费）');
-INSERT INTO `parambase` VALUES ('35', '3', 'BKKCB', '0', '补卡卡成本费', '补卡卡成本费（补卡操作时收取的卡成本费）');
-INSERT INTO `parambase` VALUES ('36', '3', 'YFJE', '0', '预付金额', '预付金额（发卡同时往卡上存取的固定金额）');
-INSERT INTO `parambase` VALUES ('37', '3', 'XFXE', '0', '消费限额', '消费限额');
-INSERT INTO `parambase` VALUES ('38', '3', 'dayconsumlimit', '0', '日消费限额', '日消费限额');
-INSERT INTO `parambase` VALUES ('39', '3', 'timeconsumlimit', '0', '次消费限额', '次消费限额');
-INSERT INTO `parambase` VALUES ('40', '3', 'cardbasecash', '0', '卡底金', '卡底金（当卡值等于小于卡底金时将不能继续消费）');
-INSERT INTO `parambase` VALUES ('41', '3', 'CONSUMEPSW', '888888', '消费密码', '消费密码');
-INSERT INTO `parambase` VALUES ('42', '3', 'QUERYPWD', '8888', '查询密码', '查询密码');
-INSERT INTO `parambase` VALUES ('43', '3', 'KYJ', '0', '卡押金', '卡押金(在存款操作中，向卡中存入的押金)');
-INSERT INTO `parambase` VALUES ('44', '4', 'Watermodule ', '93', '水控模式', '水控消费模式：93余额模式:73时间模式:33流量模式');
-INSERT INTO `parambase` VALUES ('45', '4', 'SKpulse1', '10/5', '1#水龙头流量模式扣费', '费率:10/5 代表每隔5个脉冲扣除10分钱: ');
-INSERT INTO `parambase` VALUES ('46', '4', 'SKSZPWD', '0000', '水控设置密码2', '水控设置操作密码，设置4位密码');
-INSERT INTO `parambase` VALUES ('47', '4', 'SKPrice1', '10/5', '1#水龙头水控费率', '费率:10/5 代表5秒扣除10分钱:单位分 ');
-INSERT INTO `parambase` VALUES ('48', '4', 'SKPrice2', '10/5', '2#水龙头水控费率', '费率:10/5 代表5秒扣除10分钱:单位分 ');
-INSERT INTO `parambase` VALUES ('49', '4', 'SKpulse2', '10/5', '2#水龙头流量模式扣费', '费率:10/5 代表每隔5个脉冲扣除10分钱: ');
-INSERT INTO `parambase` VALUES ('50', '4', 'Brate', '40', '通讯波特率', '通讯波特率，可以设置：10,20,40,50,100,250,500');
-INSERT INTO `parambase` VALUES ('51', '4', 'prioritySubsidy', '0', '优先消费补助', '0是优先消费补助，1优先消费大钱包');
-INSERT INTO `parambase` VALUES ('52', '4', 'SKpulse3', '10/5', '3#水龙头流量模式扣费', '费率:10/5 代表每隔5个脉冲扣除10分钱: ');
-INSERT INTO `parambase` VALUES ('53', '4', 'SKPrice3', '10/5', '3#水龙头水控费率', '费率:10/5 代表5秒扣除10分钱:单位分 ');
-INSERT INTO `parambase` VALUES ('54', '4', 'SKpulse4', '10/5', '4#流量模式扣费', '费率:10/5 代表每隔5个脉冲扣除10分钱: ');
-INSERT INTO `parambase` VALUES ('55', '4', 'SKPrice4', '10/5', '4#水龙头水控费率', '费率:10/5 代表5秒扣除10分钱:单位分 ');
-INSERT INTO `parambase` VALUES ('56', '4', 'IsChange', '0', '启用找零', '启用找零,1代表启用，0代表禁止');
-INSERT INTO `parambase` VALUES ('57', '4', 'ISuse', '1,1,1,1', '启用水龙头', '启用水龙头的个数，4个1代表4个都启用，0禁止从左到右代表第1、2、3、4个水龙头');
-INSERT INTO `parambase` VALUES ('58', '5', 'opendoortime', '10', '开门延时', '开门延时时间默认10S');
-INSERT INTO `parambase` VALUES ('59', '5', 'isusepwd', '1', '刷卡模式', '刷卡模式：1启用密码、0不启用');
-INSERT INTO `parambase` VALUES ('60', '5', 'isonline', '1', '联机认证', '联机认证1启用、0不启用');
-INSERT INTO `parambase` VALUES ('61', '5', 'recordConver', '0', '记录模式', '刷卡记录是否覆盖，0覆盖、1不覆盖');
-INSERT INTO `parambase` VALUES ('62', '5', 'Isusegrant', '1', '授权验证模式', '是否启用授权名单验证：1启用、0不启用');
-INSERT INTO `parambase` VALUES ('63', '5', 'doorstate', '1', '门正常状态', '门正常状态1正常0常开2常闭');
-INSERT INTO `parambase` VALUES ('64', '5', 'ForcePwd', '123456', '操作密码', '操作密码6位');
-INSERT INTO `parambase` VALUES ('65', '6', 'KDJ', '10', '卡底金额', '卡上保留的最少金额 0为不限制');
-INSERT INTO `parambase` VALUES ('66', '6', 'XFCXE', '36', '消费次限额', '当次消费限额最大1000，为0时不限制');
-INSERT INTO `parambase` VALUES ('67', '6', 'XFRXE', '200', '日消费限额', '当日消费限额最大10000，为0时不限制');
-INSERT INTO `parambase` VALUES ('68', '6', 'prioritySubsidy', '0', '优先消费补助', '0是优先消费补助，1优先消费大钱包');
-INSERT INTO `parambase` VALUES ('69', '6', 'IsCard', '0', '参数判断标准', '0代表以POS为参数标准，1以卡为准');
-INSERT INTO `parambase` VALUES ('70', '6', 'IsOne', '0', '领取补助存放钱包', '指定补助存款发放钱包：0代表大钱包1代表补助钱包 ');
-INSERT INTO `parambase` VALUES ('71', '6', 'IsGrantReg', '0', '授权注册有效期', '是否授权开始注册有效期0授权1未授权');
-INSERT INTO `parambase` VALUES ('72', '6', 'SubsidyTimeENd', '10', '补助发放的结束时间', '补助发放的结束时间 10 代表10号之前');
-INSERT INTO `parambase` VALUES ('73', '6', 'ISXC', '0', '启用限次消费', '启用限次,模式0代表不启用,1代表起用');
-INSERT INTO `parambase` VALUES ('74', '6', 'Brate', '40', '通讯波特率6', '通讯波特率，可以设置：10,20,40,50,100,250,500');
-INSERT INTO `parambase` VALUES ('75', '6', 'time1', '06:00-08:30', '订餐时间段1', '早餐');
-INSERT INTO `parambase` VALUES ('76', '6', 'time2', '11:30-14:00', '订餐时间段2', '中餐');
-INSERT INTO `parambase` VALUES ('77', '6', 'time3', '17:00-19:00', '订餐时间段3', '晚餐');
-INSERT INTO `parambase` VALUES ('78', '6', 'time4', '19:01-20:30', '订餐时间段4', '夜宵');
-INSERT INTO `parambase` VALUES ('79', '6', 'time5', '20:31-00:00', '订餐时间段5', '加班1');
-INSERT INTO `parambase` VALUES ('80', '6', 'time6', '00:00-00:00', '订餐时间段6', '加班2');
-INSERT INTO `parambase` VALUES ('81', '6', 'time7', '00:00-00:00', '订餐时间段7', '加班3');
-INSERT INTO `parambase` VALUES ('82', '6', 'time8', '00:00-00:00', '订餐时间段8', '加班4');
-INSERT INTO `parambase` VALUES ('83', '6', 'time9', '00:00-00:00', '订餐时间段9', '加班5');
-INSERT INTO `parambase` VALUES ('84', '6', 'time10', '00:00-00:00', '订餐时间段10', '加班6');
-INSERT INTO `parambase` VALUES ('85', '6', 'time11', '00:00-00:00', '订餐时间段11', '加班7');
-INSERT INTO `parambase` VALUES ('86', '6', 'time12', '00:00-00:00', '订餐时间段12', '加班8');
-INSERT INTO `parambase` VALUES ('87', '8', 'ISAUTH', '1', '启用授权', '是否启用授权0未授权1授权');
-
--- ----------------------------
--- Table structure for `paramgroup`
--- ----------------------------
-DROP TABLE IF EXISTS `paramgroup`;
-CREATE TABLE `paramgroup` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `companyId` int(11) NOT NULL,
-  `groupName` varchar(255) DEFAULT NULL,
-  `description` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of paramgroup
--- ----------------------------
-
--- ----------------------------
--- Table structure for `paramgroupbase`
--- ----------------------------
-DROP TABLE IF EXISTS `paramgroupbase`;
-CREATE TABLE `paramgroupbase` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `groupName` varchar(255) DEFAULT NULL,
-  `description` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of paramgroupbase
--- ----------------------------
-INSERT INTO `paramgroupbase` VALUES ('1', '消费POS参数组', '');
-INSERT INTO `paramgroupbase` VALUES ('2', '水控参数组', '');
-INSERT INTO `paramgroupbase` VALUES ('3', '制卡参数组', '');
-INSERT INTO `paramgroupbase` VALUES ('4', '一控多参数组', '');
-INSERT INTO `paramgroupbase` VALUES ('5', '门禁参数', '');
-INSERT INTO `paramgroupbase` VALUES ('6', '点餐POS参数组', '');
 
 -- ----------------------------
 -- Table structure for `sysuser`
@@ -1298,21 +1171,40 @@ DROP TABLE IF EXISTS `waterrate`;
 CREATE TABLE `waterrate` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `companyId` int(11) DEFAULT NULL,
-  `waterRateName` varchar(255) DEFAULT NULL,
-  `beginTime` varchar(8) DEFAULT NULL,
-  `endTime` varchar(8) DEFAULT NULL,
-  `rate1` int(11) DEFAULT NULL,
-  `rate2` int(11) DEFAULT NULL,
-  `authCard` varchar(16) DEFAULT NULL,
+  `consumeType` int(11) DEFAULT NULL,
+  `goWaterType` int(11) DEFAULT NULL,
+  `stopWaterType` int(11) DEFAULT NULL,
+  `rate1Status` int(11) DEFAULT NULL,
+  `rate1ConsumeFare` int(11) DEFAULT NULL,
+  `rate1ConsumeCycle` int(11) DEFAULT NULL,
+  `rate1NextDayReset` int(11) DEFAULT NULL,
+  `rate2Status` int(11) DEFAULT NULL,
+  `rate2BeginTime` varchar(255) DEFAULT NULL,
+  `rate2EndTime` varchar(255) DEFAULT NULL,
+  `rate2Value1` int(11) DEFAULT NULL,
+  `rate2Value2` int(11) DEFAULT NULL,
+  `rate2CardTypes` varchar(255) DEFAULT NULL,
+  `rate3Status` int(11) DEFAULT NULL,
+  `rate3BeginTime` varchar(255) DEFAULT NULL,
+  `rate3EndTime` varchar(255) DEFAULT NULL,
+  `rate3Value1` int(11) DEFAULT NULL,
+  `rate3Value2` int(11) DEFAULT NULL,
+  `rate3CardTypes` varchar(255) DEFAULT NULL,
+  `rate4Status` int(11) DEFAULT NULL,
+  `rate4BeginTime` varchar(255) DEFAULT NULL,
+  `rate4EndTime` varchar(255) DEFAULT NULL,
+  `rate4Value1` int(11) DEFAULT NULL,
+  `rate4Value2` int(11) DEFAULT NULL,
+  `rate4CardTypes` varchar(255) DEFAULT NULL,
+  `rate5DeductFare` int(11) DEFAULT NULL,
+  `rate5DeductCycle` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of waterrate
 -- ----------------------------
-INSERT INTO `waterrate` VALUES ('25', '1', '费率2', '07:30', '09:30', '0', '1', '1110001000000001');
-INSERT INTO `waterrate` VALUES ('26', '1', '费率3', '09:30', '12:30', '0', '0', '0000000100010000');
-INSERT INTO `waterrate` VALUES ('27', '1', '费率4', '12:00', '14:31', '0', '0', '0000000100010000');
+INSERT INTO `waterrate` VALUES ('1', '1', '0', '1', '1', '0', '101', '6', '0', '0', '00:00', '00:00', '0', '1', ',0,1,3,4,5,6,7,8,9,10,11,13,14,15,,', '1', '00:46', '00:49', '0', '2', ',0,2,3,4,5,6,7,8,9,10,11,12,13,14,15,,', '1', '00:00', '00:00', '0', '3', ',0,1,2,3,4,5,6,8,9,10,11,12,13,14,15,,', '10', '50');
 
 -- ----------------------------
 -- Table structure for `waterratebase`
@@ -1320,18 +1212,37 @@ INSERT INTO `waterrate` VALUES ('27', '1', '费率4', '12:00', '14:31', '0', '0'
 DROP TABLE IF EXISTS `waterratebase`;
 CREATE TABLE `waterratebase` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `waterRateName` varchar(255) DEFAULT NULL,
-  `beginTime` varchar(8) DEFAULT NULL,
-  `endTime` varchar(8) DEFAULT NULL,
-  `rate1` int(11) DEFAULT NULL,
-  `rate2` int(11) DEFAULT NULL,
-  `authCard` varchar(16) DEFAULT NULL,
+  `consumeType` int(11) DEFAULT NULL,
+  `goWaterType` int(11) DEFAULT NULL,
+  `stopWaterType` int(11) DEFAULT NULL,
+  `rate1Status` int(11) DEFAULT NULL,
+  `rate1ConsumeFare` int(11) DEFAULT NULL,
+  `rate1ConsumeCycle` int(11) DEFAULT NULL,
+  `rate1NextDayReset` int(11) DEFAULT NULL,
+  `rate2Status` int(11) DEFAULT NULL,
+  `rate2BeginTime` varchar(255) DEFAULT NULL,
+  `rate2EndTime` varchar(255) DEFAULT NULL,
+  `rate2Value1` int(11) DEFAULT NULL,
+  `rate2Value2` int(11) DEFAULT NULL,
+  `rate2CardTypes` varchar(255) DEFAULT NULL,
+  `rate3Status` int(11) DEFAULT NULL,
+  `rate3BeginTime` varchar(255) DEFAULT NULL,
+  `rate3EndTime` varchar(255) DEFAULT NULL,
+  `rate3Value1` int(11) DEFAULT NULL,
+  `rate3Value2` int(11) DEFAULT NULL,
+  `rate3CardTypes` varchar(255) DEFAULT NULL,
+  `rate4Status` int(11) DEFAULT NULL,
+  `rate4BeginTime` varchar(255) DEFAULT NULL,
+  `rate4EndTime` varchar(255) DEFAULT NULL,
+  `rate4Value1` int(11) DEFAULT NULL,
+  `rate4Value2` int(11) DEFAULT NULL,
+  `rate4CardTypes` varchar(255) DEFAULT NULL,
+  `rate5DeductFare` int(11) DEFAULT NULL,
+  `rate5DeductCycle` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of waterratebase
 -- ----------------------------
-INSERT INTO `waterratebase` VALUES ('1', '费率2', '07:30', '09:30', '0', '0', '0000000000000000');
-INSERT INTO `waterratebase` VALUES ('2', '费率3', '09:30', '12:30', '0', '0', '0000000000000000');
-INSERT INTO `waterratebase` VALUES ('3', '费率4', '12:00', '14:31', '0', '0', '0000000000000000');
+INSERT INTO `waterratebase` VALUES ('1', '0', '0', '0', '0', '10', '5', '0', '0', '00:00', '00:00', '0', '0', ',0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,', '0', '00:00', '00:00', '0', '0', ',0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,', '0', '00:00', '00:00', '0', '0', ',0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,', '10', '5');

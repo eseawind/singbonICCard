@@ -1,7 +1,6 @@
 package com.singbon.controller.systemManager.systemSetting;
 
 import java.io.PrintWriter;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -43,16 +42,36 @@ public class WaterRateController extends BaseController {
 		PrintWriter p = null;
 		try {
 			p = response.getWriter();
-			String authCard = "," + waterRate.getAuthCard() + ",";
-			String tempAuthCard = "";
+			String rate2CardTypes = "," + waterRate.getRate2CardTypes() + ",";
+			String tempRate2CardTypes = ",";
 			for (int i = 0; i < 16; i++) {
-				if (authCard.indexOf("," + i + ",") != -1) {
-					tempAuthCard += "1";
-				} else {
-					tempAuthCard += "0";
+				if (rate2CardTypes.indexOf("," + i + ",") != -1) {
+					tempRate2CardTypes += i + ",";
 				}
 			}
-			waterRate.setAuthCard(tempAuthCard);
+			tempRate2CardTypes += ",";
+			waterRate.setRate2CardTypes(tempRate2CardTypes);
+
+			String rate3CardTypes = "," + waterRate.getRate3CardTypes() + ",";
+			String tempRate3CardTypes = ",";
+			for (int i = 0; i < 16; i++) {
+				if (rate3CardTypes.indexOf("," + i + ",") != -1) {
+					tempRate3CardTypes += i + ",";
+				}
+			}
+			tempRate3CardTypes += ",";
+			waterRate.setRate3CardTypes(tempRate3CardTypes);
+
+			String rate4CardTypes = "," + waterRate.getRate4CardTypes() + ",";
+			String tempRate4CardTypes = ",";
+			for (int i = 0; i < 16; i++) {
+				if (rate4CardTypes.indexOf("," + i + ",") != -1) {
+					tempRate4CardTypes += i + ",";
+				}
+			}
+			tempRate4CardTypes += ",";
+			waterRate.setRate4CardTypes(tempRate4CardTypes);
+
 			this.waterRateService.update(waterRate);
 			p.print(1);
 		} catch (Exception e) {
@@ -61,23 +80,24 @@ public class WaterRateController extends BaseController {
 	}
 
 	/**
-	 * 列表
+	 * 首页
 	 * 
 	 * @param waterRate
 	 * @param request
 	 * @param model
 	 */
-	@RequestMapping(value = "/list.do")
-	public String waterRateList(HttpServletRequest request, Model model) {
+	@RequestMapping(value = "/index.do")
+	public String index(HttpServletRequest request, HttpServletResponse response, Model model) {
 
 		Company company = (Company) request.getSession().getAttribute("company");
-		List<WaterRate> list = this.waterRateService.selectList(company.getId());
-		if (list.size() == 0) {
+		WaterRate waterRate = this.waterRateService.selectByCompanyId(company.getId());
+		if (waterRate == null) {
 			this.waterRateService.insert(company.getId());
-			list = this.waterRateService.selectList(company.getId());
+			waterRate = this.waterRateService.selectByCompanyId(company.getId());
 		}
-		model.addAttribute("list", list);
-		return StringUtil.requestPath(request, "list");
+		model.addAttribute("waterRate", waterRate);
+		String url = request.getRequestURI();
+		model.addAttribute("base", url.replace("/index.do", ""));
+		return StringUtil.requestPath(request, "index");
 	}
-
 }

@@ -1,7 +1,5 @@
 package com.singbon.service.systemManager.systemSetting;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,12 +37,11 @@ public class WaterRateService {
 	}
 
 	/**
-	 * 列表
+	 * 根据公司id查询
 	 * 
 	 * @return
 	 */
-	public List<WaterRate> selectList(Integer companyId) {
-
-		return this.waterRateDAO.selectList(companyId);
+	public WaterRate selectByCompanyId(Integer companyId) {
+		return this.waterRateDAO.selectByCompanyId(companyId);
 	}
 }
