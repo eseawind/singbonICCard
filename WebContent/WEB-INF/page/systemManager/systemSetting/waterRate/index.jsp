@@ -59,7 +59,7 @@ $(function() {
 		width: 150px;
 	}
 	
-	#waterRateForm dl.firstRow span {
+	#waterRateForm dl.firstRow .ratio {
 		float: left;
 		padding-top: 5px;
 	}
@@ -109,8 +109,8 @@ $(function() {
 			<dl class="firstRow">
 				<dt>状态：</dt>
 				<dd>
-					<input name="rate1Status" type="radio" <c:if test="${waterRate.rate1Status==0}">checked</c:if> value="1"/>启用
-					<input name="rate1Status" type="radio" <c:if test="${waterRate.rate1Status==1}">checked</c:if> value="0"/>禁用
+					<input name="rate1Status" type="radio" <c:if test="${waterRate.rate1Status==1}">checked</c:if> value="1"/>启用
+					<input name="rate1Status" type="radio" <c:if test="${waterRate.rate1Status==0}">checked</c:if> value="0"/>禁用
 				</dd>
 			</dl>
 			<dl class="firstRow">
@@ -138,8 +138,8 @@ $(function() {
 			<dl class="firstRow">
 				<dt>状态：</dt>
 				<dd>
-					<input name="rate2Status" type="radio" <c:if test="${waterRate.rate2Status==0}">checked</c:if> value="1"/>启用
-					<input name="rate2Status" type="radio" <c:if test="${waterRate.rate2Status==1}">checked</c:if> value="0"/>禁用
+					<input name="rate2Status" type="radio" <c:if test="${waterRate.rate2Status==1}">checked</c:if> value="1"/>启用
+					<input name="rate2Status" type="radio" <c:if test="${waterRate.rate2Status==0}">checked</c:if> value="0"/>禁用
 				</dd>
 			</dl>
 			<dl class="firstRow">
@@ -158,7 +158,7 @@ $(function() {
 				<dt>费率值：</dt>
 				<dd>
 					<input name="rate2Value1" type="text" style="width: 40px;" class="required digits" value="${waterRate.rate2Value1}"/>
-					<span>/</span>
+					<span class="ratio">/</span>
 					<input name="rate2Value2" type="text" style="width: 40px;" class="required digits" value="${waterRate.rate2Value2}"/>
 				</dd>
 			</dl>
@@ -178,8 +178,8 @@ $(function() {
 			<dl class="firstRow">
 				<dt>状态：</dt>
 				<dd>
-					<input name="rate3Status" type="radio" <c:if test="${waterRate.rate3Status==0}">checked</c:if> value="1"/>启用
-					<input name="rate3Status" type="radio" <c:if test="${waterRate.rate3Status==1}">checked</c:if> value="0"/>禁用
+					<input name="rate3Status" type="radio" <c:if test="${waterRate.rate3Status==1}">checked</c:if> value="1"/>启用
+					<input name="rate3Status" type="radio" <c:if test="${waterRate.rate3Status==0}">checked</c:if> value="0"/>禁用
 				</dd>
 			</dl>
 			<dl class="firstRow">
@@ -198,7 +198,7 @@ $(function() {
 				<dt>费率值：</dt>
 				<dd>
 					<input name="rate3Value1" type="text" style="width: 40px;" class="required digits" value="${waterRate.rate3Value1}"/>
-					<span>/</span>
+					<span class="ratio">/</span>
 					<input name="rate3Value2" type="text" style="width: 40px;" class="required digits" value="${waterRate.rate3Value2}"/>
 				</dd>
 			</dl>
@@ -218,8 +218,8 @@ $(function() {
 			<dl class="firstRow">
 				<dt>状态：</dt>
 				<dd>
-					<input name="rate4Status" type="radio" <c:if test="${waterRate.rate4Status==0}">checked</c:if> value="1"/>启用
-					<input name="rate4Status" type="radio" <c:if test="${waterRate.rate4Status==1}">checked</c:if> value="0"/>禁用
+					<input name="rate4Status" type="radio" <c:if test="${waterRate.rate4Status==1}">checked</c:if> value="1"/>启用
+					<input name="rate4Status" type="radio" <c:if test="${waterRate.rate4Status==0}">checked</c:if> value="0"/>禁用
 				</dd>
 			</dl>
 			<dl class="firstRow">
@@ -238,7 +238,7 @@ $(function() {
 				<dt>费率值：</dt>
 				<dd>
 					<input name="rate4Value1" type="text" style="width: 40px;" class="required digits" value="${waterRate.rate4Value1}"/>
-					<span>/</span>
+					<span class="ratio">/</span>
 					<input name="rate4Value2" type="text" style="width: 40px;" class="required digits" value="${waterRate.rate4Value2}"/>
 				</dd>
 			</dl>

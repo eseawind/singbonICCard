@@ -27,7 +27,7 @@
 			<ul>
 				<li><a href="${base }/consumeParam/index.do" class="j-ajax"><span>消费参数设置</span></a></li>
 				<li><a href="${base }/cardParam/index.do" class="j-ajax"><span>制卡参数设置</span></a></li>
-				<li><a href="${base }/waterRate/index.do" class="j-ajax"><span>水控费率设置</span></a></li>
+				<li><a href="${base }/entranceGuard/index.do" class="j-ajax"><span>门禁参数设置</span></a></li>
 				<li><a href="${base }/waterRate/index.do" class="j-ajax"><span>水控费率设置</span></a></li>
 				<li><a href="${base }/waterRate/index.do" class="j-ajax"><span>水控费率设置</span></a></li>
 				<li><a href="${base }/waterRate/index.do" class="j-ajax"><span>水控费率设置</span></a></li>

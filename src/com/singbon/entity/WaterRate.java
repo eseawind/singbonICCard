@@ -3,7 +3,7 @@ package com.singbon.entity;
 import java.io.Serializable;
 
 /**
- * 水控费率2、3、4
+ * 一控一水控费率
  * 
  * @author 郝威
  * 

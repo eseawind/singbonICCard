@@ -7,7 +7,7 @@ import com.singbon.dao.systemManager.systemSetting.WaterRateDAO;
 import com.singbon.entity.WaterRate;
 
 /**
- * 水控费率2、3、4业务层
+ * 一控一水控费率业务层
  * 
  * @author 郝威
  * 

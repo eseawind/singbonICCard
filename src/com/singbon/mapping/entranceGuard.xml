@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.singbon.dao.systemManager.systemSetting.EntranceGuardDAO">
+	<resultMap id="entranceGuard" type="com.singbon.entity.EntranceGuard">
+	</resultMap>
+	<parameterMap type="com.singbon.entity.EntranceGuard" id="entranceGuard2" />
+	<insert id="insert">
+		insert into entranceGuard (companyId,openDelay,cardPwdType,recordType,authType,openStatus,operPwd)
+			select #{companyId},openDelay,cardPwdType,recordType,authType,openStatus,operPwd from entranceGuardBase
+	</insert>
+	<update id="update" parameterMap="entranceGuard2">
+		update entranceGuard set openDelay=#{openDelay},cardPwdType=#{cardPwdType},recordType=#{recordType},authType=#{authType},openStatus=#{openStatus},operPwd=#{operPwd}
+		where id=#{id}
+	</update>
+	<select id="selectByCompanyId" resultMap="entranceGuard">
+		select * from entranceGuard where companyId=#{companyId}
+	</select>
+</mapper>

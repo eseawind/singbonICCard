@@ -3,15 +3,15 @@ package com.singbon.dao.systemManager.systemSetting;
 import org.apache.ibatis.annotations.Param;
 
 import com.singbon.dao.BaseDAO;
-import com.singbon.entity.WaterRate;
+import com.singbon.entity.EntranceGuard;
 
 /**
- * 一控一水控费率dao层
+ * 门禁参数设置dao层
  * 
  * @author 郝威
  * 
  */
-public interface WaterRateDAO extends BaseDAO {
+public interface EntranceGuardDAO extends BaseDAO {
 
 	/**
 	 * 添加
@@ -27,5 +27,5 @@ public interface WaterRateDAO extends BaseDAO {
 	 * @param companyId
 	 * @return
 	 */
-	public WaterRate selectByCompanyId(@Param("companyId") Integer companyId);
+	public EntranceGuard selectByCompanyId(@Param("companyId") Integer companyId);
 }

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50528
 File Encoding         : 65001
 
-Date: 2015-08-31 07:40:36
+Date: 2015-08-31 23:46:40
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -404,6 +404,47 @@ INSERT INTO `discountbase` VALUES ('15', '14', '100', '0', '0');
 INSERT INTO `discountbase` VALUES ('16', '15', '100', '0', '0');
 
 -- ----------------------------
+-- Table structure for `entranceguard`
+-- ----------------------------
+DROP TABLE IF EXISTS `entranceguard`;
+CREATE TABLE `entranceguard` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `companyId` int(11) DEFAULT NULL,
+  `openDelay` int(11) DEFAULT NULL,
+  `cardPwdType` int(11) DEFAULT NULL,
+  `recordType` int(11) DEFAULT NULL,
+  `authType` int(11) DEFAULT NULL,
+  `openStatus` int(11) DEFAULT NULL,
+  `operPwd` varchar(6) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of entranceguard
+-- ----------------------------
+INSERT INTO `entranceGuard` VALUES ('1', '1', '10', '0', '1', '1', '2', '000000');
+
+-- ----------------------------
+-- Table structure for `entranceguardbase`
+-- ----------------------------
+DROP TABLE IF EXISTS `entranceguardbase`;
+CREATE TABLE `entranceguardbase` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `openDelay` int(11) DEFAULT NULL,
+  `cardPwdType` int(11) DEFAULT NULL,
+  `recordType` int(11) DEFAULT NULL,
+  `authType` int(11) DEFAULT NULL,
+  `openStatus` int(11) DEFAULT NULL,
+  `operPwd` varchar(6) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of entranceguardbase
+-- ----------------------------
+INSERT INTO `entranceguardbase` VALUES ('1', '10', '1', '0', '0', '0', '000000');
+
+-- ----------------------------
 -- Table structure for `meal`
 -- ----------------------------
 DROP TABLE IF EXISTS `meal`;
@@ -455,6 +496,63 @@ INSERT INTO `mealbase` VALUES ('3', '晚餐', '15:30:01', '18:30:00', '0');
 INSERT INTO `mealbase` VALUES ('4', '夜宵', '18:30:01', '20:30:00', '0');
 INSERT INTO `mealbase` VALUES ('5', '加班一', '20:30:01', '22:30:00', '0');
 INSERT INTO `mealbase` VALUES ('6', '加班二', '22:00:01', '23:59:59', '0');
+
+-- ----------------------------
+-- Table structure for `multiwaterrate`
+-- ----------------------------
+DROP TABLE IF EXISTS `multiwaterrate`;
+CREATE TABLE `multiwaterrate` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `companyId` int(11) DEFAULT NULL,
+  `consumeType` int(11) DEFAULT NULL,
+  `chargeType` int(11) DEFAULT NULL,
+  `rate1Status` int(11) DEFAULT NULL,
+  `rate1DeductFare` int(11) DEFAULT NULL,
+  `rate1DeductCycle` int(11) DEFAULT NULL,
+  `rate2Status` int(11) DEFAULT NULL,
+  `rate2DeductFare` int(11) DEFAULT NULL,
+  `rate2DeductCycle` int(11) DEFAULT NULL,
+  `rate3Status` int(11) DEFAULT NULL,
+  `rate3DeductFare` int(11) DEFAULT NULL,
+  `rate3DeductCycle` int(11) DEFAULT NULL,
+  `rate4Status` int(11) DEFAULT NULL,
+  `rate4DeductFare` int(11) DEFAULT NULL,
+  `rate4DeductCycle` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of multiwaterrate
+-- ----------------------------
+INSERT INTO `multiwaterrate` VALUES ('1', '1', '0', '1', '1', '10', '1', '0', '12', '6', '1', '13', '2', '1', '16', '3');
+
+-- ----------------------------
+-- Table structure for `multiwaterratebase`
+-- ----------------------------
+DROP TABLE IF EXISTS `multiwaterratebase`;
+CREATE TABLE `multiwaterratebase` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `consumeType` int(11) DEFAULT NULL,
+  `chargeType` int(11) DEFAULT NULL,
+  `rate1Status` int(11) DEFAULT NULL,
+  `rate1DeductFare` int(11) DEFAULT NULL,
+  `rate1DeductCycle` int(11) DEFAULT NULL,
+  `rate2Status` int(11) DEFAULT NULL,
+  `rate2DeductFare` int(11) DEFAULT NULL,
+  `rate2DeductCycle` int(11) DEFAULT NULL,
+  `rate3Status` int(11) DEFAULT NULL,
+  `rate3DeductFare` int(11) DEFAULT NULL,
+  `rate3DeductCycle` int(11) DEFAULT NULL,
+  `rate4Status` int(11) DEFAULT NULL,
+  `rate4DeductFare` int(11) DEFAULT NULL,
+  `rate4DeductCycle` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of multiwaterratebase
+-- ----------------------------
+INSERT INTO `multiwaterratebase` VALUES ('1', '0', '0', '1', '10', '5', '1', '10', '5', '1', '10', '5', '1', '10', '5');
 
 -- ----------------------------
 -- Table structure for `sysuser`

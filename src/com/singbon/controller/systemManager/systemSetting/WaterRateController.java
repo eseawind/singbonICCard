@@ -18,7 +18,7 @@ import com.singbon.service.systemManager.systemSetting.WaterRateService;
 import com.singbon.util.StringUtil;
 
 /**
- * 水控费率2、3、4控制类
+ * 一控一水控费率控制类
  * 
  * @author 郝威
  * 

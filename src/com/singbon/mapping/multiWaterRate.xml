@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.singbon.dao.systemManager.systemSetting.MultiWaterRateDAO">
+	<resultMap id="multiWaterRate" type="com.singbon.entity.MultiWaterRate">
+	</resultMap>
+	<parameterMap type="com.singbon.entity.MultiWaterRate" id="multiWaterRate2" />
+	<insert id="insert">
+		insert into multiWaterRate (companyId,consumeType,chargeType,rate1Status,rate1DeductFare,rate1DeductCycle,rate2Status,rate2DeductFare,rate2DeductCycle,rate3Status,rate3DeductFare,rate3DeductCycle,rate4Status,rate4DeductFare,rate4DeductCycle)
+			select #{companyId},consumeType,chargeType,rate1Status,rate1DeductFare,rate1DeductCycle,rate2Status,rate2DeductFare,rate2DeductCycle,rate3Status,rate3DeductFare,rate3DeductCycle,rate4Status,rate4DeductFare,rate4DeductCycle from multiWaterRateBase
+	</insert>
+	<update id="update" parameterMap="multiWaterRate2">
+		update multiWaterRate set consumeType=#{consumeType},chargeType=#{chargeType},rate1Status=#{rate1Status},rate1DeductFare=#{rate1DeductFare},rate1DeductCycle=#{rate1DeductCycle},rate2Status=#{rate2Status},rate2DeductFare=#{rate2DeductFare},rate2DeductCycle=#{rate2DeductCycle},rate3Status=#{rate3Status},rate3DeductFare=#{rate3DeductFare},rate3DeductCycle=#{rate3DeductCycle},rate4Status=#{rate4Status},rate4DeductFare=#{rate4DeductFare},rate4DeductCycle=#{rate4DeductCycle}
+		where id=#{id}
+	</update>
+	<select id="selectByCompanyId" resultMap="multiWaterRate">
+		select * from multiWaterRate where companyId=#{companyId}
+	</select>
+</mapper>
