@@ -161,14 +161,18 @@ public class MainCardService {
 		// SimpleDateFormat myFormatter = new SimpleDateFormat("yyyy-MM-dd");
 		Calendar c = Calendar.getInstance();
 
-		String tmUserId = StringUtil.hexLeftPad(user.getUserId(), 6);// 3
-		String tmCardNo = StringUtil.hexLeftPad(Integer.valueOf(user.getCardNO()), 6);// 3
-		String tmConsumePwd = StringUtil.hexLeftPad(Integer.valueOf(user.getConsumePwd()), 6);// 3
-		String tmIdentityPwd = StringUtil.hexLeftPad(Integer.valueOf(user.getIdentityPwd()), 4);// 2
+		String tmUserId = StringUtil.hexLeftPad(user.getUserId(), 8);// 4 0-3
+		String tmCardNo = StringUtil.hexLeftPad(Integer.valueOf(user.getCardNO()), 8);// 4
+																						// 4-7
+		String tmConsumePwd = StringUtil.hexLeftPad(Integer.valueOf(user.getConsumePwd()), 4);// 2
+																								// 8-9
+		// String tmIdentityPwd =
+		// StringUtil.hexLeftPad(Integer.valueOf(user.getIdentityPwd()), 4);// 2
 		c.setTime(user.getInvalidDate());
-		String tmInvalidDate = StringUtil.dateToHexString(c);// 2
-		String tmCardMark = StringUtil.hexLeftPad(241, 2);// 1
-		String tmCardBatch = StringUtil.hexLeftPad(cardAllInfo.getCardBatch(), 2);// 1
+		String tmInvalidDate = StringUtil.dateToHexString(c);// 2 10-11
+		String tmCardMark = StringUtil.hexLeftPad(241, 2);// 1 12
+		String tmCardBatch = StringUtil.hexLeftPad(cardAllInfo.getCardBatch(), 4);// 2
+																					// 13-14
 		String tmCheck1 = "00"; // 异或校验，以后补充 1
 
 		String tmCardDeposit = StringUtil.hexLeftPad(cardAllInfo.getCardDeposit(), 2);// 1
@@ -176,7 +180,7 @@ public class MainCardService {
 		String tmLimitTimesFare = StringUtil.hexLeftPad(cardAllInfo.getLimitTimesFare(), 4);// 2
 		String tmCardSeq = "01";// 1
 		if (commandCode != CommandCodeCardReader.SingleCard && commandCode != CommandCodeCardReader.InfoCard) {
-			tmCardSeq=StringUtil.hexLeftPad(user.getCardSeq(), 2);// 1
+			tmCardSeq = StringUtil.hexLeftPad(user.getCardSeq(), 2);// 1
 		}
 		String tmCardType = StringUtil.hexLeftPad(user.getCardTypeId(), 2);// 1
 		String tmDeptId = StringUtil.hexLeftPad(user.getDeptId(), 8);// 4
@@ -184,8 +188,8 @@ public class MainCardService {
 		String tmStandby = "06"; // 备用字段//1
 		String tmCheck2 = "00"; // 异或校验//1
 
-		String baseData = tmUserId + tmCardNo + tmConsumePwd + tmIdentityPwd + tmInvalidDate + tmCardMark + tmCardBatch + tmCheck1 + tmCardDeposit + tmLimitDayFare + tmLimitTimesFare + tmCardSeq
-				+ tmCardType + tmDeptId + tmTotalFare + tmStandby + tmCheck2;
+		String baseData = tmUserId + tmCardNo + tmConsumePwd + tmInvalidDate + tmCardMark + tmCardBatch + tmCheck1 + tmCardDeposit + tmLimitDayFare + tmLimitTimesFare + tmCardSeq + tmCardType
+				+ tmDeptId + tmTotalFare + tmStandby + tmCheck2;
 
 		// 大钱包
 		String tmCardOPCount = StringUtil.hexLeftPad(user.getOpCount(), 4);// 2
@@ -208,12 +212,16 @@ public class MainCardService {
 
 		// 补助钱包
 		String tmSubsidyCardOPCount = StringUtil.hexLeftPad(user.getSubsidyOpCount(), 4);// 2
-		String tmCardOddSubsidy = StringUtil.hexLeftPad(user.getSubsidyOddFare(), 6);// 3
-		String tmLastSubsidyConsumeTime = "0000";// 2
-		String tmSubsidyVersion = StringUtil.hexLeftPad(user.getSubsidyVersion(), 2);// 1
+																							// 0-1
+		String tmCardOddSubsidy = StringUtil.hexLeftPad(user.getSubsidyOddFare(), 8);// 4
+																						// 2-5
+		String tmLastSubsidyConsumeTime = "0000";// 2 6-7
+		String tmSubsidyVersion = StringUtil.hexLeftPad(user.getSubsidyVersion(), 4);// 2
+																						// 8-9
 		c.setTime(user.getSubsidyInvalidDate());
-		String tmSubsidyValidPeriod = StringUtil.dateToHexString(c);// 2
-		String tmDaySumSubsidy = StringUtil.hexLeftPad(user.getSubsidyDaySum(), 4);// 2
+		String tmSubsidyValidPeriod = StringUtil.dateToHexString(c);// 2 10-11
+		// String tmDaySumSubsidy =
+		// StringUtil.hexLeftPad(user.getSubsidyDaySum(), 4);// 2
 		String tmSubsidyLimitPeriod1 = StringUtil.hexLeftPad(cardAllInfo.getSubsidyLimitPeriods()[0], 1);
 		String tmSubsidyLimitPeriod2 = StringUtil.hexLeftPad(cardAllInfo.getSubsidyLimitPeriods()[1], 1);
 		String tmSubsidyLimitPeriod3 = StringUtil.hexLeftPad(cardAllInfo.getSubsidyLimitPeriods()[2], 1);
@@ -222,8 +230,8 @@ public class MainCardService {
 		String tmSubsidyLimitPeriod6 = StringUtil.hexLeftPad(cardAllInfo.getSubsidyLimitPeriods()[5], 1);
 		String tmSubsidyCheck = "00"; // 校验位，同或校验
 
-		String subsidyData = tmSubsidyCardOPCount + tmCardOddSubsidy + tmLastSubsidyConsumeTime + tmSubsidyVersion + tmSubsidyValidPeriod + tmDaySumSubsidy + tmSubsidyLimitPeriod1
-				+ tmSubsidyLimitPeriod2 + tmSubsidyLimitPeriod3 + tmSubsidyLimitPeriod4 + tmSubsidyLimitPeriod5 + tmSubsidyLimitPeriod6 + tmSubsidyCheck;
+		String subsidyData = tmSubsidyCardOPCount + tmCardOddSubsidy + tmLastSubsidyConsumeTime + tmSubsidyVersion + tmSubsidyValidPeriod + tmSubsidyLimitPeriod1 + tmSubsidyLimitPeriod2
+				+ tmSubsidyLimitPeriod3 + tmSubsidyLimitPeriod4 + tmSubsidyLimitPeriod5 + tmSubsidyLimitPeriod6 + tmSubsidyCheck;
 		String subsidySection = StringUtil.hexLeftPad(section + 2, 2);
 		subsidyData = subsidySection + "0000" + subsidyData;
 
@@ -267,7 +275,7 @@ public class MainCardService {
 	 * @throws Exception
 	 */
 	public void unloss(Integer userId, SocketChannel socketChannel, Device device, String cardSN, String cardInfoStr) throws Exception {
-//		this.mainCardDAO.changeStatus(userId, 1);
+		// this.mainCardDAO.changeStatus(userId, 1);
 
 		String commandCodeStr = StringUtil.hexLeftPad(CommandCodeCardReader.Unloss, 4);
 		String sendBufStr = CommandCardReader.WriteCard + commandCodeStr + CommandCardReader.ValidateCardSN + cardSN + cardInfoStr;
