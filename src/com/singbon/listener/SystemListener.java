@@ -9,7 +9,9 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.singbon.device.TerminalManager;
+import com.singbon.entity.Company;
 import com.singbon.entity.Device;
+import com.singbon.service.system.CompanyService;
 import com.singbon.service.systemManager.DeviceService;
 
 /**
@@ -28,16 +30,19 @@ public class SystemListener implements ServletContextListener {
 	public void contextInitialized(ServletContextEvent arg0) {
 		WebApplicationContext app = WebApplicationContextUtils.getRequiredWebApplicationContext(arg0.getServletContext());
 		DeviceService deviceService = (DeviceService) app.getBean("deviceService");
+		CompanyService companyService = (CompanyService) app.getBean("companyService");
 
-		// 加载设备序列号到公司的映射和设备序列号到socketchannel的空映射
-		List<Device> list = deviceService.selectAllList();
-		for (Device d : list) {
+		// 加载设备序列号到公司的映射,注册读卡机通道
+		List<Device> deviceList = deviceService.selectAllList();
+		for (Device d : deviceList) {
 			TerminalManager.getSnToCompanyList().put(d.getSn(), d.getCompanyId());
-			// 初始化添加空设备,以便查询设备
-			// TerminalManager.getSNToSocketChannelList().put(d.getSn(), null);
-			TerminalManager.registChannel(d.getSn());
+			TerminalManager.registChannel("c" + d.getSn());
 		}
 
+		// 注册公司通道
+		List<Company> companyList = companyService.selectAllList();
+		for (Company c : companyList) {
+			TerminalManager.registChannel("Co" + c.getId());
+		}
 	}
-
 }

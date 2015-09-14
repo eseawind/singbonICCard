@@ -98,7 +98,7 @@ public class SpecialCardService {
 		String commandCodeStr = StringUtil.hexLeftPad(commandCode, 4);
 		String sendStr = CommandCardReader.WriteCard + commandCodeStr + CommandCardReader.ValidateCardSN + user.getCardSN() + baseBlock0 + baseBlock1 + baseBlock2 + "0000";
 		String bufLen = StringUtil.hexLeftPad(2 + sendStr.length() / 2, 4);
-		sendStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + bufLen + sendStr;
+		sendStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + "00000000" + "0000" + "0808" + bufLen + sendStr;
 
 		byte[] buf = StringUtil.strTobytes(sendStr);
 		CRC16.generate(buf);
@@ -135,7 +135,7 @@ public class SpecialCardService {
 		String commandCodeStr = StringUtil.hexLeftPad(CommandCodeCardReader.LossCashierCard, 4);
 		String sendBufStr = CommandCardReader.WriteCard + commandCodeStr + CommandCardReader.ValidateCardSN + sysUser.getCardSN() + cardInfoStr;
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
-		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + bufLen + sendBufStr;
+		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + "00000000" + "0000" + "0808" + bufLen + sendBufStr;
 		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
 		CRC16.generate(sendBuf);
 		TerminalManager.sendToCardReader(socketChannel, sendBuf);
@@ -155,7 +155,7 @@ public class SpecialCardService {
 		String commandCodeStr = StringUtil.hexLeftPad(CommandCodeCardReader.UnLossCashierCard, 4);
 		String sendBufStr = CommandCardReader.WriteCard + commandCodeStr + CommandCardReader.ValidateCardSN + sysUser.getCardSN() + cardInfoStr;
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
-		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + bufLen + sendBufStr;
+		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + "00000000" + "0000" + "0808" + bufLen + sendBufStr;
 		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
 		CRC16.generate(sendBuf);
 		TerminalManager.sendToCardReader(socketChannel, sendBuf);
@@ -180,7 +180,7 @@ public class SpecialCardService {
 		String commandCodeStr = StringUtil.hexLeftPad(CommandCodeCardReader.InvalidDateCashierCard, 4);
 		String sendBufStr = CommandCardReader.WriteCard + commandCodeStr + CommandCardReader.ValidateCardSN + sysUser.getCardSN() + cardInfoStr;
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
-		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + bufLen + sendBufStr;
+		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + "00000000" + "0000" + "0808" + bufLen + sendBufStr;
 		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
 		CRC16.generate(sendBuf);
 		TerminalManager.sendToCardReader(socketChannel, sendBuf);

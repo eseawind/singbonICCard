@@ -113,24 +113,17 @@
 					alertMsg.warn('该卡片已经发行，请放置新卡！');
 				}
 				//读卡器状态
-				else if (e2.f1 == 1) {
-					if (e2.r == 1) {
-						heartTime=new Date();
-						$('.dialogHeader_c h1').html(title + '——读卡机状态：在线');
-						isOnline=true;
-						if(!isHeart){
-							heart();
-							isHeart=true;
-						}
-					} else {
-						$('.dialogHeader_c h1').html(title + '——读卡机状态：离线');
-						isOnline=false;
-						isHeart=false;
-						$('body').stopTime();
+				else if (e2.f1 == 1 && e2.r == 1) {
+					heartTime=new Date();
+					$('.dialogHeader_c h1').html(title + '——读卡机状态：在线');
+					isOnline=true;
+					if(!isHeart){
+						heart();
+						isHeart=true;
 					}
 				//心跳
-				} else if (e2.f1 == 2) {
-					heartTime=new Date();
+// 				} else if (e2.f1 == 2) {
+// 					heartTime=new Date();
 				//单个发卡命令
 				} else if (e2.f1 == 3) {
 					if(e2.r==1){
@@ -183,11 +176,11 @@
 	
 	function heart(){
 		$('body').everyTime('10s','getCardReaderStatus', function() {
-			$.post('${base }/command.do?comm=getCardReaderStatus');
+// 			$.post('${base }/command.do?comm=getCardReaderStatus');
 			var d=new Date();
 			var t=(d.getTime()-heartTime.getTime())/1000;
 			$('#cardno2').html(t);
-			if(t>=15){
+			if(t>12){
 				$.post('${base }/command.do?comm=closeSocketChannel');
 				$('.dialogHeader_c h1').html(title + '——读卡机状态：离线');
 				isOnline=false;
@@ -368,7 +361,7 @@
 				<dt>消费密码：</dt>
 				<dd>
 					<input name="consumePwd" type="text" class="digits"
-						value="${user.consumePwd==null?888888:user.consumePwd }" />
+						value="${user.consumePwd==null?8888:user.consumePwd }" />
 				</dd>
 			</dl>
 			<dl>

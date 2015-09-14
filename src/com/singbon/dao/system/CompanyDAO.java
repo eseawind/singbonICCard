@@ -29,4 +29,11 @@ public interface CompanyDAO extends BaseDAO {
 	 */
 	public void updateSystemPwd(Company company);
 
+	/**
+	 * 所有列表
+	 * 
+	 * @return
+	 */
+	public List<Company> selectAllList();
+	
 }

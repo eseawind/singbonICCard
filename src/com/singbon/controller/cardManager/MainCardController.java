@@ -496,10 +496,6 @@ public class MainCardController extends BaseController {
 					// 获取全部扇区
 					List<Integer> sectionBlocks = new ArrayList<Integer>();
 					sectionBlocks.add(section * 10);
-					// sectionBlocks.add(section * 10 + 1);
-					sectionBlocks.add(section * 10 + 2);
-					sectionBlocks.add((section + 1) * 10);
-					sectionBlocks.add((section + 2) * 10);
 					TerminalManager.getCardInfo(socketChannel, device, CommandCodeCardReader.RemakeCard, sectionBlocks);
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -514,6 +510,9 @@ public class MainCardController extends BaseController {
 					// 获取基本扇区0块
 					List<Integer> sectionBlocks = new ArrayList<Integer>();
 					sectionBlocks.add(section * 10);
+					sectionBlocks.add(section * 10 + 2);
+					sectionBlocks.add((section + 1) * 10);
+					sectionBlocks.add((section + 2) * 10);
 					TerminalManager.getCardInfo(socketChannel, device, CommandCodeCardReader.ReadOldCard, sectionBlocks);
 				} catch (IOException e) {
 					e.printStackTrace();

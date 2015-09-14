@@ -36,7 +36,7 @@ public class StringUtil {
 	 * @return
 	 */
 	public static String hexLeftPad(int str, int num) {
-		String temp = Integer.toHexString(str);
+		String temp = Integer.toHexString(str).replace("ffffff", "");
 		num = num - temp.length();
 		for (int i = 0; i < num; i++) {
 			temp = "0" + temp;

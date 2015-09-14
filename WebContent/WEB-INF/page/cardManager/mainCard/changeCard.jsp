@@ -98,24 +98,17 @@
 					alertMsg.warn('该卡片已经发行，请放置新卡！');
 				}
 				//读卡器状态
-				else if (e2.f1 == 0x01) {
-					if (e2.r == 1) {
-						heartTime=new Date();
-						$('.dialogHeader_c h1').html(title + '——读卡机状态：在线');
-						isOnline=true;
-						if(!isHeart){
-							heart();
-							isHeart=true;
-						}
-					} else {
-						$('.dialogHeader_c h1').html(title + '——读卡机状态：离线');
-						isOnline=false;
-						isHeart=false;
-						$('body').stopTime();
+				else if (e2.f1 == 0x01 && e2.r == 1) {
+					heartTime=new Date();
+					$('.dialogHeader_c h1').html(title + '——读卡机状态：在线');
+					isOnline=true;
+					if(!isHeart){
+						heart();
+						isHeart=true;
 					}
 				//心跳
-				} else if (e2.f1 == 0x02) {
-					heartTime=new Date();
+// 				} else if (e2.f1 == 0x02) {
+// 					heartTime=new Date();
 				//解挂命令
 				} else if (e2.f1 == 0x07) {
 					if(e2.r==1){
@@ -205,18 +198,18 @@
 	}
 	
 	function heart(){
-		$('body').everyTime('10s','getCardReaderStatus', function() {
-			$.post('${base }/command.do?comm=getCardReaderStatus');
-			var d=new Date();
-			var t=(d.getTime()-heartTime.getTime())/1000;
-			if(t>=15){
-				$.post('${base }/command.do?comm=closeSocketChannel');
-				$('.dialogHeader_c h1').html(title + '——读卡机状态：离线');
-				isOnline=false;
-				isHeart=false;
-				$('body').stopTime();
-			}
-		},0,true);
+// 		$('body').everyTime('10s','getCardReaderStatus', function() {
+// // 			$.post('${base }/command.do?comm=getCardReaderStatus');
+// 			var d=new Date();
+// 			var t=(d.getTime()-heartTime.getTime())/1000;
+// 			if(t>12){
+// 				$.post('${base }/command.do?comm=closeSocketChannel');
+// 				$('.dialogHeader_c h1').html(title + '——读卡机状态：离线');
+// 				isOnline=false;
+// 				isHeart=false;
+// 				$('body').stopTime();
+// 			}
+// 		},0,true);
 	}
 	
 	function opCardResult(r){

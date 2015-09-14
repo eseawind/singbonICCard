@@ -1,10 +1,13 @@
 package com.singbon.service.system;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.singbon.dao.system.CompanyDAO;
 import com.singbon.entity.Company;
+import com.singbon.entity.Device;
 
 /**
  * 公司业务层
@@ -25,6 +28,15 @@ public class CompanyService {
 	 */
 	public Company selectById(Integer id) {
 		return (Company) this.companyDAO.selectById(id);
+	}
+
+	/**
+	 * 所有列表
+	 * 
+	 * @return
+	 */
+	public List<Company> selectAllList() {
+		return this.companyDAO.selectAllList();
 	}
 
 	/**

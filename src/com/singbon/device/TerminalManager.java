@@ -2,6 +2,7 @@ package com.singbon.device;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.channels.DatagramChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 import java.util.Arrays;
@@ -23,22 +24,12 @@ import com.singbon.util.StringUtil;
  * 
  */
 public class TerminalManager {
-
-	public static Map<String, SocketChannel> getSNToSocketChannelList() {
-		return SNToSocketChannelList;
-	}
-
-	public static void setSNToSocketChannelList(Map<String, SocketChannel> sNToSocketChannelList) {
-		SNToSocketChannelList = sNToSocketChannelList;
-	}
-
 	/**
 	 * 服务器推送连接引擎
 	 */
 	private static CometEngine engineInstance = null;
-
 	/**
-	 * SN到公司映射
+	 * SN到公司映射，
 	 */
 	private static Map<String, Integer> snToCompanyList = new HashMap<String, Integer>();
 
@@ -47,26 +38,15 @@ public class TerminalManager {
 	 */
 	private static Map<String, String> uuidToSNList = new HashMap<String, String>();
 
-	public static Map<String, String> getUuidToSNList() {
-		return uuidToSNList;
-	}
-
-	public static void setUuidToSNList(Map<String, String> uuidToSNList) {
-		TerminalManager.uuidToSNList = uuidToSNList;
-	}
-
 	/**
 	 * SN序列号到套接字通道映射列表
 	 */
 	private static Map<String, SocketChannel> SNToSocketChannelList = new HashMap<String, SocketChannel>();
 
-	public static Map<String, Integer> getSnToCompanyList() {
-		return snToCompanyList;
-	}
-
-	public static void setSnToCompanyList(Map<String, Integer> snToCompanyList) {
-		TerminalManager.snToCompanyList = snToCompanyList;
-	}
+	/**
+	 * SN序列号到Datagram套接字通道映射列表
+	 */
+	private static Map<String, DatagramChannel> SNToDatagramChannelList = new HashMap<String, DatagramChannel>();
 
 	public static CometEngine getEngineInstance() {
 		return engineInstance;
@@ -76,17 +56,36 @@ public class TerminalManager {
 		TerminalManager.engineInstance = engineInstance;
 	}
 
-	/**
-	 * 设备命令列表
-	 */
-	public static Map<String, List<String>> cmdList = new HashMap<String, List<String>>();
-
-	public static Map<String, List<String>> getCmdList() {
-		return cmdList;
+	public static Map<String, Integer> getSnToCompanyList() {
+		return snToCompanyList;
 	}
 
-	public static void setCmdList(Map<String, List<String>> cmdList) {
-		TerminalManager.cmdList = cmdList;
+	public static void setSnToCompanyList(Map<String, Integer> snToCompanyList) {
+		TerminalManager.snToCompanyList = snToCompanyList;
+	}
+
+	public static Map<String, String> getUuidToSNList() {
+		return uuidToSNList;
+	}
+
+	public static void setUuidToSNList(Map<String, String> uuidToSNList) {
+		TerminalManager.uuidToSNList = uuidToSNList;
+	}
+
+	public static Map<String, SocketChannel> getSNToSocketChannelList() {
+		return SNToSocketChannelList;
+	}
+
+	public static void setSNToSocketChannelList(Map<String, SocketChannel> sNToSocketChannelList) {
+		SNToSocketChannelList = sNToSocketChannelList;
+	}
+
+	public static Map<String, DatagramChannel> getSNToDatagramChannelList() {
+		return SNToDatagramChannelList;
+	}
+
+	public static void setSNToDatagramChannelList(Map<String, DatagramChannel> sNToDatagramChannelList) {
+		SNToDatagramChannelList = sNToDatagramChannelList;
 	}
 
 	/**
@@ -94,9 +93,9 @@ public class TerminalManager {
 	 * 
 	 * @param sn
 	 */
-	public static void registChannel(String sn) {
-		if (!CometContext.getInstance().getAppModules().contains("c" + sn)) {
-			CometContext.getInstance().registChannel("c" + sn);
+	public static void registChannel(String channelId) {
+		if (!CometContext.getInstance().getAppModules().contains(channelId)) {
+			CometContext.getInstance().registChannel(channelId);
 		}
 	}
 
@@ -119,14 +118,14 @@ public class TerminalManager {
 		return 1;
 	}
 
-	// 获取读卡器回复帧
+	// 获取回复帧
 	private byte[] getFrame(byte[] b) {
-		return Arrays.copyOfRange(b, 22, 26);
+		return Arrays.copyOfRange(b, 30, 34);
 	}
 
-	// 获取读卡器回复命令号
+	// 获取回复命令号
 	private int getCommandCode(byte[] b) {
-		return b[26] + b[27];
+		return b[34] + b[35];
 	}
 
 	// 获取序列号
@@ -145,7 +144,7 @@ public class TerminalManager {
 	// 获取物理卡号
 	private String getCardSN(byte[] b) {
 		String sn = "";
-		for (int i = 29; i < 33; i++) {
+		for (int i = 37; i < 41; i++) {
 			String hex = Integer.toHexString(b[i] & 0xFF);
 			if (hex.length() == 1) {
 				hex = '0' + hex;
@@ -176,7 +175,7 @@ public class TerminalManager {
 	}
 
 	/**
-	 * 分发读卡器命令
+	 * 分发命令
 	 * 
 	 * @param selectionKey
 	 * @param b
@@ -191,26 +190,21 @@ public class TerminalManager {
 		byte[] frameByte = getFrame(b);
 		// 命令码
 		int commandCode = getCommandCode(b);
-		// 状态码 1读卡器读写成功、2读卡器寻卡失败、3读卡器卡校验失败、4读卡器物理卡号不匹配、5读卡器读写卡失败
-		byte b35 = 0;
-		if (b.length > 35) {
-			b35 = b[35];
-		}
+		// 状态码 1读写成功、2寻卡失败、3卡校验失败、4物理卡号不匹配、5读写卡失败
+		byte cardStatus = 0;
 		// 物理卡号
 		String cardSN = null;
-		if (b.length > 33) {
+		if (frameByte[0] == 0x03 && frameByte[1] == (byte) 0xcd) {
+			cardStatus = b[43];
 			cardSN = getCardSN(b);
 		}
+
 		Map map = new HashMap();
 		// 获取机器号序列号
-		if (Arrays.equals(frameByte, new byte[] { 0x03, (byte) 0xff, (byte) 0xaa, 0x01 })) {
+		if (frameByte[0] == 0x03 && frameByte[1] == 0x08) {
 			byte frame = FrameCardReader.Status;
-			if (b[27] == 1) {
-				frame = FrameCardReader.HeartStatus;
-			} else {
-				TerminalManager.getUuidToSNList().put(selectionKey.attachment().toString(), sn);
-				TerminalManager.getSNToSocketChannelList().put(sn, (SocketChannel) selectionKey.channel());
-			}
+			TerminalManager.getUuidToSNList().put(selectionKey.attachment().toString(), sn);
+			TerminalManager.getSNToSocketChannelList().put(sn, (SocketChannel) selectionKey.channel());
 			map.put("'f1'", frame);
 			map.put("'r'", 1);
 			// //////////////////////////////////////////////////////////////////////////////
@@ -220,131 +214,135 @@ public class TerminalManager {
 			// 单个发卡完成
 			if (commandCode == CommandCodeCardReader.SingleCard) {
 				map.put("'f1'", FrameCardReader.SingleCardDone);
-				map.put("'r'", b35);
+				map.put("'r'", cardStatus);
 			}
 			// 信息发卡完成
 			else if (commandCode == CommandCodeCardReader.InfoCard) {
 				map.put("'f1'", FrameCardReader.InfoCardDone);
-				map.put("'r'", b35);
+				map.put("'r'", cardStatus);
 			}
 			// 解挂完成
 			else if (commandCode == CommandCodeCardReader.Unloss) {
 				map.put("'f1'", FrameCardReader.UnlossDone);
-				map.put("'r'", b35);
+				map.put("'r'", cardStatus);
 			}
 			// 补卡完成
 			else if (commandCode == CommandCodeCardReader.RemakeCard) {
 				map.put("'f1'", FrameCardReader.RemakeCardDone);
-				map.put("'r'", b35);
+				map.put("'r'", cardStatus);
 			}
 			// 换新卡完成
 			else if (commandCode == CommandCodeCardReader.ChangeNewCard) {
 				map.put("'f1'", FrameCardReader.ChangeNewCardDone);
-				map.put("'r'", b35);
+				map.put("'r'", cardStatus);
 			}
 			// 读卡修正完成
 			else if (commandCode == CommandCodeCardReader.ReadCard) {
 				map.put("'f1'", FrameCardReader.ReadCardDone);
-				map.put("'r'", b35);
+				map.put("'r'", cardStatus);
 			}
 			// 制出纳卡完成
 			else if (commandCode == CommandCodeCardReader.MakeCashierCard) {
 				map.put("'f1'", FrameCardReader.MakeCashierCardDone);
-				map.put("'r'", b35);
+				map.put("'r'", cardStatus);
 				map.put("'newCardSN'", cardSN);
 			}
 			// 挂失出纳卡完成
 			else if (commandCode == CommandCodeCardReader.LossCashierCard) {
 				map.put("'f1'", FrameCardReader.LossCashierCardDone);
-				map.put("'r'", b35);
+				map.put("'r'", cardStatus);
 			}
 			// 解挂出纳卡完成
 			else if (commandCode == CommandCodeCardReader.UnLossCashierCard) {
 				map.put("'f1'", FrameCardReader.UnLossCashierCardDone);
-				map.put("'r'", b35);
+				map.put("'r'", cardStatus);
 			}
 			// 解挂出纳卡完成
 			else if (commandCode == CommandCodeCardReader.UnLossCashierCard) {
 				map.put("'f1'", FrameCardReader.UnLossCashierCardDone);
-				map.put("'r'", b35);
+				map.put("'r'", cardStatus);
 			}
 			// 补办出纳卡完成
 			else if (commandCode == CommandCodeCardReader.RemakeCashierCard) {
 				map.put("'f1'", FrameCardReader.RemakeCashierCardDone);
-				map.put("'r'", b35);
+				map.put("'r'", cardStatus);
 			}
 			// 修改出纳卡有效期完成
 			else if (commandCode == CommandCodeCardReader.InvalidDateCashierCard) {
 				map.put("'f1'", FrameCardReader.InvalidDateCashierCardDone);
-				map.put("'r'", b35);
+				map.put("'r'", cardStatus);
 			}
 			// 存取款完成
 			else if (commandCode == CommandCodeCardReader.Charge) {
 				map.put("'f1'", FrameCardReader.ChargeDone);
-				map.put("'r'", b35);
+				map.put("'r'", cardStatus);
 			}
 			// //////////////////////////////////////////////////////////////////////////////
 			// /////////////////////////////////////////////读卡回复
 			// //////////////////////////////////////////////////////////////////////////////
 		} else if (Arrays.equals(frameByte, new byte[] { 0x03, (byte) 0xcd, 0x00, 0x01 })) {
-			int baseLen = 33;
+			int baseLen = 41;
 			// 获取出纳卡基本信息命令
 			if (commandCode == CommandCodeCardReader.CashierCardBaseInfo) {
 				map.put("'f1'", FrameCardReader.CashierCardBaseInfoCmd);
-				map.put("'r'", b35);
+				map.put("'r'", cardStatus);
 				map.put("'cardSN'", cardSN);
 				map.put("'cardNO'", cardSN);
 			}
 			// 发送单个发卡命令
 			else if (commandCode == CommandCodeCardReader.SingleCard) {
 				map.put("'f1'", FrameCardReader.SingleCardCmd);
-				map.put("'r'", b35);
+				map.put("'r'", cardStatus);
 				map.put("'cardSN'", cardSN);
 			}
 			// 发送信息发卡命令
 			else if (commandCode == CommandCodeCardReader.InfoCard) {
 				map.put("'f1'", FrameCardReader.InfoCardCmd);
-				map.put("'r'", b35);
+				map.put("'r'", cardStatus);
 				map.put("'cardSN'", cardSN);
 			}
 			// 发解挂命令
 			else if (commandCode == CommandCodeCardReader.Unloss) {
 				map.put("'f1'", FrameCardReader.UnlossCmd);
-				map.put("'r'", b35);
-				map.put("'cardInfoStr'", cardInfo(33, b.length - 1, b));
+				map.put("'r'", cardStatus);
+				map.put("'cardInfoStr'", cardInfo(baseLen, b.length - 1, b));
 				map.put("'cardSN'", cardSN);
-				map.put("'userId'", Integer.parseInt(cardInfo(baseLen + 3, baseLen + 3 + 2, b), 16));
+				map.put("'userId'", Integer.parseInt(cardInfo(baseLen + 3, baseLen + 3 + 3, b), 16));
 			}
 			// 发补卡命令
 			else if (commandCode == CommandCodeCardReader.RemakeCard) {
 				map.put("'f1'", FrameCardReader.RemakeCardCmd);
-				map.put("'r'", b35);
+				map.put("'r'", cardStatus);
 				map.put("'cardSN'", cardSN);
 			}
 			// 换卡读原卡命令
 			else if (commandCode == CommandCodeCardReader.ReadOldCard) {
 				map.put("'f1'", FrameCardReader.ReadOldCardCmd);
-				map.put("'r'", b35);
+				map.put("'r'", cardStatus);
 				map.put("'cardSN'", cardSN);
-				map.put("'userId'", Integer.parseInt(cardInfo(baseLen + 3, baseLen + 3 + 2, b), 16));
-				map.put("'cardInfoStr'", cardInfo(33, b.length - 1, b));
+				map.put("'userId'", Integer.parseInt(cardInfo(baseLen + 3, baseLen + 3 + 3, b), 16));
+				map.put("'cardInfoStr'", cardInfo(baseLen, b.length - 1, b));
 			}
 			// 换卡换新卡命令
 			else if (commandCode == CommandCodeCardReader.ChangeNewCard) {
 				map.put("'f1'", FrameCardReader.ChangeNewCardCmd);
-				map.put("'r'", b35);
+				map.put("'r'", cardStatus);
 				map.put("'newCardSN'", cardSN);
 			}
 			// 读卡修正命令
 			else if (commandCode == CommandCodeCardReader.ReadCard) {
+				for (byte b2 : b) {
+					System.out.print(StringUtil.toHexString(b2) + " ");
+				}
+				System.out.println();
 				map.put("'f1'", FrameCardReader.ReadCardCmd);
-				map.put("'r'", b35);
+				map.put("'r'", cardStatus);
 				map.put("'cardSN'", cardSN);
 				int base0 = baseLen + 3;
-				map.put("'userId'", Integer.parseInt(cardInfo(base0, base0 + 2, b), 16));
-				map.put("'cardNO'", Integer.parseInt(cardInfo(base0 + 3, base0 + 5, b), 16));
-				map.put("'invalidDate'", StringUtil.dateFromHexString(cardInfo(base0 + 11, base0 + 12, b)));
-				int status = Integer.parseInt(cardInfo(base0 + 13, base0 + 13, b), 16);
+				map.put("'userId'", Integer.parseInt(cardInfo(base0, base0 + 3, b), 16));
+				map.put("'cardNO'", Integer.parseInt(cardInfo(base0 + 4, base0 + 7, b), 16));
+				map.put("'invalidDate'", StringUtil.dateFromHexString(cardInfo(base0 + 10, base0 + 11, b)));
+				int status = Integer.parseInt(cardInfo(base0 + 12, base0 + 12, b), 16);
 				String statusDesc = "正常";
 				if (status == 241) {
 					statusDesc = "正常";
@@ -370,59 +368,59 @@ public class TerminalManager {
 
 				int subsidy0 = baseLen + 19 * 3 + 3;
 				map.put("'subsidyOpCount'", Integer.parseInt(cardInfo(subsidy0, subsidy0 + 1, b), 16));
-				map.put("'subsidyOddFare'", (float) Integer.parseInt(cardInfo(subsidy0 + 2, subsidy0 + 4, b), 16) / 100);
-				map.put("'subsidyVersion'", Integer.parseInt(cardInfo(subsidy0 + 7, subsidy0 + 7, b), 16));
+				map.put("'subsidyOddFare'", (float) Integer.parseInt(cardInfo(subsidy0 + 2, subsidy0 + 5, b), 16) / 100);
+				map.put("'subsidyVersion'", Integer.parseInt(cardInfo(subsidy0 + 8, subsidy0 + 9, b), 16));
 			}
 			// 制出纳卡命令
 			else if (commandCode == CommandCodeCardReader.MakeCashierCard) {
 				map.put("'f1'", FrameCardReader.MakeCashierCardCmd);
-				map.put("'r'", b35);
+				map.put("'r'", cardStatus);
 				map.put("'cardSN'", cardSN);
 			}
 			// 挂失出纳卡命令
 			else if (commandCode == CommandCodeCardReader.LossCashierCard) {
 				map.put("'f1'", FrameCardReader.LossCashierCardCmd);
-				map.put("'r'", b35);
+				map.put("'r'", cardStatus);
 				map.put("'operId'", Integer.parseInt(getCashierOperId(b), 16));
 				map.put("'cardSN'", cardSN);
-				map.put("'cardInfoStr'", cardInfo(33, b.length - 1, b));
+				map.put("'cardInfoStr'", cardInfo(baseLen, b.length - 1, b));
 			}
 			// 解挂出纳卡命令
 			else if (commandCode == CommandCodeCardReader.UnLossCashierCard) {
 				map.put("'f1'", FrameCardReader.UnLossCashierCardCmd);
-				map.put("'r'", b35);
+				map.put("'r'", cardStatus);
 				map.put("'operId'", Integer.parseInt(getCashierOperId(b), 16));
 				map.put("'cardSN'", cardSN);
-				map.put("'cardInfoStr'", cardInfo(33, b.length - 1, b));
+				map.put("'cardInfoStr'", cardInfo(baseLen, b.length - 1, b));
 			}
 			// 补办出纳卡命令
 			else if (commandCode == CommandCodeCardReader.RemakeCashierCard) {
 				map.put("'f1'", FrameCardReader.RemakeCashierCardCmd);
-				map.put("'r'", b35);
+				map.put("'r'", cardStatus);
 				map.put("'cardSN'", cardSN);
 			}
 			// 读取出纳卡命令
 			else if (commandCode == CommandCodeCardReader.ReadCashierCard) {
 				map.put("'f1'", FrameCardReader.ReadCashierCardCmd);
-				map.put("'r'", b35);
+				map.put("'r'", cardStatus);
 
 				map.put("'operId'", Integer.parseInt(getCashierOperId(b), 16));
-				String date = StringUtil.dateFromHexString(cardInfo(33 + 3 + 19 + 10, 33 + 3 + 19 + 11, b));
+				String date = StringUtil.dateFromHexString(cardInfo(baseLen + 3 + 19 + 10, baseLen + 3 + 19 + 11, b));
 				map.put("'date'", date);
 				map.put("'cardSN'", cardSN);
-				map.put("'cardInfoStr'", cardInfo(33, b.length - 1, b));
+				map.put("'cardInfoStr'", cardInfo(baseLen, b.length - 1, b));
 			}
 			// 读取卡余额命令
 			else if (commandCode == CommandCodeCardReader.ReadCardOddFare) {
 				map.put("'f1'", FrameCardReader.ReadCardOddFareCmd);
-				map.put("'r'", b35);
+				map.put("'r'", cardStatus);
 
 				int base0 = baseLen + 3;
-				map.put("'userId'", Integer.parseInt(cardInfo(base0, base0 + 2, b), 16));
-				map.put("'cardNO'", Integer.parseInt(cardInfo(base0 + 3, base0 + 5, b), 16));
+				map.put("'userId'", Integer.parseInt(cardInfo(base0, base0 + 3, b), 16));
+				map.put("'cardNO'", Integer.parseInt(cardInfo(base0 + 4, base0 + 7, b), 16));
 				map.put("'cardSN'", cardSN);
 
-				int status = Integer.parseInt(cardInfo(base0 + 13, base0 + 13, b), 16);
+				int status = Integer.parseInt(cardInfo(base0 + 12, base0 + 12, b), 16);
 				String statusDesc = "正常";
 				if (status == 241) {
 					statusDesc = "正常";
@@ -496,7 +494,7 @@ public class TerminalManager {
 	 * @throws IOException
 	 */
 	public static void closeSocketChannel(String sn) throws IOException {
-		SocketChannel socketChannel= TerminalManager.getSNToSocketChannelList().get(sn);
+		SocketChannel socketChannel = TerminalManager.getSNToSocketChannelList().get(sn);
 		socketChannel.close();
 		TerminalManager.getSNToSocketChannelList().remove(sn);
 	}
@@ -523,7 +521,7 @@ public class TerminalManager {
 		}
 		sendBufStr += "0000";
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
-		sendBufStr = device.getSn() + deviceNum + bufLen + sendBufStr;
+		sendBufStr = device.getSn() + deviceNum + "00000000" + "0000" + "0808" + bufLen + sendBufStr;
 		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
 		CRC16.generate(sendBuf);
 		ByteBuffer byteBuffer = ByteBuffer.wrap(sendBuf);
@@ -541,5 +539,49 @@ public class TerminalManager {
 		CRC16.generate(b);
 		ByteBuffer byteBuffer = ByteBuffer.wrap(b);
 		socketChannel.write(byteBuffer);
+	}
+
+	// //////////////////////////////////////////////////////////////////////////////
+	// ///////////////////////////////////////////// 消费机部分UDP
+	// //////////////////////////////////////////////////////////////////////////////
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void dispatchPosCommand(SelectionKey selectionKey, byte[] b) {
+		if (b == null)
+			return;
+		String sn = getSN(b);
+		// 帧
+		byte[] frameByte = getFrame(b);
+		// 命令码
+		int commandCode = getCommandCode(b);
+		// 状态码 1读写成功、2寻卡失败、3卡校验失败、4物理卡号不匹配、5读写卡失败
+		byte cardStatus = 0;
+		// 物理卡号
+		String cardSN = null;
+		if (frameByte[0] == 0x03 && frameByte[1] == (byte) 0xcd) {
+			cardStatus = b[43];
+			cardSN = getCardSN(b);
+		}
+
+		Map map = new HashMap();
+		// 如果包含sn则设置sn与datagram对照关系
+		if (TerminalManager.getSnToCompanyList().containsKey(sn)) {
+			DatagramChannel datagramChannel = (DatagramChannel) selectionKey.channel();
+			TerminalManager.getSNToDatagramChannelList().put(sn, datagramChannel);
+
+			byte frame = FramePos.Status;
+			map.put("'f1'", frame);
+			map.put("'sn'", sn);
+			// //////////////////////////////////////////////////////////////////////////////
+			// /////////////////////////////////////////////写卡回复
+			// //////////////////////////////////////////////////////////////////////////////
+		} else if (Arrays.equals(frameByte, new byte[] { 0x03, (byte) 0xcd, 0x01, 0x01 })) {
+
+		}
+		if (map.size() > 0) {
+			String msg = JSONUtil.convertToJson(map);
+			Integer companyId = TerminalManager.getSnToCompanyList().get(sn);
+			TerminalManager.getEngineInstance().sendToAll("Co" + companyId, msg);
+		}
 	}
 }

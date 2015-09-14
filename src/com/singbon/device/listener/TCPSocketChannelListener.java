@@ -69,7 +69,6 @@ public class TCPSocketChannelListener implements ServletContextListener {
 
 			String uuid = UUID.randomUUID().toString();
 			key.attach(uuid);
-			TerminalManager.getUuidToSNList().put(uuid, null);
 			// 打印
 			System.out.println(key.attachment() + " 连接成功");
 
@@ -102,11 +101,10 @@ public class TCPSocketChannelListener implements ServletContextListener {
 					}
 				}
 				b = Arrays.copyOf(b, byteLen);
-				// CRC16.sd_crc16_table(b,b.length);
-				// for (byte b2 : b) {
-				// System.out.print(StringUtil.toHexString(b2) + " ");
-				// }
-				// System.out.println();
+//				for (byte b2 : b) {
+//					System.out.print(StringUtil.toHexString(b2) + " ");
+//				}
+//				System.out.println();
 
 				// 校验
 				if (!CRC16.compareCRC16(b)) {

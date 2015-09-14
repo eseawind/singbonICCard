@@ -20,6 +20,7 @@ public class Device implements Serializable {
 	private Integer deviceNum;
 	private Integer deviceType;
 	private Integer enable;
+	private Integer isOnline;
 	private String sn;
 
 	public Integer getId() {
@@ -92,6 +93,14 @@ public class Device implements Serializable {
 
 	public void setSn(String sn) {
 		this.sn = sn;
+	}
+
+	public Integer getIsOnline() {
+		return isOnline;
+	}
+
+	public void setIsOnline(Integer isOnline) {
+		this.isOnline = isOnline;
 	}
 
 }

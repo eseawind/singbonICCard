@@ -238,13 +238,14 @@ public class MainCardService {
 		// 静态ID（16字节高字节在前）+设备机器号（4字节高字节在前）+数据长度（2字节高字节在前）+cd+01+是否校验卡号标志（1字节）+物理卡号（4字节高字节在前）+读卡扇区号（1字节）+读卡块号（1字节）+读写状态字节（1字节）+块数据（16字节高字节在前）+读卡扇区号（1字节）+读卡块号（1字节）+读写状态字节（1字节）+块数据（16字节高字节在前）+...+CRC校验（字节高字节在前）
 		String baseInfoSection = StringUtil.hexLeftPad(section, 2);
 		String baseBlock0 = baseInfoSection + "0000" + baseData.substring(0, 32);
-		String baseBlock1 = baseInfoSection + "0100" + baseData.substring(0, 32);
+		// String baseBlock1 = baseInfoSection + "0100" + baseData.substring(0,
+		// 32);
 		String baseBlock2 = baseInfoSection + "0200" + baseData.substring(32);
 
 		String commandCodeStr = StringUtil.hexLeftPad(commandCode, 4);
-		String sendStr = CommandCardReader.WriteCard + commandCodeStr + CommandCardReader.ValidateCardSN + cardSN + baseBlock0 + baseBlock1 + baseBlock2 + consumeData + subsidyData + "0000";
+		String sendStr = CommandCardReader.WriteCard + commandCodeStr + CommandCardReader.ValidateCardSN + cardSN + baseBlock0 + baseBlock2 + consumeData + subsidyData + "0000";
 		String bufLen = StringUtil.hexLeftPad(2 + sendStr.length() / 2, 4);
-		sendStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + bufLen + sendStr;
+		sendStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + "00000000" + "0000" + "0808" + bufLen + sendStr;
 
 		byte[] buf = StringUtil.strTobytes(sendStr);
 		CRC16.generate(buf);
@@ -252,6 +253,11 @@ public class MainCardService {
 		System.out.print(StringUtil.hexLeftPad(buf[buf.length - 1], 2));
 		System.out.println();
 		TerminalManager.sendToCardReader(socketChannel, buf);
+	}
+
+	public static void main(String[] args) {
+		String tmConsumePwd = StringUtil.hexLeftPad(Integer.valueOf(88888), 4);// 2
+		System.out.println(tmConsumePwd);
 	}
 
 	/**
@@ -275,12 +281,12 @@ public class MainCardService {
 	 * @throws Exception
 	 */
 	public void unloss(Integer userId, SocketChannel socketChannel, Device device, String cardSN, String cardInfoStr) throws Exception {
-		// this.mainCardDAO.changeStatus(userId, 1);
+		this.mainCardDAO.changeStatus(userId, 1);
 
 		String commandCodeStr = StringUtil.hexLeftPad(CommandCodeCardReader.Unloss, 4);
 		String sendBufStr = CommandCardReader.WriteCard + commandCodeStr + CommandCardReader.ValidateCardSN + cardSN + cardInfoStr;
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
-		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + bufLen + sendBufStr;
+		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + "00000000" + "0000" + "0808" + bufLen + sendBufStr;
 		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
 		sendBuf[sendBuf.length - 5] = (byte) 0xf1;
 		CRC16.generate(sendBuf);
@@ -298,12 +304,13 @@ public class MainCardService {
 		int cardNO = this.mainCardDAO.selectMaxCardNO(companyId);
 		this.mainCardDAO.changeNewCard(userId, cardNO, cardSN);
 
-		String cardNOStr = StringUtil.hexLeftPad(cardNO, 6);
-		cardInfoStr = cardInfoStr.substring(0, 12) + cardNOStr + cardInfoStr.substring(18);
+		String cardNOStr = StringUtil.hexLeftPad(cardNO, 8);
+		String cardSeq = StringUtil.hexLeftPad(Integer.valueOf(cardInfoStr.substring(52, 54), 16) + 1, 2);
+		cardInfoStr = cardInfoStr.substring(0, 14) + cardNOStr + cardInfoStr.substring(22, 52) + cardSeq + cardInfoStr.substring(54);
 		String commandCodeStr = StringUtil.hexLeftPad(CommandCodeCardReader.ChangeNewCard, 4);
 		String sendBufStr = CommandCardReader.WriteCard + commandCodeStr + CommandCardReader.ValidateCardSN + cardSN + cardInfoStr;
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
-		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + bufLen + sendBufStr;
+		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + "00000000" + "0000" + "0808" + bufLen + sendBufStr;
 		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
 		CRC16.generate(sendBuf);
 		TerminalManager.sendToCardReader(socketChannel, sendBuf);
@@ -367,7 +374,7 @@ public class MainCardService {
 		String commandCodeStr = StringUtil.hexLeftPad(CommandCodeCardReader.Charge, 4);
 		String sendBufStr = CommandCardReader.WriteCard + commandCodeStr + CommandCardReader.ValidateCardSN + user.getCardSN() + cardInfoStr;
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
-		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + bufLen + sendBufStr;
+		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + "00000000" + "0000" + "0808" + bufLen + sendBufStr;
 		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
 		CRC16.generate(sendBuf);
 		TerminalManager.sendToCardReader(socketChannel, sendBuf);
