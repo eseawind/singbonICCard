@@ -36,7 +36,11 @@ public class SystemListener implements ServletContextListener {
 		List<Device> deviceList = deviceService.selectAllList();
 		for (Device d : deviceList) {
 			TerminalManager.getSnToCompanyList().put(d.getSn(), d.getCompanyId());
-			TerminalManager.registChannel("c" + d.getSn());
+			if (d.getDeviceType() == 0) {
+				TerminalManager.registChannel("c" + d.getSn());
+			} else {
+				TerminalManager.getSNToDevicelList().put(d.getSn(), d);
+			}
 		}
 
 		// 注册公司通道

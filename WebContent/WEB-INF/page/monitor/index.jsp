@@ -73,7 +73,7 @@
 <script src="/js/dwz.history.js" type="text/javascript"></script>
 <script src="/js/dwz.combox.js" type="text/javascript"></script>
 <script src="/js/dwz.print.js" type="text/javascript"></script>
-<!-- <script src="/js/comet4j.js" type="text/javascript"></script> -->
+<script src="/js/comet4j.js" type="text/javascript"></script>
 <script src="/js/jquery.contextmenu.r2.js" type="text/javascript"></script>
 <script src="/js/jQuery.Hz2Py-min.js" type="text/javascript"></script>
 <script src="/js/common.js" type="text/javascript"></script>
@@ -110,10 +110,10 @@
 			}
 		});
 		DWZ.ui.sbar=false;
-		//init();
+		init();
 		//heart();
 		
-		$('#deviceList').contextMenu('menu',monitorOps);
+		$('#deviceList img').contextMenu('menu',monitorOps);
 	});
 	
 	var map = new Map();
@@ -197,6 +197,21 @@
 			}
 		},0,true);
 	}
+	//校时
+	function time(){
+		$('body').everyTime('1s','getCardReaderStatus', function() {
+			var d=new Date();
+			var array = map.keySet();
+			for(var i in array) {
+				var t=(d.getTime()-map.get(array[i]).getTime())/1000;
+				if(t>10){
+					$("#deviceList .deviceList[id="+array[i]+"] img").attr('alt','离线').attr('src','/img/offline.png');
+					$.post('${base }/closeDatagramChannel.do?sn='+array[i]);
+					map.remove(array[i]);
+				}
+			}
+		},0,true);
+	}
 	
 	function showDevice(groupId){
 		if(groupId==0){
@@ -210,7 +225,8 @@
 	var monitorOps = {
 		bindings : {
 			'time' : function(t, target) {
-						
+				var sn=$(t).parent().attr('id');
+				$.post('${base }/time.do?sn='+sn);
 			},
 			'edit' : function(t, target) {
 			}

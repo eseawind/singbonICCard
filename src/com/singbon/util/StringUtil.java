@@ -1,10 +1,11 @@
 package com.singbon.util;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class StringUtil {
+public class StringUtil implements Runnable {
 
 	/**
 	 * byte转16进制字符
@@ -58,9 +59,14 @@ public class StringUtil {
 		return temp;
 	}
 
-	// 转换日期格式为16进制字符串
-	// 例：“2009-12-04” -> “9C04”
-	// 修改2009-07-06：二进制前7位表示年，下4位月，最后5位表示日如"2009-07-06" -> "12E6"
+	/**
+	 * 转换日期格式为16进制字符串 例：“2009-12-04” -> “9C04”
+	 * 修改2009-07-06：二进制前7位表示年，下4位月，最后5位表示日如"2009-07-06" -> "12E6"
+	 * 
+	 * @param date
+	 * @return
+	 */
+
 	public static String dateToHexString(Calendar date) {
 		String year = String.valueOf(date.get(Calendar.YEAR));
 		byte tmYear = (byte) ((int) Integer.valueOf(year.substring(2)));
@@ -86,9 +92,10 @@ public class StringUtil {
 		return "0000";
 	}
 
-	// 转换16进制字符串为日期格式
-	// 例：“9C04” -> “2009-12-04”
-	// 修改2009-07-06：二进制前7位表示年，下4位月，最后5位表示日如"12E6" -> "2009-07-06"
+	/**
+	 * 转换16进制字符串为日期格式 例：“9C04” -> “2009-12-04”
+	 * 修改2009-07-06：二进制前7位表示年，下4位月，最后5位表示日如"12E6" -> "2009-07-06"
+	 */
 	public static String dateFromHexString(String hexStr) {
 		int tm1 = Integer.parseInt(hexStr.substring(0, 2), 16);
 		int tm2 = Integer.parseInt(hexStr.substring(2), 16);
@@ -107,10 +114,37 @@ public class StringUtil {
 		return "0000-00-00";
 	}
 
-	// 得到字节数组
+	/**
+	 * 四字节时间戳
+	 * 
+	 * @return
+	 */
+	public static String timeToHexString() {
+		String tempStr = "";
+		Date base = new Date("2000/01/01");
+		long time = (System.currentTimeMillis() - base.getTime()) / 1000;
+
+		for (int i = 24; i >= 0; i -= 8) {
+			String tmpStr1 = Integer.toHexString((byte) ((time >> i) & 0xff)).replace("ffffff", "");
+			if (tmpStr1.length() == 1) {
+				tempStr = "0" + tmpStr1;
+			} else {
+				tempStr += tmpStr1;
+			}
+		}
+
+		return tempStr;
+	}
+
+	/**
+	 * 得到字节数组
+	 * 
+	 * @param str
+	 * @return
+	 */
 	public static byte[] strTobytes(String str) {
 		byte[] b = new byte[str.length() / 2];
-		for (int i = 0; i < str.length() / 2; i++) {
+		for (int i = 0; i < str.length() / 2 - 2; i++) {
 			String s = str.substring(i * 2, i * 2 + 2);
 			System.out.print(s + " ");
 			b[i] = (byte) Integer.parseInt(s, 16);
@@ -147,4 +181,28 @@ public class StringUtil {
 		url = url.substring(0, last + 1) + path;
 		return url;
 	}
+
+	@Override
+	public void run() {
+		while (true) {
+			System.out.println(System.currentTimeMillis());
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public static void main(String[] args) {
+		for (int i = 0; i < 1000; i++) {
+			StringUtil s = new StringUtil();
+			
+			Thread t=new Thread(s);
+			t.setName("abc");
+			t.start();
+		}
+	}
+	
 }

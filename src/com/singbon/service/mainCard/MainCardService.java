@@ -255,11 +255,6 @@ public class MainCardService {
 		TerminalManager.sendToCardReader(socketChannel, buf);
 	}
 
-	public static void main(String[] args) {
-		String tmConsumePwd = StringUtil.hexLeftPad(Integer.valueOf(88888), 4);// 2
-		System.out.println(tmConsumePwd);
-	}
-
 	/**
 	 * 更改状态
 	 * 

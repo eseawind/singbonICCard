@@ -1,5 +1,7 @@
 package com.singbon.controller.monitor;
 
+import java.net.SocketAddress;
+import java.nio.channels.DatagramChannel;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +19,7 @@ import com.singbon.entity.Company;
 import com.singbon.entity.Device;
 import com.singbon.entity.DeviceGroup;
 import com.singbon.entity.SysUser;
+import com.singbon.service.monitor.MonitorService;
 import com.singbon.service.systemManager.DeviceGroupService;
 import com.singbon.service.systemManager.DeviceService;
 
@@ -34,6 +37,8 @@ public class MonitorController extends BaseController {
 	public DeviceGroupService deviceGroupService;
 	@Autowired
 	public DeviceService deviceService;
+	@Autowired
+	public MonitorService monitorService;
 
 	/**
 	 * 首页
@@ -52,7 +57,7 @@ public class MonitorController extends BaseController {
 
 		List<DeviceGroup> deviceGroupList = this.deviceGroupService.selectTreeList(company.getId());
 		model.addAttribute("deviceGroupList", deviceGroupList);
-		List<Device> deviceList = this.deviceService.selectList(company.getId());
+		List<Device> deviceList = this.deviceService.selectPosList(company.getId(), 1);
 		for (Device d : deviceList) {
 			if (TerminalManager.getSNToDatagramChannelList().containsKey(d.getSn())) {
 				d.setIsOnline(1);
@@ -81,4 +86,25 @@ public class MonitorController extends BaseController {
 		TerminalManager.getSNToDatagramChannelList().remove(sn);
 	}
 
+	/**
+	 * 校时
+	 * 
+	 * @param request
+	 * @param model
+	 * @param module
+	 * @return
+	 */
+	@RequestMapping(value = "/time.do", method = RequestMethod.POST)
+	public void time(String sn, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Device device = TerminalManager.getSNToDevicelList().get(sn);
+		DatagramChannel datagramChannel = TerminalManager.getSNToDatagramChannelList().get(sn);
+		SocketAddress socketAddress = TerminalManager.getSNToSocketAddresslList().get(sn);
+		if (device != null && datagramChannel != null && socketAddress != null) {
+			try {
+				this.monitorService.time(device, datagramChannel, socketAddress, null);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }

@@ -13,8 +13,7 @@ import com.singbon.entity.Device;
  * @author 郝威
  * 
  */
-public interface DeviceDAO extends BaseDAO{
-
+public interface DeviceDAO extends BaseDAO {
 
 	/**
 	 * 通过operId查找
@@ -22,7 +21,15 @@ public interface DeviceDAO extends BaseDAO{
 	 * @return
 	 */
 	public Device selectByOperId(@Param("operId") Integer operId);
-	
+
+	/**
+	 * 消费机列表
+	 * @param companyId
+	 * @param onlyEnable 1只包含启用，0全部
+	 * @return
+	 */
+	public List<Device> selectPosList(@Param("companyId") Integer companyId, @Param("onlyEnable") Integer onlyEnable);
+
 	/**
 	 * 列表
 	 * 

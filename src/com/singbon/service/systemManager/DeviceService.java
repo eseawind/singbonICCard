@@ -48,6 +48,18 @@ public class DeviceService {
 	}
 
 	/**
+	 * 消费机列表
+	 * 
+	 * @param companyId
+	 * @param onlyEnable
+	 *            1只包含启用，0全部
+	 * @return
+	 */
+	public List<Device> selectPosList(Integer companyId, Integer onlyEnable) {
+		return this.deviceDAO.selectPosList(companyId, onlyEnable);
+	}
+
+	/**
 	 * 列表
 	 * 
 	 * @return

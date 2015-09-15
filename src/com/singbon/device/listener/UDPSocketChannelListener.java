@@ -2,6 +2,7 @@ package com.singbon.device.listener;
 
 import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
+import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 import java.nio.channels.SelectionKey;
@@ -50,9 +51,7 @@ public class UDPSocketChannelListener implements ServletContextListener {
 						ByteBuffer byteBuffer = ByteBuffer.allocate(65536);
 						DatagramChannel datagramChannel = (DatagramChannel) selectionKey.channel();
 
-						// SocketAddress socketAddress =
-						// datagramChannel.receive(byteBuffer);
-						datagramChannel.receive(byteBuffer);
+						SocketAddress socketAddress = datagramChannel.receive(byteBuffer);
 						byteBuffer.flip();
 
 						int byteLen = 0;
@@ -64,10 +63,10 @@ public class UDPSocketChannelListener implements ServletContextListener {
 							}
 						}
 						b = Arrays.copyOf(b, byteLen);
-						for (byte b2 : b) {
-							System.out.print(StringUtil.toHexString(b2) + " ");
-						}
-						System.out.println();
+//						for (byte b2 : b) {
+//							System.out.print(StringUtil.toHexString(b2) + " ");
+//						}
+//						System.out.println();
 
 						// 校验
 						if (!CRC16.compareCRC16(b)) {
@@ -85,7 +84,7 @@ public class UDPSocketChannelListener implements ServletContextListener {
 						// 分发数据
 						TerminalManager s = new TerminalManager();
 						try {
-							s.dispatchPosCommand(selectionKey, b);
+							s.dispatchPosCommand(datagramChannel, socketAddress, b);
 						} catch (Exception e) {
 							e.printStackTrace();
 						}

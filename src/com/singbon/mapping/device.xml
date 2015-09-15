@@ -15,6 +15,12 @@
 	<select id="selectByOperId" resultMap="device">
 		select * from device where operId=#{operId}
 	</select>
+	<select id="selectPosList" resultMap="device">
+		select * from device where companyId=#{companyId} and deviceType=1 
+		<if test="onlyEnable!=null and onlyEnable = 1">
+			 and enable=1
+		</if>
+	</select>
 	<select id="selectList" resultMap="device">
 		select * from device where companyId=#{companyId}
 	</select>

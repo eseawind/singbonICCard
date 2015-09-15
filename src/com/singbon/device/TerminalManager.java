@@ -1,6 +1,7 @@
 package com.singbon.device;
 
 import java.io.IOException;
+import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 import java.nio.channels.SelectionKey;
@@ -47,6 +48,32 @@ public class TerminalManager {
 	 * SN序列号到Datagram套接字通道映射列表
 	 */
 	private static Map<String, DatagramChannel> SNToDatagramChannelList = new HashMap<String, DatagramChannel>();
+
+	/**
+	 * SN序列号到SocketAddress映射列表
+	 */
+	private static Map<String, SocketAddress> SNToSocketAddresslList = new HashMap<String, SocketAddress>();
+
+	public static Map<String, SocketAddress> getSNToSocketAddresslList() {
+		return SNToSocketAddresslList;
+	}
+
+	public static void setSNToSocketAddresslList(Map<String, SocketAddress> sNToSocketAddresslList) {
+		SNToSocketAddresslList = sNToSocketAddresslList;
+	}
+
+	/**
+	 * SN序列号到设备映射列表
+	 */
+	private static Map<String, Device> SNToDevicelList = new HashMap<String, Device>();
+
+	public static Map<String, Device> getSNToDevicelList() {
+		return SNToDevicelList;
+	}
+
+	public static void setSNToDevicelList(Map<String, Device> sNToDevicelList) {
+		SNToDevicelList = sNToDevicelList;
+	}
 
 	public static CometEngine getEngineInstance() {
 		return engineInstance;
@@ -331,45 +358,90 @@ public class TerminalManager {
 			}
 			// 读卡修正命令
 			else if (commandCode == CommandCodeCardReader.ReadCard) {
-				for (byte b2 : b) {
-					System.out.print(StringUtil.toHexString(b2) + " ");
-				}
-				System.out.println();
 				map.put("'f1'", FrameCardReader.ReadCardCmd);
 				map.put("'r'", cardStatus);
 				map.put("'cardSN'", cardSN);
 				int base0 = baseLen + 3;
-				map.put("'userId'", Integer.parseInt(cardInfo(base0, base0 + 3, b), 16));
-				map.put("'cardNO'", Integer.parseInt(cardInfo(base0 + 4, base0 + 7, b), 16));
-				map.put("'invalidDate'", StringUtil.dateFromHexString(cardInfo(base0 + 10, base0 + 11, b)));
-				int status = Integer.parseInt(cardInfo(base0 + 12, base0 + 12, b), 16);
-				String statusDesc = "正常";
-				if (status == 241) {
-					statusDesc = "正常";
-				} else if (status == 242) {
-					statusDesc = "未开户或注销";
-				} else if (status == 243) {
-					statusDesc = "挂失";
-				} else {
-					statusDesc = "异常";
+				try {
+					map.put("'userId'", Integer.parseInt(cardInfo(base0, base0 + 3, b), 16));
+				} catch (Exception e) {
+					map.put("userId", "未知");
+				}
+				try {
+					map.put("'cardNO'", Integer.parseInt(cardInfo(base0 + 4, base0 + 7, b), 16));
+				} catch (Exception e) {
+					map.put("cardNO", "未知");
+				}
+				try {
+					map.put("'invalidDate'", StringUtil.dateFromHexString(cardInfo(base0 + 10, base0 + 11, b)));
+				} catch (Exception e) {
+					map.put("invalidDate", "未知");
+				}
+				try {
+					int status = Integer.parseInt(cardInfo(base0 + 12, base0 + 12, b), 16);
+					String statusDesc = "正常";
+					if (status == 241) {
+						statusDesc = "正常";
+					} else if (status == 242) {
+						statusDesc = "未开户或注销";
+					} else if (status == 243) {
+						statusDesc = "挂失";
+					} else {
+						statusDesc = "异常";
+					}
+
+					map.put("'status'", status);
+					map.put("'statusDesc'", statusDesc);
+				} catch (Exception e) {
+					map.put("status", "未知");
+					map.put("statusDesc", "未知");
 				}
 
-				map.put("'status'", status);
-				map.put("'statusDesc'", statusDesc);
-
 				int base2 = baseLen + 19 + 3;
-				map.put("'cardSeq'", Integer.parseInt(cardInfo(base2 + 4, base2 + 4, b), 16));
-				map.put("'cardTypeId'", Integer.parseInt(cardInfo(base2 + 5, base2 + 5, b), 16));
-				map.put("'totalFare'", (float) Integer.parseInt(cardInfo(base2 + 10, base2 + 13, b), 16) / 100);
+				try {
+					map.put("'cardSeq'", Integer.parseInt(cardInfo(base2 + 4, base2 + 4, b), 16));
+				} catch (Exception e) {
+					map.put("cardSeq", "未知");
+				}
+				try {
+					map.put("'cardTypeId'", Integer.parseInt(cardInfo(base2 + 5, base2 + 5, b), 16));
+				} catch (Exception e) {
+					map.put("cardTypeId", "未知");
+				}
+				try {
+					map.put("'totalFare'", (float) Integer.parseInt(cardInfo(base2 + 10, base2 + 13, b), 16) / 100);
+				} catch (Exception e) {
+					map.put("totalFare", "未知");
+				}
 
 				int consume0 = baseLen + 19 * 2 + 3;
-				map.put("'opCount'", Integer.parseInt(cardInfo(consume0, consume0 + 1, b), 16));
-				map.put("'oddFare'", (float) Integer.parseInt(cardInfo(consume0 + 3, consume0 + 5, b), 16) / 100);
+				try {
+					map.put("'opCount'", Integer.parseInt(cardInfo(consume0, consume0 + 1, b), 16));
+				} catch (Exception e) {
+					map.put("opCount", "未知");
+				}
+				try {
+					map.put("'oddFare'", (float) Integer.parseInt(cardInfo(consume0 + 3, consume0 + 5, b), 16) / 100);
+				} catch (Exception e) {
+					map.put("oddFare", "未知");
+				}
 
 				int subsidy0 = baseLen + 19 * 3 + 3;
-				map.put("'subsidyOpCount'", Integer.parseInt(cardInfo(subsidy0, subsidy0 + 1, b), 16));
-				map.put("'subsidyOddFare'", (float) Integer.parseInt(cardInfo(subsidy0 + 2, subsidy0 + 5, b), 16) / 100);
-				map.put("'subsidyVersion'", Integer.parseInt(cardInfo(subsidy0 + 8, subsidy0 + 9, b), 16));
+				try {
+					map.put("'subsidyOpCount'", Integer.parseInt(cardInfo(subsidy0, subsidy0 + 1, b), 16));
+				} catch (Exception e) {
+					map.put("subsidyOpCount", "未知");
+				}
+				try {
+					map.put("'subsidyOddFare'", (float) Integer.parseInt(cardInfo(subsidy0 + 2, subsidy0 + 5, b), 16) / 100);
+				} catch (Exception e) {
+					map.put("subsidyOddFare", "未知");
+				}
+				try {
+					map.put("'subsidyVersion'", Integer.parseInt(cardInfo(subsidy0 + 8, subsidy0 + 9, b), 16));
+				} catch (Exception e) {
+					map.put("subsidyVersion", "未知");
+				}
 			}
 			// 制出纳卡命令
 			else if (commandCode == CommandCodeCardReader.MakeCashierCard) {
@@ -546,7 +618,7 @@ public class TerminalManager {
 	// //////////////////////////////////////////////////////////////////////////////
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void dispatchPosCommand(SelectionKey selectionKey, byte[] b) {
+	public void dispatchPosCommand(DatagramChannel datagramChannel, SocketAddress socketAddress, byte[] b) {
 		if (b == null)
 			return;
 		String sn = getSN(b);
@@ -566,8 +638,8 @@ public class TerminalManager {
 		Map map = new HashMap();
 		// 如果包含sn则设置sn与datagram对照关系
 		if (TerminalManager.getSnToCompanyList().containsKey(sn)) {
-			DatagramChannel datagramChannel = (DatagramChannel) selectionKey.channel();
 			TerminalManager.getSNToDatagramChannelList().put(sn, datagramChannel);
+			TerminalManager.getSNToSocketAddresslList().put(sn, socketAddress);
 
 			byte frame = FramePos.Status;
 			map.put("'f1'", frame);
@@ -583,5 +655,28 @@ public class TerminalManager {
 			Integer companyId = TerminalManager.getSnToCompanyList().get(sn);
 			TerminalManager.getEngineInstance().sendToAll("Co" + companyId, msg);
 		}
+	}
+
+	/**
+	 * 发送命令到消费机， 改方法负责crc校验
+	 * 
+	 * @param socketChannel
+	 * @param b
+	 * @throws IOException
+	 */
+	public static void sendToPos(DatagramChannel datagramChannel, SocketAddress socketAddress, byte[] b) throws IOException {
+		CRC16.generate(b);
+		System.out.print(StringUtil.toHexString(b[b.length-2]) + " ");
+		System.out.print(StringUtil.toHexString(b[b.length-1]) + " ");
+		ByteBuffer byteBuffer = ByteBuffer.wrap(b);
+		datagramChannel.send(byteBuffer, socketAddress);
+	}
+
+	public static void main(String[] args) {
+		byte[] b = StringUtil.strTobytes("29 74 e7 0c 3c 9e 11 e5 83 9f d4 be d9 80 4c 01 00 bc 61 4f 00 00 00 00 00 00 02 02 00 0c 07 01 00 00 1d 8a ae f3 24 b5".replaceAll(" ", ""));
+		CRC16.generate(b);
+		System.out.print(Integer.toHexString(b[b.length - 2]));
+		System.out.print(Integer.toHexString(b[b.length - 1]));
+
 	}
 }
