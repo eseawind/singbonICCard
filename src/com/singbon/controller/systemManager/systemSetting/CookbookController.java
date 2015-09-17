@@ -39,11 +39,14 @@ public class CookbookController extends BaseController {
 	 * @param model
 	 */
 	@RequestMapping(value = "/save.do")
-	public void save(@ModelAttribute Cookbook cookbook, HttpServletRequest request, HttpServletResponse response, Model model) {
+	public void save(@ModelAttribute Cookbook cookbook, String status, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
 		PrintWriter p = null;
 		try {
 			p = response.getWriter();
+			if (status != null) {
+				cookbook.setEnable(true);
+			}
 			if (cookbook.getId() == null) {
 				Integer maxCode = this.cookbookService.selectMaxCode(company.getId());
 				cookbook.setCookbookCode(maxCode);

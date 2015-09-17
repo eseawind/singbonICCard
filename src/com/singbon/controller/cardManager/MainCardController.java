@@ -204,7 +204,7 @@ public class MainCardController extends BaseController {
 		if (device != null) {
 			model.addAttribute("sn", sn);
 			// 读卡机状态
-			if (TerminalManager.getSNToSocketChannelList().containsKey(sn)) {
+			if (TerminalManager.SNToSocketChannelList.containsKey(sn)) {
 				model.addAttribute("cardStatus", 1);
 			} else {
 				model.addAttribute("cardStatus", 0);
@@ -238,7 +238,7 @@ public class MainCardController extends BaseController {
 			Map map = new HashMap();
 			map.put("'f1'", FrameCardReader.ExsitCardSN);
 			String msg = JSONUtil.convertToJson(map);
-			TerminalManager.getEngineInstance().sendToAll("c" + sn, msg);
+			TerminalManager.EngineInstance.sendToAll("c" + sn, msg);
 			return 1;
 		}
 		return 0;
@@ -274,7 +274,7 @@ public class MainCardController extends BaseController {
 			if (cardSNCount > 0) {
 				return;
 			}
-			SocketChannel socketChannel = TerminalManager.getSNToSocketChannelList().get(sn);
+			SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
 			if (socketChannel != null) {
 				try {
 					int cardNO = this.mainCardService.selectMaxCardNO(company.getId());
@@ -304,7 +304,7 @@ public class MainCardController extends BaseController {
 			if (cardSNCount > 0) {
 				return;
 			}
-			SocketChannel socketChannel = TerminalManager.getSNToSocketChannelList().get(sn);
+			SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
 			if (socketChannel != null) {
 				try {
 					User user2 = this.mainCardService.selectById(user.getUserId());
@@ -410,7 +410,7 @@ public class MainCardController extends BaseController {
 			if (userNONum > 0) {
 				p.print(2);
 			} else {
-				SocketChannel socketChannel = TerminalManager.getSNToSocketChannelList().get(device.getSn());
+				SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(device.getSn());
 				if (socketChannel != null) {
 					try {
 						// 获取基本扇区0块
@@ -443,7 +443,7 @@ public class MainCardController extends BaseController {
 		int section = TerminalManager.getSection(company.getId());
 		// 获取读卡器状态
 		if ("getCardReaderStatus".equals(comm)) {
-			SocketChannel socketChannel = TerminalManager.getSNToSocketChannelList().get(sn);
+			SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
 			if (socketChannel != null) {
 				try {
 					TerminalManager.getCardReaderHeartStatus(socketChannel);
@@ -462,7 +462,7 @@ public class MainCardController extends BaseController {
 		}
 		// 信息发卡初始化
 		else if ("infoCardInit".equals(comm)) {
-			SocketChannel socketChannel = TerminalManager.getSNToSocketChannelList().get(sn);
+			SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
 			if (socketChannel != null) {
 				try {
 					// 获取基本信息区0块
@@ -476,7 +476,7 @@ public class MainCardController extends BaseController {
 		}
 		// 解挂初始化
 		else if ("unlossInit".equals(comm)) {
-			SocketChannel socketChannel = TerminalManager.getSNToSocketChannelList().get(sn);
+			SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
 			if (socketChannel != null) {
 				try {
 					// 获取基本信息区0块
@@ -490,7 +490,7 @@ public class MainCardController extends BaseController {
 		}
 		// 补卡初始化
 		else if ("remakeCardInit".equals(comm)) {
-			SocketChannel socketChannel = TerminalManager.getSNToSocketChannelList().get(sn);
+			SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
 			if (socketChannel != null) {
 				try {
 					// 获取全部扇区
@@ -504,7 +504,7 @@ public class MainCardController extends BaseController {
 		}
 		// 换卡读原卡
 		else if ("readOldCardInit".equals(comm)) {
-			SocketChannel socketChannel = TerminalManager.getSNToSocketChannelList().get(sn);
+			SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
 			if (socketChannel != null) {
 				try {
 					// 获取基本扇区0块
@@ -521,7 +521,7 @@ public class MainCardController extends BaseController {
 		}
 		// 换卡换新卡
 		else if ("changeNewCardInit".equals(comm)) {
-			SocketChannel socketChannel = TerminalManager.getSNToSocketChannelList().get(sn);
+			SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
 			if (socketChannel != null) {
 				try {
 					// 获取基本扇区0块
@@ -535,7 +535,7 @@ public class MainCardController extends BaseController {
 		}
 		// 读卡
 		else if ("readCardInit".equals(comm)) {
-			SocketChannel socketChannel = TerminalManager.getSNToSocketChannelList().get(sn);
+			SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
 			if (socketChannel != null) {
 				try {
 					// 获取全部扇区
@@ -553,7 +553,7 @@ public class MainCardController extends BaseController {
 		}
 		// 读取卡余额
 		else if ("readCardOddFareInit".equals(comm)) {
-			SocketChannel socketChannel = TerminalManager.getSNToSocketChannelList().get(sn);
+			SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
 			if (socketChannel != null) {
 				try {
 					// 获取基本扇区0块2块
@@ -598,7 +598,7 @@ public class MainCardController extends BaseController {
 		model.addAttribute("sn", sn);
 
 		// 读卡机状态
-		if (TerminalManager.getSNToSocketChannelList().containsKey(sn)) {
+		if (TerminalManager.SNToSocketChannelList.containsKey(sn)) {
 			model.addAttribute("cardStatus", 1);
 		} else {
 			model.addAttribute("cardStatus", 0);
@@ -647,7 +647,7 @@ public class MainCardController extends BaseController {
 		}
 		// 解挂
 		else if (editType == 1) {
-			SocketChannel socketChannel = TerminalManager.getSNToSocketChannelList().get(sn);
+			SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
 			if (socketChannel != null) {
 				try {
 					this.mainCardService.unloss(userId, socketChannel, device, cardSN, cardInfoStr);
@@ -662,7 +662,7 @@ public class MainCardController extends BaseController {
 			if (cardSNCount > 0) {
 				return;
 			}
-			SocketChannel socketChannel = TerminalManager.getSNToSocketChannelList().get(sn);
+			SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
 			if (socketChannel != null) {
 				try {
 					User user = this.mainCardService.selectById(userId);
@@ -697,7 +697,7 @@ public class MainCardController extends BaseController {
 			if (cardSNCount > 0) {
 				return;
 			}
-			SocketChannel socketChannel = TerminalManager.getSNToSocketChannelList().get(sn);
+			SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
 			if (socketChannel != null) {
 				try {
 					this.mainCardService.changeNewCard(company.getId(), userId, socketChannel, device, newCardSN, cardInfoStr);
@@ -730,7 +730,7 @@ public class MainCardController extends BaseController {
 		model.addAttribute("base", url.replace("/readCard.do", ""));
 
 		// 读卡机状态
-		if (TerminalManager.getSNToSocketChannelList().containsKey(sn)) {
+		if (TerminalManager.SNToSocketChannelList.containsKey(sn)) {
 			model.addAttribute("cardStatus", 1);
 		} else {
 			model.addAttribute("cardStatus", 0);
@@ -833,7 +833,7 @@ public class MainCardController extends BaseController {
 				e.printStackTrace();
 			}
 		} else {
-			SocketChannel socketChannel = TerminalManager.getSNToSocketChannelList().get(sn);
+			SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
 			if (socketChannel != null) {
 				try {
 					User user2 = this.mainCardService.selectById(user.getUserId());
@@ -963,7 +963,7 @@ public class MainCardController extends BaseController {
 		model.addAttribute("base", url.replace("/charge.do", ""));
 
 		// 读卡机状态
-		if (TerminalManager.getSNToSocketChannelList().containsKey(sn)) {
+		if (TerminalManager.SNToSocketChannelList.containsKey(sn)) {
 			model.addAttribute("cardStatus", 1);
 		} else {
 			model.addAttribute("cardStatus", 0);
@@ -1027,7 +1027,7 @@ public class MainCardController extends BaseController {
 	@RequestMapping(value = "/doCharge.do", method = RequestMethod.POST)
 	public void doCharge(@ModelAttribute User user, Integer chargeType, Float opCash2, Float oddFare2, String cardInfoStr, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Device device = (Device) request.getSession().getAttribute("device");
-		SocketChannel socketChannel = TerminalManager.getSNToSocketChannelList().get(device.getSn());
+		SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(device.getSn());
 		if (socketChannel != null) {
 			try {
 				this.mainCardService.doCharge(user, oddFare2, opCash2, socketChannel, device, chargeType, cardInfoStr);

@@ -61,7 +61,7 @@ $(function() {
 	}
 </style>
 <form id="consumeParamForm" method="post" action="${base }/save.do" class="pageForm required-validate">
-	<div class="pageFormContent" layoutH="100">
+	<div class="pageFormContent" layoutH="130">
 		<fieldset style="margin-top: 50px;">
 			<legend>卡底金</legend>
 			<dl>

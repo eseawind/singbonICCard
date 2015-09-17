@@ -73,7 +73,9 @@
 		$('#deptTree').loadUrl('${base }/treeList.do');
 	}
 	function refreshDeptList() {
-		$('#deptList').loadUrl('${base}/list.do?parentId=' + selectedDeptId);
+		$('#deptList').loadUrl('${base}/list.do?parentId=' + selectedDeptId,{},function(){
+			$('#deptList').find('[layoutH]').layoutH();
+		});
 	}
 	function emptyForm() {
 		$('#deptForm input').eq(0).val('');

@@ -21,7 +21,9 @@
 		});
 	});
 	function refreshcookbookList() {
-		$('#cookbookList').loadUrl('${base}/list.do');
+		$('#cookbookList').loadUrl('${base}/list.do',{},function(){
+			$('#cookbookList').find('[layoutH]').layoutH();
+		});
 	}
 </script>
 <link href="themes/css/custom.css" rel="stylesheet" type="text/css"/>
@@ -55,7 +57,7 @@
 			<dl>
 				<dt>&nbsp;</dt>
 				<dd>
-					<input type="checkbox" name="isEnable" checked="checked" style="width:13px;"/>是否启用
+					<input type="checkbox" name="status" checked="checked" style="width:13px;"/>是否启用
 				</dd>
 			</dl>
 		</div>

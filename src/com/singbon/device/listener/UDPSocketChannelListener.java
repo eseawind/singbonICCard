@@ -48,7 +48,7 @@ public class UDPSocketChannelListener implements ServletContextListener {
 					SelectionKey selectionKey = iterator.next();
 					iterator.remove();
 					if (selectionKey.isReadable()) {
-						ByteBuffer byteBuffer = ByteBuffer.allocate(65536);
+						ByteBuffer byteBuffer = ByteBuffer.allocate(200);
 						DatagramChannel datagramChannel = (DatagramChannel) selectionKey.channel();
 
 						SocketAddress socketAddress = datagramChannel.receive(byteBuffer);
@@ -63,10 +63,13 @@ public class UDPSocketChannelListener implements ServletContextListener {
 							}
 						}
 						b = Arrays.copyOf(b, byteLen);
+						if(b.length!=70){
+							StringUtil.println("收到回复");
+						}
 //						for (byte b2 : b) {
-//							System.out.print(StringUtil.toHexString(b2) + " ");
+//							StringUtil.print(StringUtil.toHexString(b2) + " ");
 //						}
-//						System.out.println();
+//						StringUtil.println();
 
 						// 校验
 						if (!CRC16.compareCRC16(b)) {
@@ -98,10 +101,10 @@ public class UDPSocketChannelListener implements ServletContextListener {
 
 	@SuppressWarnings("unused")
 	private void removeSockeckChannel(String uuid) {
-		if (TerminalManager.getUuidToSNList().containsKey(uuid)) {
-			String sn = TerminalManager.getUuidToSNList().get(uuid);
-			TerminalManager.getSNToSocketChannelList().put(sn, null);
-			TerminalManager.getUuidToSNList().remove(uuid);
+		if (TerminalManager.UuidToSNList.containsKey(uuid)) {
+			String sn = TerminalManager.UuidToSNList.get(uuid);
+			TerminalManager.SNToSocketChannelList.put(sn, null);
+			TerminalManager.UuidToSNList.remove(uuid);
 		}
 	}
 

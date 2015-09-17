@@ -53,6 +53,8 @@
 			if(tbody.hasClass("userList")){		
 				tbody.parents(".gridScroller").contextMenu('menu',userListOps);
 				$trs.contextMenu('menu',userListOps);
+			}else if(tbody.hasClass("clearLog")){		
+				tbody.contextMenu('clearMenu',clearOps);
 			}
 			
 			$trs.hoverClass().each(function(){
@@ -84,6 +86,8 @@
 						waterRateClick($(this));
 					}else if(target=="cookbook"){
 						cookbookClick($(this));
+					}else if(target=="orderTime"){
+						orderTimeClick($(this));
 					}
 					$trs.filter(".selected").removeClass("selected");
 					$tr.addClass("selected");

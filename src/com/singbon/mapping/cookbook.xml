@@ -5,11 +5,11 @@
 	</resultMap>
 	<parameterMap type="com.singbon.entity.Cookbook" id="cookbook2" />
 	<insert id="insert">
-		insert into cookbook (companyId,cookbookCode,cookbookName,price,remark,isEnable)
-		values (#{companyId},#{cookbookCode},#{cookbookName},#{price},#{remark},#{isEnable})
+		insert into cookbook (companyId,cookbookCode,cookbookName,price,remark,enable)
+		values (#{companyId},#{cookbookCode},#{cookbookName},#{price},#{remark},#{enable})
 	</insert>
 	<update id="update" parameterMap="cookbook2">
-		update cookbook set cookbookName=#{cookbookName},price=#{price},remark=#{remark},isEnable=#{isEnable}
+		update cookbook set cookbookName=#{cookbookName},price=#{price},remark=#{remark},enable=#{enable}
 		where id=#{id}
 	</update>
 	<select id="selectMaxCode" resultType="java.lang.Integer">

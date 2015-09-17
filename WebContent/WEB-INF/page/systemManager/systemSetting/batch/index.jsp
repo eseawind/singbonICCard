@@ -80,7 +80,9 @@
 	}
 
 	function refreshBatchList() {
-		$('#batchList').loadUrl('${base}/list.do');
+		$('#batchList').loadUrl('${base}/list.do',{},function(){
+			$('#batchList').find('[layoutH]').layoutH();
+		});
 	}
 </script>
 <link href="themes/css/custom.css" rel="stylesheet" type="text/css"/>
