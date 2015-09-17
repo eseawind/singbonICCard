@@ -83,11 +83,11 @@ public class TCPSocketChannelListener implements ServletContextListener {
 			try {
 				len = sc.read(byteBuffer);
 			} catch (Exception e) {
+				e.printStackTrace();
 				String uuid = selectionKey.attachment().toString();
 				StringUtil.println(uuid);
 				removeSockeckChannel(uuid);
 				// 如果read抛出异常，表示连接异常中断，需要关闭 socketChannel
-				e.printStackTrace();
 				sc.close();
 			}
 			// 如果len>0，表示有输入。如果len==0, 表示输入结束。需要关闭 socketChannel

@@ -46,6 +46,7 @@ public class DiscountController extends BaseController {
 			this.discountService.update(discount);
 			p.print(1);
 		} catch (Exception e) {
+			e.printStackTrace();
 			p.print(0);
 		}
 	}

@@ -75,6 +75,7 @@ public class WaterRateController extends BaseController {
 			this.waterRateService.update(waterRate);
 			p.print(1);
 		} catch (Exception e) {
+			e.printStackTrace();
 			p.print(0);
 		}
 	}

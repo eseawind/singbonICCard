@@ -73,6 +73,7 @@ public class AuthorizationController extends BaseController {
 			}
 			p.print(1);
 		} catch (Exception e) {
+			e.printStackTrace();
 			p.print(0);
 		}
 	}
@@ -98,6 +99,7 @@ public class AuthorizationController extends BaseController {
 				p.print(1);
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			p.print(0);
 		}
 	}
@@ -160,6 +162,7 @@ public class AuthorizationController extends BaseController {
 			this.authorizationService.saveUserGroup(groupIds, userId);
 			p.print(1);
 		} catch (Exception e) {
+			e.printStackTrace();
 			p.print(0);
 		}
 	}

@@ -330,6 +330,7 @@ public class MonitorService implements Runnable {
 						Thread.sleep(200);
 					}
 				} catch (InterruptedException e) {
+					e.printStackTrace();
 					stop = true;
 					break;
 				}

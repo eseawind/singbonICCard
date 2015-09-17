@@ -45,6 +45,7 @@ public class EntranceGuardController extends BaseController {
 			this.entranceGuardService.update(entranceGuard);
 			p.print(1);
 		} catch (Exception e) {
+			e.printStackTrace();
 			p.print(0);
 		}
 	}

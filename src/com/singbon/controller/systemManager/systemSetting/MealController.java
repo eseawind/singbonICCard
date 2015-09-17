@@ -46,6 +46,7 @@ public class MealController extends BaseController {
 			this.mealService.update(meal);
 			p.print(1);
 		} catch (Exception e) {
+			e.printStackTrace();
 			p.print(0);
 		}
 	}

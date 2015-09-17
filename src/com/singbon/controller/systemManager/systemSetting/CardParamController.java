@@ -45,6 +45,7 @@ public class CardParamController extends BaseController {
 			this.cardParamService.update(CardParam);
 			p.print(1);
 		} catch (Exception e) {
+			e.printStackTrace();
 			p.print(0);
 		}
 	}

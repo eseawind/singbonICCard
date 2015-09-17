@@ -49,6 +49,7 @@ public class OrderTimeController extends BaseController {
 			this.orderTimeService.update(orderTime);
 			p.print(1);
 		} catch (Exception e) {
+			e.printStackTrace();
 			p.print(0);
 		}
 	}

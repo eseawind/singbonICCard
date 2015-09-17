@@ -52,6 +52,7 @@ public class DeptController {
 			}
 			p.print(1);
 		} catch (Exception e) {
+			e.printStackTrace();
 			p.print(0);
 		}
 	}
@@ -77,6 +78,7 @@ public class DeptController {
 			this.deptService.delete(id);
 			p.print(1);
 		} catch (Exception e) {
+			e.printStackTrace();
 			p.print(0);
 		}
 	}

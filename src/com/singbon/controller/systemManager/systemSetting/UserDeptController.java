@@ -56,6 +56,7 @@ public class UserDeptController {
 			}
 			p.print(1);
 		} catch (Exception e) {
+			e.printStackTrace();
 			p.print(0);
 		}
 	}
@@ -83,6 +84,7 @@ public class UserDeptController {
 			this.userDeptService.delete(id);
 			p.print(1);
 		} catch (Exception e) {
+			e.printStackTrace();
 			p.print(0);
 		}
 	}

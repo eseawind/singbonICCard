@@ -75,6 +75,7 @@ public class ConsumeParamController extends BaseController {
 			this.consumeParamService.update(consumeParam);
 			p.print(1);
 		} catch (Exception e) {
+			e.printStackTrace();
 			p.print(0);
 		}
 	}

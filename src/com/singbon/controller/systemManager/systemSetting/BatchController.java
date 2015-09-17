@@ -53,6 +53,7 @@ public class BatchController extends BaseController {
 			}
 			p.print(1);
 		} catch (Exception e) {
+			e.printStackTrace();
 			p.print(0);
 		}
 	}

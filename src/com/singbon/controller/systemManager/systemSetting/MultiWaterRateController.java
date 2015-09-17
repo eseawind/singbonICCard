@@ -45,6 +45,7 @@ public class MultiWaterRateController extends BaseController {
 			this.multiWaterRateService.update(multiWaterRate);
 			p.print(1);
 		} catch (Exception e) {
+			e.printStackTrace();
 			p.print(0);
 		}
 	}

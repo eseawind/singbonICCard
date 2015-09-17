@@ -351,6 +351,7 @@ public class MainCardController extends BaseController {
 				}
 				p.print(1);
 			} catch (Exception e) {
+				e.printStackTrace();
 				p.print(0);
 			}
 		}
@@ -388,6 +389,7 @@ public class MainCardController extends BaseController {
 			this.mainCardService.delete(userIds);
 			p.print(1);
 		} catch (Exception e) {
+			e.printStackTrace();
 			p.print(0);
 		}
 	}
@@ -424,6 +426,7 @@ public class MainCardController extends BaseController {
 				p.print(1);
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			p.print(0);
 		}
 	}
@@ -853,6 +856,7 @@ public class MainCardController extends BaseController {
 					}
 					this.mainCardService.makeCardByUserInfo(device, socketChannel, user2, cardAllInfo, user2.getCardSN(), CommandCodeCardReader.ReadCard, section);
 				} catch (Exception e) {
+					e.printStackTrace();
 				}
 			}
 		}

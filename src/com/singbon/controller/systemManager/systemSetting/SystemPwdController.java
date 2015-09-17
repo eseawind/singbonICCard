@@ -69,6 +69,7 @@ public class SystemPwdController extends BaseController {
 			request.getSession().setAttribute("company", company);
 			p.print(1);
 		} catch (Exception e) {
+			e.printStackTrace();
 			p.print(0);
 		}
 
