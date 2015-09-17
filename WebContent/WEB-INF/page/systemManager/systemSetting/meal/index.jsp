@@ -29,7 +29,9 @@
 		});
 	});
 	function refreshmealList() {
-		$('#mealList').loadUrl('${base}/list.do');
+		$('#mealList').loadUrl('${base}/list.do',{},function(){
+			$('#mealList').find('[layoutH]').layoutH();
+		});
 	}
 </script>
 <link href="themes/css/custom.css" rel="stylesheet" type="text/css"/>

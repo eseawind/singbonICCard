@@ -11,6 +11,7 @@ import org.comet4j.core.listener.ConnectListener;
 import org.comet4j.core.listener.DropListener;
 
 import com.singbon.device.TerminalManager;
+import com.singbon.util.StringUtil;
 
 /**
  * 采集监控向客户端推送消息
@@ -19,32 +20,32 @@ import com.singbon.device.TerminalManager;
  * 
  */
 public class MonitorListener implements ServletContextListener {
-	
+
 	public void contextInitialized(ServletContextEvent arg0) {
 		CometContext cc = CometContext.getInstance();
 
-		TerminalManager.setEngineInstance(cc.getEngine());
+		TerminalManager.EngineInstance = cc.getEngine();
 
 		// 添加连接监听
 
-		TerminalManager.getEngineInstance().addConnectListener(new ConnectListener() {
+		TerminalManager.EngineInstance.addConnectListener(new ConnectListener() {
 			@Override
 			public boolean handleEvent(ConnectEvent event) {
 
 				CometConnection connection = event.getConn();
 				String ip = connection.getClientIp();
-				System.out.println(ip);
+				StringUtil.println(ip);
 				return false;
 			}
 		});
 
-		TerminalManager.getEngineInstance().addDropListener(new DropListener() {
+		TerminalManager.EngineInstance.addDropListener(new DropListener() {
 			@Override
 			public boolean handleEvent(DropEvent event) {
 
 				CometConnection connection = event.getConn();
 				String ip = connection.getClientIp();
-				System.out.println("d " + ip);
+				StringUtil.println("d " + ip);
 				return false;
 			}
 		});

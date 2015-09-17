@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.singbon.dao.SysUserDAO;
-import com.singbon.device.CRC16;
 import com.singbon.device.CommandCardReader;
 import com.singbon.device.CommandCodeCardReader;
 import com.singbon.device.TerminalManager;
@@ -101,10 +100,7 @@ public class SpecialCardService {
 		sendStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + "00000000" + "0000" + "0808" + bufLen + sendStr;
 
 		byte[] buf = StringUtil.strTobytes(sendStr);
-		CRC16.generate(buf);
-		System.out.print(StringUtil.hexLeftPad(buf[buf.length - 2], 2) + " ");
-		System.out.print(StringUtil.hexLeftPad(buf[buf.length - 1], 2));
-		System.out.println();
+//		CRC16.generate(buf);
 		TerminalManager.sendToCardReader(socketChannel, buf);
 	}
 
@@ -137,7 +133,7 @@ public class SpecialCardService {
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
 		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + "00000000" + "0000" + "0808" + bufLen + sendBufStr;
 		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
-		CRC16.generate(sendBuf);
+//		CRC16.generate(sendBuf);
 		TerminalManager.sendToCardReader(socketChannel, sendBuf);
 	}
 
@@ -149,7 +145,7 @@ public class SpecialCardService {
 	 * @throws Exception
 	 */
 	public void unloss(SysUser sysUser, SocketChannel socketChannel, Device device, String cardInfoStr) throws Exception {
-//		this.sysUserDAO.changeStatus(sysUser.getOperId(), 1);
+		this.sysUserDAO.changeStatus(sysUser.getOperId(), 1);
 
 		cardInfoStr = cardInfoStr.substring(0, 12) + "0f1" + cardInfoStr.substring(15);
 		String commandCodeStr = StringUtil.hexLeftPad(CommandCodeCardReader.UnLossCashierCard, 4);
@@ -157,7 +153,7 @@ public class SpecialCardService {
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
 		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + "00000000" + "0000" + "0808" + bufLen + sendBufStr;
 		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
-		CRC16.generate(sendBuf);
+//		CRC16.generate(sendBuf);
 		TerminalManager.sendToCardReader(socketChannel, sendBuf);
 	}
 
@@ -182,7 +178,7 @@ public class SpecialCardService {
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
 		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + "00000000" + "0000" + "0808" + bufLen + sendBufStr;
 		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
-		CRC16.generate(sendBuf);
+//		CRC16.generate(sendBuf);
 		TerminalManager.sendToCardReader(socketChannel, sendBuf);
 	}
 }

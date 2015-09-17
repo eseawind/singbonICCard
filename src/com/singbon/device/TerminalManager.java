@@ -6,7 +6,9 @@ import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +17,12 @@ import org.comet4j.core.CometContext;
 import org.comet4j.core.CometEngine;
 import org.comet4j.core.util.JSONUtil;
 
+import com.singbon.entity.ConsumeParam;
+import com.singbon.entity.Cookbook;
 import com.singbon.entity.Device;
+import com.singbon.entity.Discount;
+import com.singbon.entity.Meal;
+import com.singbon.entity.OrderTime;
 import com.singbon.util.StringUtil;
 
 /**
@@ -25,95 +32,81 @@ import com.singbon.util.StringUtil;
  * 
  */
 public class TerminalManager {
+
 	/**
 	 * 服务器推送连接引擎
 	 */
-	private static CometEngine engineInstance = null;
+	public static CometEngine EngineInstance = null;
 	/**
 	 * SN到公司映射，
 	 */
-	private static Map<String, Integer> snToCompanyList = new HashMap<String, Integer>();
+	public static Map<String, Integer> SNToCompanyList = new HashMap<String, Integer>();
 
 	/**
 	 * UUID到SN序列号映射列表
 	 */
-	private static Map<String, String> uuidToSNList = new HashMap<String, String>();
-
-	/**
-	 * SN序列号到套接字通道映射列表
-	 */
-	private static Map<String, SocketChannel> SNToSocketChannelList = new HashMap<String, SocketChannel>();
-
-	/**
-	 * SN序列号到Datagram套接字通道映射列表
-	 */
-	private static Map<String, DatagramChannel> SNToDatagramChannelList = new HashMap<String, DatagramChannel>();
-
-	/**
-	 * SN序列号到SocketAddress映射列表
-	 */
-	private static Map<String, SocketAddress> SNToSocketAddresslList = new HashMap<String, SocketAddress>();
-
-	public static Map<String, SocketAddress> getSNToSocketAddresslList() {
-		return SNToSocketAddresslList;
-	}
-
-	public static void setSNToSocketAddresslList(Map<String, SocketAddress> sNToSocketAddresslList) {
-		SNToSocketAddresslList = sNToSocketAddresslList;
-	}
+	public static Map<String, String> UuidToSNList = new HashMap<String, String>();
 
 	/**
 	 * SN序列号到设备映射列表
 	 */
-	private static Map<String, Device> SNToDevicelList = new HashMap<String, Device>();
+	public static Map<String, Device> SNToDevicelList = new HashMap<String, Device>();
 
-	public static Map<String, Device> getSNToDevicelList() {
-		return SNToDevicelList;
-	}
+	/**
+	 * SN序列号到套接字通道映射列表
+	 */
+	public static Map<String, SocketChannel> SNToSocketChannelList = new HashMap<String, SocketChannel>();
 
-	public static void setSNToDevicelList(Map<String, Device> sNToDevicelList) {
-		SNToDevicelList = sNToDevicelList;
-	}
+	/**
+	 * SN序列号到Datagram套接字通道映射列表
+	 */
+	public static Map<String, DatagramChannel> SNToDatagramChannelList = new HashMap<String, DatagramChannel>();
 
-	public static CometEngine getEngineInstance() {
-		return engineInstance;
-	}
+	/**
+	 * SN序列号到SocketAddress映射列表
+	 */
+	public static Map<String, SocketAddress> SNToSocketAddresslList = new HashMap<String, SocketAddress>();
 
-	public static void setEngineInstance(CometEngine engineInstance) {
-		TerminalManager.engineInstance = engineInstance;
-	}
+	/**
+	 * 公司ID到采集监控多线程映射列表
+	 */
+	public static Map<Integer, Thread> CompanyToMonitorThreadlList = new HashMap<Integer, Thread>();
 
-	public static Map<String, Integer> getSnToCompanyList() {
-		return snToCompanyList;
-	}
+	/**
+	 * SN序列号到发送命令映射列表
+	 */
+	public static Map<String, ArrayList<SendCommand>> SNToSendCommandList = new HashMap<String, ArrayList<SendCommand>>();
 
-	public static void setSnToCompanyList(Map<String, Integer> snToCompanyList) {
-		TerminalManager.snToCompanyList = snToCompanyList;
-	}
+	// ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// //////////////////////////////监控用
+	// ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * 公司ID到消费参数映射列表
+	 */
+	public static Map<Integer, ConsumeParam> CompanyToConsumeParalList = new HashMap<Integer, ConsumeParam>();
 
-	public static Map<String, String> getUuidToSNList() {
-		return uuidToSNList;
-	}
+	/**
+	 * 公司ID到餐别限次映射列表
+	 */
+	public static Map<Integer, List<Meal>> CompanyToMealList = new HashMap<Integer, List<Meal>>();
 
-	public static void setUuidToSNList(Map<String, String> uuidToSNList) {
-		TerminalManager.uuidToSNList = uuidToSNList;
-	}
+	/**
+	 * 公司ID到订餐时间段映射列表
+	 */
+	public static Map<Integer, List<OrderTime>> CompanyToOrderTimeList = new HashMap<Integer, List<OrderTime>>();
 
-	public static Map<String, SocketChannel> getSNToSocketChannelList() {
-		return SNToSocketChannelList;
-	}
+	/**
+	 * 公司ID到折扣费及管理费映射列表
+	 */
+	public static Map<Integer, List<Discount>> CompanyToDiscountList = new HashMap<Integer, List<Discount>>();
 
-	public static void setSNToSocketChannelList(Map<String, SocketChannel> sNToSocketChannelList) {
-		SNToSocketChannelList = sNToSocketChannelList;
-	}
+	/**
+	 * 公司ID到菜肴清单映射列表
+	 */
+	public static Map<Integer, List<Cookbook>> CompanyToCookbookList = new HashMap<Integer, List<Cookbook>>();
 
-	public static Map<String, DatagramChannel> getSNToDatagramChannelList() {
-		return SNToDatagramChannelList;
-	}
-
-	public static void setSNToDatagramChannelList(Map<String, DatagramChannel> sNToDatagramChannelList) {
-		SNToDatagramChannelList = sNToDatagramChannelList;
-	}
+	// 锁
+	public static Object sendCommandObject = new Object();
 
 	/**
 	 * 注册通道
@@ -133,7 +126,7 @@ public class TerminalManager {
 	 * @return
 	 */
 	public static SocketChannel getSocketChannel(String sn) {
-		return getSNToSocketChannelList().get(sn);
+		return SNToSocketChannelList.get(sn);
 	}
 
 	/**
@@ -230,8 +223,8 @@ public class TerminalManager {
 		// 获取机器号序列号
 		if (frameByte[0] == 0x03 && frameByte[1] == 0x08) {
 			byte frame = FrameCardReader.Status;
-			TerminalManager.getUuidToSNList().put(selectionKey.attachment().toString(), sn);
-			TerminalManager.getSNToSocketChannelList().put(sn, (SocketChannel) selectionKey.channel());
+			TerminalManager.UuidToSNList.put(selectionKey.attachment().toString(), sn);
+			TerminalManager.SNToSocketChannelList.put(sn, (SocketChannel) selectionKey.channel());
 			map.put("'f1'", frame);
 			map.put("'r'", 1);
 			// //////////////////////////////////////////////////////////////////////////////
@@ -514,7 +507,7 @@ public class TerminalManager {
 		}
 		if (map.size() > 0) {
 			String msg = JSONUtil.convertToJson(map);
-			TerminalManager.getEngineInstance().sendToAll("c" + sn, msg);
+			TerminalManager.EngineInstance.sendToAll("c" + sn, msg);
 		}
 	}
 
@@ -566,9 +559,9 @@ public class TerminalManager {
 	 * @throws IOException
 	 */
 	public static void closeSocketChannel(String sn) throws IOException {
-		SocketChannel socketChannel = TerminalManager.getSNToSocketChannelList().get(sn);
+		SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
 		socketChannel.close();
-		TerminalManager.getSNToSocketChannelList().remove(sn);
+		TerminalManager.SNToSocketChannelList.remove(sn);
 	}
 
 	/**
@@ -617,7 +610,7 @@ public class TerminalManager {
 	// ///////////////////////////////////////////// 消费机部分UDP
 	// //////////////////////////////////////////////////////////////////////////////
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({ "rawtypes", "unchecked", "deprecation" })
 	public void dispatchPosCommand(DatagramChannel datagramChannel, SocketAddress socketAddress, byte[] b) {
 		if (b == null)
 			return;
@@ -625,35 +618,91 @@ public class TerminalManager {
 		// 帧
 		byte[] frameByte = getFrame(b);
 		// 命令码
-		int commandCode = getCommandCode(b);
-		// 状态码 1读写成功、2寻卡失败、3卡校验失败、4物理卡号不匹配、5读写卡失败
-		byte cardStatus = 0;
-		// 物理卡号
-		String cardSN = null;
-		if (frameByte[0] == 0x03 && frameByte[1] == (byte) 0xcd) {
-			cardStatus = b[43];
-			cardSN = getCardSN(b);
-		}
+		int commandCode = b[36] + b[37];
 
 		Map map = new HashMap();
-		// 如果包含sn则设置sn与datagram对照关系
-		if (TerminalManager.getSnToCompanyList().containsKey(sn)) {
-			TerminalManager.getSNToDatagramChannelList().put(sn, datagramChannel);
-			TerminalManager.getSNToSocketAddresslList().put(sn, socketAddress);
+		// 终端设备状态，设置sn与datagram对照关系
+		if (frameByte[0] == FramePos.Status && frameByte[1] == SubStatusFramePos.SysStatus) {
+			TerminalManager.SNToDatagramChannelList.put(sn, datagramChannel);
+			TerminalManager.SNToSocketAddresslList.put(sn, socketAddress);
 
 			byte frame = FramePos.Status;
+			byte subFrame = SubStatusFramePos.SysStatus;
+			map.put("'type'", "status");
 			map.put("'f1'", frame);
+			map.put("'f2'", subFrame);
 			map.put("'sn'", sn);
 			// //////////////////////////////////////////////////////////////////////////////
-			// /////////////////////////////////////////////写卡回复
+			// /////////////////////////////////////////////消费机回复
 			// //////////////////////////////////////////////////////////////////////////////
-		} else if (Arrays.equals(frameByte, new byte[] { 0x03, (byte) 0xcd, 0x01, 0x01 })) {
+		} else {
+			SendCommand sendCommand = null;
+			synchronized (TerminalManager.sendCommandObject) {
+				ArrayList<SendCommand> sendCommandList = TerminalManager.SNToSendCommandList.get(sn);
+				if (sendCommandList != null && sendCommandList.size() > 0) {
+					sendCommand = sendCommandList.get(0);
+					if (sendCommand.getCommandCode() == commandCode) {
+						sendCommandList.remove(sendCommand);
+					}
+				}
+			}
+			Device device = TerminalManager.SNToDevicelList.get(sn);
+			map.put("type", "log");
+			map.put("time", new Date().toLocaleString());
+			map.put("from", device.getDeviceName());
+			byte subFrame = frameByte[2];
+			switch (frameByte[1]) {
+			// 校时
+			case FramePos.SysTime:
+				if (subFrame == SubOtherFramePos.SysTime) {
+					map.put("des", "执行终端校时命令成功");
+				}
+				break;
+			// 系统参数
+			case FramePos.SysPara:
+				if (subFrame == SubSysParaFramePos.SysPara) {
+					map.put("des", "执行系统参数命令成功");
+				} else if (subFrame == SubSysParaFramePos.Meal) {
+					map.put("des", "执行餐别限次命令成功");
+				} else if (subFrame == SubSysParaFramePos.Discount) {
+					map.put("des", "执行折扣费率及管理费成功");
+				} else if (subFrame == SubCookbookFramePos.Update) {
+					map.put("des", "执行菜肴清单更新成功");
+				} else if (subFrame == SubCookbookFramePos.Append) {
+					Cookbook cookbook = sendCommand.getCookbook();
+					String log = String.format("执行菜肴清单追加成功：第{0}/{1}个，编号：{2}，单价：{3}，菜名：{4}", sendCommand.getCookbookIndex(), sendCommand.getCookbookTotal(), cookbook.getCookbookCode(),
+							cookbook.getPrice(), cookbook.getCookbookName());
+					map.put("des", log);
+				}
+				break;
+			// 菜单
+			case FramePos.Cookbook:
+				if (subFrame == SubCookbookFramePos.OrderTime1) {
+					map.put("des", "执行订餐时间段1-6成功");
+				} else if (subFrame == SubCookbookFramePos.OrderTime2) {
+					map.put("des", "执行订餐时间段7-12成功");
+				}
+				break;
+			// 初始化
+			case FramePos.SysInit:
+				if (subFrame == SubOtherFramePos.SysInit) {
+					map.put("des", "执行初始化命令成功");
+				}
+				break;
 
+			default:
+				break;
+			}
+			if (map.size() > 3) {
+				String msg = JSONUtil.convertToJson(map);
+				TerminalManager.EngineInstance.sendToAll("Co" + device.getCompanyId(), msg);
+			}
+			return;
 		}
 		if (map.size() > 0) {
 			String msg = JSONUtil.convertToJson(map);
-			Integer companyId = TerminalManager.getSnToCompanyList().get(sn);
-			TerminalManager.getEngineInstance().sendToAll("Co" + companyId, msg);
+			Integer companyId = TerminalManager.SNToCompanyList.get(sn);
+			TerminalManager.EngineInstance.sendToAll("Co" + companyId, msg);
 		}
 	}
 
@@ -666,17 +715,9 @@ public class TerminalManager {
 	 */
 	public static void sendToPos(DatagramChannel datagramChannel, SocketAddress socketAddress, byte[] b) throws IOException {
 		CRC16.generate(b);
-		System.out.print(StringUtil.toHexString(b[b.length-2]) + " ");
-		System.out.print(StringUtil.toHexString(b[b.length-1]) + " ");
+		StringUtil.print(StringUtil.toHexString(b[b.length - 2]) + " ");
+		StringUtil.print(StringUtil.toHexString(b[b.length - 1]) + " ");
 		ByteBuffer byteBuffer = ByteBuffer.wrap(b);
 		datagramChannel.send(byteBuffer, socketAddress);
-	}
-
-	public static void main(String[] args) {
-		byte[] b = StringUtil.strTobytes("29 74 e7 0c 3c 9e 11 e5 83 9f d4 be d9 80 4c 01 00 bc 61 4f 00 00 00 00 00 00 02 02 00 0c 07 01 00 00 1d 8a ae f3 24 b5".replaceAll(" ", ""));
-		CRC16.generate(b);
-		System.out.print(Integer.toHexString(b[b.length - 2]));
-		System.out.print(Integer.toHexString(b[b.length - 1]));
-
 	}
 }

@@ -3,19 +3,19 @@ package com.singbon.entity;
 import java.io.Serializable;
 
 /**
- * 菜肴清单
+ * 订餐时间段
  * 
  * @author 郝威
  * 
  */
-public class Cookbook implements Serializable {
+public class OrderTime implements Serializable {
 
 	private static final long serialVersionUID = -4349415810057681133L;
 	private Integer id;
 	private Integer companyId;
-	private Integer cookbookCode;
-	private String cookbookName;
-	private Integer price;
+	private String orderTimeName;
+	private String beginTime;
+	private String endTime;
 	private String remark;
 	private boolean enable;
 
@@ -35,28 +35,28 @@ public class Cookbook implements Serializable {
 		this.companyId = companyId;
 	}
 
-	public Integer getCookbookCode() {
-		return cookbookCode;
+	public String getOrderTimeName() {
+		return orderTimeName;
 	}
 
-	public void setCookbookCode(Integer cookbookCode) {
-		this.cookbookCode = cookbookCode;
+	public void setOrderTimeName(String orderTimeName) {
+		this.orderTimeName = orderTimeName;
 	}
 
-	public String getCookbookName() {
-		return cookbookName;
+	public String getBeginTime() {
+		return beginTime;
 	}
 
-	public void setCookbookName(String cookbookName) {
-		this.cookbookName = cookbookName;
+	public void setBeginTime(String beginTime) {
+		this.beginTime = beginTime;
 	}
 
-	public Integer getPrice() {
-		return price;
+	public String getEndTime() {
+		return endTime;
 	}
 
-	public void setPrice(Integer price) {
-		this.price = price;
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
 	}
 
 	public String getRemark() {

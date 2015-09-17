@@ -26,10 +26,10 @@ public class JdbcDao {
 	 * @throws Exception
 	 */
 	public static int save(String sn, String sql) throws Exception {
-		if (!TerminalManager.getSnToCompanyList().containsKey(sn)) {
+		if (!TerminalManager.SNToCompanyList.containsKey(sn)) {
 			return -1;
 		}
-		int userId = TerminalManager.getSnToCompanyList().get(sn);
+		int userId = TerminalManager.SNToCompanyList.get(sn);
 		Connection conn = null; // 定义一个MYSQL链接对象
 		if (connList.containsKey(userId)) {
 			conn = connList.get(userId);

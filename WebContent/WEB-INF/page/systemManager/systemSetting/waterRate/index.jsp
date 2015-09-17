@@ -80,7 +80,7 @@ $(function() {
 	}
 </style>
 <form id="waterRateForm" method="post" action="${base }/save.do" class="pageForm required-validate">
-	<div class="pageFormContent" layoutH="100">
+	<div class="pageFormContent" layoutH="120">
 		<dl style="padding-left: 33px;">
 			<dt>消费模式：</dt>
 			<dd>

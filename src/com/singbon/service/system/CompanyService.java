@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.singbon.dao.system.CompanyDAO;
 import com.singbon.entity.Company;
-import com.singbon.entity.Device;
 
 /**
  * 公司业务层

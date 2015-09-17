@@ -5,7 +5,9 @@ import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class StringUtil implements Runnable {
+import com.singbon.device.CRC16;
+
+public class StringUtil {
 
 	/**
 	 * byte转16进制字符
@@ -57,6 +59,19 @@ public class StringUtil implements Runnable {
 			temp += "0";
 		}
 		return temp;
+	}
+
+	/**
+	 * 字符串左补零
+	 * 
+	 * @return
+	 */
+	public static String stringLeftPad(String str, int num) {
+		num = num - str.length();
+		for (int i = 0; i < num; i++) {
+			str = "0" + str;
+		}
+		return str;
 	}
 
 	/**
@@ -115,10 +130,24 @@ public class StringUtil implements Runnable {
 	}
 
 	/**
+	 * 2进制字符串转16进制字符串
+	 */
+	public static String binaryHexString(String binary) {
+		String[] strs = binary.split(" ");
+		String result = "";
+		for (String string : strs) {
+			String hex = Integer.toString(Integer.parseInt(string, 2), 16);
+			result += hex;
+		}
+		return result;
+	}
+
+	/**
 	 * 四字节时间戳
 	 * 
 	 * @return
 	 */
+	@SuppressWarnings("deprecation")
 	public static String timeToHexString() {
 		String tempStr = "";
 		Date base = new Date("2000/01/01");
@@ -146,7 +175,7 @@ public class StringUtil implements Runnable {
 		byte[] b = new byte[str.length() / 2];
 		for (int i = 0; i < str.length() / 2 - 2; i++) {
 			String s = str.substring(i * 2, i * 2 + 2);
-			System.out.print(s + " ");
+			StringUtil.print(s + " ");
 			b[i] = (byte) Integer.parseInt(s, 16);
 		}
 		return b;
@@ -182,27 +211,18 @@ public class StringUtil implements Runnable {
 		return url;
 	}
 
-	@Override
-	public void run() {
-		while (true) {
-			System.out.println(System.currentTimeMillis());
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+	public static void main(String[] args) {
+		byte[] b = StringUtil.strTobytes("29 74 e7 0c 3c 9e 11 e5 83 9f d4 be d9 80 4c 01 00 bc 61 4E 0000 00 00 00 00 02 02 00 11 04 03 00 00 00 00 43 74 61 61 88 88 01 B8 89".replaceAll(" ", ""));
+		CRC16.generate(b);
+		StringUtil.print(Integer.toHexString(b[b.length - 2]) + " ");
+		StringUtil.print(Integer.toHexString(b[b.length - 1]));
 	}
 
-	public static void main(String[] args) {
-		for (int i = 0; i < 1000; i++) {
-			StringUtil s = new StringUtil();
-			
-			Thread t=new Thread(s);
-			t.setName("abc");
-			t.start();
-		}
+	public static void print(Object obj) {
+		System.out.print(obj);
 	}
-	
+
+	public static void println(Object obj) {
+		System.out.println(obj);
+	}
 }

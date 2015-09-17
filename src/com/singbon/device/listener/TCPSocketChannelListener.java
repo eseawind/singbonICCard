@@ -20,6 +20,7 @@ import org.comet4j.core.util.JSONUtil;
 import com.singbon.device.CRC16;
 import com.singbon.device.FrameCardReader;
 import com.singbon.device.TerminalManager;
+import com.singbon.util.StringUtil;
 
 /**
  * TCP服务监听和分发服务
@@ -70,7 +71,7 @@ public class TCPSocketChannelListener implements ServletContextListener {
 			String uuid = UUID.randomUUID().toString();
 			key.attach(uuid);
 			// 打印
-			System.out.println(key.attachment() + " 连接成功");
+			StringUtil.println(key.attachment() + " 连接成功");
 
 			TerminalManager.getCardNOSN(socketChannel);
 		} else if (selectionKey.isReadable()) {
@@ -83,7 +84,7 @@ public class TCPSocketChannelListener implements ServletContextListener {
 				len = sc.read(byteBuffer);
 			} catch (Exception e) {
 				String uuid = selectionKey.attachment().toString();
-				System.out.println(uuid);
+				StringUtil.println(uuid);
 				removeSockeckChannel(uuid);
 				// 如果read抛出异常，表示连接异常中断，需要关闭 socketChannel
 				e.printStackTrace();
@@ -102,9 +103,9 @@ public class TCPSocketChannelListener implements ServletContextListener {
 				}
 				b = Arrays.copyOf(b, byteLen);
 //				for (byte b2 : b) {
-//					System.out.print(StringUtil.toHexString(b2) + " ");
+//					StringUtil.print(StringUtil.toHexString(b2) + " ");
 //				}
-//				System.out.println();
+//				StringUtil.println();
 
 				// 校验
 				if (!CRC16.compareCRC16(b)) {
@@ -123,7 +124,7 @@ public class TCPSocketChannelListener implements ServletContextListener {
 			} else {
 				// 输入结束，关闭 socketChannel
 				String uuid = selectionKey.attachment().toString();
-				System.out.println(uuid + " 已关闭连接");
+				StringUtil.println(uuid + " 已关闭连接");
 				sc.close();
 
 				String sn = removeSockeckChannel(uuid);
@@ -134,7 +135,7 @@ public class TCPSocketChannelListener implements ServletContextListener {
 					map.put("'r'", 0);
 
 					String msg = JSONUtil.convertToJson(map);
-					TerminalManager.getEngineInstance().sendToAll("c" + sn, msg);
+					TerminalManager.EngineInstance.sendToAll("c" + sn, msg);
 				}
 			}
 
@@ -144,10 +145,10 @@ public class TCPSocketChannelListener implements ServletContextListener {
 
 	private String removeSockeckChannel(String uuid) {
 		String sn = null;
-		if (TerminalManager.getUuidToSNList().containsKey(uuid)) {
-			sn = TerminalManager.getUuidToSNList().get(uuid);
-			TerminalManager.getUuidToSNList().remove(uuid);
-			TerminalManager.getSNToSocketChannelList().remove(sn);
+		if (TerminalManager.UuidToSNList.containsKey(uuid)) {
+			sn = TerminalManager.UuidToSNList.get(uuid);
+			TerminalManager.UuidToSNList.remove(uuid);
+			TerminalManager.SNToSocketChannelList.remove(sn);
 		}
 		return sn;
 	}

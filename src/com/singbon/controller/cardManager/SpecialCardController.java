@@ -69,7 +69,7 @@ public class SpecialCardController extends BaseController {
 		if (device != null) {
 			model.addAttribute("sn", device.getSn());
 			// 读卡机状态
-			if (TerminalManager.getSNToSocketChannelList().containsKey(device.getSn())) {
+			if (TerminalManager.SNToSocketChannelList.containsKey(device.getSn())) {
 				model.addAttribute("cardStatus", 1);
 			} else {
 				model.addAttribute("cardStatus", 0);
@@ -123,7 +123,7 @@ public class SpecialCardController extends BaseController {
 		if (cardSNCount > 0) {
 			return;
 		}
-		SocketChannel socketChannel = TerminalManager.getSNToSocketChannelList().get(sn);
+		SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
 		if (socketChannel != null) {
 			try {
 				int cardNO = this.specialCardService.selectMaxCardNO(company.getId());
@@ -170,7 +170,7 @@ public class SpecialCardController extends BaseController {
 				e.printStackTrace();
 			}
 		} else {
-			SocketChannel socketChannel = TerminalManager.getSNToSocketChannelList().get(device.getSn());
+			SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(device.getSn());
 			if (socketChannel != null) {
 				try {
 					this.specialCardService.loss(sysUser, socketChannel, device, cardInfoStr);
@@ -193,7 +193,7 @@ public class SpecialCardController extends BaseController {
 	@RequestMapping(value = "/unLoss.do", method = RequestMethod.POST)
 	public void unLoss(@ModelAttribute SysUser sysUser, String cardInfoStr, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Device device = (Device) request.getSession().getAttribute("device");
-		SocketChannel socketChannel = TerminalManager.getSNToSocketChannelList().get(device.getSn());
+		SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(device.getSn());
 		if (socketChannel != null) {
 			try {
 				this.specialCardService.unloss(sysUser, socketChannel, device, cardInfoStr);
@@ -215,7 +215,7 @@ public class SpecialCardController extends BaseController {
 	@RequestMapping(value = "/doInvalidDate.do", method = RequestMethod.POST)
 	public void doInvalidDate(@ModelAttribute SysUser sysUser, String cardInfoStr, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Device device = (Device) request.getSession().getAttribute("device");
-		SocketChannel socketChannel = TerminalManager.getSNToSocketChannelList().get(device.getSn());
+		SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(device.getSn());
 		if (socketChannel != null) {
 			try {
 				this.specialCardService.doInvalidDate(sysUser, cardInfoStr, socketChannel, device);
@@ -240,7 +240,7 @@ public class SpecialCardController extends BaseController {
 			Map map = new HashMap();
 			map.put("'f1'", FrameCardReader.ExsitCardSN);
 			String msg = JSONUtil.convertToJson(map);
-			TerminalManager.getEngineInstance().sendToAll("c" + sn, msg);
+			TerminalManager.EngineInstance.sendToAll("c" + sn, msg);
 			return 1;
 		}
 		return 0;
@@ -261,7 +261,7 @@ public class SpecialCardController extends BaseController {
 		int section = TerminalManager.getSection(company.getId());
 		// 获取读卡器状态
 		if ("getCardReaderStatus".equals(comm)) {
-			SocketChannel socketChannel = TerminalManager.getSNToSocketChannelList().get(sn);
+			SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
 			if (socketChannel != null) {
 				try {
 					TerminalManager.getCardReaderHeartStatus(socketChannel);
@@ -280,7 +280,7 @@ public class SpecialCardController extends BaseController {
 		}
 		// 出纳卡
 		else if ("makeCashierCardInit".equals(comm) || "lossCashierCardInit".equals(comm) || "unLossCashierCardInit".equals(comm) || "remakeCashierCardInit".equals(comm)) {
-			SocketChannel socketChannel = TerminalManager.getSNToSocketChannelList().get(sn);
+			SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
 			if (socketChannel != null) {
 				try {
 					// 获取基本信息区0块
@@ -304,7 +304,7 @@ public class SpecialCardController extends BaseController {
 		}
 		// 读取出纳卡
 		else if ("readCashierCardInit".equals(comm)) {
-			SocketChannel socketChannel = TerminalManager.getSNToSocketChannelList().get(sn);
+			SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
 			if (socketChannel != null) {
 				try {
 					// 获取基本信息区2块

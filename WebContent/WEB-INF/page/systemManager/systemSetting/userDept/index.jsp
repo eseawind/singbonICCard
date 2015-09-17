@@ -72,7 +72,9 @@
 		$('#userDeptTree').loadUrl('${base }/treeList.do?selectedUserDeptId='+$('#userDeptForm input').eq(1).val());
 	}
 	function refreshUserDeptList() {
-		$('#userDeptList').loadUrl('${base}/list.do?parentId=' + selectedUserDeptId);
+		$('#userDeptList').loadUrl('${base}/list.do?parentId=' + selectedUserDeptId,{},function(){
+			$('#userDeptList').find('[layoutH]').layoutH();
+		});
 	}
 	function emptyForm() {
 		$('#userDeptForm input').eq(0).val('');
@@ -103,7 +105,7 @@
 <div>
 	<div
 		style="float: left; display: block; overflow: auto; width: 240px; border: solid 1px #CCC; line-height: 21px; background: #fff">
-		<div id="userDeptTree" layoutH="150">
+		<div id="userDeptTree" layoutH="200">
 			<jsp:include page="${base }/treeList.do" />
 		</div>
 		<div class="form">

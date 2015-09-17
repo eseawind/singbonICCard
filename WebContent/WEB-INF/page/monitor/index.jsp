@@ -83,9 +83,12 @@
 -->
 <script src="/js/dwz.regional.zh.js" type="text/javascript"></script>
 <script type="text/javascript">
+	window.onbeforeunload = function(event) { 
+		$.post('${base }/stopMonitorThread.do');
+	};
 	$(function() {
-		window.moveTo(0, 0);
-		window.resizeTo(screen.availWidth, screen.availHeight);
+// 		window.moveTo(0, 0);
+// 		window.resizeTo(screen.availWidth, screen.availHeight);
 		DWZ.init('/dwz.frag.xml', {
 			loginUrl : 'login_dialog.html',
 			loginTitle : '登录', // 弹出登录对话框
@@ -114,6 +117,7 @@
 		//heart();
 		
 		$('#deviceList img').contextMenu('menu',monitorOps);
+// 		$('#logRecord tbody tr').contextMenu('clearMenu',clearOps);
 	});
 	
 	var map = new Map();
@@ -167,6 +171,7 @@
 		return str;
 	};
 	
+	var logIndex=0;
 	function init() {
 		JS.Engine.stop();
 		JS.Engine.start('/conn');
@@ -174,31 +179,30 @@
 			'Co${sessionScope.company.id}' : function(e) {//侦听一个channel
 				var e2 = eval('(' + e + ')');
 			    //状态
-				if(e2.f1==0x01){
+				if(e2.type=='status' && e2.f1==0x01){
 					var sn=e2.sn;
 					$("#deviceList .deviceList[id="+sn+"] img").attr('alt','在线').attr('src','/img/online.png');
 					map.put(sn,new Date());
+				//日志
+				}else if(e2.type=='log'){
+					if(logIndex>=1000){
+						logIndex=0;
+						$('#logRecord tbody tr:not(:hidden)').remove();
+					}
+					var tempRow=$('#logRecord tbody tr:hidden').clone();
+					tempRow.removeAttr('style').find('td[index] div').html(++logIndex);
+					tempRow.find('td[time] div').html(e2.time);
+					tempRow.find('td[from] div').html(e2.from);
+					tempRow.find('td[des] div').html(e2.des);
+					$('#logRecord tbody').append(tempRow.wrap('<tr></tr>'));
+// 					$("#logRecord .gridTbody").scrollTop($("#logRecord .gridTbody")[0].scrollHeight);
+					
 				}
 			}
 		});
 	}
 	
 	function heart(){
-		$('body').everyTime('1s','getCardReaderStatus', function() {
-			var d=new Date();
-			var array = map.keySet();
-			for(var i in array) {
-				var t=(d.getTime()-map.get(array[i]).getTime())/1000;
-				if(t>10){
-					$("#deviceList .deviceList[id="+array[i]+"] img").attr('alt','离线').attr('src','/img/offline.png');
-					$.post('${base }/closeDatagramChannel.do?sn='+array[i]);
-					map.remove(array[i]);
-				}
-			}
-		},0,true);
-	}
-	//校时
-	function time(){
 		$('body').everyTime('1s','getCardReaderStatus', function() {
 			var d=new Date();
 			var array = map.keySet();
@@ -224,20 +228,55 @@
 	
 	var monitorOps = {
 		bindings : {
-			'time' : function(t, target) {
-				var sn=$(t).parent().attr('id');
-				$.post('${base }/time.do?sn='+sn);
+			'sysTime' : function(t, target) {
+				executeCmd(t,'sysTime');
 			},
-			'edit' : function(t, target) {
+			'sysPara' : function(t, target) {
+				executeCmd(t,'sysPara');
+			},
+			'discount' : function(t, target) {
+				executeCmd(t,'discount');
+			},
+			'cookbook' : function(t, target) {
+				executeCmd(t,'cookbook');
+			},
+			'sysInit' : function(t, target) {
+				executeCmd(t,'sysInit');
 			}
 		},
 		onShowMenu : function(e, menu) {
- 			if (!$(e.target).parents('tbody').hasClass('userList')) {
- 				$('#edit', menu).remove();
- 			}
+//  			if (!$(e.target).parents('tbody').hasClass('userList')) {
+//  				$('#edit', menu).remove();
+//  			}
 			return menu;
 		}
 	};
+	
+	var clearOps = {
+		bindings : {
+			'clear' : function(t, target) {
+				if($(t).hasClass('log')){
+					logIndex=0;
+				}
+				$('tr:not(:hidden)', t).remove();
+			}
+		},
+		onShowMenu : function(e, menu) {
+//  			if (!$(e.target).parents('tbody').hasClass('userList')) {
+//  				$('#edit', menu).remove();
+//  			}
+			return menu;
+		}
+	};
+
+	//执行命令
+	function executeCmd(t,cmd){
+		var online=$(t).attr('src').indexOf('online');
+		if(online>0){
+			var sn=$(t).parent().attr('id');
+			$.post("${base }/command.do?cmd="+cmd+"&sn="+sn);
+		}
+	}
 </script>
 <style type="text/css">
 	#deviceGroupList{
@@ -249,9 +288,7 @@
 		width: 70px;
 		text-align:center;
 /* 		border: 1px solid red; */
-		cursor: pointer;
-	}
-	.deviceList .name{
+
 		margin-top: 2px;
 	}
 	#container {
@@ -271,27 +308,32 @@
 </style>
 </head>
 <body scroll="no">
+	<div class="contextMenu" id="menu" style="display: none;">
+		<ul>
+			<li id="sysTime">校验时间</li>
+			<li id="sysPara">系统参数</li>
+			<li id="sysPwd">系统密码</li>
+			<li id="discount">折扣费率及管理费</li>
+<!-- 								<li class="divide" /> -->
+			<li id="batch">批次名单</li>
+			<li id="allAppend">全量名单</li>
+			<li id="incAppend">增量名单</li>
+<!-- 								<li class="divide" /> -->
+			<li id="cookbook">菜肴清单</li>
+<!-- 								<li class="divide" /> -->
+			<li id="sysInit">初始化</li>
+		</ul>
+	</div>
+	<div class="contextMenu" id="clearMenu" style="display: none;">
+		<ul>
+			<li id="clear">清空日志</li>
+		</ul>
+	</div>
 	<div id="layout" layoutH="0">
 		<div id="container" layoutH="0">
 			<div id="navTab" class="tabsPage" layoutH="0">
 				<div class="navTab-panel tabsPageContent layoutBox" layoutH="0">
 					<div class="page unitBox">
-						<div class="contextMenu" id="menu" style="display: none;">
-							<ul>
-								<li id="time">校验时间</li>
-								<li id="systemPara">系统参数</li>
-								<li id="systemPwd">系统密码</li>
-								<li id="discount">折扣费率及管理费</li>
-<!-- 								<li class="divide" /> -->
-								<li id="batch">批次名单</li>
-								<li id="systemInit">全量名单</li>
-								<li id="systemInit">增量名单</li>
-<!-- 								<li class="divide" /> -->
-								<li id="cookbook">菜肴清单</li>
-<!-- 								<li class="divide" /> -->
-								<li id="systemInit">初始化</li>
-							</ul>
-						</div>
 						
 						<div class="tabs">
 							<div class="tabsContent" style="border: none;">
@@ -479,7 +521,7 @@
 												<!-- 考勤记录监控 end-->
 												<!-- 日记监控 -->
 												<div id="logRecord">
-													<table class="table" width="99%" layoutH="235" rel="jbsxBox" target="logRecord">
+													<table class="table" width="99%" layoutH="300" rel="jbsxBox" target="logRecord">
 														<thead>
 															<tr>
 																<th width="40">序号</th>
@@ -488,11 +530,8 @@
 																<th width="100">日志描述</th>
 															</tr>
 														</thead>
-														<tbody>
-															<c:forEach items="${logRecordList }" var="d">
-																<tr>
-																</tr>
-															</c:forEach>
+														<tbody class="clearLog log">
+															<tr style="display: none;"><td index></td><td time></td><td from></td><td des></td></tr>
 														</tbody>
 													</table>
 												</div>

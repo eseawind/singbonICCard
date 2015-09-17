@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.singbon.dao.systemManager.systemSetting.OrderTimeDAO">
+	<resultMap id="orderTime" type="com.singbon.entity.OrderTime">
+	</resultMap>
+	<parameterMap type="com.singbon.entity.OrderTime" id="orderTime2" />
+	<insert id="insert">
+		insert into orderTime (companyId,orderTimeName,beginTime,endTime,enable)
+			select #{companyId},orderTimeName,beginTime,endTime,1 from orderTimeBase
+	</insert>
+	<update id="update" parameterMap="orderTime2">
+		update orderTime set orderTimeName=#{orderTimeName},beginTime=#{beginTime},endTime=#{endTime},remark=#{remark},enable=#{enable}
+		where id=#{id}
+	</update>
+	<select id="selectByCompanyId" resultMap="orderTime">
+		select * from orderTime where companyId=#{companyId}
+	</select>
+</mapper>

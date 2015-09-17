@@ -21,6 +21,12 @@
 			 and enable=1
 		</if>
 	</select>
+	<select id="selectPosListByGroupId" resultMap="device">
+		select * from device where groupId=#{groupId} and deviceType=1 
+		<if test="onlyEnable!=null and onlyEnable = 1">
+			 and enable=1
+		</if>
+	</select>
 	<select id="selectList" resultMap="device">
 		select * from device where companyId=#{companyId}
 	</select>

@@ -121,7 +121,7 @@ public class CommonController {
 			return;
 		}
 		String sn = device.getSn();
-		SocketChannel socketChannel = TerminalManager.getSNToSocketChannelList().get(sn);
+		SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
 		if (socketChannel == null) {
 			// 读卡机不在线
 			map.put("r", 2);
@@ -152,7 +152,7 @@ public class CommonController {
 		List<Integer> sectionBlocks = new ArrayList<Integer>();
 		sectionBlocks.add(section * 10);
 		try {
-			SocketChannel socketChannel=TerminalManager.getSocketChannel(device.getSn());
+			SocketChannel socketChannel=TerminalManager.SNToSocketChannelList.get(device.getSn());
 			TerminalManager.getCardInfo(socketChannel, device, CommandCodeCardReader.CashierCardBaseInfo, sectionBlocks);
 		} catch (IOException e) {
 			e.printStackTrace();

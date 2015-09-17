@@ -23,6 +23,16 @@ public interface DeviceDAO extends BaseDAO {
 	public Device selectByOperId(@Param("operId") Integer operId);
 
 	/**
+	 * 根据分组查询列表
+	 * 
+	 * @param groupId
+	 * @param onlyEnable
+	 *            1只包含启用，0全部
+	 * @return
+	 */
+	public List<Device> selectPosListByGroupId(Integer groupId, Integer onlyEnable);
+	
+	/**
 	 * 消费机列表
 	 * @param companyId
 	 * @param onlyEnable 1只包含启用，0全部

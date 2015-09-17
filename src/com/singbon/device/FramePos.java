@@ -1,7 +1,7 @@
 package com.singbon.device;
 
 /**
- * 读卡机帧定义
+ * 消费机大帧定义
  * 
  * @author 郝威
  * 
@@ -9,8 +9,31 @@ package com.singbon.device;
 public class FramePos {
 
 	/**
-	 * 状态 0x01
+	 * 系统状态
 	 */
-	public static byte Status = 0x01;
-
+	public final static byte Status = 0x03;
+	/**
+	 * 系统参数
+	 */
+	public final static byte SysPara = 0x04;
+	/**
+	 * 黑名单
+	 */
+	public final static byte Black = 0x05;
+	/**
+	 * 校时
+	 */
+	public final static byte SysTime = 0x07;
+	/**
+	 * 菜单
+	 */
+	public final static byte Cookbook = 0x09;
+	/**
+	 * 初始化
+	 */
+	public final static byte SysInit = 0x19;
+	/**
+	 * 在线升级
+	 */
+	public final static byte OnlineUpdate = 0x1A;
 }
