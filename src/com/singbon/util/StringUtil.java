@@ -75,6 +75,19 @@ public class StringUtil {
 	}
 
 	/**
+	 * 字符串右补零
+	 * 
+	 * @return
+	 */
+	public static String stringRightPad(String str, int num) {
+		num = num - str.length();
+		for (int i = 0; i < num; i++) {
+			str += "0";
+		}
+		return str;
+	}
+
+	/**
 	 * 转换日期格式为16进制字符串 例：“2009-12-04” -> “9C04”
 	 * 修改2009-07-06：二进制前7位表示年，下4位月，最后5位表示日如"2009-07-06" -> "12E6"
 	 * 
@@ -212,7 +225,21 @@ public class StringUtil {
 	}
 
 	public static void main(String[] args) {
-		byte[] b = StringUtil.strTobytes("29 74 e7 0c 3c 9e 11 e5 83 9f d4 be d9 80 4c 01 00 bc 61 4E 0000 00 00 00 00 02 02 00 11 04 03 00 00 00 00 43 74 61 61 88 88 01 B8 89".replaceAll(" ", ""));
+
+		// 命令个数：716
+		// 29 74 e7 0c 3c 9e 11 e5 83 9f d4 be d9 80 4c 01 00 bc 61 4e 00 00 00
+		// 00 00 00 02 02 00 20 09 02 00 00 00 7f 00 7e 00 00 03 e8 00 00 00 00
+		// 00 00 00 ba fa c0 b1 cc c0 31 32 36 97 b9 nf1
+		// nf1
+		// f1
+		// 命令个数：715
+		// 29 74 e7 0c 3c 9e 11 e5 83 9f d4 be d9 80 4c 01 00 bc 61 4e 00 00 00
+		// 00 00 00 02 02 00 20 09 02 00 00 00 80 00 7f 00 00 05 dc 00 00 00 00
+		// 00 00 00 ba fa c0 b1 cc c0 31 32 37 2 f9 nf1
+		// nf1
+		byte[] b = StringUtil
+				.strTobytes("29 74 e7 0c 3c 9e 11 e5 83 9f d4 be d9 80 4c 01 00 bc 61 4e 00 00 00 00 00 00 02 02 00 20 09 02 00 00 00 80 00 7f 00 00 05 dc 00 00 00 00 00 00 00 ba fa c0 b1 cc c0 31 32 37 00 00"
+						.replaceAll(" ", ""));
 		CRC16.generate(b);
 		StringUtil.print(Integer.toHexString(b[b.length - 2]) + " ");
 		StringUtil.print(Integer.toHexString(b[b.length - 1]));

@@ -84,7 +84,7 @@ public class MonitorController extends BaseController {
 		model.addAttribute("deviceGroupList", deviceGroupList);
 		List<Device> deviceList = this.deviceService.selectPosList(company.getId(), 1);
 		for (Device d : deviceList) {
-			if (TerminalManager.SNToDatagramChannelList.containsKey(d.getSn())) {
+			if (TerminalManager.SNToInetSocketAddressList.containsKey(d.getSn())) {
 				d.setIsOnline(1);
 			} else {
 				d.setIsOnline(0);
@@ -105,31 +105,12 @@ public class MonitorController extends BaseController {
 		MonitorService monitorService = new MonitorService();
 		monitorService.setDeviceList(deviceList);
 		Thread thread = new Thread(monitorService);
+		thread.setName("Co" + company.getId());
 		TerminalManager.CompanyToMonitorThreadlList.put(company.getId(), thread);
 		thread.start();
 
+		request.getSession().setAttribute("companyId", company.getId().toString());
 		return url.replace(".do", "");
-	}
-
-	/**
-	 * 停止监控线程
-	 * 
-	 * @param request
-	 * @param model
-	 * @param module
-	 * @return
-	 */
-	@RequestMapping(value = "/stopMonitorThread.do", method = RequestMethod.POST)
-	public void stopMonitorThread(HttpServletRequest request, HttpServletResponse response, Model model) {
-		Company company = (Company) request.getSession().getAttribute("company");
-
-		if (company == null) {
-			return;
-		}
-		Thread oldThread = TerminalManager.CompanyToMonitorThreadlList.get(company.getId());
-		if (oldThread != null && oldThread.isAlive()) {
-			oldThread.interrupt();
-		}
 	}
 
 	/**
@@ -140,9 +121,9 @@ public class MonitorController extends BaseController {
 	 * @param module
 	 * @return
 	 */
-	@RequestMapping(value = "/closeDatagramChannel.do", method = RequestMethod.POST)
-	public void closeDatagramChannel(String sn, HttpServletRequest request, HttpServletResponse response, Model model) {
-		TerminalManager.SNToDatagramChannelList.remove(sn);
+	@RequestMapping(value = "/removeInetSocketAddress.do", method = RequestMethod.POST)
+	public void removeInetSocketAddress(String sn, HttpServletRequest request, HttpServletResponse response, Model model) {
+		TerminalManager.SNToInetSocketAddressList.remove(sn);
 	}
 
 	/**
@@ -214,36 +195,37 @@ public class MonitorController extends BaseController {
 		} else if ("sysPara".equals(cmd)) {
 			// 设置消费参数
 			ConsumeParam consumeParam = this.consumeParamDAO.selectByCompanyId(company.getId());
-			TerminalManager.CompanyToConsumeParalList.put(company.getId(), consumeParam);
 			// 设置订参别限次
 			List<Meal> mealList = this.mealDAO.selectList(company.getId());
-			TerminalManager.CompanyToMealList.put(company.getId(), mealList);
 			// 设置订餐时间段
 			List<OrderTime> orderTimeList = this.orderTimeDAO.selectByCompanyId(company.getId());
-			TerminalManager.CompanyToOrderTimeList.put(company.getId(), orderTimeList);
 
 			// 系统参数
 			SendCommand sendCommand1 = new SendCommand();
 			sendCommand1.setFrame(FramePos.SysPara);
 			sendCommand1.setSubFrame(SubSysParaFramePos.SysPara);
 			sendCommand1.setCommandCode(commandIndex++);
+			sendCommand1.setConsumeParam(consumeParam);
 
 			// 参别限次
 			SendCommand sendCommand2 = new SendCommand();
 			sendCommand2.setFrame(FramePos.SysPara);
 			sendCommand2.setSubFrame(SubSysParaFramePos.Meal);
 			sendCommand2.setCommandCode(commandIndex++);
+			sendCommand2.setMealList(mealList);
 
 			// 订餐时间段
 			SendCommand sendCommand3 = new SendCommand();
 			sendCommand3.setFrame(FramePos.Cookbook);
 			sendCommand3.setSubFrame(SubCookbookFramePos.OrderTime1);
 			sendCommand3.setCommandCode(commandIndex++);
+			sendCommand3.setOrderTimeList(orderTimeList);
 
 			SendCommand sendCommand4 = new SendCommand();
 			sendCommand4.setFrame(FramePos.Cookbook);
 			sendCommand4.setSubFrame(SubCookbookFramePos.OrderTime2);
 			sendCommand4.setCommandCode(commandIndex++);
+			sendCommand4.setOrderTimeList(orderTimeList);
 
 			sendCommandList.add(sendCommand1);
 			sendCommandList.add(sendCommand2);
@@ -252,17 +234,16 @@ public class MonitorController extends BaseController {
 			// 折扣费率及管理费
 		} else if ("discount".equals(cmd)) {
 			List<Discount> discountList = this.discountDAO.selectList(company.getId());
-			TerminalManager.CompanyToDiscountList.put(company.getId(), discountList);
 
 			SendCommand sendCommand = new SendCommand();
 			sendCommand.setFrame(FramePos.SysPara);
 			sendCommand.setSubFrame(SubSysParaFramePos.Discount);
 			sendCommand.setCommandCode(commandIndex);
+			sendCommand.setDiscountList(discountList);
 			sendCommandList.add(sendCommand);
 			// 菜肴清单
 		} else if ("cookbook".equals(cmd)) {
 			List<Cookbook> cookbookList = this.cookbookDAO.selectList(company.getId());
-			TerminalManager.CompanyToCookbookList.put(company.getId(), cookbookList);
 
 			SendCommand sendCommand = new SendCommand();
 			sendCommand.setFrame(FramePos.Cookbook);
@@ -279,7 +260,7 @@ public class MonitorController extends BaseController {
 				sendCommand2.setCommandCode(commandIndex++);
 				sendCommand2.setCookbookIndex(++index);
 				sendCommand2.setCookbookTotal(cookbookList.size());
-				sendCommandList.add(sendCommand);
+				sendCommandList.add(sendCommand2);
 			}
 			// 初始化
 		} else if ("sysInit".equals(cmd)) {

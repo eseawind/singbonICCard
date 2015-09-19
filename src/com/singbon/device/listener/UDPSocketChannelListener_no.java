@@ -23,7 +23,7 @@ import com.singbon.util.StringUtil;
  * @author 郝威
  * 
  */
-public class UDPSocketChannelListener implements ServletContextListener {
+public class UDPSocketChannelListener_no implements ServletContextListener {
 
 	public void startServer() throws Exception {
 		Selector selector = null;
@@ -71,6 +71,7 @@ public class UDPSocketChannelListener implements ServletContextListener {
 //						}
 //						StringUtil.println();
 
+						
 						// 校验
 						if (!CRC16.compareCRC16(b)) {
 							return;
@@ -85,12 +86,12 @@ public class UDPSocketChannelListener implements ServletContextListener {
 						// datagramChannel.send(buffer, sa);
 						//
 						// 分发数据
-						TerminalManager s = new TerminalManager();
-						try {
-							s.dispatchPosCommand(datagramChannel, socketAddress, b);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
+//						TerminalManager s = new TerminalManager();
+//						try {
+//							s.dispatchPosCommand(datagramChannel, socketAddress, b);
+//						} catch (Exception e) {
+//							e.printStackTrace();
+//						}
 					}
 				}
 			} catch (Exception e) {
@@ -113,7 +114,7 @@ public class UDPSocketChannelListener implements ServletContextListener {
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
-		new UDPSocketChannelListener().startServer();
+		new UDPSocketChannelListener_no().startServer();
 	}
 
 	class UDPListenServer implements Runnable {
@@ -121,7 +122,7 @@ public class UDPSocketChannelListener implements ServletContextListener {
 		@Override
 		public void run() {
 			try {
-				new UDPSocketChannelListener().startServer();
+				new UDPSocketChannelListener_no().startServer();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

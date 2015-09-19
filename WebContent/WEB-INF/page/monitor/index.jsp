@@ -83,9 +83,6 @@
 -->
 <script src="/js/dwz.regional.zh.js" type="text/javascript"></script>
 <script type="text/javascript">
-	window.onbeforeunload = function(event) { 
-		$.post('${base }/stopMonitorThread.do');
-	};
 	$(function() {
 // 		window.moveTo(0, 0);
 // 		window.resizeTo(screen.availWidth, screen.availHeight);
@@ -114,7 +111,14 @@
 		});
 		DWZ.ui.sbar=false;
 		init();
-		//heart();
+		
+		//初始添加在线设备
+		<c:forEach items="${deviceList }" var="d">
+			<c:if test="${d.isOnline==1}">
+				map.put("${d.sn}",new Date());
+			</c:if>
+		</c:forEach>
+		heart();
 		
 		$('#deviceList img').contextMenu('menu',monitorOps);
 // 		$('#logRecord tbody tr').contextMenu('clearMenu',clearOps);
@@ -171,7 +175,7 @@
 		return str;
 	};
 	
-	var logIndex=0;
+	var logIndex=1;
 	function init() {
 		JS.Engine.stop();
 		JS.Engine.start('/conn');
@@ -179,7 +183,7 @@
 			'Co${sessionScope.company.id}' : function(e) {//侦听一个channel
 				var e2 = eval('(' + e + ')');
 			    //状态
-				if(e2.type=='status' && e2.f1==0x01){
+				if(e2.type=='status'){
 					var sn=e2.sn;
 					$("#deviceList .deviceList[id="+sn+"] img").attr('alt','在线').attr('src','/img/online.png');
 					map.put(sn,new Date());
@@ -189,12 +193,13 @@
 						logIndex=0;
 						$('#logRecord tbody tr:not(:hidden)').remove();
 					}
-					var tempRow=$('#logRecord tbody tr:hidden').clone();
-					tempRow.removeAttr('style').find('td[index] div').html(++logIndex);
-					tempRow.find('td[time] div').html(e2.time);
-					tempRow.find('td[from] div').html(e2.from);
-					tempRow.find('td[des] div').html(e2.des);
-					$('#logRecord tbody').append(tempRow.wrap('<tr></tr>'));
+					var tr=$("#logRecord tbody tr[index="+logIndex+"]");					
+					tr.find('td[index] div').html(logIndex);
+					tr.find('td[time] div').html(e2.time);
+					tr.find('td[from] div').html(e2.from);
+					tr.find('td[des] div').html(e2.des);
+					logIndex++;
+// 					$('#logRecord tbody').append(tempRow.wrap('<tr></tr>'));
 // 					$("#logRecord .gridTbody").scrollTop($("#logRecord .gridTbody")[0].scrollHeight);
 					
 				}
@@ -210,7 +215,8 @@
 				var t=(d.getTime()-map.get(array[i]).getTime())/1000;
 				if(t>10){
 					$("#deviceList .deviceList[id="+array[i]+"] img").attr('alt','离线').attr('src','/img/offline.png');
-					$.post('${base }/closeDatagramChannel.do?sn='+array[i]);
+// 					$.post('${base }/closeDatagramChannel.do?sn='+array[i]);
+					$.post('${base }/removeInetSocketAddress.do?sn='+array[i]);
 					map.remove(array[i]);
 				}
 			}
@@ -258,7 +264,7 @@
 				if($(t).hasClass('log')){
 					logIndex=0;
 				}
-				$('tr:not(:hidden)', t).remove();
+				$('tr td div', t).empty();
 			}
 		},
 		onShowMenu : function(e, menu) {
@@ -315,7 +321,7 @@
 			<li id="sysPwd">系统密码</li>
 			<li id="discount">折扣费率及管理费</li>
 <!-- 								<li class="divide" /> -->
-			<li id="batch">批次名单</li>
+			<li id="batchBlack">批次名单</li>
 			<li id="allAppend">全量名单</li>
 			<li id="incAppend">增量名单</li>
 <!-- 								<li class="divide" /> -->
@@ -524,14 +530,16 @@
 													<table class="table" width="99%" layoutH="300" rel="jbsxBox" target="logRecord">
 														<thead>
 															<tr>
-																<th width="40">序号</th>
-																<th width="100">日志时间</th>
-																<th width="100">日期来源</th>
-																<th width="100">日志描述</th>
+																<th width="20">序号</th>
+																<th width="50">日志时间</th>
+																<th width="50">日期来源</th>
+																<th width="200">日志描述</th>
 															</tr>
 														</thead>
 														<tbody class="clearLog log">
-															<tr style="display: none;"><td index></td><td time></td><td from></td><td des></td></tr>
+															<c:forEach begin="1" end="1000" step="1" var="i">
+																<tr index="${i}"><td index></td><td time></td><td from></td><td des></td></tr>
+															</c:forEach>
 														</tbody>
 													</table>
 												</div>

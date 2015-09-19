@@ -2,8 +2,7 @@ package com.singbon.service.monitor;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.SocketAddress;
-import java.nio.channels.DatagramChannel;
+import java.net.InetSocketAddress;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -56,14 +55,16 @@ public class MonitorService implements Runnable {
 	 * @throws IOException
 	 * @throws Exception
 	 */
-	public void time(Device device, DatagramChannel datagramChannel, SocketAddress socketAddress, int commandCode) throws IOException {
+	// public void time(Device device, DatagramChannel datagramChannel,
+	// SocketAddress socketAddress, int commandCode) throws IOException {
+	public void time(Device device, InetSocketAddress inetSocketAddress, int commandCode) throws IOException {
 		String sendBufStr = StringUtil.hexLeftPad(FramePos.SysTime, 2) + StringUtil.hexLeftPad(SubOtherFramePos.SysTime, 2) + "0000" + StringUtil.hexLeftPad(commandCode, 4)
 				+ StringUtil.timeToHexString() + "0000";
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
 		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + "00000000" + "0000" + DeviceType.POS + bufLen + sendBufStr;
 		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
 		// CRC16.generate(sendBuf);
-		TerminalManager.sendToPos(datagramChannel, socketAddress, sendBuf);
+		TerminalManager.sendToPos2(inetSocketAddress, sendBuf);
 	}
 
 	/**
@@ -75,8 +76,12 @@ public class MonitorService implements Runnable {
 	 * @throws IOException
 	 * @throws Exception
 	 */
-	public void sysPara(Device device, DatagramChannel datagramChannel, SocketAddress socketAddress, int commandCode) throws IOException {
-		ConsumeParam consumeParam = TerminalManager.CompanyToConsumeParalList.get(device.getCompanyId());
+	// public void sysPara(Device device, DatagramChannel datagramChannel,
+	// SocketAddress socketAddress, SendCommand command) throws IOException {
+	public void sysPara(Device device, InetSocketAddress inetSocketAddress, SendCommand command) throws IOException {
+		ConsumeParam consumeParam = command.getConsumeParam();
+		if (consumeParam == null)
+			return;
 		// 卡底金（1 字节）
 		// +日限额（2 字节，高字节在前）
 		// +次限额（2 字节，高字节在前）
@@ -97,15 +102,15 @@ public class MonitorService implements Runnable {
 		// +卡底金卡类型标志位（2 字节，高字节在前） +
 		// 日限额卡类型标志位（2 字节，高字节在前；使用方法同上）
 		// +次限额卡类型标志位（2 字节，高字节在前；使用方法同上）
-		String sendBufStr = StringUtil.hexLeftPad(FramePos.SysPara, 2) + StringUtil.hexLeftPad(SubSysParaFramePos.SysPara, 2) + "0000" + StringUtil.hexLeftPad(commandCode, 4) + "00000000000000"
-				+ StringUtil.hexLeftPad(consumeParam.getCardMinFare(), 2) + StringUtil.hexLeftPad(consumeParam.getDayLimitFare(), 4) + StringUtil.hexLeftPad(consumeParam.getTimeLimitFare(), 4)
-				+ StringUtil.hexLeftPad(consumeParam.getConsumeType(), 2) + "0000000003" + getHexString(consumeParam.getCardMinFareCardTypes()) + getHexString(consumeParam.getDayLimitFareCardTypes())
-				+ getHexString(consumeParam.getTimeLimitFareCardTypes()) + "0000";
+		String sendBufStr = StringUtil.hexLeftPad(FramePos.SysPara, 2) + StringUtil.hexLeftPad(SubSysParaFramePos.SysPara, 2) + "0000" + StringUtil.hexLeftPad(command.getCommandCode(), 4)
+				+ "00000000000000" + StringUtil.hexLeftPad(consumeParam.getCardMinFare(), 2) + StringUtil.hexLeftPad(consumeParam.getDayLimitFare(), 4)
+				+ StringUtil.hexLeftPad(consumeParam.getTimeLimitFare(), 4) + StringUtil.hexLeftPad(consumeParam.getConsumeType(), 2) + "0000000003"
+				+ getHexString(consumeParam.getCardMinFareCardTypes()) + getHexString(consumeParam.getDayLimitFareCardTypes()) + getHexString(consumeParam.getTimeLimitFareCardTypes()) + "0000";
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
 		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + "00000000" + "0000" + DeviceType.POS + bufLen + sendBufStr;
 		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
 		// CRC16.generate(sendBuf);
-		TerminalManager.sendToPos(datagramChannel, socketAddress, sendBuf);
+		TerminalManager.sendToPos2(inetSocketAddress, sendBuf);
 	}
 
 	/**
@@ -117,12 +122,16 @@ public class MonitorService implements Runnable {
 	 * @throws IOException
 	 * @throws Exception
 	 */
-	public void meal(Device device, DatagramChannel datagramChannel, SocketAddress socketAddress, int commandCode) throws IOException {
-		List<Meal> mealList = TerminalManager.CompanyToMealList.get(device.getCompanyId());
+	// public void meal(Device device, DatagramChannel datagramChannel,
+	// SocketAddress socketAddress, SendCommand command) throws IOException {
+	public void meal(Device device, InetSocketAddress inetSocketAddress, SendCommand command) throws IOException {
+		List<Meal> mealList = command.getMealList();
+		if (mealList == null)
+			return;
 		// 时间段 1 的开始时间（2 字节，时，分）
 		// +时间段 1 的结束时间（2 字节，时，分）
 		// +时间段 1 的次数（1 字节）
-		String sendBufStr = StringUtil.hexLeftPad(FramePos.SysPara, 2) + StringUtil.hexLeftPad(SubSysParaFramePos.Meal, 2) + "0000" + StringUtil.hexLeftPad(commandCode, 4);
+		String sendBufStr = StringUtil.hexLeftPad(FramePos.SysPara, 2) + StringUtil.hexLeftPad(SubSysParaFramePos.Meal, 2) + "0000" + StringUtil.hexLeftPad(command.getCommandCode(), 4);
 		for (Meal meal : mealList) {
 			String beginTimeHour = StringUtil.hexLeftPad(Integer.parseInt(meal.getBeginTime().substring(0, 2)), 2);
 			String beginTimeMin = StringUtil.hexLeftPad(Integer.parseInt(meal.getBeginTime().substring(3, 5)), 2);
@@ -136,7 +145,7 @@ public class MonitorService implements Runnable {
 		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + "00000000" + "0000" + DeviceType.POS + bufLen + sendBufStr;
 		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
 		// CRC16.generate(sendBuf);
-		TerminalManager.sendToPos(datagramChannel, socketAddress, sendBuf);
+		TerminalManager.sendToPos2(inetSocketAddress, sendBuf);
 	}
 
 	/**
@@ -148,12 +157,16 @@ public class MonitorService implements Runnable {
 	 * @throws IOException
 	 * @throws Exception
 	 */
-	public void discount(Device device, DatagramChannel datagramChannel, SocketAddress socketAddress, int commandCode) throws IOException {
-		List<Discount> discountList = TerminalManager.CompanyToDiscountList.get(device.getCompanyId());
+	// public void discount(Device device, DatagramChannel datagramChannel,
+	// SocketAddress socketAddress, SendCommand command) throws IOException {
+	public void discount(Device device, InetSocketAddress inetSocketAddress, SendCommand command) throws IOException {
+		List<Discount> discountList = command.getDiscountList();
+		if (discountList == null)
+			return;
 		// 卡类型 0 的折扣和管理费（2 字节，第 1 字节的高位为 0，
 		// 则收取管理费，有效数据为第 1 字节的低 7 位（高字节），
 		// 第 2 字节）
-		String sendBufStr = StringUtil.hexLeftPad(FramePos.SysPara, 2) + StringUtil.hexLeftPad(SubSysParaFramePos.Discount, 2) + "0000" + StringUtil.hexLeftPad(commandCode, 4);
+		String sendBufStr = StringUtil.hexLeftPad(FramePos.SysPara, 2) + StringUtil.hexLeftPad(SubSysParaFramePos.Discount, 2) + "0000" + StringUtil.hexLeftPad(command.getCommandCode(), 4);
 		for (Discount discount : discountList) {
 			String rate = StringUtil.hexLeftPad(discount.getRate(), 2);
 			sendBufStr += ("00" + rate);
@@ -163,7 +176,7 @@ public class MonitorService implements Runnable {
 		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + "00000000" + "0000" + DeviceType.POS + bufLen + sendBufStr;
 		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
 		// CRC16.generate(sendBuf);
-		TerminalManager.sendToPos(datagramChannel, socketAddress, sendBuf);
+		TerminalManager.sendToPos2(inetSocketAddress, sendBuf);
 	}
 
 	/**
@@ -175,12 +188,17 @@ public class MonitorService implements Runnable {
 	 * @throws IOException
 	 * @throws Exception
 	 */
-	public void orderTime(Device device, DatagramChannel datagramChannel, SocketAddress socketAddress, byte subFrame, int commandCode, int beginIndex, int endIndex) throws IOException {
-		List<OrderTime> orderTimeList = TerminalManager.CompanyToOrderTimeList.get(device.getCompanyId());
+	// public void orderTime(Device device, DatagramChannel datagramChannel,
+	// SocketAddress socketAddress, byte subFrame, SendCommand command, int
+	// beginIndex, int endIndex) throws IOException {
+	public void orderTime(Device device, InetSocketAddress inetSocketAddress, byte subFrame, SendCommand command, int beginIndex, int endIndex) throws IOException {
+		List<OrderTime> orderTimeList = command.getOrderTimeList();
+		if (orderTimeList == null)
+			return;
 		// 时间段 1 的开始时间（2 字节，时，分）
 		// +时间段 1 的结束时间（2 字节，时，分）
 		// +时间段 1 的次数（1 字节）
-		String sendBufStr = StringUtil.hexLeftPad(FramePos.Cookbook, 2) + StringUtil.hexLeftPad(subFrame, 2) + "0000" + StringUtil.hexLeftPad(commandCode, 4);
+		String sendBufStr = StringUtil.hexLeftPad(FramePos.Cookbook, 2) + StringUtil.hexLeftPad(subFrame, 2) + "0000" + StringUtil.hexLeftPad(command.getCommandCode(), 4);
 		for (int i = beginIndex; i < endIndex; i++) {
 			OrderTime orderTime = orderTimeList.get(i);
 			String time = StringUtil.hexLeftPad(Integer.parseInt(orderTime.getBeginTime().substring(0, 2)), 2) + StringUtil.hexLeftPad(Integer.parseInt(orderTime.getBeginTime().substring(3, 5)), 2)
@@ -192,7 +210,7 @@ public class MonitorService implements Runnable {
 		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + "00000000" + "0000" + DeviceType.POS + bufLen + sendBufStr;
 		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
 		// CRC16.generate(sendBuf);
-		TerminalManager.sendToPos(datagramChannel, socketAddress, sendBuf);
+		TerminalManager.sendToPos2(inetSocketAddress, sendBuf);
 	}
 
 	/**
@@ -204,13 +222,16 @@ public class MonitorService implements Runnable {
 	 * @throws IOException
 	 * @throws Exception
 	 */
-	public void updateCookbook(Device device, DatagramChannel datagramChannel, SocketAddress socketAddress, int commandCode) throws IOException {
+	// public void updateCookbook(Device device, DatagramChannel
+	// datagramChannel, SocketAddress socketAddress, int commandCode) throws
+	// IOException {
+	public void updateCookbook(Device device, InetSocketAddress inetSocketAddress, int commandCode) throws IOException {
 		String sendBufStr = StringUtil.hexLeftPad(FramePos.Cookbook, 2) + StringUtil.hexLeftPad(SubCookbookFramePos.Update, 2) + "0000" + StringUtil.hexLeftPad(commandCode, 4) + "0000";
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
 		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + "00000000" + "0000" + DeviceType.POS + bufLen + sendBufStr;
 		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
 		// CRC16.generate(sendBuf);
-		TerminalManager.sendToPos(datagramChannel, socketAddress, sendBuf);
+		TerminalManager.sendToPos2(inetSocketAddress, sendBuf);
 	}
 
 	/**
@@ -222,15 +243,20 @@ public class MonitorService implements Runnable {
 	 * @throws IOException
 	 * @throws Exception
 	 */
-	public void appendCookbook(Device device, DatagramChannel datagramChannel, SocketAddress socketAddress, SendCommand sendCommand) throws IOException {
+	// public void appendCookbook(Device device, DatagramChannel
+	// datagramChannel, SocketAddress socketAddress, SendCommand sendCommand)
+	// throws IOException {
+	public void appendCookbook(Device device, InetSocketAddress inetSocketAddress, SendCommand sendCommand) throws IOException {
 		Cookbook cookbook = sendCommand.getCookbook();
+		if (cookbook == null)
+			return;
 		String sendBufStr = StringUtil.hexLeftPad(FramePos.Cookbook, 2) + StringUtil.hexLeftPad(SubCookbookFramePos.Append, 2) + "0000" + StringUtil.hexLeftPad(sendCommand.getCommandCode(), 4)
 				+ StringUtil.hexLeftPad(cookbook.getCookbookCode(), 4) + StringUtil.hexLeftPad(cookbook.getPrice() * 100, 8) + getCookbookNameHexString(cookbook.getCookbookName()) + "0000";
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
 		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + "00000000" + "0000" + DeviceType.POS + bufLen + sendBufStr;
 		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
 		// CRC16.generate(sendBuf);
-		TerminalManager.sendToPos(datagramChannel, socketAddress, sendBuf);
+		TerminalManager.sendToPos2(inetSocketAddress, sendBuf);
 	}
 
 	private String getCookbookNameHexString(String name) throws UnsupportedEncodingException {
@@ -239,7 +265,7 @@ public class MonitorService implements Runnable {
 		for (byte b : nameByte) {
 			result += StringUtil.hexLeftPad(b, 2);
 		}
-		return StringUtil.stringLeftPad(result, 34);
+		return StringUtil.stringRightPad(result, 32);
 	}
 
 	private String getHexString(String str) {
@@ -263,13 +289,15 @@ public class MonitorService implements Runnable {
 	 * @throws IOException
 	 * @throws Exception
 	 */
-	public void sysInit(Device device, DatagramChannel datagramChannel, SocketAddress socketAddress, int commandCode) throws IOException {
+	// public void sysInit(Device device, DatagramChannel datagramChannel,
+	// SocketAddress socketAddress, int commandCode) throws IOException {
+	public void sysInit(Device device, InetSocketAddress inetSocketAddress, int commandCode) throws IOException {
 		String sendBufStr = StringUtil.hexLeftPad(FramePos.SysInit, 2) + StringUtil.hexLeftPad(SubOtherFramePos.SysInit, 2) + "0000" + StringUtil.hexLeftPad(commandCode, 4) + "0000";
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
 		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + "00000000" + "0000" + DeviceType.POS + bufLen + sendBufStr;
 		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
 		// CRC16.generate(sendBuf);
-		TerminalManager.sendToPos(datagramChannel, socketAddress, sendBuf);
+		TerminalManager.sendToPos2(inetSocketAddress, sendBuf);
 	}
 
 	/*
@@ -280,14 +308,19 @@ public class MonitorService implements Runnable {
 		while (!stop) {
 			for (Device d : this.deviceList) {
 				String sn = d.getSn();
-				DatagramChannel datagramChannel = TerminalManager.SNToDatagramChannelList.get(sn);
-				SocketAddress socketAddress = TerminalManager.SNToSocketAddresslList.get(sn);
+				// DatagramChannel datagramChannel =
+				// TerminalManager.SNToDatagramChannelList.get(sn);
+				// SocketAddress socketAddress =
+				// TerminalManager.SNToInetSocketAddressList.get(sn);
+				InetSocketAddress inetSocketAddress = TerminalManager.SNToInetSocketAddressList.get(sn);
 
 				SendCommand sendCommand = null;
 				synchronized (TerminalManager.sendCommandObject) {
 					List<SendCommand> sendCommandList = TerminalManager.SNToSendCommandList.get(sn);
 
-					if (datagramChannel != null && socketAddress != null && sendCommandList != null && sendCommandList.size() > 0) {
+					// if (datagramChannel != null && socketAddress != null &&
+					// sendCommandList != null && sendCommandList.size() > 0) {
+					if (inetSocketAddress != null && sendCommandList != null && sendCommandList.size() > 0) {
 						StringUtil.println("命令个数：" + sendCommandList.size());
 
 						sendCommand = sendCommandList.get(0);
@@ -298,19 +331,21 @@ public class MonitorService implements Runnable {
 							continue;
 						}
 						try {
-							excuteCommand(d, datagramChannel, socketAddress, sendCommand);
+							// excuteCommand(d, datagramChannel, socketAddress,
+							// sendCommand);
+							excuteCommand(d, inetSocketAddress, sendCommand);
 							sendCommand.setSendTime(++sendTime);
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
 					} else {
-						// try {
-						// Thread.sleep(1000);
-						// } catch (InterruptedException e) {
-						// stop = true;
-						// e.printStackTrace();
-						// break;
-						// }
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+							stop = true;
+							e.printStackTrace();
+							break;
+						}
 						continue;
 					}
 				}
@@ -323,12 +358,15 @@ public class MonitorService implements Runnable {
 							if (sendCommandList != null && sendCommandList.size() > 0) {
 								SendCommand tempSendCommand = sendCommandList.get(0);
 								if (sendCommand != tempSendCommand) {
+									System.out.println("f" + sendCommand.getSendTime());
 									break;
 								}
 							}
 						}
+						System.out.println("nf" + sendCommand.getSendTime());
 						Thread.sleep(200);
 					}
+					Thread.sleep(1000);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 					stop = true;
@@ -348,7 +386,10 @@ public class MonitorService implements Runnable {
 	 * @throws IOException
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked", "deprecation" })
-	private void excuteCommand(Device d, DatagramChannel datagramChannel, SocketAddress socketAddress, SendCommand sendCommand) throws IOException {
+	// private void excuteCommand(Device d, DatagramChannel datagramChannel,
+	// SocketAddress socketAddress, SendCommand sendCommand) throws IOException
+	// {
+	private void excuteCommand(Device d, InetSocketAddress inetSocketAddress, SendCommand sendCommand) throws IOException {
 		byte frame = sendCommand.getFrame();
 		Map map = new HashMap();
 		map.put("type", "log");
@@ -358,46 +399,61 @@ public class MonitorService implements Runnable {
 		// 校时
 		case FramePos.SysTime:
 			if (sendCommand.getSubFrame() == SubOtherFramePos.SysTime) {
-				time(d, datagramChannel, socketAddress, sendCommand.getCommandCode());
+				// time(d, datagramChannel, socketAddress,
+				// sendCommand.getCommandCode());
+				time(d, inetSocketAddress, sendCommand.getCommandCode());
 				map.put("des", "发送终端校时命令");
 			}
 			break;
 		// 系统参数
 		case FramePos.SysPara:
 			if (sendCommand.getSubFrame() == SubSysParaFramePos.SysPara) {
-				sysPara(d, datagramChannel, socketAddress, sendCommand.getCommandCode());
+				// sysPara(d, datagramChannel, socketAddress, sendCommand);
+				sysPara(d, inetSocketAddress, sendCommand);
 				map.put("des", "发送系统参数命令");
 			} else if (sendCommand.getSubFrame() == SubSysParaFramePos.Meal) {
-				meal(d, datagramChannel, socketAddress, sendCommand.getCommandCode());
+				// meal(d, datagramChannel, socketAddress, sendCommand);
+				meal(d, inetSocketAddress, sendCommand);
 				map.put("des", "发送餐别限次命令");
 			} else if (sendCommand.getSubFrame() == SubSysParaFramePos.Discount) {
-				discount(d, datagramChannel, socketAddress, sendCommand.getCommandCode());
+				// discount(d, datagramChannel, socketAddress, sendCommand);
+				discount(d, inetSocketAddress, sendCommand);
 				map.put("des", "发送折扣费率及管理费命令");
 			}
 			break;
 		// 菜单
 		case FramePos.Cookbook:
 			if (sendCommand.getSubFrame() == SubCookbookFramePos.OrderTime1) {
-				orderTime(d, datagramChannel, socketAddress, SubCookbookFramePos.OrderTime1, sendCommand.getCommandCode(), 0, 6);
+				// orderTime(d, datagramChannel, socketAddress,
+				// SubCookbookFramePos.OrderTime1, sendCommand, 0, 6);
+				orderTime(d, inetSocketAddress, SubCookbookFramePos.OrderTime1, sendCommand, 0, 6);
 				map.put("des", "发送订餐时间段1-6命令");
 			} else if (sendCommand.getSubFrame() == SubCookbookFramePos.OrderTime2) {
-				orderTime(d, datagramChannel, socketAddress, SubCookbookFramePos.OrderTime2, sendCommand.getCommandCode(), 6, 12);
+				// orderTime(d, datagramChannel, socketAddress,
+				// SubCookbookFramePos.OrderTime2, sendCommand, 6, 12);
+				orderTime(d, inetSocketAddress, SubCookbookFramePos.OrderTime2, sendCommand, 6, 12);
 				map.put("des", "发送订餐时间段7-12命令");
 			} else if (sendCommand.getSubFrame() == SubCookbookFramePos.Update) {
-				updateCookbook(d, datagramChannel, socketAddress, sendCommand.getCommandCode());
+				// updateCookbook(d, datagramChannel, socketAddress,
+				// sendCommand.getCommandCode());
+				updateCookbook(d, inetSocketAddress, sendCommand.getCommandCode());
 				map.put("des", "发送菜肴清单更新命令");
 			} else if (sendCommand.getSubFrame() == SubCookbookFramePos.Append) {
-				appendCookbook(d, datagramChannel, socketAddress, sendCommand);
+				// appendCookbook(d, datagramChannel, socketAddress,
+				// sendCommand);
+				appendCookbook(d, inetSocketAddress, sendCommand);
 				Cookbook cookbook = sendCommand.getCookbook();
-				String log = String.format("发送菜肴清单追加命令：第{0}/{1}个，编号：{2}，单价：{3}，菜名：{4}", sendCommand.getCookbookIndex(), sendCommand.getCookbookTotal(), cookbook.getCookbookCode(),
-						cookbook.getPrice(), cookbook.getCookbookName());
+				String log = String.format("发送菜肴清单追加命令：第%s/%s个，编号：%s，单价：%s，菜名：%s", sendCommand.getCookbookIndex(), sendCommand.getCookbookTotal(), cookbook.getCookbookCode(), cookbook.getPrice(),
+						cookbook.getCookbookName());
 				map.put("des", log);
 			}
 			break;
 		// 初始化
 		case FramePos.SysInit:
 			if (sendCommand.getSubFrame() == SubOtherFramePos.SysInit) {
-				sysInit(d, datagramChannel, socketAddress, sendCommand.getCommandCode());
+				// sysInit(d, datagramChannel, socketAddress,
+				// sendCommand.getCommandCode());
+				sysInit(d, inetSocketAddress, sendCommand.getCommandCode());
 				map.put("des", "发送初始化命令");
 			}
 			break;

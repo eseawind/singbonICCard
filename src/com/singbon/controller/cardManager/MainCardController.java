@@ -146,6 +146,7 @@ public class MainCardController extends BaseController {
 	@SuppressWarnings({ "rawtypes", "unused" })
 	@RequestMapping(value = "/userInfo.do", method = RequestMethod.GET)
 	public String userInfo(Integer userId, Integer deptId, Integer batchId, Integer editType, HttpServletRequest request, Model model) {
+		request.getSession().removeAttribute("companyId");
 		Company company = (Company) request.getSession().getAttribute("company");
 		Device device = (Device) request.getSession().getAttribute("device");
 		String sn = device.getSn();
@@ -584,6 +585,7 @@ public class MainCardController extends BaseController {
 	 */
 	@RequestMapping(value = "/changeCard.do")
 	public String changeCard(Integer userId, Integer editType, HttpServletRequest request, Model model) {
+		request.getSession().removeAttribute("companyId");
 		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
 		Company company = (Company) request.getSession().getAttribute("company");
 		model.addAttribute("sysUser", sysUser);
@@ -720,6 +722,7 @@ public class MainCardController extends BaseController {
 	 */
 	@RequestMapping(value = "/readCard.do")
 	public String readCard(HttpServletRequest request, Model model) {
+		request.getSession().removeAttribute("companyId");
 		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
 		Company company = (Company) request.getSession().getAttribute("company");
 		Device device = (Device) request.getSession().getAttribute("device");
@@ -958,6 +961,7 @@ public class MainCardController extends BaseController {
 	 */
 	@RequestMapping(value = "/charge.do")
 	public String charge(HttpServletRequest request, Model model) {
+		request.getSession().removeAttribute("companyId");
 		Device device = (Device) request.getSession().getAttribute("device");
 		model.addAttribute("device", device);
 		String sn = device.getSn();

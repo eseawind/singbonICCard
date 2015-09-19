@@ -193,8 +193,8 @@
 					</div>
 					<div class="accordionHeader">
 						<h2>
-							<span>Folder</span><a onclick="javascript:window.open ('/monitor/index.do','监控平台','width=1024,height=500,top=80,left=80,toolbar=no, menubar=no, scrollbars=no, resizable=no');">监控平台</a>
-<!-- 							<span>Folder</span><a onclick="javascript:window.open ('/monitor/index.do','监控平台','width=2024,height=1000,top=80,left=80,toolbar=no, menubar=no, scrollbars=no, resizable=no');">监控平台</a> -->
+<!-- 							<span>Folder</span><a onclick="javascript:window.open ('/monitor/index.do','监控平台','width=1024,height=500,top=80,left=80,toolbar=no, menubar=no, scrollbars=no, resizable=no');">监控平台</a> -->
+							<span>Folder</span><a onclick="javascript:window.open ('/monitor/index.do','监控平台','width=2024,height=1000,top=80,left=80,toolbar=no, menubar=no, scrollbars=no, resizable=no');">监控平台</a>
 						</h2>
 					</div>
 				</div>

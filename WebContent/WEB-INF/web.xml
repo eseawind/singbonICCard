@@ -65,8 +65,9 @@
 		<listener-class>com.singbon.device.listener.TCPSocketChannelListener</listener-class>
 	</listener>
 	<listener>
-		<listener-class>com.singbon.device.listener.UDPSocketChannelListener</listener-class>
+		<listener-class>com.singbon.device.listener.UDPServerListener</listener-class>
 	</listener>
+<!-- 		<listener-class>com.singbon.device.listener.UDPSocketChannelListener</listener-class> -->
 	<!-- spring MVC servlet -->
 	<servlet>
 		<servlet-name>SpringMVC</servlet-name>

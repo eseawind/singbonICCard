@@ -1,6 +1,12 @@
 package com.singbon.device;
 
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.socket.DatagramPacket;
+
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
@@ -17,12 +23,8 @@ import org.comet4j.core.CometContext;
 import org.comet4j.core.CometEngine;
 import org.comet4j.core.util.JSONUtil;
 
-import com.singbon.entity.ConsumeParam;
 import com.singbon.entity.Cookbook;
 import com.singbon.entity.Device;
-import com.singbon.entity.Discount;
-import com.singbon.entity.Meal;
-import com.singbon.entity.OrderTime;
 import com.singbon.util.StringUtil;
 
 /**
@@ -37,6 +39,12 @@ public class TerminalManager {
 	 * 服务器推送连接引擎
 	 */
 	public static CometEngine EngineInstance = null;
+
+	/**
+	 * netty
+	 */
+	public static ChannelHandlerContext ctx = null;
+
 	/**
 	 * SN到公司映射，
 	 */
@@ -57,15 +65,21 @@ public class TerminalManager {
 	 */
 	public static Map<String, SocketChannel> SNToSocketChannelList = new HashMap<String, SocketChannel>();
 
-	/**
-	 * SN序列号到Datagram套接字通道映射列表
-	 */
-	public static Map<String, DatagramChannel> SNToDatagramChannelList = new HashMap<String, DatagramChannel>();
+	// /**
+	// * SN序列号到Datagram套接字通道映射列表
+	// */
+	// public static Map<String, DatagramChannel> SNToDatagramChannelList = new
+	// HashMap<String, DatagramChannel>();
+	// /**
+	// * SN序列号到SocketAddress映射列表
+	// */
+	// public static Map<String, SocketAddress> SNToSocketAddresslList = new
+	// HashMap<String, SocketAddress>();
 
 	/**
-	 * SN序列号到SocketAddress映射列表
+	 * SN序列号到InetSocketAddress映射列表
 	 */
-	public static Map<String, SocketAddress> SNToSocketAddresslList = new HashMap<String, SocketAddress>();
+	public static Map<String, InetSocketAddress> SNToInetSocketAddressList = new HashMap<String, InetSocketAddress>();
 
 	/**
 	 * 公司ID到采集监控多线程映射列表
@@ -80,31 +94,6 @@ public class TerminalManager {
 	// ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// //////////////////////////////监控用
 	// ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/**
-	 * 公司ID到消费参数映射列表
-	 */
-	public static Map<Integer, ConsumeParam> CompanyToConsumeParalList = new HashMap<Integer, ConsumeParam>();
-
-	/**
-	 * 公司ID到餐别限次映射列表
-	 */
-	public static Map<Integer, List<Meal>> CompanyToMealList = new HashMap<Integer, List<Meal>>();
-
-	/**
-	 * 公司ID到订餐时间段映射列表
-	 */
-	public static Map<Integer, List<OrderTime>> CompanyToOrderTimeList = new HashMap<Integer, List<OrderTime>>();
-
-	/**
-	 * 公司ID到折扣费及管理费映射列表
-	 */
-	public static Map<Integer, List<Discount>> CompanyToDiscountList = new HashMap<Integer, List<Discount>>();
-
-	/**
-	 * 公司ID到菜肴清单映射列表
-	 */
-	public static Map<Integer, List<Cookbook>> CompanyToCookbookList = new HashMap<Integer, List<Cookbook>>();
-
 	// 锁
 	public static Object sendCommandObject = new Object();
 
@@ -611,7 +600,7 @@ public class TerminalManager {
 	// //////////////////////////////////////////////////////////////////////////////
 
 	@SuppressWarnings({ "rawtypes", "unchecked", "deprecation" })
-	public void dispatchPosCommand(DatagramChannel datagramChannel, SocketAddress socketAddress, byte[] b) {
+	public void dispatchPosCommand(InetSocketAddress inetSocketAddress, byte[] b) {
 		if (b == null)
 			return;
 		String sn = getSN(b);
@@ -621,16 +610,12 @@ public class TerminalManager {
 		int commandCode = b[36] + b[37];
 
 		Map map = new HashMap();
-		// 终端设备状态，设置sn与datagram对照关系
+		// 终端设备状态，设置sn与inetSocketAddress对照关系
 		if (frameByte[0] == FramePos.Status && frameByte[1] == SubStatusFramePos.SysStatus) {
-			TerminalManager.SNToDatagramChannelList.put(sn, datagramChannel);
-			TerminalManager.SNToSocketAddresslList.put(sn, socketAddress);
+			// TerminalManager.SNToDatagramChannelList.put(sn, datagramChannel);
+			TerminalManager.SNToInetSocketAddressList.put(sn, inetSocketAddress);
 
-			byte frame = FramePos.Status;
-			byte subFrame = SubStatusFramePos.SysStatus;
 			map.put("'type'", "status");
-			map.put("'f1'", frame);
-			map.put("'f2'", subFrame);
 			map.put("'sn'", sn);
 			// //////////////////////////////////////////////////////////////////////////////
 			// /////////////////////////////////////////////消费机回复
@@ -666,13 +651,6 @@ public class TerminalManager {
 					map.put("des", "执行餐别限次命令成功");
 				} else if (subFrame == SubSysParaFramePos.Discount) {
 					map.put("des", "执行折扣费率及管理费成功");
-				} else if (subFrame == SubCookbookFramePos.Update) {
-					map.put("des", "执行菜肴清单更新成功");
-				} else if (subFrame == SubCookbookFramePos.Append) {
-					Cookbook cookbook = sendCommand.getCookbook();
-					String log = String.format("执行菜肴清单追加成功：第{0}/{1}个，编号：{2}，单价：{3}，菜名：{4}", sendCommand.getCookbookIndex(), sendCommand.getCookbookTotal(), cookbook.getCookbookCode(),
-							cookbook.getPrice(), cookbook.getCookbookName());
-					map.put("des", log);
 				}
 				break;
 			// 菜单
@@ -681,6 +659,13 @@ public class TerminalManager {
 					map.put("des", "执行订餐时间段1-6成功");
 				} else if (subFrame == SubCookbookFramePos.OrderTime2) {
 					map.put("des", "执行订餐时间段7-12成功");
+				} else if (subFrame == SubCookbookFramePos.Update) {
+					map.put("des", "执行菜肴清单更新成功");
+				} else if (subFrame == SubCookbookFramePos.Append) {
+					Cookbook cookbook = sendCommand.getCookbook();
+					String log = String.format("发送菜肴清单追加命令：第%s/%s个，编号：%s，单价：%s，菜名：%s", sendCommand.getCookbookIndex(), sendCommand.getCookbookTotal(), cookbook.getCookbookCode(), cookbook.getPrice(),
+							cookbook.getCookbookName());
+					map.put("des", log);
 				}
 				break;
 			// 初始化
@@ -719,5 +704,22 @@ public class TerminalManager {
 		StringUtil.print(StringUtil.toHexString(b[b.length - 1]) + " ");
 		ByteBuffer byteBuffer = ByteBuffer.wrap(b);
 		datagramChannel.send(byteBuffer, socketAddress);
+	}
+
+	/**
+	 * 发送命令到消费机， 改方法负责crc校验
+	 * 
+	 * @param socketChannel
+	 * @param b
+	 * @throws IOException
+	 */
+	public static void sendToPos2(InetSocketAddress inetSocketAddress, byte[] b) throws IOException {
+		CRC16.generate(b);
+		StringUtil.print(StringUtil.toHexString(b[b.length - 2]) + " ");
+		StringUtil.print(StringUtil.toHexString(b[b.length - 1]) + " ");
+		// ByteBuffer byteBuffer = ByteBuffer.wrap(b);
+		ByteBuf buf = Unpooled.copiedBuffer(b);
+		DatagramPacket datagramPacket = new DatagramPacket(buf, inetSocketAddress);
+		TerminalManager.ctx.writeAndFlush(datagramPacket);
 	}
 }
