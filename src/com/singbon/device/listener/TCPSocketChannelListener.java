@@ -76,7 +76,7 @@ public class TCPSocketChannelListener implements ServletContextListener {
 			TerminalManager.getCardNOSN(socketChannel);
 		} else if (selectionKey.isReadable()) {
 			// 有消息进来
-			ByteBuffer byteBuffer = ByteBuffer.allocate(200);
+			ByteBuffer byteBuffer = ByteBuffer.allocate(273);
 			SocketChannel sc = (SocketChannel) selectionKey.channel();
 
 			int len = 0;
@@ -105,7 +105,7 @@ public class TCPSocketChannelListener implements ServletContextListener {
 //				for (byte b2 : b) {
 //					StringUtil.print(StringUtil.toHexString(b2) + " ");
 //				}
-//				StringUtil.println();
+//				StringUtil.println("");
 
 				// 校验
 				if (!CRC16.compareCRC16(b)) {

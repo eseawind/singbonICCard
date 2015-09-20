@@ -7,9 +7,7 @@ import io.netty.channel.socket.DatagramPacket;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.net.SocketAddress;
 import java.nio.ByteBuffer;
-import java.nio.channels.DatagramChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
@@ -64,17 +62,6 @@ public class TerminalManager {
 	 * SN序列号到套接字通道映射列表
 	 */
 	public static Map<String, SocketChannel> SNToSocketChannelList = new HashMap<String, SocketChannel>();
-
-	// /**
-	// * SN序列号到Datagram套接字通道映射列表
-	// */
-	// public static Map<String, DatagramChannel> SNToDatagramChannelList = new
-	// HashMap<String, DatagramChannel>();
-	// /**
-	// * SN序列号到SocketAddress映射列表
-	// */
-	// public static Map<String, SocketAddress> SNToSocketAddresslList = new
-	// HashMap<String, SocketAddress>();
 
 	/**
 	 * SN序列号到InetSocketAddress映射列表
@@ -134,7 +121,7 @@ public class TerminalManager {
 
 	// 获取回复命令号
 	private int getCommandCode(byte[] b) {
-		return b[34] + b[35];
+		return StringUtil.byteToInt(b[36]) * 256 + StringUtil.byteToInt(b[37]);
 	}
 
 	// 获取序列号
@@ -153,7 +140,7 @@ public class TerminalManager {
 	// 获取物理卡号
 	private String getCardSN(byte[] b) {
 		String sn = "";
-		for (int i = 37; i < 41; i++) {
+		for (int i = 39; i < 43; i++) {
 			String hex = Integer.toHexString(b[i] & 0xFF);
 			if (hex.length() == 1) {
 				hex = '0' + hex;
@@ -204,7 +191,7 @@ public class TerminalManager {
 		// 物理卡号
 		String cardSN = null;
 		if (frameByte[0] == 0x03 && frameByte[1] == (byte) 0xcd) {
-			cardStatus = b[43];
+			cardStatus = b[45];
 			cardSN = getCardSN(b);
 		}
 
@@ -290,7 +277,7 @@ public class TerminalManager {
 			// /////////////////////////////////////////////读卡回复
 			// //////////////////////////////////////////////////////////////////////////////
 		} else if (Arrays.equals(frameByte, new byte[] { 0x03, (byte) 0xcd, 0x00, 0x01 })) {
-			int baseLen = 41;
+			int baseLen = 43;
 			// 获取出纳卡基本信息命令
 			if (commandCode == CommandCodeCardReader.CashierCardBaseInfo) {
 				map.put("'f1'", FrameCardReader.CashierCardBaseInfoCmd);
@@ -504,12 +491,12 @@ public class TerminalManager {
 		String operId = "";
 		String hex = Integer.toHexString(b[40] & 0x0F);
 		operId += hex;
-		hex = Integer.toHexString(b[41] & 0xFF);
+		hex = Integer.toHexString(b[43] & 0xFF);
 		if (hex.length() == 1) {
 			hex = '0' + hex;
 		}
 		operId += hex;
-		hex = Integer.toHexString(b[42] & 0xFF);
+		hex = Integer.toHexString(b[44] & 0xFF);
 		if (hex.length() == 1) {
 			hex = '0' + hex;
 		}
@@ -564,7 +551,7 @@ public class TerminalManager {
 	 */
 	public static void getCardInfo(SocketChannel socketChannel, Device device, byte commandCode, List<Integer> sectionBlocks) throws IOException {
 		String deviceNum = StringUtil.hexLeftPad(device.getDeviceNum(), 8);
-		String commandCodeStr = StringUtil.hexLeftPad(commandCode, 4);
+		String commandCodeStr = "0000" + StringUtil.hexLeftPad(commandCode, 4);
 		String sendBufStr = CommandCardReader.ReadCard + commandCodeStr + CommandCardReader.NoValidateCardSN + "44444444";
 		for (int i : sectionBlocks) {
 			int section = i / 10;
@@ -607,7 +594,7 @@ public class TerminalManager {
 		// 帧
 		byte[] frameByte = getFrame(b);
 		// 命令码
-		int commandCode = b[36] + b[37];
+		int commandCode = getCommandCode(b);
 
 		Map map = new HashMap();
 		// 终端设备状态，设置sn与inetSocketAddress对照关系
@@ -626,6 +613,7 @@ public class TerminalManager {
 				ArrayList<SendCommand> sendCommandList = TerminalManager.SNToSendCommandList.get(sn);
 				if (sendCommandList != null && sendCommandList.size() > 0) {
 					sendCommand = sendCommandList.get(0);
+					System.out.println(sendCommand.getCommandCode() + " " + commandCode);
 					if (sendCommand.getCommandCode() == commandCode) {
 						sendCommandList.remove(sendCommand);
 					}
@@ -698,26 +686,10 @@ public class TerminalManager {
 	 * @param b
 	 * @throws IOException
 	 */
-	public static void sendToPos(DatagramChannel datagramChannel, SocketAddress socketAddress, byte[] b) throws IOException {
+	public static void sendToPos(InetSocketAddress inetSocketAddress, byte[] b) throws IOException {
 		CRC16.generate(b);
 		StringUtil.print(StringUtil.toHexString(b[b.length - 2]) + " ");
 		StringUtil.print(StringUtil.toHexString(b[b.length - 1]) + " ");
-		ByteBuffer byteBuffer = ByteBuffer.wrap(b);
-		datagramChannel.send(byteBuffer, socketAddress);
-	}
-
-	/**
-	 * 发送命令到消费机， 改方法负责crc校验
-	 * 
-	 * @param socketChannel
-	 * @param b
-	 * @throws IOException
-	 */
-	public static void sendToPos2(InetSocketAddress inetSocketAddress, byte[] b) throws IOException {
-		CRC16.generate(b);
-		StringUtil.print(StringUtil.toHexString(b[b.length - 2]) + " ");
-		StringUtil.print(StringUtil.toHexString(b[b.length - 1]) + " ");
-		// ByteBuffer byteBuffer = ByteBuffer.wrap(b);
 		ByteBuf buf = Unpooled.copiedBuffer(b);
 		DatagramPacket datagramPacket = new DatagramPacket(buf, inetSocketAddress);
 		TerminalManager.ctx.writeAndFlush(datagramPacket);

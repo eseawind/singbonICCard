@@ -83,6 +83,7 @@
 -->
 <script src="/js/dwz.regional.zh.js" type="text/javascript"></script>
 <script type="text/javascript">
+	var maxRow=1000;
 	$(function() {
 // 		window.moveTo(0, 0);
 // 		window.resizeTo(screen.availWidth, screen.availHeight);
@@ -189,9 +190,9 @@
 					map.put(sn,new Date());
 				//日志
 				}else if(e2.type=='log'){
-					if(logIndex>=1000){
+					if(logIndex>=maxRow){
 						logIndex=0;
-						$('#logRecord tbody tr:not(:hidden)').remove();
+						$('#logRecord tbody tr td div').empty();
 					}
 					var tr=$("#logRecord tbody tr[index="+logIndex+"]");					
 					tr.find('td[index] div').html(logIndex);
@@ -213,7 +214,7 @@
 			var array = map.keySet();
 			for(var i in array) {
 				var t=(d.getTime()-map.get(array[i]).getTime())/1000;
-				if(t>10){
+				if(t>12){
 					$("#deviceList .deviceList[id="+array[i]+"] img").attr('alt','离线').attr('src','/img/offline.png');
 // 					$.post('${base }/closeDatagramChannel.do?sn='+array[i]);
 					$.post('${base }/removeInetSocketAddress.do?sn='+array[i]);

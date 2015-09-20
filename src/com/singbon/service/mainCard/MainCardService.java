@@ -150,14 +150,15 @@ public class MainCardService {
 	 * @throws Exception
 	 */
 	public void makeCardByUserInfo(Device device, SocketChannel socketChannel, User user, CardAllInfo cardAllInfo, String cardSN, int commandCode, int section) throws Exception {
-		// if (commandCode == CommandCodeCardReader.SingleCard) {
-		// this.mainCardDAO.insert(user);
-		// } else if (commandCode == CommandCodeCardReader.InfoCard) {
-		// this.mainCardDAO.infoCard(user);
-		// } else if (commandCode == CommandCodeCardReader.RemakeCard) {
-		// this.mainCardDAO.remakeCard(user);
-		// }
-		// SimpleDateFormat myFormatter = new SimpleDateFormat("yyyy-MM-dd");
+		if (commandCode == CommandCodeCardReader.SingleCard) {
+			this.mainCardDAO.insert(user);
+		} else if (commandCode == CommandCodeCardReader.InfoCard) {
+			this.mainCardDAO.infoCard(user);
+		} else if (commandCode == CommandCodeCardReader.RemakeCard) {
+			this.mainCardDAO.remakeCard(user);
+		}
+
+		// 基本扇区
 		Calendar c = Calendar.getInstance();
 
 		String tmUserId = StringUtil.hexLeftPad(user.getUserId(), 8);// 4 0-3
@@ -165,8 +166,6 @@ public class MainCardService {
 																						// 4-7
 		String tmConsumePwd = StringUtil.hexLeftPad(Integer.valueOf(user.getConsumePwd()), 4);// 2
 																								// 8-9
-		// String tmIdentityPwd =
-		// StringUtil.hexLeftPad(Integer.valueOf(user.getIdentityPwd()), 4);// 2
 		c.setTime(user.getInvalidDate());
 		String tmInvalidDate = StringUtil.dateToHexString(c);// 2 10-11
 		String tmCardMark = StringUtil.hexLeftPad(241, 2);// 1 12
@@ -189,12 +188,15 @@ public class MainCardService {
 
 		String baseData = tmUserId + tmCardNo + tmConsumePwd + tmInvalidDate + tmCardMark + tmCardBatch + tmCheck1 + tmCardDeposit + tmLimitDayFare + tmLimitTimesFare + tmCardSeq + tmCardType
 				+ tmDeptId + tmTotalFare + tmStandby + tmCheck2;
+		String baseInfoSection = StringUtil.hexLeftPad(section, 2);
+		String baseBlock0 = baseInfoSection + "0000" + baseData.substring(0, 32);
+		String baseBlock1 = baseInfoSection + "0100" + StringUtil.stringRightPad(StringUtil.strToGB2312(user.getUsername()), 32);
+		String baseBlock2 = baseInfoSection + "0200" + baseData.substring(32);
 
 		// 大钱包
 		String tmCardOPCount = StringUtil.hexLeftPad(user.getOpCount(), 4);// 2
-		String tmCardOddFare = "01" + StringUtil.hexLeftPad(user.getOddFare(), 6);// 3
-		String tmLastConsumeTime = "";
-		tmLastConsumeTime = "000000";// 3
+		String tmCardOddFare = StringUtil.hexLeftPad(user.getOddFare(), 8);// 4
+		String tmLastConsumeTime = "000000";// 3
 		String tmDaySumFare = StringUtil.hexLeftPad(user.getDaySumFare(), 6);// 3
 		String tmLimitPeriod1 = StringUtil.hexLeftPad(cardAllInfo.getLimitPeriods()[0], 1);
 		String tmLimitPeriod2 = StringUtil.hexLeftPad(cardAllInfo.getLimitPeriods()[1], 1);
@@ -221,8 +223,6 @@ public class MainCardService {
 																						// 8-9
 		c.setTime(user.getSubsidyInvalidDate());
 		String tmSubsidyValidPeriod = StringUtil.dateToHexString(c);// 2 10-11
-		// String tmDaySumSubsidy =
-		// StringUtil.hexLeftPad(user.getSubsidyDaySum(), 4);// 2
 		String tmSubsidyLimitPeriod1 = StringUtil.hexLeftPad(cardAllInfo.getSubsidyLimitPeriods()[0], 1);
 		String tmSubsidyLimitPeriod2 = StringUtil.hexLeftPad(cardAllInfo.getSubsidyLimitPeriods()[1], 1);
 		String tmSubsidyLimitPeriod3 = StringUtil.hexLeftPad(cardAllInfo.getSubsidyLimitPeriods()[2], 1);
@@ -238,21 +238,20 @@ public class MainCardService {
 		String subsidyBlock1 = subsidySection + "010000000000000000000000000000000000";
 		String subsidyBlock2 = subsidySection + "020000000000000000000000000000000000";
 
-		// 静态ID（16字节高字节在前）+设备机器号（4字节高字节在前）+数据长度（2字节高字节在前）+cd+01+是否校验卡号标志（1字节）+物理卡号（4字节高字节在前）+读卡扇区号（1字节）+读卡块号（1字节）+读写状态字节（1字节）+块数据（16字节高字节在前）+读卡扇区号（1字节）+读卡块号（1字节）+读写状态字节（1字节）+块数据（16字节高字节在前）+...+CRC校验（字节高字节在前）
-		String baseInfoSection = StringUtil.hexLeftPad(section, 2);
-		String baseBlock0 = baseInfoSection + "0000" + baseData.substring(0, 32);
-		String baseBlock1 = baseInfoSection + "0100" + baseData.substring(0, 32);
-		String baseBlock2 = baseInfoSection + "0200" + baseData.substring(32);
+		String forthSection = StringUtil.hexLeftPad(section + 3, 2);
+		String forthBlock0 = forthSection + "000000000000000000000000000000000000";
+		String forthBlock1 = forthSection + "010000000000000000000000000000000000";
+		String forthBlock2 = forthSection + "020000000000000000000000000000000000";
 
-		String commandCodeStr = StringUtil.hexLeftPad(commandCode, 4);
+		// 静态ID（16字节高字节在前）+设备机器号（4字节高字节在前）+数据长度（2字节高字节在前）+cd+01+是否校验卡号标志（1字节）+物理卡号（4字节高字节在前）+读卡扇区号（1字节）+读卡块号（1字节）+读写状态字节（1字节）+块数据（16字节高字节在前）+读卡扇区号（1字节）+读卡块号（1字节）+读写状态字节（1字节）+块数据（16字节高字节在前）+...+CRC校验（字节高字节在前）
+		String commandCodeStr = "0000" + StringUtil.hexLeftPad(commandCode, 4);
 		String sendStr = CommandCardReader.WriteCard + commandCodeStr + CommandCardReader.ValidateCardSN + cardSN + baseBlock0 + baseBlock1 + baseBlock2 + consumeBlock0 + consumeBlock1
-				+ consumeBlock2 + subsidyBlock0 + subsidyBlock1 + subsidyBlock2 + "0000";
+				+ consumeBlock2 + subsidyBlock0 + subsidyBlock1 + subsidyBlock2 + forthBlock0 + forthBlock1 + forthBlock2 + "0000";
 		String bufLen = StringUtil.hexLeftPad(2 + sendStr.length() / 2, 4);
 		sendStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + "00000000" + "0000" + "0808" + bufLen + sendStr;
 
 		byte[] buf = StringUtil.strTobytes(sendStr);
-//		CRC16.generate(buf);
-		
+
 		TerminalManager.sendToCardReader(socketChannel, buf);
 	}
 
@@ -279,13 +278,13 @@ public class MainCardService {
 	public void unloss(Integer userId, SocketChannel socketChannel, Device device, String cardSN, String cardInfoStr) throws Exception {
 		this.mainCardDAO.changeStatus(userId, 1);
 
-		String commandCodeStr = StringUtil.hexLeftPad(CommandCodeCardReader.Unloss, 4);
+		String commandCodeStr = "0000" + StringUtil.hexLeftPad(CommandCodeCardReader.Unloss, 4);
 		String sendBufStr = CommandCardReader.WriteCard + commandCodeStr + CommandCardReader.ValidateCardSN + cardSN + cardInfoStr;
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
 		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + "00000000" + "0000" + "0808" + bufLen + sendBufStr;
 		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
 		sendBuf[sendBuf.length - 5] = (byte) 0xf1;
-//		CRC16.generate(sendBuf);
+		// CRC16.generate(sendBuf);
 		TerminalManager.sendToCardReader(socketChannel, sendBuf);
 	}
 
@@ -303,12 +302,12 @@ public class MainCardService {
 		String cardNOStr = StringUtil.hexLeftPad(cardNO, 8);
 		String cardSeq = StringUtil.hexLeftPad(Integer.valueOf(cardInfoStr.substring(52, 54), 16) + 1, 2);
 		cardInfoStr = cardInfoStr.substring(0, 14) + cardNOStr + cardInfoStr.substring(22, 52) + cardSeq + cardInfoStr.substring(54);
-		String commandCodeStr = StringUtil.hexLeftPad(CommandCodeCardReader.ChangeNewCard, 4);
+		String commandCodeStr = "0000" + StringUtil.hexLeftPad(CommandCodeCardReader.ChangeNewCard, 4);
 		String sendBufStr = CommandCardReader.WriteCard + commandCodeStr + CommandCardReader.ValidateCardSN + cardSN + cardInfoStr;
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
 		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + "00000000" + "0000" + "0808" + bufLen + sendBufStr;
 		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
-//		CRC16.generate(sendBuf);
+		// CRC16.generate(sendBuf);
 		TerminalManager.sendToCardReader(socketChannel, sendBuf);
 	}
 
@@ -367,12 +366,12 @@ public class MainCardService {
 		}
 
 		cardInfoStr = cardInfoStr.substring(0, 26) + StringUtil.hexLeftPad(totalFare, 8) + cardInfoStr.substring(34, 50) + StringUtil.hexLeftPad(oddFare, 6) + cardInfoStr.substring(56);
-		String commandCodeStr = StringUtil.hexLeftPad(CommandCodeCardReader.Charge, 4);
+		String commandCodeStr = "0000" + StringUtil.hexLeftPad(CommandCodeCardReader.Charge, 4);
 		String sendBufStr = CommandCardReader.WriteCard + commandCodeStr + CommandCardReader.ValidateCardSN + user.getCardSN() + cardInfoStr;
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
 		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + "00000000" + "0000" + "0808" + bufLen + sendBufStr;
 		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
-//		CRC16.generate(sendBuf);
+		// CRC16.generate(sendBuf);
 		TerminalManager.sendToCardReader(socketChannel, sendBuf);
 	}
 }

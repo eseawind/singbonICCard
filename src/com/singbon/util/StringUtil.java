@@ -1,5 +1,6 @@
 package com.singbon.util;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -8,6 +9,15 @@ import javax.servlet.http.HttpServletRequest;
 import com.singbon.device.CRC16;
 
 public class StringUtil {
+
+	/**
+	 * byte转int
+	 * 
+	 * @return
+	 */
+	public static int byteToInt(byte b) {
+		return b & 0xFF;
+	}
 
 	/**
 	 * byte转16进制字符
@@ -195,6 +205,22 @@ public class StringUtil {
 	}
 
 	/**
+	 * 获取国标码
+	 * 
+	 * @param str
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	public static String strToGB2312(String str) throws UnsupportedEncodingException {
+		String result = "";
+		byte[] strByte = str.getBytes("GB2312");
+		for (byte b : strByte) {
+			result += StringUtil.hexLeftPad(b, 2);
+		}
+		return StringUtil.stringRightPad(result, 32);
+	}
+
+	/**
 	 * 获取请求路径
 	 * 
 	 * @param request
@@ -226,19 +252,8 @@ public class StringUtil {
 
 	public static void main(String[] args) {
 
-		// 命令个数：716
-		// 29 74 e7 0c 3c 9e 11 e5 83 9f d4 be d9 80 4c 01 00 bc 61 4e 00 00 00
-		// 00 00 00 02 02 00 20 09 02 00 00 00 7f 00 7e 00 00 03 e8 00 00 00 00
-		// 00 00 00 ba fa c0 b1 cc c0 31 32 36 97 b9 nf1
-		// nf1
-		// f1
-		// 命令个数：715
-		// 29 74 e7 0c 3c 9e 11 e5 83 9f d4 be d9 80 4c 01 00 bc 61 4e 00 00 00
-		// 00 00 00 02 02 00 20 09 02 00 00 00 80 00 7f 00 00 05 dc 00 00 00 00
-		// 00 00 00 ba fa c0 b1 cc c0 31 32 37 2 f9 nf1
-		// nf1
 		byte[] b = StringUtil
-				.strTobytes("29 74 e7 0c 3c 9e 11 e5 83 9f d4 be d9 80 4c 01 00 bc 61 4e 00 00 00 00 00 00 02 02 00 20 09 02 00 00 00 80 00 7f 00 00 05 dc 00 00 00 00 00 00 00 ba fa c0 b1 cc c0 31 32 37 00 00"
+				.strTobytes("41 59 a9 6e 83 8e 4d f5 bd ec d4 e2 d8 e9 40 f1 00 bc 61 4e 00 00 00 00 00 00 08 08 00 f3 cd 01 00 00 00 02 01 70 25 f0 25 01 00 00 00 00 00 33 00 00 00 1e 22 b8 24 e1 f1 00 00 00 01 01 00 30 30 35 00 00 00 00 00 00 00 00 00 00 00 00 00 01 02 00 00 00 00 00 01 00 00 00 00 0a 00 00 03 e8 06 00 02 00 00 00 01 00 00 03 e8 00 00 00 00 03 e8 00 00 00 00 02 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 02 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 03 00 00 00 00 00 00 00 00 00 00 00 00 1f 34 00 00 00 00 03 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 03 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 04 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 04 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 04 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 0000"
 						.replaceAll(" ", ""));
 		CRC16.generate(b);
 		StringUtil.print(Integer.toHexString(b[b.length - 2]) + " ");
