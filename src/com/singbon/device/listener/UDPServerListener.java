@@ -14,6 +14,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import com.singbon.device.CRC16;
+import com.singbon.device.ExecPosCommand;
 import com.singbon.device.TerminalManager;
 
 /**
@@ -52,7 +53,7 @@ public class UDPServerListener implements ServletContextListener {
 	}
 
 	public void contextDestroyed(ServletContextEvent arg0) {
-		
+
 	}
 
 	public void contextInitialized(ServletContextEvent arg0) {
@@ -77,26 +78,17 @@ class UDPSeverHandler extends SimpleChannelInboundHandler<DatagramPacket> {
 		ByteBuf buf = (ByteBuf) packet.copy().content();
 		byte[] b = new byte[buf.readableBytes()];
 		buf.readBytes(b);
-		
+
 		// 校验
 		if (!CRC16.compareCRC16(b)) {
 			return;
 		}
-		
-		// 分发数据
-		TerminalManager s = new TerminalManager();
+
+		// 处理数据
 		try {
-			s.dispatchPosCommand(packet.sender(), b);
+			ExecPosCommand.execCommand(packet.sender(), b);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-//		String body = new String(req, "UTF-8");
-//		System.out.println(body);
-//
-//		ByteBuf buf2 = Unpooled.copiedBuffer(new byte[] { 11, 22, 33 });
-//		DatagramPacket dp = new DatagramPacket(buf2, new InetSocketAddress("192.168.1.110", 10004));
-//		TerminalManager.ctx.writeAndFlush(dp);
 	}
-
 }

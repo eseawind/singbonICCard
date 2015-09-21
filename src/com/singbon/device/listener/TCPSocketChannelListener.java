@@ -18,6 +18,7 @@ import javax.servlet.ServletContextListener;
 import org.comet4j.core.util.JSONUtil;
 
 import com.singbon.device.CRC16;
+import com.singbon.device.ExecCardReaderCommand;
 import com.singbon.device.FrameCardReader;
 import com.singbon.device.TerminalManager;
 import com.singbon.util.StringUtil;
@@ -72,8 +73,6 @@ public class TCPSocketChannelListener implements ServletContextListener {
 			key.attach(uuid);
 			// 打印
 			StringUtil.println(key.attachment() + " 连接成功");
-
-			TerminalManager.getCardNOSN(socketChannel);
 		} else if (selectionKey.isReadable()) {
 			// 有消息进来
 			ByteBuffer byteBuffer = ByteBuffer.allocate(273);
@@ -114,10 +113,9 @@ public class TCPSocketChannelListener implements ServletContextListener {
 
 				byteBuffer.clear();
 
-				// 分发数据
-				TerminalManager s = new TerminalManager();
+				// 处理数据
 				try {
-					s.dispatchCardReaderCommand(selectionKey, b);
+					ExecCardReaderCommand.execCommand(selectionKey, b);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

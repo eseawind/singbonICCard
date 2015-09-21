@@ -1,6 +1,7 @@
 package com.singbon.util;
 
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -9,6 +10,36 @@ import javax.servlet.http.HttpServletRequest;
 import com.singbon.device.CRC16;
 
 public class StringUtil {
+
+	/**
+	 * 获取请求路径
+	 * 
+	 * @param request
+	 * @return
+	 */
+	public static String requestBase(HttpServletRequest request) {
+		String url = request.getRequestURI();
+		url = url.replace("/WEB-INF/page", "");
+		int last = url.lastIndexOf("/");
+		url = url.substring(0, last);
+		return url;
+	}
+
+	/**
+	 * 获取转发路径
+	 * 
+	 * @param request
+	 * @param path
+	 *            后缀路径
+	 * @return
+	 */
+	public static String requestPath(HttpServletRequest request, String path) {
+		String url = request.getRequestURI();
+		url = url.replace("/WEB-INF/page", "");
+		int last = url.lastIndexOf("/");
+		url = url.substring(0, last + 1) + path;
+		return url;
+	}
 
 	/**
 	 * byte转int
@@ -30,7 +61,7 @@ public class StringUtil {
 	}
 
 	/**
-	 * 数字左补零
+	 * 返回数字左补零字符串，如1返回"01"
 	 * 
 	 * @return
 	 */
@@ -173,8 +204,9 @@ public class StringUtil {
 	@SuppressWarnings("deprecation")
 	public static String timeToHexString() {
 		String tempStr = "";
-		Date base = new Date("2000/01/01");
-		long time = (System.currentTimeMillis() - base.getTime()) / 1000;
+		Calendar c = Calendar.getInstance();
+		c.set(2000, 1, 1);
+		long time = (System.currentTimeMillis() - c.getTimeInMillis()) / 1000;
 
 		for (int i = 24; i >= 0; i -= 8) {
 			String tmpStr1 = Integer.toHexString((byte) ((time >> i) & 0xff)).replace("ffffff", "");
@@ -221,43 +253,57 @@ public class StringUtil {
 	}
 
 	/**
-	 * 获取请求路径
+	 * 日期格式化
 	 * 
-	 * @param request
+	 * @param date
+	 * @param format
 	 * @return
 	 */
-	public static String requestBase(HttpServletRequest request) {
-		String url = request.getRequestURI();
-		url = url.replace("/WEB-INF/page", "");
-		int last = url.lastIndexOf("/");
-		url = url.substring(0, last);
-		return url;
+	public static String dateFormat(Date date, String format) {
+		SimpleDateFormat sdf = new SimpleDateFormat(format);
+		return sdf.format(date);
 	}
 
 	/**
-	 * 获取转发路径
+	 * 获取hex字节数据
 	 * 
-	 * @param request
-	 * @param path
-	 *            后缀路径
+	 * @param begin
+	 * @param end
+	 * @param b
 	 * @return
 	 */
-	public static String requestPath(HttpServletRequest request, String path) {
-		String url = request.getRequestURI();
-		url = url.replace("/WEB-INF/page", "");
-		int last = url.lastIndexOf("/");
-		url = url.substring(0, last + 1) + path;
-		return url;
+	public static String byteToHexString(int begin, int end, byte[] b) {
+		String baseInfoStr = "";
+		for (int i = begin; i <= end; i++) {
+			String hex = Integer.toHexString(b[i] & 0xFF);
+			if (hex.length() == 1) {
+				hex = '0' + hex;
+			}
+			baseInfoStr += hex;
+		}
+		return baseInfoStr;
+	}
+
+	/**
+	 * 转换卡hex字节数据到int
+	 * 
+	 * @param begin
+	 * @param end
+	 * @param b
+	 * @return
+	 */
+	public static int hexToInt(int begin, int end, byte[] b) {
+		return Integer.parseInt(byteToHexString(begin, end, b), 16);
 	}
 
 	public static void main(String[] args) {
-
+		//消费机初始化29 74 e7 0c 3c 9e 11 e5 83 9f d4 be d9 80 4c 01 00 bc 61 4e 00 00 00 00 00 00 02 02 00 0A 19 19 00 00 00 00 97 b0
 		byte[] b = StringUtil
-				.strTobytes("41 59 a9 6e 83 8e 4d f5 bd ec d4 e2 d8 e9 40 f1 00 bc 61 4e 00 00 00 00 00 00 08 08 00 f3 cd 01 00 00 00 02 01 70 25 f0 25 01 00 00 00 00 00 33 00 00 00 1e 22 b8 24 e1 f1 00 00 00 01 01 00 30 30 35 00 00 00 00 00 00 00 00 00 00 00 00 00 01 02 00 00 00 00 00 01 00 00 00 00 0a 00 00 03 e8 06 00 02 00 00 00 01 00 00 03 e8 00 00 00 00 03 e8 00 00 00 00 02 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 02 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 03 00 00 00 00 00 00 00 00 00 00 00 00 1f 34 00 00 00 00 03 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 03 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 04 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 04 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 04 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 0000"
+				.strTobytes("29 74 e7 0c 3c 9e 11 e5 83 9f d4 be d9 80 4c 01 00 bc 61 4e 00 00 00 00 00 00 02 02 00 0d 01 01 00 00 00 00 00 07 00 6a f5 "
 						.replaceAll(" ", ""));
 		CRC16.generate(b);
 		StringUtil.print(Integer.toHexString(b[b.length - 2]) + " ");
-		StringUtil.print(Integer.toHexString(b[b.length - 1]));
+		StringUtil.println(Integer.toHexString(b[b.length - 1]));
 	}
 
 	public static void print(Object obj) {

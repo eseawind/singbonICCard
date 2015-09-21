@@ -259,19 +259,7 @@ public class SpecialCardController extends BaseController {
 		Device device = (Device) request.getSession().getAttribute("device");
 		String sn = device.getSn();
 		int section = TerminalManager.getSection(company.getId());
-		// 获取读卡器状态
-		if ("getCardReaderStatus".equals(comm)) {
-			SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
-			if (socketChannel != null) {
-				try {
-					TerminalManager.getCardReaderHeartStatus(socketChannel);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		// 关闭连接通道
-		else if ("closeSocketChannel".equals(comm)) {
+		if ("closeSocketChannel".equals(comm)) {
 			try {
 				TerminalManager.closeSocketChannel(sn);
 			} catch (IOException e) {

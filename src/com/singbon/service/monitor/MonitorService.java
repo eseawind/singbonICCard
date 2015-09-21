@@ -204,7 +204,8 @@ public class MonitorService implements Runnable {
 		if (cookbook == null)
 			return;
 		String sendBufStr = StringUtil.hexLeftPad(FramePos.Cookbook, 2) + StringUtil.hexLeftPad(SubCookbookFramePos.Append, 2) + "0000" + StringUtil.hexLeftPad(sendCommand.getCommandCode(), 4)
-				+ StringUtil.hexLeftPad(cookbook.getCookbookCode(), 4) + StringUtil.hexLeftPad(cookbook.getPrice() * 100, 8) + StringUtil.stringRightPad(StringUtil.strToGB2312(cookbook.getCookbookName()),32) + "0000";
+				+ StringUtil.hexLeftPad(cookbook.getCookbookCode(), 4) + StringUtil.hexLeftPad(cookbook.getPrice() * 100, 8)
+				+ StringUtil.stringRightPad(StringUtil.strToGB2312(cookbook.getCookbookName()), 32) + "0000";
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
 		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + "00000000" + "0000" + DeviceType.POS + bufLen + sendBufStr;
 		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
@@ -332,7 +333,7 @@ public class MonitorService implements Runnable {
 		byte frame = sendCommand.getFrame();
 		Map map = new HashMap();
 		map.put("type", "log");
-		map.put("time", new Date().toLocaleString());
+		map.put("time", StringUtil.dateFormat(new Date(), "yyyyMMdd HH:mm:ss"));
 		map.put("from", d.getDeviceName());
 		switch (frame) {
 		// 校时

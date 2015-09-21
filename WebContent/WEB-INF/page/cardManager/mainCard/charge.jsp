@@ -137,7 +137,6 @@
 	
 	function heart(){
 		$('body').everyTime('10s','getCardReaderStatus', function() {
-			$.post('${base }/command.do?comm=getCardReaderStatus');
 			var d=new Date();
 			var t=(d.getTime()-heartTime.getTime())/1000;
 			if(t>=15){

@@ -186,8 +186,19 @@
 			    //状态
 				if(e2.type=='status'){
 					var sn=e2.sn;
-					$("#deviceList .deviceList[id="+sn+"] img").attr('alt','在线').attr('src','/img/online.png');
 					map.put(sn,new Date());
+					$("#deviceList .device[id="+sn+"] img").attr('alt','在线').attr('src','/img/online.png');
+					var statusTr=$("#deviceStatusList tr.deviceStatus[id="+sn+"]");
+					$('td[recordNum] div',statusTr).html(e2.recordNum);
+					$('td[batchNum] div',statusTr).html(e2.batchNum);
+					$('td[blackNum] div',statusTr).html(e2.blackNum);
+					$('td[subsidyVersion] div',statusTr).html(e2.subsidyVersion);
+					$('td[subsidyAuth] div',statusTr).html(e2.subsidyAuth==1?'是':'否');
+				//记录
+				}else if(e2.type=='record' || e2.type=='cookbookRecord'){
+					var sn=e2.sn;
+					map.put(sn,new Date());
+					$("#deviceList .device[id="+sn+"] img").attr('alt','在线').attr('src','/img/online.png');
 				//日志
 				}else if(e2.type=='log'){
 					if(logIndex>=maxRow){
@@ -195,10 +206,10 @@
 						$('#logRecord tbody tr td div').empty();
 					}
 					var tr=$("#logRecord tbody tr[index="+logIndex+"]");					
-					tr.find('td[index] div').html(logIndex);
-					tr.find('td[time] div').html(e2.time);
-					tr.find('td[from] div').html(e2.from);
-					tr.find('td[des] div').html(e2.des);
+					$('td[index] div',tr).html(logIndex);
+					$('td[time] div',tr).html(e2.time);
+					$('td[from] div',tr).html(e2.from);
+					$('td[des] div',tr).html(e2.des);
 					logIndex++;
 // 					$('#logRecord tbody').append(tempRow.wrap('<tr></tr>'));
 // 					$("#logRecord .gridTbody").scrollTop($("#logRecord .gridTbody")[0].scrollHeight);
@@ -215,7 +226,7 @@
 			for(var i in array) {
 				var t=(d.getTime()-map.get(array[i]).getTime())/1000;
 				if(t>12){
-					$("#deviceList .deviceList[id="+array[i]+"] img").attr('alt','离线').attr('src','/img/offline.png');
+					$("#deviceList .device[id="+array[i]+"] img").attr('alt','离线').attr('src','/img/offline.png');
 // 					$.post('${base }/closeDatagramChannel.do?sn='+array[i]);
 					$.post('${base }/removeInetSocketAddress.do?sn='+array[i]);
 					map.remove(array[i]);
@@ -226,10 +237,10 @@
 	
 	function showDevice(groupId){
 		if(groupId==0){
-			$('#deviceList .deviceList').show();
+			$('#deviceList .device').show();
 		}else{
-			$('#deviceList .deviceList').hide();
-			$("#deviceList .deviceList[groupId="+groupId+"]").show();
+			$('#deviceList .device').hide();
+			$("#deviceList .device[groupId="+groupId+"]").show();
 		}
 	}
 	
@@ -289,7 +300,7 @@
 	#deviceGroupList{
 		display: none;
 	}
-	.deviceList{
+	.device{
 		float: left;
 		height: 55px;
 		width: 70px;
@@ -360,7 +371,7 @@
 									<!-- 设备显示区域 -->
 									<div id="deviceList" class="unitBox" style="margin-left: 175px;height:240px;border: solid 1px #CCC; background: #fff;overflow: auto;padding: 5px 0 0 5px;">
 										<c:forEach items="${deviceList }" var="d">
-											<div class="deviceList" id="${d.sn}" groupId="${d.groupId }">
+											<div class="device" id="${d.sn}" groupId="${d.groupId }">
 												<c:if test="${d.isOnline==1}">
 													<img alt="在线" src="/img/online.png" />
 												</c:if>
@@ -389,28 +400,29 @@
 											</div>
 											<div class="tabsContent" style="padding:0;" layoutH="210">
 												<!-- 消费设备状态 -->
-												<div id="deviceStatus">
+												<div id="deviceStatusList">
 													<table class="table" width="99%" layoutH="235" rel="jbsxBox" target="deviceStatus">
 														<thead>
 															<tr>
-																<th width="40">序号</th>
 																<th width="100">设备名称</th>
-																<th width="100">地址</th>
+																<th width="100">机器号</th>
 																<th width="100">未采记录</th>
-																<th width="100">全量版本</th>
-																<th width="100">全量个数</th>
-																<th width="100">状态</th>
-																<th width="100">增量个数</th>
-																<th width="100">最新卡号</th>
 																<th width="100">批次个数</th>
+																<th width="100">黑名单个数</th>
+																<th width="100">补助版本号</th>
 																<th width="100">补助授权</th>
-																<th width="100">获取时间</th>
-																<th width="100">连机状态</th>
 															</tr>
 														</thead>
 														<tbody>
 															<c:forEach items="${deviceList }" var="d">
-																<tr>
+																<tr class="deviceStatus" id="${d.sn}" groupId="${d.groupId }">
+																	<td>${d.deviceName }</td>
+																	<td>${d.deviceNum }</td>
+																	<td recordNum></td>
+																	<td batchNum></td>
+																	<td blackNum></td>
+																	<td subsidyVersion></td>
+																	<td subsidyAuth></td>
 																</tr>
 															</c:forEach>
 														</tbody>
