@@ -30,7 +30,6 @@ public class CometListener implements ServletContextListener {
 			@Override
 			public boolean handleEvent(ConnectEvent event) {
 				CometConnection connection = event.getConn();
-				String companyId = connection.getCompanyId();
 				String ip = connection.getClientIp();
 				StringUtil.println(ip);
 				return false;
@@ -49,7 +48,6 @@ public class CometListener implements ServletContextListener {
 						oldThread.interrupt();
 					}
 				}
-				String cid = connection.getId();
 				String ip = connection.getClientIp();
 				StringUtil.println("d " + ip);
 				return false;

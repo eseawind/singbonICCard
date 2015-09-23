@@ -201,7 +201,6 @@ public class StringUtil {
 	 * 
 	 * @return
 	 */
-	@SuppressWarnings("deprecation")
 	public static String timeToHexString() {
 		String tempStr = "";
 		Calendar c = Calendar.getInstance();

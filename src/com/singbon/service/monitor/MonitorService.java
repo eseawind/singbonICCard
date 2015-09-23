@@ -1,7 +1,6 @@
 package com.singbon.service.monitor;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
 import java.util.Date;
 import java.util.HashMap;
@@ -328,7 +327,7 @@ public class MonitorService implements Runnable {
 	 * @param sendCommand
 	 * @throws IOException
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked", "deprecation" })
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void excuteCommand(Device d, InetSocketAddress inetSocketAddress, SendCommand sendCommand) throws IOException {
 		byte frame = sendCommand.getFrame();
 		Map map = new HashMap();
