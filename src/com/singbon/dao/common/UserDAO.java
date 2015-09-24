@@ -3,6 +3,7 @@ package com.singbon.dao.common;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import com.singbon.dao.BaseDAO;
 import com.singbon.entity.User;
@@ -13,6 +14,7 @@ import com.singbon.entity.User;
  * @author 郝威
  * 
  */
+@Repository
 public interface UserDAO extends BaseDAO {
 
 	/**

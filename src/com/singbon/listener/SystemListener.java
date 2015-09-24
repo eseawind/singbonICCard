@@ -1,5 +1,6 @@
 package com.singbon.listener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletContextEvent;
@@ -11,8 +12,10 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import com.singbon.device.TerminalManager;
 import com.singbon.entity.Company;
 import com.singbon.entity.Device;
+import com.singbon.entity.Meal;
 import com.singbon.service.system.CompanyService;
 import com.singbon.service.systemManager.DeviceService;
+import com.singbon.service.systemManager.systemSetting.MealService;
 
 /**
  * 系统监听
@@ -31,6 +34,7 @@ public class SystemListener implements ServletContextListener {
 		WebApplicationContext app = WebApplicationContextUtils.getRequiredWebApplicationContext(arg0.getServletContext());
 		DeviceService deviceService = (DeviceService) app.getBean("deviceService");
 		CompanyService companyService = (CompanyService) app.getBean("companyService");
+		MealService mealService = (MealService) app.getBean("mealService");
 
 		// 加载设备序列号到公司的映射,注册读卡机通道
 		List<Device> deviceList = deviceService.selectAllList();
@@ -48,5 +52,18 @@ public class SystemListener implements ServletContextListener {
 		for (Company c : companyList) {
 			TerminalManager.registChannel("Co" + c.getId());
 		}
+
+		// 添加公司到餐别限次映射供采集消费记录和监控平台用
+		List<Meal> mealList = mealService.selectAllList();
+		for (Company c : companyList) {
+			List<Meal> list = new ArrayList<Meal>();
+			for (Meal m : mealList) {
+				if (c.getId() == m.getCompanyId()) {
+					list.add(m);
+				}
+				TerminalManager.CompanyToMealList.put(c.getId(), list);
+			}
+		}
+		TerminalManager.serverRuning = true;
 	}
 }

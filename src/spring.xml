@@ -17,4 +17,5 @@
 	<context:component-scan base-package="com.singbon.service" />
 	<import resource="spring-custom-security.xml" />
 	<import resource="spring-mybatis.xml" />
+	<bean id="jdbcUtil" class="com.singbon.util.JdbcUtil"/>
 </beans>

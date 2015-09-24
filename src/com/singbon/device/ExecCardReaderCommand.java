@@ -6,8 +6,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.comet4j.core.util.JSONUtil;
-
 import com.singbon.util.StringUtil;
 
 /**
@@ -330,8 +328,7 @@ public class ExecCardReaderCommand {
 			}
 		}
 		if (map.size() > 0) {
-			String msg = JSONUtil.convertToJson(map);
-			TerminalManager.EngineInstance.sendToAll("c" + sn, msg);
+			TerminalManager.sendToCardManager(map, sn);
 		}
 	}
 

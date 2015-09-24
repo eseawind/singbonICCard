@@ -16,8 +16,10 @@ import java.util.Map;
 
 import org.comet4j.core.CometContext;
 import org.comet4j.core.CometEngine;
+import org.comet4j.core.util.JSONUtil;
 
 import com.singbon.entity.Device;
+import com.singbon.entity.Meal;
 import com.singbon.util.StringUtil;
 
 /**
@@ -28,6 +30,11 @@ import com.singbon.util.StringUtil;
  */
 public class TerminalManager {
 
+	/**
+	 * 服务器是否启动
+	 */
+	public static boolean serverRuning = false;
+	
 	/**
 	 * 服务器推送连接引擎
 	 */
@@ -66,12 +73,17 @@ public class TerminalManager {
 	/**
 	 * 公司ID到采集监控多线程映射列表
 	 */
-	public static Map<Integer, Thread> CompanyToMonitorThreadlList = new HashMap<Integer, Thread>();
+	public static Map<Integer, Thread> CompanyToMonitorThreadList = new HashMap<Integer, Thread>();
 
 	/**
 	 * SN序列号到发送命令映射列表
 	 */
 	public static Map<String, ArrayList<SendCommand>> SNToSendCommandList = new HashMap<String, ArrayList<SendCommand>>();
+
+	/**
+	 * 公司ID到参别限次映射列表(消费记录、监控用)
+	 */
+	public static Map<Integer, List<Meal>> CompanyToMealList = new HashMap<Integer, List<Meal>>();
 
 	// ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// //////////////////////////////监控用
@@ -177,5 +189,31 @@ public class TerminalManager {
 		ByteBuf buf = Unpooled.copiedBuffer(b);
 		DatagramPacket datagramPacket = new DatagramPacket(buf, inetSocketAddress);
 		TerminalManager.ctx.writeAndFlush(datagramPacket);
+	}
+
+	/**
+	 * 发送消息到卡操作
+	 * 
+	 * @param map
+	 * @param sn
+	 * @throws IOException
+	 */
+	@SuppressWarnings("rawtypes")
+	public static void sendToCardManager(Map map, String sn) {
+		String msg = JSONUtil.convertToJson(map);
+		TerminalManager.EngineInstance.sendToAll("c" + sn, msg);
+	}
+
+	/**
+	 * 发送消息到监控平台
+	 * 
+	 * @param map
+	 * @param companyId
+	 * @throws IOException
+	 */
+	@SuppressWarnings("rawtypes")
+	public static void sendToMonitor(Map map, Integer companyId) {
+		String msg = JSONUtil.convertToJson(map);
+		TerminalManager.EngineInstance.sendToAll("Co" + companyId, msg);
 	}
 }

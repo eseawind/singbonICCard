@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.comet4j.core.util.JSONUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -386,8 +385,7 @@ public class MonitorService implements Runnable {
 			break;
 		}
 		if (map.size() > 3) {
-			String msg = JSONUtil.convertToJson(map);
-			TerminalManager.EngineInstance.sendToAll("Co" + d.getCompanyId(), msg);
+			TerminalManager.sendToMonitor(map, d.getCompanyId());
 		}
 	}
 }

@@ -6,13 +6,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
-import org.comet4j.core.util.JSONUtil;
 
 import com.singbon.entity.ConsumeRecord;
 import com.singbon.entity.Cookbook;
 import com.singbon.entity.Device;
+import com.singbon.entity.Meal;
+import com.singbon.util.JdbcUtil;
 import com.singbon.util.StringUtil;
 
 /**
@@ -44,12 +45,12 @@ public class ExecPosCommand {
 			map.put("subsidyAuth", (b[58] >> 1) & 0x1);
 			// 普通记录
 		} else if (b[30] == 1 && b[31] == 1) {
-			map.put("'type'", "record");
+			map.put("'type'", "consumeRecord");
 			map.put("'sn'", sn);
 			// 帐号 4,卡号 4,卡序号1,卡总额 4, 卡余额
 			// 4,管理费额4,补助余额4,操作金额4,卡操作次数2,补助操作计数2,补助操作额4,RecNo
 			recNO = consumeRecord(sn, map, b);
-			// 订餐记录
+			// 订餐取餐记录
 		} else if (b[30] == 8 && b[31] == 1) {
 			map.put("'type'", "cookbookRecord");
 			map.put("'sn'", sn);
@@ -58,7 +59,7 @@ public class ExecPosCommand {
 			if (recType == 0xca) {
 				recNO = consumeRecord(sn, map, b);
 			} else if (recType == 0xcb) {
-				recNO = cookbookRecord(map, b);
+				recNO = cookbookRecord(map, b, sn);
 			}
 			// 命令回复
 		} else {
@@ -80,24 +81,24 @@ public class ExecPosCommand {
 
 		// 向监控平台发送命令
 		if (map.size() > 0) {
-			String msg = JSONUtil.convertToJson(map);
 			Integer companyId = TerminalManager.SNToCompanyList.get(sn);
-			TerminalManager.EngineInstance.sendToAll("Co" + companyId, msg);
+			TerminalManager.sendToMonitor(map, companyId);
 		}
 	}
 
 	// 分解消费记录
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private static int consumeRecord(String sn, Map map, byte[] b) {
+		Device device = TerminalManager.SNToDevicelList.get(sn);
 		// 大帧：1为普通8为菜单
 		int frame = b[30];
 		ConsumeRecord record = new ConsumeRecord();
 		int baseIndex = 30;
+		Integer userId = StringUtil.hexToInt(baseIndex + 6, baseIndex + 9, b);
 		record.setUserId(StringUtil.hexToInt(baseIndex + 6, baseIndex + 9, b));
 		record.setCardNO(StringUtil.hexToInt(baseIndex + 10, baseIndex + 13, b));
 		record.setCardSeq(StringUtil.hexToInt(baseIndex + 14, baseIndex + 14, b));
-		record.setAccType((int) b[31]);
-		record.setDeviceNum(TerminalManager.SNToDevicelList.get(sn).getDeviceNum());
+		record.setDeviceNum(device.getDeviceNum());
 
 		record.setCardSumFare(StringUtil.hexToInt(baseIndex + 15, baseIndex + 18, b));
 		record.setCardOddFare(StringUtil.hexToInt(baseIndex + 19, baseIndex + 22, b));
@@ -108,35 +109,57 @@ public class ExecPosCommand {
 		record.setSubsidyOpCount(StringUtil.hexToInt(baseIndex + 37, baseIndex + 38, b));
 		record.setSubsidyOpFare(StringUtil.hexToInt(baseIndex + 39, baseIndex + 42, b));
 		Calendar c = Calendar.getInstance();
-		c.set(Calendar.YEAR, 2000 + b[43]);
-		c.set(Calendar.MONTH, b[44]);
-		c.set(Calendar.DAY_OF_MONTH, b[45]);
-		c.set(Calendar.HOUR_OF_DAY, b[46]);
-		c.set(Calendar.MINUTE, b[47]);
-		c.set(Calendar.SECOND, b[48]);
-		record.setOpTime(c.getTime());
-		int recNO = StringUtil.hexToInt(baseIndex + 49, baseIndex + 50, b);
-		record.setRecNO(recNO);
-		record.setMealId(0);
+		c.set(Calendar.YEAR, 2000 + StringUtil.byteToBCDInt(b[baseIndex + 43]));
+		c.set(Calendar.MONTH, StringUtil.byteToBCDInt(b[baseIndex + 44]));
+		c.set(Calendar.DAY_OF_MONTH, StringUtil.byteToBCDInt(b[baseIndex + 45]));
+		c.set(Calendar.HOUR_OF_DAY, StringUtil.byteToBCDInt(b[baseIndex + 46]));
+		c.set(Calendar.MINUTE, StringUtil.byteToBCDInt(b[baseIndex + 47]));
+		c.set(Calendar.SECOND, StringUtil.byteToBCDInt(b[baseIndex + 48]));
+		record.setOpTimeDes(StringUtil.dateFormat(c.getTime(), "yyyy-MM-dd HH:mm:ss"));
+		int recordNO = StringUtil.hexToInt(baseIndex + 49, baseIndex + 50, b);
+		record.setRecordNO(recordNO);
+		record.setConsumeType((int) b[31]);
+		record.setConsumeTypeDes(ConsumeType.NormalConsume);
+
+		List<Map> list = JdbcUtil.baseDAO.selectBySql("select userNO,username from user where userId=" + userId);
+		if (list.size() > 0) {
+			String userNO = String.valueOf(list.get(0).get("userNO"));
+			String username = String.valueOf(list.get(0).get("username"));
+			record.setUserNO(userNO);
+			record.setUsername(username);
+		}
+
+		List<Meal> mealList = TerminalManager.CompanyToMealList.get(device.getCompanyId());
+		int mealId = 0;
+		String opTime = StringUtil.dateFormat(c.getTime(), "HH:mm:ss");
+		for (Meal m : mealList) {
+			if (m.getBeginTime().compareTo(opTime) <= 0 && m.getEndTime().compareTo(opTime) >= 0) {
+				mealId = m.getId();
+				record.setMealName(m.getMealName());
+			}
+		}
+		record.setMealId(mealId);
 
 		// 订餐消费记录
 		if (frame == 8) {
 			record.setCookbookCode(StringUtil.hexToInt(baseIndex + 52, baseIndex + 53, b));
 			record.setCookbookNum(StringUtil.hexToInt(baseIndex + 60, baseIndex + 60, b));
 		}
-		return recNO;
+
+		map.put("consumeRecord", record);
+		return recordNO;
 	}
 
-	// 分解订餐消费记录
-	@SuppressWarnings("rawtypes")
-	private static int cookbookRecord(Map map, byte[] b) {
+	// 分解订餐取餐记录
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private static int cookbookRecord(Map map, byte[] b, String sn) {
+		Device device = TerminalManager.SNToDevicelList.get(sn);
 		ConsumeRecord record = new ConsumeRecord();
 		int baseIndex = 30;
 		record.setUserId(StringUtil.hexToInt(baseIndex + 6, baseIndex + 9, b));
 		record.setCardNO(StringUtil.hexToInt(baseIndex + 10, baseIndex + 13, b));
 		record.setCardSeq(StringUtil.hexToInt(baseIndex + 14, baseIndex + 14, b));
-		record.setAccType((int) b[31]);
-		// record.setDeviceNum(TerminalManager.SNToDevicelList.get(sn).getDeviceNum());
+		record.setDeviceNum(device.getDeviceNum());
 
 		record.setCardSumFare(StringUtil.hexToInt(baseIndex + 15, baseIndex + 18, b));
 		record.setCardOddFare(StringUtil.hexToInt(baseIndex + 19, baseIndex + 22, b));
@@ -154,10 +177,14 @@ public class ExecPosCommand {
 		c.set(Calendar.MINUTE, b[47]);
 		c.set(Calendar.SECOND, b[48]);
 		record.setOpTime(c.getTime());
-		int recNO = StringUtil.hexToInt(baseIndex + 49, baseIndex + 50, b);
-		record.setRecNO(recNO);
+		int recordNO = StringUtil.hexToInt(baseIndex + 49, baseIndex + 50, b);
+		record.setRecordNO(recordNO);
 		record.setMealId(0);
-		return recNO;
+
+		// 发送订餐记录到监控平台
+		map.put("record", record);
+		TerminalManager.sendToMonitor(map, device.getCompanyId());
+		return recordNO;
 	}
 
 	// 分解命令回复
@@ -222,8 +249,7 @@ public class ExecPosCommand {
 			break;
 		}
 		if (map.size() > 3) {
-			String msg = JSONUtil.convertToJson(map);
-			TerminalManager.EngineInstance.sendToAll("Co" + device.getCompanyId(), msg);
+			TerminalManager.sendToMonitor(map, device.getCompanyId());
 		}
 	}
 }

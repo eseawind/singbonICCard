@@ -201,16 +201,16 @@ public class StringUtil {
 	 * 
 	 * @return
 	 */
+	@SuppressWarnings("deprecation")
 	public static String timeToHexString() {
 		String tempStr = "";
-		Calendar c = Calendar.getInstance();
-		c.set(2000, 1, 1);
-		long time = (System.currentTimeMillis() - c.getTimeInMillis()) / 1000;
+		Date date = new Date("2000/01/01");
+		long time = (System.currentTimeMillis() - date.getTime()) / 1000;
 
 		for (int i = 24; i >= 0; i -= 8) {
 			String tmpStr1 = Integer.toHexString((byte) ((time >> i) & 0xff)).replace("ffffff", "");
 			if (tmpStr1.length() == 1) {
-				tempStr = "0" + tmpStr1;
+				tempStr = tempStr + "0" + tmpStr1;
 			} else {
 				tempStr += tmpStr1;
 			}
@@ -249,6 +249,17 @@ public class StringUtil {
 			result += StringUtil.hexLeftPad(b, 2);
 		}
 		return StringUtil.stringRightPad(result, 32);
+	}
+
+	/**
+	 * 获取BCD码int
+	 * 
+	 * @param str
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	public static Integer byteToBCDInt(byte b) {
+		return Integer.parseInt(toHexString(b));
 	}
 
 	/**
@@ -296,13 +307,13 @@ public class StringUtil {
 	}
 
 	public static void main(String[] args) {
-		//消费机初始化29 74 e7 0c 3c 9e 11 e5 83 9f d4 be d9 80 4c 01 00 bc 61 4e 00 00 00 00 00 00 02 02 00 0A 19 19 00 00 00 00 97 b0
-		byte[] b = StringUtil
-				.strTobytes("29 74 e7 0c 3c 9e 11 e5 83 9f d4 be d9 80 4c 01 00 bc 61 4e 00 00 00 00 00 00 02 02 00 0d 01 01 00 00 00 00 00 07 00 6a f5 "
-						.replaceAll(" ", ""));
+		// 消费机初始化29 74 e7 0c 3c 9e 11 e5 83 9f d4 be d9 80 4c 01 00 bc 61 4e 00
+		// 00 00 00 00 00 02 02 00 0A 19 19 00 00 00 00 97 b0
+		byte[] b = StringUtil.strTobytes("29 74 e7 0c 3c 9e 11 e5 83 9f d4 be d9 80 4c 01 00 bc 61 4e 00 00 00 00 00 00 02 02 00 0E 07 01 00 00 00 00 1D 8A B6 11 B9 B7".replaceAll(" ", ""));
 		CRC16.generate(b);
 		StringUtil.print(Integer.toHexString(b[b.length - 2]) + " ");
 		StringUtil.println(Integer.toHexString(b[b.length - 1]));
+
 	}
 
 	public static void print(Object obj) {

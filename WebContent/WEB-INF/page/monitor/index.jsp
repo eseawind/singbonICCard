@@ -83,7 +83,7 @@
 -->
 <script src="/js/dwz.regional.zh.js" type="text/javascript"></script>
 <script type="text/javascript">
-	var maxRow=1000;
+	var maxRow=200;
 	$(function() {
 // 		window.moveTo(0, 0);
 // 		window.resizeTo(screen.availWidth, screen.availHeight);
@@ -122,7 +122,7 @@
 		heart();
 		
 		$('#deviceList img').contextMenu('menu',monitorOps);
-// 		$('#logRecord tbody tr').contextMenu('clearMenu',clearOps);
+// 		$('#log tbody tr').contextMenu('clearMenu',clearOps);
 	});
 	
 	var map = new Map();
@@ -177,6 +177,8 @@
 	};
 	
 	var logIndex=1;
+	var consumeRecordIndex=1;
+	var cookbookconsumeRecordIndex=1;
 	function init() {
 		JS.Engine.stop();
 		JS.Engine.start('/conn');
@@ -194,26 +196,73 @@
 					$('td[blackNum] div',statusTr).html(e2.blackNum);
 					$('td[subsidyVersion] div',statusTr).html(e2.subsidyVersion);
 					$('td[subsidyAuth] div',statusTr).html(e2.subsidyAuth==1?'是':'否');
-				//记录
-				}else if(e2.type=='record' || e2.type=='cookbookRecord'){
+				//消费记录
+				}else if(e2.type=='consumeRecord'){
 					var sn=e2.sn;
 					map.put(sn,new Date());
 					$("#deviceList .device[id="+sn+"] img").attr('alt','在线').attr('src','/img/online.png');
+					if(consumeRecordIndex>=maxRow){
+						consumeRecordIndex=0;
+						$('#consumeRecord tbody tr td div').empty();
+					}
+					var tr=$("#consumeRecord tbody tr[index="+consumeRecordIndex+"]");					
+					$('td[index] div',tr).html(consumeRecordIndex);
+					$('td[deviceNum] div',tr).html(e2.consumeRecord.deviceNum);
+					$('td[userNO] div',tr).html(e2.consumeRecord.userNO);
+					$('td[cardNO] div',tr).html(e2.consumeRecord.cardNO);
+					$('td[username] div',tr).html(e2.consumeRecord.username);
+					$('td[cardOddFare] div',tr).html(e2.consumeRecord.cardOddFare/100);
+					$('td[subsidyOddFare] div',tr).html(e2.consumeRecord.subsidyOddFare/100);
+					$('td[discountFare] div',tr).html(e2.consumeRecord.discountFare/100);
+					$('td[oppFare] div',tr).html((e2.consumeRecord.cardOpFare+e2.consumeRecord.subsidyOpFare)/100);
+					$('td[mealName] div',tr).html(e2.consumeRecord.mealName);
+					$('td[opTimeDes] div',tr).html(e2.consumeRecord.opTimeDes);
+					$('td[cardOpCount] div',tr).html(e2.consumeRecord.cardOpCount);
+					$('td[subsidyOpCount] div',tr).html(e2.consumeRecord.subsidyOpCount);
+					$('td[recordNO] div',tr).html(e2.consumeRecord.recordNO);
+					$('td[consumeTypeDes] div',tr).html(e2.consumeRecord.consumeTypeDes);
+					$('td[cookbookName] div',tr).html(e2.consumeRecord.cookbookName);
+					$('td[cookbookCode] div',tr).html(e2.consumeRecord.cookbookCode);
+					consumeRecordIndex++;
+				//订餐取餐记录
+				}else if(e2.type=='cookbookRecord'){
+					var sn=e2.sn;
+					map.put(sn,new Date());
+					$("#deviceList .device[id="+sn+"] img").attr('alt','在线').attr('src','/img/online.png');
+					if(cookbookRecordIndex>=maxRow){
+						cookbookRecordIndex=0;
+						$('#cookbookRecord tbody tr td div').empty();
+					}
+					var tr=$("#cookbookRecord tbody tr[index="+consumeRecordIndex+"]");					
+					$('td[index] div',tr).html(logIndex);
+					$('td[deviceNum] div',tr).html(e2.consumeRecord.deviceNum);
+					$('td[userNO] div',tr).html(e2.consumeRecord.userNO);
+					$('td[username] div',tr).html(e2.consumeRecord.username);
+					$('td[cardOddFare] div',tr).html(e2.consumeRecord.cardOddFare);
+					$('td[subsidyOddFare] div',tr).html(e2.consumeRecord.subsidyOddFare);
+					$('td[discountFare] div',tr).html(e2.consumeRecord.discountFare);
+					$('td[oppFare] div',tr).html(e2.consumeRecord.oppFare);
+					$('td[mealName] div',tr).html(e2.consumeRecord.mealName);
+					$('td[opTime] div',tr).html(e2.consumeRecord.opTime);
+					$('td[cardOpCount] div',tr).html(e2.consumeRecord.cardOpCount);
+					$('td[subsidyOpCount] div',tr).html(e2.consumeRecord.subsidyOpCount);
+					$('td[recordNO] div',tr).html(e2.consumeRecord.recordNO);
+					$('td[consumeTypeDes] div',tr).html(e2.consumeRecord.consumeTypeDes);
+					$('td[cookbookName] div',tr).html(e2.consumeRecord.cookbookName);
+					$('td[cookbookCode] div',tr).html(e2.consumeRecord.cookbookCode);
+					cookbookRecordIndex++;
 				//日志
 				}else if(e2.type=='log'){
 					if(logIndex>=maxRow){
 						logIndex=0;
-						$('#logRecord tbody tr td div').empty();
+						$('#log tbody tr td div').empty();
 					}
-					var tr=$("#logRecord tbody tr[index="+logIndex+"]");					
+					var tr=$("#log tbody tr[index="+logIndex+"]");					
 					$('td[index] div',tr).html(logIndex);
 					$('td[time] div',tr).html(e2.time);
 					$('td[from] div',tr).html(e2.from);
 					$('td[des] div',tr).html(e2.des);
 					logIndex++;
-// 					$('#logRecord tbody').append(tempRow.wrap('<tr></tr>'));
-// 					$("#logRecord .gridTbody").scrollTop($("#logRecord .gridTbody")[0].scrollHeight);
-					
 				}
 			}
 		});
@@ -225,7 +274,7 @@
 			var array = map.keySet();
 			for(var i in array) {
 				var t=(d.getTime()-map.get(array[i]).getTime())/1000;
-				if(t>12){
+				if(t>30){
 					$("#deviceList .device[id="+array[i]+"] img").attr('alt','离线').attr('src','/img/offline.png');
 // 					$.post('${base }/closeDatagramChannel.do?sn='+array[i]);
 					$.post('${base }/removeInetSocketAddress.do?sn='+array[i]);
@@ -275,6 +324,8 @@
 			'clear' : function(t, target) {
 				if($(t).hasClass('log')){
 					logIndex=0;
+				}else if($(t).hasClass('consumeRecord')){
+					consumeRecordIndex=0;
 				}
 				$('tr td div', t).empty();
 			}
@@ -401,7 +452,7 @@
 											<div class="tabsContent" style="padding:0;" layoutH="210">
 												<!-- 消费设备状态 -->
 												<div id="deviceStatusList">
-													<table class="table" width="99%" layoutH="235" rel="jbsxBox" target="deviceStatus">
+													<table class="table" width="99%" layoutH="300" rel="jbsxBox" target="deviceStatus">
 														<thead>
 															<tr>
 																<th width="100">设备名称</th>
@@ -431,7 +482,7 @@
 												<!-- 消费设备状态 end-->
 												<!-- 消费记录监控 -->
 												<div id="consumeRecord">
-													<table class="table" width="99%" layoutH="235" rel="jbsxBox" target="consumeRecord">
+													<table class="table" width="99%" layoutH="300" rel="jbsxBox" target="consumeRecord">
 														<thead>
 															<tr>
 																<th width="40">序号</th>
@@ -444,8 +495,9 @@
 																<th width="100">管理费</th>
 																<th width="100">操作额</th>
 																<th width="100">餐别名称</th>
-																<th width="100">交易时间</th>
+																<th width="200">操作时间</th>
 																<th width="100">卡计数</th>
+																<th width="100">补助卡计数</th>
 																<th width="100">记录序号</th>
 																<th width="100">记录类型</th>
 																<th width="100">菜肴名称</th>
@@ -453,17 +505,36 @@
 															</tr>
 														</thead>
 														<tbody>
-															<c:forEach items="${consumeRecordList }" var="d">
-																<tr>
+															<tbody class="clearLog consumeRecord">
+															<c:forEach begin="1" end="200" step="1" var="i">
+																<tr index="${i}">
+																	<td index></td>
+																	<td deviceNum></td>
+																	<td userNO></td>
+																	<td cardNO></td>
+																	<td username></td>
+																	<td cardOddFare></td>
+																	<td subsidyOddFare></td>
+																	<td discountFare></td>
+																	<td oppFare></td>
+																	<td mealName></td>
+																	<td opTimeDes></td>
+																	<td cardOpCount></td>
+																	<td subsidyOpCount></td>
+																	<td recordNO></td>
+																	<td consumeTypeDes></td>
+																	<td cookbookName></td>
+																	<td cookbookCode></td>
 																</tr>
 															</c:forEach>
+														</tbody>
 														</tbody>
 													</table>
 												</div>
 												<!-- 消费记录监控 end-->
 												<!-- 订餐信息监控 -->
 												<div id="cookbookRecord">
-													<table class="table" width="99%" layoutH="235" rel="jbsxBox" target="cookbookRecord">
+													<table class="table" width="99%" layoutH="300" rel="jbsxBox" target="cookbookRecord">
 														<thead>
 															<tr>
 																<th width="40">序号</th>
@@ -491,7 +562,7 @@
 												<!-- 订餐信息监控 end-->
 												<!-- 门禁考勤设备状态 -->
 												<div id="attendanceStatus">
-													<table class="table" width="99%" layoutH="235" rel="jbsxBox" target="attendanceStatus">
+													<table class="table" width="99%" layoutH="300" rel="jbsxBox" target="attendanceStatus">
 														<thead>
 															<tr>
 																<th width="40">序号</th>
@@ -515,7 +586,7 @@
 												<!-- 门禁考勤设备状态 end-->
 												<!-- 考勤记录监控 -->
 												<div id="attendanceRecord">
-													<table class="table" width="99%" layoutH="235" rel="jbsxBox" target="attendanceRecord">
+													<table class="table" width="99%" layoutH="300" rel="jbsxBox" target="attendanceRecord">
 														<thead>
 															<tr>
 																<th width="40">序号</th>
@@ -539,8 +610,8 @@
 												</div>
 												<!-- 考勤记录监控 end-->
 												<!-- 日记监控 -->
-												<div id="logRecord">
-													<table class="table" width="99%" layoutH="300" rel="jbsxBox" target="logRecord">
+												<div id="log">
+													<table class="table" width="99%" layoutH="300" rel="jbsxBox" target="log">
 														<thead>
 															<tr>
 																<th width="20">序号</th>
@@ -550,7 +621,7 @@
 															</tr>
 														</thead>
 														<tbody class="clearLog log">
-															<c:forEach begin="1" end="1000" step="1" var="i">
+															<c:forEach begin="1" end="200" step="1" var="i">
 																<tr index="${i}"><td index></td><td time></td><td from></td><td des></td></tr>
 															</c:forEach>
 														</tbody>

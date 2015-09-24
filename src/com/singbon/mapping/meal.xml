@@ -15,4 +15,7 @@
 	<select id="selectList" resultMap="meal">
 		select * from meal where companyId=#{companyId}
 	</select>
+	<select id="selectAllList" resultMap="meal">
+		select * from meal
+	</select>
 </mapper>

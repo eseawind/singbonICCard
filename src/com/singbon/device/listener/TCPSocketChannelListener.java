@@ -7,19 +7,14 @@ import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import org.comet4j.core.util.JSONUtil;
-
 import com.singbon.device.CRC16;
 import com.singbon.device.ExecCardReaderCommand;
-import com.singbon.device.FrameCardReader;
 import com.singbon.device.TerminalManager;
 import com.singbon.util.StringUtil;
 
@@ -60,7 +55,6 @@ public class TCPSocketChannelListener implements ServletContextListener {
 
 	int i = 0;
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void handleSelectionKey(SelectionKey selectionKey) throws Exception {
 		if (selectionKey.isAcceptable()) {
 			ServerSocketChannel ssc = (ServerSocketChannel) selectionKey.channel();
@@ -101,10 +95,10 @@ public class TCPSocketChannelListener implements ServletContextListener {
 					}
 				}
 				b = Arrays.copyOf(b, byteLen);
-//				for (byte b2 : b) {
-//					StringUtil.print(StringUtil.toHexString(b2) + " ");
-//				}
-//				StringUtil.println("");
+				// for (byte b2 : b) {
+				// StringUtil.print(StringUtil.toHexString(b2) + " ");
+				// }
+				// StringUtil.println("");
 
 				// 校验
 				if (!CRC16.compareCRC16(b)) {
@@ -124,17 +118,7 @@ public class TCPSocketChannelListener implements ServletContextListener {
 				String uuid = selectionKey.attachment().toString();
 				StringUtil.println(uuid + " 已关闭连接");
 				sc.close();
-
-				String sn = removeSockeckChannel(uuid);
-
-				if (sn != null) {
-					Map map = new HashMap();
-					map.put("'f1'", FrameCardReader.Status);
-					map.put("'r'", 0);
-
-					String msg = JSONUtil.convertToJson(map);
-					TerminalManager.EngineInstance.sendToAll("c" + sn, msg);
-				}
+				removeSockeckChannel(uuid);
 			}
 
 			Thread.sleep(100);

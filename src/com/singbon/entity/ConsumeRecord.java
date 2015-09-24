@@ -15,9 +15,12 @@ public class ConsumeRecord implements Serializable {
 
 	private Integer id;
 	private Integer userId;
+	private String userNO;
+	private String username;
 	private Integer cardNO;
 	private Integer cardSeq;
-	private Integer accType;
+	private Integer consumeType;
+	private String consumeTypeDes;
 	private Integer deviceNum;
 	private Integer cardSumFare;
 	private Integer cardOddFare;
@@ -28,14 +31,15 @@ public class ConsumeRecord implements Serializable {
 	private Integer subsidyOpCount;
 	private Integer subsidyOpFare;
 	private Date opTime;
-	private Integer recNO;
+	private String opTimeDes;
+	private Integer recordNO;
 	private Integer mealId;
+	private String mealName;
 	private Date uploadTime;
 
 	private Integer cookbookCode;
 	private Integer cookbookNum;
-	
-	
+
 	public Integer getId() {
 		return id;
 	}
@@ -50,6 +54,22 @@ public class ConsumeRecord implements Serializable {
 
 	public void setUserId(Integer userId) {
 		this.userId = userId;
+	}
+
+	public String getUserNO() {
+		return userNO;
+	}
+
+	public void setUserNO(String userNO) {
+		this.userNO = userNO;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public Integer getCardNO() {
@@ -68,12 +88,28 @@ public class ConsumeRecord implements Serializable {
 		this.cardSeq = cardSeq;
 	}
 
-	public Integer getAccType() {
-		return accType;
+	public Integer getConsumeType() {
+		return consumeType;
 	}
 
-	public void setAccType(Integer accType) {
-		this.accType = accType;
+	public void setConsumeType(Integer consumeType) {
+		this.consumeType = consumeType;
+	}
+
+	public String getConsumeTypeDes() {
+		return consumeTypeDes;
+	}
+
+	public void setConsumeTypeDes(String consumeTypeDes) {
+		this.consumeTypeDes = consumeTypeDes;
+	}
+
+	public Integer getDeviceNum() {
+		return deviceNum;
+	}
+
+	public void setDeviceNum(Integer deviceNum) {
+		this.deviceNum = deviceNum;
 	}
 
 	public Integer getCardSumFare() {
@@ -148,12 +184,20 @@ public class ConsumeRecord implements Serializable {
 		this.opTime = opTime;
 	}
 
-	public Integer getRecNO() {
-		return recNO;
+	public String getOpTimeDes() {
+		return opTimeDes;
 	}
 
-	public void setRecNO(Integer recNO) {
-		this.recNO = recNO;
+	public void setOpTimeDes(String opTimeDes) {
+		this.opTimeDes = opTimeDes;
+	}
+
+	public Integer getRecordNO() {
+		return recordNO;
+	}
+
+	public void setRecordNO(Integer recordNO) {
+		this.recordNO = recordNO;
 	}
 
 	public Integer getMealId() {
@@ -164,20 +208,20 @@ public class ConsumeRecord implements Serializable {
 		this.mealId = mealId;
 	}
 
+	public String getMealName() {
+		return mealName;
+	}
+
+	public void setMealName(String mealName) {
+		this.mealName = mealName;
+	}
+
 	public Date getUploadTime() {
 		return uploadTime;
 	}
 
 	public void setUploadTime(Date uploadTime) {
 		this.uploadTime = uploadTime;
-	}
-
-	public Integer getDeviceNum() {
-		return deviceNum;
-	}
-
-	public void setDeviceNum(Integer deviceNum) {
-		this.deviceNum = deviceNum;
 	}
 
 	public Integer getCookbookCode() {

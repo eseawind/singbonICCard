@@ -75,6 +75,8 @@ class UDPSeverHandler extends SimpleChannelInboundHandler<DatagramPacket> {
 	}
 
 	protected void messageReceived(ChannelHandlerContext ctx, DatagramPacket packet) throws Exception {
+		if (!TerminalManager.serverRuning)
+			return;
 		ByteBuf buf = (ByteBuf) packet.copy().content();
 		byte[] b = new byte[buf.readableBytes()];
 		buf.readBytes(b);
