@@ -12,7 +12,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.comet4j.core.util.JSONUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -239,8 +238,7 @@ public class SpecialCardController extends BaseController {
 		if (cardSNCount > 0) {
 			Map map = new HashMap();
 			map.put("'f1'", FrameCardReader.ExsitCardSN);
-			String msg = JSONUtil.convertToJson(map);
-			TerminalManager.EngineInstance.sendToAll("c" + sn, msg);
+			TerminalManager.sendToCardManager(map, sn);
 			return 1;
 		}
 		return 0;

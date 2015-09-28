@@ -1,4 +1,4 @@
-package com.singbon.device.listener;
+package com.singbon.device;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
@@ -10,12 +10,6 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.DatagramPacket;
 import io.netty.channel.socket.nio.NioDatagramChannel;
 
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-
-import com.singbon.device.CRC16;
-import com.singbon.device.ExecPosCommand;
-import com.singbon.device.TerminalManager;
 
 /**
  * 
@@ -24,7 +18,7 @@ import com.singbon.device.TerminalManager;
  * @author 郝威
  * 
  */
-public class UDPServerListener implements ServletContextListener {
+public class UDPServerServer implements Runnable {
 
 	public void startServer() {
 
@@ -40,29 +34,17 @@ public class UDPServerListener implements ServletContextListener {
 		}
 	}
 
-	class UDPServer implements Runnable {
-
-		@Override
-		public void run() {
-			try {
-				new UDPServerListener().startServer();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	public void contextDestroyed(ServletContextEvent arg0) {
-
-	}
-
-	public void contextInitialized(ServletContextEvent arg0) {
-		Thread t = new Thread(new UDPServer());
-		t.start();
-	}
-
 	public static void main(String[] args) {
-		new UDPServerListener().startServer();
+		new UDPServerServer().startServer();
+	}
+
+	@Override
+	public void run() {
+		try {
+			new UDPServerServer().startServer();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
 

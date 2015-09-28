@@ -151,13 +151,6 @@
 					<td><input type='password' name='password' value="1"/><span>密码不能为空</span></td>
 				</tr>
 				<tr>
-					<td>登录类型:</td>
-					<td>
-						<input type="radio" name="loginType" value="0" checked="checked"/>出纳员
-						<input type="radio" name="loginType" value="1"/>管理员	
-					</td>
-				</tr>
-				<tr>
 					<td></td>
 					<td>
 						<button id="loginButton" type="button"></button>

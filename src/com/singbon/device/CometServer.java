@@ -1,7 +1,4 @@
-package com.singbon.device.listener;
-
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
+package com.singbon.device;
 
 import org.comet4j.core.CometConnection;
 import org.comet4j.core.CometContext;
@@ -10,7 +7,6 @@ import org.comet4j.core.event.DropEvent;
 import org.comet4j.core.listener.ConnectListener;
 import org.comet4j.core.listener.DropListener;
 
-import com.singbon.device.TerminalManager;
 import com.singbon.util.StringUtil;
 
 /**
@@ -19,9 +15,9 @@ import com.singbon.util.StringUtil;
  * @author 郝威
  * 
  */
-public class CometListener implements ServletContextListener {
+public class CometServer{
 
-	public void contextInitialized(ServletContextEvent arg0) {
+	public void init() {
 		CometContext cc = CometContext.getInstance();
 
 		TerminalManager.EngineInstance = cc.getEngine();
@@ -43,7 +39,7 @@ public class CometListener implements ServletContextListener {
 				// 停止监控线程
 				String companyId = connection.getCompanyId();
 				if (companyId != null) {
-					Thread oldThread = TerminalManager.CompanyToMonitorThreadlList.get(Integer.valueOf(companyId));
+					Thread oldThread = TerminalManager.CompanyToMonitorThreadList.get(Integer.valueOf(companyId));
 					if (oldThread != null && oldThread.isAlive()) {
 						oldThread.interrupt();
 					}
@@ -53,9 +49,5 @@ public class CometListener implements ServletContextListener {
 				return false;
 			}
 		});
-	}
-
-	public void contextDestroyed(ServletContextEvent arg0) {
-
 	}
 }

@@ -16,8 +16,10 @@ import java.util.Map;
 
 import org.comet4j.core.CometContext;
 import org.comet4j.core.CometEngine;
+import org.comet4j.core.util.JSONUtil;
 
 import com.singbon.entity.Device;
+import com.singbon.entity.Meal;
 import com.singbon.util.StringUtil;
 
 /**
@@ -66,12 +68,17 @@ public class TerminalManager {
 	/**
 	 * 公司ID到采集监控多线程映射列表
 	 */
-	public static Map<Integer, Thread> CompanyToMonitorThreadlList = new HashMap<Integer, Thread>();
+	public static Map<Integer, Thread> CompanyToMonitorThreadList = new HashMap<Integer, Thread>();
 
 	/**
 	 * SN序列号到发送命令映射列表
 	 */
 	public static Map<String, ArrayList<SendCommand>> SNToSendCommandList = new HashMap<String, ArrayList<SendCommand>>();
+
+	/**
+	 * 公司ID到参别限次映射列表(消费记录、监控用)
+	 */
+	public static Map<Integer, List<Meal>> CompanyToMealList = new HashMap<Integer, List<Meal>>();
 
 	// ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// //////////////////////////////监控用
@@ -133,17 +140,17 @@ public class TerminalManager {
 	public static void getCardInfo(SocketChannel socketChannel, Device device, byte commandCode, List<Integer> sectionBlocks) throws IOException {
 		String deviceNum = StringUtil.hexLeftPad(device.getDeviceNum(), 8);
 		String commandCodeStr = "0000" + StringUtil.hexLeftPad(commandCode, 4);
-		String sendBufStr = CommandCardReader.ReadCard + commandCodeStr + CommandCardReader.NoValidateCardSN + "44444444";
+		String sendBufStr = CommandCardReader.ReadCard + commandCodeStr + CommandCardReader.NoValidateCardSN + CommandCardReader.NoCardSN;
 		for (int i : sectionBlocks) {
 			int section = i / 10;
 			int block = i % 10;
 			String sectionStr = StringUtil.hexLeftPad(section, 2);
 			String blockStr = StringUtil.hexLeftPad(block, 2);
-			sendBufStr += sectionStr + blockStr + "0000000000000000000000000000000000";
+			sendBufStr += sectionStr + blockStr + StringUtil.strLeftPad("", 34);
 		}
 		sendBufStr += "0000";
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
-		sendBufStr = device.getSn() + deviceNum + "00000000" + "0000" + "0808" + bufLen + sendBufStr;
+		sendBufStr = device.getSn() + deviceNum + CommandDevice.NoSubDeviceNum + "0000" + "0808" + bufLen + sendBufStr;
 		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
 		CRC16.generate(sendBuf);
 		ByteBuffer byteBuffer = ByteBuffer.wrap(sendBuf);
@@ -177,5 +184,31 @@ public class TerminalManager {
 		ByteBuf buf = Unpooled.copiedBuffer(b);
 		DatagramPacket datagramPacket = new DatagramPacket(buf, inetSocketAddress);
 		TerminalManager.ctx.writeAndFlush(datagramPacket);
+	}
+
+	/**
+	 * 发送消息到卡操作
+	 * 
+	 * @param map
+	 * @param sn
+	 * @throws IOException
+	 */
+	@SuppressWarnings("rawtypes")
+	public static void sendToCardManager(Map map, String sn) {
+		String msg = JSONUtil.convertToJson(map);
+		TerminalManager.EngineInstance.sendToAll("c" + sn, msg);
+	}
+
+	/**
+	 * 发送消息到监控平台
+	 * 
+	 * @param map
+	 * @param companyId
+	 * @throws IOException
+	 */
+	@SuppressWarnings("rawtypes")
+	public static void sendToMonitor(Map map, Integer companyId) {
+		String msg = JSONUtil.convertToJson(map);
+		TerminalManager.EngineInstance.sendToAll("Co" + companyId, msg);
 	}
 }

@@ -6,8 +6,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.comet4j.core.util.JSONUtil;
-
+import com.singbon.util.DesUtil;
 import com.singbon.util.StringUtil;
 
 /**
@@ -29,7 +28,7 @@ public class ExecCardReaderCommand {
 	public static void execCommand(SelectionKey selectionKey, byte[] b) {
 		if (b == null)
 			return;
-		String sn = StringUtil.byteToHexString(0, 15, b);
+		String sn = StringUtil.byteToHexStr(0, 15, b);
 		// 帧
 		byte[] frameByte = Arrays.copyOfRange(b, 30, 34);
 		// 命令码
@@ -40,7 +39,7 @@ public class ExecCardReaderCommand {
 		String cardSN = null;
 		if (frameByte[0] == 0x03 && frameByte[1] == (byte) 0xcd) {
 			cardStatus = b[45];
-			cardSN = StringUtil.byteToHexString(39, 42, b);
+			cardSN = StringUtil.byteToHexStr(39, 42, b);
 		}
 
 		Map map = new HashMap();
@@ -149,9 +148,9 @@ public class ExecCardReaderCommand {
 			else if (commandCode == CommandCodeCardReader.Unloss) {
 				map.put("'f1'", FrameCardReader.UnlossCmd);
 				map.put("'r'", cardStatus);
-				map.put("'cardInfoStr'", StringUtil.byteToHexString(baseLen, b.length - 1, b));
+				map.put("'cardInfoStr'", StringUtil.byteToHexStr(baseLen, b.length - 1, b));
 				map.put("'cardSN'", cardSN);
-				map.put("'userId'", Integer.parseInt(StringUtil.byteToHexString(baseLen + 3, baseLen + 3 + 3, b), 16));
+				map.put("'userId'", Integer.parseInt(StringUtil.byteToHexStr(baseLen + 3, baseLen + 3 + 3, b), 16));
 			}
 			// 发补卡命令
 			else if (commandCode == CommandCodeCardReader.RemakeCard) {
@@ -164,8 +163,8 @@ public class ExecCardReaderCommand {
 				map.put("'f1'", FrameCardReader.ReadOldCardCmd);
 				map.put("'r'", cardStatus);
 				map.put("'cardSN'", cardSN);
-				map.put("'userId'", Integer.parseInt(StringUtil.byteToHexString(baseLen + 3, baseLen + 3 + 3, b), 16));
-				map.put("'cardInfoStr'", StringUtil.byteToHexString(baseLen, b.length - 1, b));
+				map.put("'userId'", Integer.parseInt(StringUtil.byteToHexStr(baseLen + 3, baseLen + 3 + 3, b), 16));
+				map.put("'cardInfoStr'", StringUtil.byteToHexStr(baseLen, b.length - 1, b));
 			}
 			// 换卡换新卡命令
 			else if (commandCode == CommandCodeCardReader.ChangeNewCard) {
@@ -180,22 +179,22 @@ public class ExecCardReaderCommand {
 				map.put("'cardSN'", cardSN);
 				int base0 = baseLen + 3;
 				try {
-					map.put("'userId'", Integer.parseInt(StringUtil.byteToHexString(base0, base0 + 3, b), 16));
+					map.put("'userId'", Integer.parseInt(StringUtil.byteToHexStr(base0, base0 + 3, b), 16));
 				} catch (Exception e) {
-					map.put("userId", "未知");
+					map.put("userId", DesUtil.decrypt(DeviceCommunicateStr.Unknow));
 				}
 				try {
-					map.put("'cardNO'", Integer.parseInt(StringUtil.byteToHexString(base0 + 4, base0 + 7, b), 16));
+					map.put("'cardNO'", Integer.parseInt(StringUtil.byteToHexStr(base0 + 4, base0 + 7, b), 16));
 				} catch (Exception e) {
-					map.put("cardNO", "未知");
+					map.put("cardNO", DesUtil.decrypt(DeviceCommunicateStr.Unknow));
 				}
 				try {
-					map.put("'invalidDate'", StringUtil.dateFromHexString(StringUtil.byteToHexString(base0 + 10, base0 + 11, b)));
+					map.put("'invalidDate'", StringUtil.dateFromHexStr(StringUtil.byteToHexStr(base0 + 10, base0 + 11, b)));
 				} catch (Exception e) {
-					map.put("invalidDate", "未知");
+					map.put("invalidDate", DesUtil.decrypt(DeviceCommunicateStr.Unknow));
 				}
 				try {
-					int status = Integer.parseInt(StringUtil.byteToHexString(base0 + 12, base0 + 12, b), 16);
+					int status = Integer.parseInt(StringUtil.byteToHexStr(base0 + 12, base0 + 12, b), 16);
 					String statusDesc = "正常";
 					if (status == 241) {
 						statusDesc = "正常";
@@ -210,54 +209,54 @@ public class ExecCardReaderCommand {
 					map.put("'status'", status);
 					map.put("'statusDesc'", statusDesc);
 				} catch (Exception e) {
-					map.put("status", "未知");
-					map.put("statusDesc", "未知");
+					map.put("status", DesUtil.decrypt(DeviceCommunicateStr.Unknow));
+					map.put("statusDesc", DesUtil.decrypt(DeviceCommunicateStr.Unknow));
 				}
 
 				int base2 = baseLen + 19 + 3;
 				try {
-					map.put("'cardSeq'", Integer.parseInt(StringUtil.byteToHexString(base2 + 4, base2 + 4, b), 16));
+					map.put("'cardSeq'", Integer.parseInt(StringUtil.byteToHexStr(base2 + 4, base2 + 4, b), 16));
 				} catch (Exception e) {
-					map.put("cardSeq", "未知");
+					map.put("cardSeq", DesUtil.decrypt(DeviceCommunicateStr.Unknow));
 				}
 				try {
-					map.put("'cardTypeId'", Integer.parseInt(StringUtil.byteToHexString(base2 + 5, base2 + 5, b), 16));
+					map.put("'cardTypeId'", Integer.parseInt(StringUtil.byteToHexStr(base2 + 5, base2 + 5, b), 16));
 				} catch (Exception e) {
-					map.put("cardTypeId", "未知");
+					map.put("cardTypeId", DesUtil.decrypt(DeviceCommunicateStr.Unknow));
 				}
 				try {
-					map.put("'totalFare'", (float) Integer.parseInt(StringUtil.byteToHexString(base2 + 10, base2 + 13, b), 16) / 100);
+					map.put("'totalFare'", (float) Integer.parseInt(StringUtil.byteToHexStr(base2 + 10, base2 + 13, b), 16) / 100);
 				} catch (Exception e) {
-					map.put("totalFare", "未知");
+					map.put("totalFare", DesUtil.decrypt(DeviceCommunicateStr.Unknow));
 				}
 
 				int consume0 = baseLen + 19 * 2 + 3;
 				try {
-					map.put("'opCount'", Integer.parseInt(StringUtil.byteToHexString(consume0, consume0 + 1, b), 16));
+					map.put("'opCount'", Integer.parseInt(StringUtil.byteToHexStr(consume0, consume0 + 1, b), 16));
 				} catch (Exception e) {
-					map.put("opCount", "未知");
+					map.put("opCount", DesUtil.decrypt(DeviceCommunicateStr.Unknow));
 				}
 				try {
-					map.put("'oddFare'", (float) Integer.parseInt(StringUtil.byteToHexString(consume0 + 3, consume0 + 5, b), 16) / 100);
+					map.put("'oddFare'", (float) Integer.parseInt(StringUtil.byteToHexStr(consume0 + 3, consume0 + 5, b), 16) / 100);
 				} catch (Exception e) {
-					map.put("oddFare", "未知");
+					map.put("oddFare", DesUtil.decrypt(DeviceCommunicateStr.Unknow));
 				}
 
 				int subsidy0 = baseLen + 19 * 3 + 3;
 				try {
-					map.put("'subsidyOpCount'", Integer.parseInt(StringUtil.byteToHexString(subsidy0, subsidy0 + 1, b), 16));
+					map.put("'subsidyOpCount'", Integer.parseInt(StringUtil.byteToHexStr(subsidy0, subsidy0 + 1, b), 16));
 				} catch (Exception e) {
-					map.put("subsidyOpCount", "未知");
+					map.put("subsidyOpCount", DesUtil.decrypt(DeviceCommunicateStr.Unknow));
 				}
 				try {
-					map.put("'subsidyOddFare'", (float) Integer.parseInt(StringUtil.byteToHexString(subsidy0 + 2, subsidy0 + 5, b), 16) / 100);
+					map.put("'subsidyOddFare'", (float) Integer.parseInt(StringUtil.byteToHexStr(subsidy0 + 2, subsidy0 + 5, b), 16) / 100);
 				} catch (Exception e) {
-					map.put("subsidyOddFare", "未知");
+					map.put("subsidyOddFare", DesUtil.decrypt(DeviceCommunicateStr.Unknow));
 				}
 				try {
-					map.put("'subsidyVersion'", Integer.parseInt(StringUtil.byteToHexString(subsidy0 + 8, subsidy0 + 9, b), 16));
+					map.put("'subsidyVersion'", Integer.parseInt(StringUtil.byteToHexStr(subsidy0 + 8, subsidy0 + 9, b), 16));
 				} catch (Exception e) {
-					map.put("subsidyVersion", "未知");
+					map.put("subsidyVersion", DesUtil.decrypt(DeviceCommunicateStr.Unknow));
 				}
 			}
 			// 制出纳卡命令
@@ -272,7 +271,7 @@ public class ExecCardReaderCommand {
 				map.put("'r'", cardStatus);
 				map.put("'operId'", Integer.parseInt(getCashierOperId(b), 16));
 				map.put("'cardSN'", cardSN);
-				map.put("'cardInfoStr'", StringUtil.byteToHexString(baseLen, b.length - 1, b));
+				map.put("'cardInfoStr'", StringUtil.byteToHexStr(baseLen, b.length - 1, b));
 			}
 			// 解挂出纳卡命令
 			else if (commandCode == CommandCodeCardReader.UnLossCashierCard) {
@@ -280,7 +279,7 @@ public class ExecCardReaderCommand {
 				map.put("'r'", cardStatus);
 				map.put("'operId'", Integer.parseInt(getCashierOperId(b), 16));
 				map.put("'cardSN'", cardSN);
-				map.put("'cardInfoStr'", StringUtil.byteToHexString(baseLen, b.length - 1, b));
+				map.put("'cardInfoStr'", StringUtil.byteToHexStr(baseLen, b.length - 1, b));
 			}
 			// 补办出纳卡命令
 			else if (commandCode == CommandCodeCardReader.RemakeCashierCard) {
@@ -294,10 +293,10 @@ public class ExecCardReaderCommand {
 				map.put("'r'", cardStatus);
 
 				map.put("'operId'", Integer.parseInt(getCashierOperId(b), 16));
-				String date = StringUtil.dateFromHexString(StringUtil.byteToHexString(baseLen + 3 + 19 + 10, baseLen + 3 + 19 + 11, b));
+				String date = StringUtil.dateFromHexStr(StringUtil.byteToHexStr(baseLen + 3 + 19 + 10, baseLen + 3 + 19 + 11, b));
 				map.put("'date'", date);
 				map.put("'cardSN'", cardSN);
-				map.put("'cardInfoStr'", StringUtil.byteToHexString(baseLen, b.length - 1, b));
+				map.put("'cardInfoStr'", StringUtil.byteToHexStr(baseLen, b.length - 1, b));
 			}
 			// 读取卡余额命令
 			else if (commandCode == CommandCodeCardReader.ReadCardOddFare) {
@@ -305,11 +304,11 @@ public class ExecCardReaderCommand {
 				map.put("'r'", cardStatus);
 
 				int base0 = baseLen + 3;
-				map.put("'userId'", Integer.parseInt(StringUtil.byteToHexString(base0, base0 + 3, b), 16));
-				map.put("'cardNO'", Integer.parseInt(StringUtil.byteToHexString(base0 + 4, base0 + 7, b), 16));
+				map.put("'userId'", Integer.parseInt(StringUtil.byteToHexStr(base0, base0 + 3, b), 16));
+				map.put("'cardNO'", Integer.parseInt(StringUtil.byteToHexStr(base0 + 4, base0 + 7, b), 16));
 				map.put("'cardSN'", cardSN);
 
-				int status = Integer.parseInt(StringUtil.byteToHexString(base0 + 12, base0 + 12, b), 16);
+				int status = Integer.parseInt(StringUtil.byteToHexStr(base0 + 12, base0 + 12, b), 16);
 				String statusDesc = "正常";
 				if (status == 241) {
 					statusDesc = "正常";
@@ -325,13 +324,12 @@ public class ExecCardReaderCommand {
 				map.put("'statusDesc'", statusDesc);
 
 				int consume0 = baseLen + 19 * 2 + 3;
-				map.put("'oddFare'", (float) Integer.parseInt(StringUtil.byteToHexString(consume0 + 3, consume0 + 5, b), 16) / 100);
-				map.put("'cardInfoStr'", StringUtil.byteToHexString(baseLen + 19, b.length - 1, b));
+				map.put("'oddFare'", (float) Integer.parseInt(StringUtil.byteToHexStr(consume0 + 3, consume0 + 5, b), 16) / 100);
+				map.put("'cardInfoStr'", StringUtil.byteToHexStr(baseLen + 19, b.length - 1, b));
 			}
 		}
 		if (map.size() > 0) {
-			String msg = JSONUtil.convertToJson(map);
-			TerminalManager.EngineInstance.sendToAll("c" + sn, msg);
+			TerminalManager.sendToCardManager(map, sn);
 		}
 	}
 

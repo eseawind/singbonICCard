@@ -1,4 +1,4 @@
-package com.singbon.device.listener;
+package com.singbon.device;
 
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -7,20 +7,9 @@ import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.UUID;
 
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-
-import org.comet4j.core.util.JSONUtil;
-
-import com.singbon.device.CRC16;
-import com.singbon.device.ExecCardReaderCommand;
-import com.singbon.device.FrameCardReader;
-import com.singbon.device.TerminalManager;
 import com.singbon.util.StringUtil;
 
 /**
@@ -29,7 +18,7 @@ import com.singbon.util.StringUtil;
  * @author 郝威
  * 
  */
-public class TCPSocketChannelListener implements ServletContextListener {
+public class TCPSocketChannelServer implements Runnable {
 
 	protected Selector selector;
 
@@ -60,7 +49,6 @@ public class TCPSocketChannelListener implements ServletContextListener {
 
 	int i = 0;
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void handleSelectionKey(SelectionKey selectionKey) throws Exception {
 		if (selectionKey.isAcceptable()) {
 			ServerSocketChannel ssc = (ServerSocketChannel) selectionKey.channel();
@@ -72,7 +60,7 @@ public class TCPSocketChannelListener implements ServletContextListener {
 			String uuid = UUID.randomUUID().toString();
 			key.attach(uuid);
 			// 打印
-			StringUtil.println(key.attachment() + " 连接成功");
+			StringUtil.println(key.attachment() + " connect successful ");
 		} else if (selectionKey.isReadable()) {
 			// 有消息进来
 			ByteBuffer byteBuffer = ByteBuffer.allocate(273);
@@ -101,10 +89,10 @@ public class TCPSocketChannelListener implements ServletContextListener {
 					}
 				}
 				b = Arrays.copyOf(b, byteLen);
-//				for (byte b2 : b) {
-//					StringUtil.print(StringUtil.toHexString(b2) + " ");
-//				}
-//				StringUtil.println("");
+				// for (byte b2 : b) {
+				// StringUtil.print(StringUtil.toHexString(b2) + " ");
+				// }
+				// StringUtil.println("");
 
 				// 校验
 				if (!CRC16.compareCRC16(b)) {
@@ -122,19 +110,9 @@ public class TCPSocketChannelListener implements ServletContextListener {
 			} else {
 				// 输入结束，关闭 socketChannel
 				String uuid = selectionKey.attachment().toString();
-				StringUtil.println(uuid + " 已关闭连接");
+				StringUtil.println(uuid + "connect closed");
 				sc.close();
-
-				String sn = removeSockeckChannel(uuid);
-
-				if (sn != null) {
-					Map map = new HashMap();
-					map.put("'f1'", FrameCardReader.Status);
-					map.put("'r'", 0);
-
-					String msg = JSONUtil.convertToJson(map);
-					TerminalManager.EngineInstance.sendToAll("c" + sn, msg);
-				}
+				removeSockeckChannel(uuid);
 			}
 
 			Thread.sleep(100);
@@ -156,27 +134,15 @@ public class TCPSocketChannelListener implements ServletContextListener {
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
-		new TCPSocketChannelListener().startServer();
+		new TCPSocketChannelServer().startServer();
 	}
 
-	class TCPListenServer implements Runnable {
-
-		@Override
-		public void run() {
-			try {
-				new TCPSocketChannelListener().startServer();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+	@Override
+	public void run() {
+		try {
+			new TCPSocketChannelServer().startServer();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-	}
-
-	public void contextDestroyed(ServletContextEvent arg0) {
-
-	}
-
-	public void contextInitialized(ServletContextEvent arg0) {
-		Thread t = new Thread(new TCPListenServer());
-		t.start();
 	}
 }

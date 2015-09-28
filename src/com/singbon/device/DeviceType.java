@@ -7,12 +7,17 @@ package com.singbon.device;
  * 
  */
 public class DeviceType {
+	
 	/**
-	 * 读卡机
+	 * 主设备 0000
+	 */
+	public static String Main = "0000";
+	/**
+	 * 读卡机 0808 
 	 */
 	public static String CardReader = "0808";
 	/**
-	 * 消费机
+	 * 消费机 0202
 	 */
 	public static String POS = "0202";
 	/**

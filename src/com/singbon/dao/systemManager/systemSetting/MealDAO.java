@@ -13,7 +13,7 @@ import com.singbon.entity.Meal;
  * @author 郝威
  * 
  */
-public interface MealDAO extends BaseDAO{
+public interface MealDAO extends BaseDAO {
 
 	/**
 	 * 添加
@@ -29,4 +29,11 @@ public interface MealDAO extends BaseDAO{
 	 * @return
 	 */
 	public List<Meal> selectList(@Param("companyId") Integer companyId);
+
+	/**
+	 * 所有列表
+	 * 
+	 * @return
+	 */
+	public List<Meal> selectAllList();
 }

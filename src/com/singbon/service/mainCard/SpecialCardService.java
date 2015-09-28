@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import com.singbon.dao.SysUserDAO;
 import com.singbon.device.CommandCardReader;
 import com.singbon.device.CommandCodeCardReader;
+import com.singbon.device.CommandDevice;
+import com.singbon.device.DeviceType;
 import com.singbon.device.TerminalManager;
 import com.singbon.entity.Device;
 import com.singbon.entity.SysUser;
@@ -81,7 +83,7 @@ public class SpecialCardService {
 		String lPrivilege = StringUtil.hexLeftPad(0, 3);
 		String sUpdatePWDDate = "0000";// 4
 		c.setTime(user.getInvalidDate());
-		String sValidPeriod = StringUtil.dateToHexString(c);// 4
+		String sValidPeriod = StringUtil.dateToHexStr(c);// 4
 		String sReserve = StringUtil.hexLeftPad(0, 6);
 		String tmCheck1 = "00"; // 异或校验，以后补充
 
@@ -94,10 +96,10 @@ public class SpecialCardService {
 		String baseBlock1 = baseInfoSection + "0100" + baseData.substring(0, 32);
 		String baseBlock2 = baseInfoSection + "0200" + baseData.substring(32);
 
-		String commandCodeStr = "00"+StringUtil.hexLeftPad(commandCode, 4);
+		String commandCodeStr = "00" + StringUtil.hexLeftPad(commandCode, 4);
 		String sendStr = CommandCardReader.WriteCard + commandCodeStr + CommandCardReader.ValidateCardSN + user.getCardSN() + baseBlock0 + baseBlock1 + baseBlock2 + "0000";
 		String bufLen = StringUtil.hexLeftPad(2 + sendStr.length() / 2, 4);
-		sendStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + "00000000" + "0000" + "0808" + bufLen + sendStr;
+		sendStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + CommandDevice.NoSubDeviceNum + DeviceType.Main + DeviceType.CardReader + bufLen + sendStr;
 
 		byte[] buf = StringUtil.strTobytes(sendStr);
 
@@ -128,10 +130,10 @@ public class SpecialCardService {
 		this.sysUserDAO.changeStatus(sysUser.getOperId(), 2);
 
 		cardInfoStr = cardInfoStr.substring(0, 12) + "0f0" + cardInfoStr.substring(15);
-		String commandCodeStr = "00"+StringUtil.hexLeftPad(CommandCodeCardReader.LossCashierCard, 4);
+		String commandCodeStr = "00" + StringUtil.hexLeftPad(CommandCodeCardReader.LossCashierCard, 4);
 		String sendBufStr = CommandCardReader.WriteCard + commandCodeStr + CommandCardReader.ValidateCardSN + sysUser.getCardSN() + cardInfoStr;
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
-		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + "00000000" + "0000" + "0808" + bufLen + sendBufStr;
+		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + CommandDevice.NoSubDeviceNum + DeviceType.Main + DeviceType.CardReader + bufLen + sendBufStr;
 		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
 
 		TerminalManager.sendToCardReader(socketChannel, sendBuf);
@@ -148,10 +150,10 @@ public class SpecialCardService {
 		this.sysUserDAO.changeStatus(sysUser.getOperId(), 1);
 
 		cardInfoStr = cardInfoStr.substring(0, 12) + "0f1" + cardInfoStr.substring(15);
-		String commandCodeStr = "00"+StringUtil.hexLeftPad(CommandCodeCardReader.UnLossCashierCard, 4);
+		String commandCodeStr = "00" + StringUtil.hexLeftPad(CommandCodeCardReader.UnLossCashierCard, 4);
 		String sendBufStr = CommandCardReader.WriteCard + commandCodeStr + CommandCardReader.ValidateCardSN + sysUser.getCardSN() + cardInfoStr;
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
-		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + "00000000" + "0000" + "0808" + bufLen + sendBufStr;
+		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + CommandDevice.NoSubDeviceNum + DeviceType.Main + DeviceType.CardReader + bufLen + sendBufStr;
 		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
 
 		TerminalManager.sendToCardReader(socketChannel, sendBuf);
@@ -170,13 +172,13 @@ public class SpecialCardService {
 		Calendar c = Calendar.getInstance();
 
 		c.setTime(sysUser.getInvalidDate());
-		String invalidDate = StringUtil.dateToHexString(c);// 4
+		String invalidDate = StringUtil.dateToHexStr(c);// 4
 
 		cardInfoStr = cardInfoStr.substring(0, 26) + invalidDate + cardInfoStr.substring(30);
-		String commandCodeStr = "00"+StringUtil.hexLeftPad(CommandCodeCardReader.InvalidDateCashierCard, 4);
+		String commandCodeStr = "00" + StringUtil.hexLeftPad(CommandCodeCardReader.InvalidDateCashierCard, 4);
 		String sendBufStr = CommandCardReader.WriteCard + commandCodeStr + CommandCardReader.ValidateCardSN + sysUser.getCardSN() + cardInfoStr;
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
-		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + "00000000" + "0000" + "0808" + bufLen + sendBufStr;
+		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + CommandDevice.NoSubDeviceNum + DeviceType.Main + DeviceType.CardReader + bufLen + sendBufStr;
 		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
 
 		TerminalManager.sendToCardReader(socketChannel, sendBuf);

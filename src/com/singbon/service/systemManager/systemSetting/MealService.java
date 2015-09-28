@@ -44,7 +44,16 @@ public class MealService {
 	 * @return
 	 */
 	public List<Meal> selectList(Integer companyId) {
-
 		return this.mealDAO.selectList(companyId);
+	}
+	
+	
+	/**
+	 * 所有列表
+	 * 
+	 * @return
+	 */
+	public List<Meal> selectAllList() {
+		return this.mealDAO.selectAllList();
 	}
 }

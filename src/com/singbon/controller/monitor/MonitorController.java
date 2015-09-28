@@ -14,25 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.singbon.controller.BaseController;
-import com.singbon.dao.systemManager.systemSetting.ConsumeParamDAO;
-import com.singbon.dao.systemManager.systemSetting.CookbookDAO;
-import com.singbon.dao.systemManager.systemSetting.DiscountDAO;
-import com.singbon.dao.systemManager.systemSetting.MealDAO;
-import com.singbon.dao.systemManager.systemSetting.OrderTimeDAO;
-import com.singbon.device.FramePos;
 import com.singbon.device.SendCommand;
-import com.singbon.device.SubCookbookFramePos;
-import com.singbon.device.SubOtherFramePos;
-import com.singbon.device.SubSysParaFramePos;
 import com.singbon.device.TerminalManager;
 import com.singbon.entity.Company;
-import com.singbon.entity.ConsumeParam;
-import com.singbon.entity.Cookbook;
 import com.singbon.entity.Device;
 import com.singbon.entity.DeviceGroup;
-import com.singbon.entity.Discount;
-import com.singbon.entity.Meal;
-import com.singbon.entity.OrderTime;
 import com.singbon.entity.SysUser;
 import com.singbon.service.monitor.MonitorService;
 import com.singbon.service.systemManager.DeviceGroupService;
@@ -54,16 +40,6 @@ public class MonitorController extends BaseController {
 	public DeviceService deviceService;
 	@Autowired
 	public MonitorService monitorService;
-	@Autowired
-	public ConsumeParamDAO consumeParamDAO;
-	@Autowired
-	public MealDAO mealDAO;
-	@Autowired
-	public OrderTimeDAO orderTimeDAO;
-	@Autowired
-	public DiscountDAO discountDAO;
-	@Autowired
-	public CookbookDAO cookbookDAO;
 
 	/**
 	 * 首页
@@ -96,7 +72,7 @@ public class MonitorController extends BaseController {
 		model.addAttribute("base", url.replace("/index.do", ""));
 
 		// 关闭老线程
-		Thread oldThread = TerminalManager.CompanyToMonitorThreadlList.get(company.getId());
+		Thread oldThread = TerminalManager.CompanyToMonitorThreadList.get(company.getId());
 		if (oldThread != null && oldThread.isAlive()) {
 			oldThread.interrupt();
 		}
@@ -106,7 +82,7 @@ public class MonitorController extends BaseController {
 		monitorService.setDeviceList(deviceList);
 		Thread thread = new Thread(monitorService);
 		thread.setName("Co" + company.getId());
-		TerminalManager.CompanyToMonitorThreadlList.put(company.getId(), thread);
+		TerminalManager.CompanyToMonitorThreadList.put(company.getId(), thread);
 		thread.start();
 
 		request.getSession().setAttribute("companyId", company.getId().toString());
@@ -164,112 +140,8 @@ public class MonitorController extends BaseController {
 						commandIndex = sendCommand.getCommandCode() + 1;
 					}
 				}
-				addCommand(company, sn2, cmd, commandIndex, sendCommandList);
+				MonitorService.addCommand(company, sn2, cmd, commandIndex, sendCommandList);
 			}
-		}
-	}
-
-	/**
-	 * 添加命令
-	 * 
-	 * @param sn
-	 * @param cmd
-	 * @param commandIndex
-	 * @param sendCommandList
-	 */
-	private void addCommand(Company company, String sn, String cmd, int commandIndex, ArrayList<SendCommand> sendCommandList) {
-		// 校时
-		if ("sysTime".equals(cmd)) {
-			if (sendCommandList.size() > 0) {
-				SendCommand firstSendCommand = sendCommandList.get(0);
-				if (firstSendCommand.getCommandCode() == 0) {
-					return;
-				}
-			}
-			SendCommand sendCommand = new SendCommand();
-			sendCommand.setFrame(FramePos.SysTime);
-			sendCommand.setSubFrame(SubOtherFramePos.SysTime);
-			sendCommand.setCommandCode(0);
-			sendCommandList.add(0, sendCommand);
-			// 系统参数
-		} else if ("sysPara".equals(cmd)) {
-			// 设置消费参数
-			ConsumeParam consumeParam = this.consumeParamDAO.selectByCompanyId(company.getId());
-			// 设置订参别限次
-			List<Meal> mealList = this.mealDAO.selectList(company.getId());
-			// 设置订餐时间段
-			List<OrderTime> orderTimeList = this.orderTimeDAO.selectByCompanyId(company.getId());
-
-			// 系统参数
-			SendCommand sendCommand1 = new SendCommand();
-			sendCommand1.setFrame(FramePos.SysPara);
-			sendCommand1.setSubFrame(SubSysParaFramePos.SysPara);
-			sendCommand1.setCommandCode(commandIndex++);
-			sendCommand1.setConsumeParam(consumeParam);
-
-			// 参别限次
-			SendCommand sendCommand2 = new SendCommand();
-			sendCommand2.setFrame(FramePos.SysPara);
-			sendCommand2.setSubFrame(SubSysParaFramePos.Meal);
-			sendCommand2.setCommandCode(commandIndex++);
-			sendCommand2.setMealList(mealList);
-
-			// 订餐时间段
-			SendCommand sendCommand3 = new SendCommand();
-			sendCommand3.setFrame(FramePos.Cookbook);
-			sendCommand3.setSubFrame(SubCookbookFramePos.OrderTime1);
-			sendCommand3.setCommandCode(commandIndex++);
-			sendCommand3.setOrderTimeList(orderTimeList);
-
-			SendCommand sendCommand4 = new SendCommand();
-			sendCommand4.setFrame(FramePos.Cookbook);
-			sendCommand4.setSubFrame(SubCookbookFramePos.OrderTime2);
-			sendCommand4.setCommandCode(commandIndex++);
-			sendCommand4.setOrderTimeList(orderTimeList);
-
-			sendCommandList.add(sendCommand1);
-			sendCommandList.add(sendCommand2);
-			sendCommandList.add(sendCommand3);
-			sendCommandList.add(sendCommand4);
-			// 折扣费率及管理费
-		} else if ("discount".equals(cmd)) {
-			List<Discount> discountList = this.discountDAO.selectList(company.getId());
-
-			SendCommand sendCommand = new SendCommand();
-			sendCommand.setFrame(FramePos.SysPara);
-			sendCommand.setSubFrame(SubSysParaFramePos.Discount);
-			sendCommand.setCommandCode(commandIndex);
-			sendCommand.setDiscountList(discountList);
-			sendCommandList.add(sendCommand);
-			// 菜肴清单
-		} else if ("cookbook".equals(cmd)) {
-			List<Cookbook> cookbookList = this.cookbookDAO.selectList(company.getId());
-
-			SendCommand sendCommand = new SendCommand();
-			sendCommand.setFrame(FramePos.Cookbook);
-			sendCommand.setSubFrame(SubCookbookFramePos.Update);
-			sendCommand.setCommandCode(commandIndex++);
-			sendCommandList.add(sendCommand);
-
-			int index = 0;
-			for (Cookbook cookbook : cookbookList) {
-				SendCommand sendCommand2 = new SendCommand();
-				sendCommand2.setFrame(FramePos.Cookbook);
-				sendCommand2.setSubFrame(SubCookbookFramePos.Append);
-				sendCommand2.setCookbook(cookbook);
-				sendCommand2.setCommandCode(commandIndex++);
-				sendCommand2.setCookbookIndex(++index);
-				sendCommand2.setCookbookTotal(cookbookList.size());
-				sendCommandList.add(sendCommand2);
-			}
-			// 初始化
-		} else if ("sysInit".equals(cmd)) {
-			SendCommand sendCommand = new SendCommand();
-			sendCommand.setFrame(FramePos.SysInit);
-			sendCommand.setSubFrame(SubOtherFramePos.SysInit);
-			sendCommand.setCommandCode(0);
-			sendCommandList.clear();
-			sendCommandList.add(sendCommand);
 		}
 	}
 }

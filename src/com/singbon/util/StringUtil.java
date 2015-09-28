@@ -107,10 +107,23 @@ public class StringUtil {
 	 * 
 	 * @return
 	 */
-	public static String stringLeftPad(String str, int num) {
+	public static String strLeftPad(String str, int num) {
 		num = num - str.length();
 		for (int i = 0; i < num; i++) {
 			str = "0" + str;
+		}
+		return str;
+	}
+
+	/**
+	 * 字符串左补字符
+	 * 
+	 * @return
+	 */
+	public static String strLeftPadWithChar(String str, int num, String c) {
+		num = num - str.length();
+		for (int i = 0; i < num; i++) {
+			str = c + str;
 		}
 		return str;
 	}
@@ -120,7 +133,7 @@ public class StringUtil {
 	 * 
 	 * @return
 	 */
-	public static String stringRightPad(String str, int num) {
+	public static String strRightPad(String str, int num) {
 		num = num - str.length();
 		for (int i = 0; i < num; i++) {
 			str += "0";
@@ -136,7 +149,7 @@ public class StringUtil {
 	 * @return
 	 */
 
-	public static String dateToHexString(Calendar date) {
+	public static String dateToHexStr(Calendar date) {
 		String year = String.valueOf(date.get(Calendar.YEAR));
 		byte tmYear = (byte) ((int) Integer.valueOf(year.substring(2)));
 		byte tmMonth = (byte) (date.get(Calendar.MONTH) + 1);
@@ -165,7 +178,7 @@ public class StringUtil {
 	 * 转换16进制字符串为日期格式 例：“9C04” -> “2009-12-04”
 	 * 修改2009-07-06：二进制前7位表示年，下4位月，最后5位表示日如"12E6" -> "2009-07-06"
 	 */
-	public static String dateFromHexString(String hexStr) {
+	public static String dateFromHexStr(String hexStr) {
 		int tm1 = Integer.parseInt(hexStr.substring(0, 2), 16);
 		int tm2 = Integer.parseInt(hexStr.substring(2), 16);
 		int tmYear = (tm1 & 0XFE) >> 1;
@@ -186,7 +199,7 @@ public class StringUtil {
 	/**
 	 * 2进制字符串转16进制字符串
 	 */
-	public static String binaryHexString(String binary) {
+	public static String binaryHexStr(String binary) {
 		String[] strs = binary.split(" ");
 		String result = "";
 		for (String string : strs) {
@@ -201,16 +214,16 @@ public class StringUtil {
 	 * 
 	 * @return
 	 */
-	public static String timeToHexString() {
+	@SuppressWarnings("deprecation")
+	public static String timeToHexStr() {
 		String tempStr = "";
-		Calendar c = Calendar.getInstance();
-		c.set(2000, 1, 1);
-		long time = (System.currentTimeMillis() - c.getTimeInMillis()) / 1000;
+		Date date = new Date("2000/01/01");
+		long time = (System.currentTimeMillis() - date.getTime()) / 1000;
 
 		for (int i = 24; i >= 0; i -= 8) {
 			String tmpStr1 = Integer.toHexString((byte) ((time >> i) & 0xff)).replace("ffffff", "");
 			if (tmpStr1.length() == 1) {
-				tempStr = "0" + tmpStr1;
+				tempStr = tempStr + "0" + tmpStr1;
 			} else {
 				tempStr += tmpStr1;
 			}
@@ -248,7 +261,18 @@ public class StringUtil {
 		for (byte b : strByte) {
 			result += StringUtil.hexLeftPad(b, 2);
 		}
-		return StringUtil.stringRightPad(result, 32);
+		return StringUtil.strRightPad(result, 32);
+	}
+
+	/**
+	 * 获取BCD码int
+	 * 
+	 * @param str
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	public static Integer byteToBCDInt(byte b) {
+		return Integer.parseInt(toHexString(b));
 	}
 
 	/**
@@ -271,7 +295,7 @@ public class StringUtil {
 	 * @param b
 	 * @return
 	 */
-	public static String byteToHexString(int begin, int end, byte[] b) {
+	public static String byteToHexStr(int begin, int end, byte[] b) {
 		String baseInfoStr = "";
 		for (int i = begin; i <= end; i++) {
 			String hex = Integer.toHexString(b[i] & 0xFF);
@@ -292,14 +316,13 @@ public class StringUtil {
 	 * @return
 	 */
 	public static int hexToInt(int begin, int end, byte[] b) {
-		return Integer.parseInt(byteToHexString(begin, end, b), 16);
+		return Integer.parseInt(byteToHexStr(begin, end, b), 16);
 	}
 
 	public static void main(String[] args) {
-		//消费机初始化29 74 e7 0c 3c 9e 11 e5 83 9f d4 be d9 80 4c 01 00 bc 61 4e 00 00 00 00 00 00 02 02 00 0A 19 19 00 00 00 00 97 b0
-		byte[] b = StringUtil
-				.strTobytes("29 74 e7 0c 3c 9e 11 e5 83 9f d4 be d9 80 4c 01 00 bc 61 4e 00 00 00 00 00 00 02 02 00 0d 01 01 00 00 00 00 00 07 00 6a f5 "
-						.replaceAll(" ", ""));
+		// 消费机初始化29 74 e7 0c 3c 9e 11 e5 83 9f d4 be d9 80 4c 01 00 bc 61 4e 00
+		// 00 00 00 00 00 02 02 00 0A 19 19 00 00 00 00 97 b0
+		byte[] b = StringUtil.strTobytes("29 74 e7 0c 3c 9e 11 e5 83 9f d4 be d9 80 4c 01 00 bc 61 4e 00 00 00 00 00 00 02 02 00 0E 07 01 00 00 00 00 1D 8A B6 11 B9 B7".replaceAll(" ", ""));
 		CRC16.generate(b);
 		StringUtil.print(Integer.toHexString(b[b.length - 2]) + " ");
 		StringUtil.println(Integer.toHexString(b[b.length - 1]));

@@ -238,8 +238,7 @@ public class MainCardController extends BaseController {
 		if (cardSNCount > 0) {
 			Map map = new HashMap();
 			map.put("'f1'", FrameCardReader.ExsitCardSN);
-			String msg = JSONUtil.convertToJson(map);
-			TerminalManager.EngineInstance.sendToAll("c" + sn, msg);
+			TerminalManager.sendToCardManager(map, sn);
 			return 1;
 		}
 		return 0;
