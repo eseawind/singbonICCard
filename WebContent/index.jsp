@@ -68,7 +68,7 @@
 <style type="text/css">
 	#login-box{
 		position: absolute;
-		top:110px;
+		top:210px;
 		right:150px;
 		width:400px;
 		height:218px;
@@ -122,7 +122,7 @@
 </style>
 </head>
 <body>
-	<img src="/img/loginBg.png" width="100%" style="margin-top: 120px;"/>
+	<img src="/img/loginBg.png" width="100%" style="margin-top: 220px;"/>
 	<div id="login-box">
 		<div id="loginComet"></div>
 		<form id='loginForm' action="<c:url value='disuserlogin.htm' />" method='POST'>
@@ -139,8 +139,8 @@
 					</td>
 				</tr>
 				<tr>
-					<td>公司名称:</td>
-					<td><input type='text' name='companyName' value='1'/><span>公司名称不能为空</span> </td>
+					<td>单位名称:</td>
+					<td><input type='text' name='companyName' value='郑州兴邦科技有限公司'/><span>单位名称不能为空</span> </td>
 				</tr>
 				<tr>
 					<td>用户名:</td>

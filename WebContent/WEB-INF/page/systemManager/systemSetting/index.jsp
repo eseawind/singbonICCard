@@ -20,23 +20,23 @@
 				<li><a href="${base }/discount/index.do" class="j-ajax"><span>优惠方案</span></a></li>
 				<li><a href="${base }/waterRate/index.do" class="j-ajax"><span>一控一水控</span></a></li>
 				<li><a href="${base }/multiWaterRate/index.do" class="j-ajax"><span>一控多水控</span></a></li>
-			</ul>
-		</div>
-	</div>
-	<div class="tabsHeader">
-		<div class="tabsHeaderContent">
-			<ul>
 				<li><a href="${base }/consumeParam/index.do" class="j-ajax"><span>消费参数</span></a></li>
 				<li><a href="${base }/cardParam/index.do" class="j-ajax"><span>制卡参数</span></a></li>
 				<li><a href="${base }/entranceGuard/index.do" class="j-ajax"><span>门禁参数</span></a></li>
-				<li><a href="${base }/waterRate/index.do" class="j-ajax"><span>水控费率</span></a></li>
-				<li><a href="${base }/waterRate/index.do" class="j-ajax"><span>水控费率</span></a></li>
-				<li><a href="${base }/waterRate/index.do" class="j-ajax"><span>水控费率</span></a></li>
-				<li><a href="${base }/waterRate/index.do" class="j-ajax"><span>水控费率</span></a></li>
-				<li><a href="${base }/waterRate/index.do" class="j-ajax"><span>水控费率2</span></a></li>
 			</ul>
 		</div>
 	</div>
+<!-- 	<div class="tabsHeader"> -->
+<!-- 		<div class="tabsHeaderContent"> -->
+<!-- 			<ul> -->
+<%-- 				<li><a href="${base }/waterRate/index.do" class="j-ajax"><span>水控费率</span></a></li> --%>
+<%-- 				<li><a href="${base }/waterRate/index.do" class="j-ajax"><span>水控费率</span></a></li> --%>
+<%-- 				<li><a href="${base }/waterRate/index.do" class="j-ajax"><span>水控费率</span></a></li> --%>
+<%-- 				<li><a href="${base }/waterRate/index.do" class="j-ajax"><span>水控费率</span></a></li> --%>
+<%-- 				<li><a href="${base }/waterRate/index.do" class="j-ajax"><span>水控费率2</span></a></li> --%>
+<!-- 			</ul> -->
+<!-- 		</div> -->
+<!-- 	</div> -->
 	<div class="tabsContent" style="padding:0;" layoutH="0">
 		<div>
 			<jsp:include page="${base }/systemPwd/index.do"/>
