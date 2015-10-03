@@ -61,29 +61,19 @@
 		JS.Engine.on({
 			'c${sn}' : function(e) {//侦听一个channel
 				var e2 = eval('(' + e + ')');
+				heartTime=new Date();
 				//存在物理卡号
 				if(e2.f1==0x7f){
 					alertMsg.warn('该卡片已经发行，请放置新卡！');
 				}
-				//读卡器状态
-				else if (e2.f1 == 0x01) {
-					if (e2.r == 1) {
-						heartTime=new Date();
-						$('.dialogHeader_c h1').html(title + '——读卡机状态：在线');
-						isOnline=true;
-						if(!isHeart){
-							heart();
-							isHeart=true;
-						}
-					} else {
-						$('.dialogHeader_c h1').html(title + '——读卡机状态：离线');
-						isOnline=false;
-						isHeart=false;
-						$('body').stopTime();
+				//读卡器状态心跳
+				else if (e2.f1 == 2 && e2.r == 1) {
+					$('.dialogHeader_c h1').html(title + '——读卡机状态：在线');
+					isOnline=true;
+					if(!isHeart){
+						heart();
+						isHeart=true;
 					}
-				//心跳
-				} else if (e2.f1 == 0x02) {
-					heartTime=new Date();
 				//读取卡余额命令
 				} else if (e2.f1 == 0x1a) {
 					if(e2.r==1){

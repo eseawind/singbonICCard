@@ -108,22 +108,19 @@
 		JS.Engine.on({
 			'c${sn}' : function(e) {//侦听一个channel
 				var e2 = eval('(' + e + ')');
+				heartTime=new Date();
 				//存在物理卡号
-				if(e2.f1==0x7f){
+				if(e2.f1==0x70){
 					alertMsg.warn('该卡片已经发行，请放置新卡！');
 				}
-				//读卡器状态
-				else if (e2.f1 == 1 && e2.r == 1) {
-					heartTime=new Date();
+				//读卡器状态心跳
+				else if (e2.f1 == 2 && e2.r == 1) {
 					$('.dialogHeader_c h1').html(title + '——读卡机状态：在线');
 					isOnline=true;
 					if(!isHeart){
 						heart();
 						isHeart=true;
 					}
-				//心跳
-// 				} else if (e2.f1 == 2) {
-// 					heartTime=new Date();
 				//单个发卡命令
 				} else if (e2.f1 == 3) {
 					if(e2.r==1){
@@ -175,18 +172,17 @@
 	}
 	
 	function heart(){
-// 		$('body').everyTime('10s','getCardReaderStatus', function() {
-// 			var d=new Date();
-// 			var t=(d.getTime()-heartTime.getTime())/1000;
-// 			$('#cardno2').html(t);
-// 			if(t>12){
-// 				$.post('${base }/command.do?comm=closeSocketChannel');
-// 				$('.dialogHeader_c h1').html(title + '——读卡机状态：离线');
-// 				isOnline=false;
-// 				isHeart=false;
-// 				$('body').stopTime();
-// 			}
-// 		},0,true);
+		$('body').everyTime('10s','getCardReaderStatus', function() {
+			var d=new Date();
+			var t=(d.getTime()-heartTime.getTime())/1000;
+			if(t>12){
+				$.post('${base }/command.do?comm=closeSocketChannel');
+				$('.dialogHeader_c h1').html(title + '——读卡机状态：离线');
+				isOnline=false;
+				isHeart=false;
+				$('body').stopTime();
+			}
+		},0,true);
 	}
 	
 	function opCardResult(r){
@@ -440,18 +436,11 @@
 						</div>
 					</div></li>
 			</c:if>
-<!-- 			<li><div class="button"> -->
-<!-- 					<div class="buttonContent delete"> -->
-<!-- 						<button type="button">断开</button> -->
-<!-- 					</div> -->
-<!-- 				</div></li> -->
 			<li><div class="button">
 					<div class="buttonContent">
 						<button type="button" class="close">关闭</button>
 					</div>
 				</div>
-				</li>
-			<li><div id="cardno2">0</div>
 				</li>
 		</ul>
 	</div>

@@ -45,7 +45,7 @@ public class ExecCardReaderCommand {
 		Map map = new HashMap();
 		// 获取机器号序列号
 		if (frameByte[0] == 0x03 && frameByte[1] == 0x08) {
-			byte frame = FrameCardReader.Status;
+			byte frame = FrameCardReader.HeartStatus;
 			TerminalManager.UuidToSNList.put(selectionKey.attachment().toString(), sn);
 			TerminalManager.SNToSocketChannelList.put(sn, (SocketChannel) selectionKey.channel());
 			map.put("'f1'", frame);

@@ -11,9 +11,9 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.singbon.device.CometServer;
-import com.singbon.device.TCPSocketChannelServer;
+import com.singbon.device.TCPServer;
 import com.singbon.device.TerminalManager;
-import com.singbon.device.UDPServerServer;
+import com.singbon.device.UDPServer;
 import com.singbon.entity.Company;
 import com.singbon.entity.Device;
 import com.singbon.entity.Meal;
@@ -80,11 +80,11 @@ public class SystemListener implements ServletContextListener {
 		cometServer.init();
 
 		// 启动UDP服务监听和分发服务
-		Thread t = new Thread(new UDPServerServer());
+		Thread t = new Thread(new UDPServer());
 		t.start();
 
 		// 启动TCP服务监听和分发服务
-		Thread t2 = new Thread(new TCPSocketChannelServer());
+		Thread t2 = new Thread(new TCPServer());
 		t2.start();
 		
 		try {

@@ -57,6 +57,7 @@ public class ExportUtil {
 			OutputStream bos = response.getOutputStream();
 			workbook.write(bos);
 			bos.flush();
+			workbook.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -13,12 +13,12 @@ import java.util.UUID;
 import com.singbon.util.StringUtil;
 
 /**
- * TCP服务监听和分发服务
+ * TCP监听和分发服务
  * 
  * @author 郝威
  * 
  */
-public class TCPSocketChannelServer implements Runnable {
+public class TCPServer implements Runnable {
 
 	protected Selector selector;
 
@@ -134,13 +134,13 @@ public class TCPSocketChannelServer implements Runnable {
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
-		new TCPSocketChannelServer().startServer();
+		new TCPServer().startServer();
 	}
 
 	@Override
 	public void run() {
 		try {
-			new TCPSocketChannelServer().startServer();
+			new TCPServer().startServer();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

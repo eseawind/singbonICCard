@@ -13,12 +13,12 @@ import io.netty.channel.socket.nio.NioDatagramChannel;
 
 /**
  * 
- * UDP服务监听和分发服务
+ * UDP监听和分发服务
  * 
  * @author 郝威
  * 
  */
-public class UDPServerServer implements Runnable {
+public class UDPServer implements Runnable {
 
 	public void startServer() {
 
@@ -35,13 +35,13 @@ public class UDPServerServer implements Runnable {
 	}
 
 	public static void main(String[] args) {
-		new UDPServerServer().startServer();
+		new UDPServer().startServer();
 	}
 
 	@Override
 	public void run() {
 		try {
-			new UDPServerServer().startServer();
+			new UDPServer().startServer();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

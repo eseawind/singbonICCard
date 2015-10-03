@@ -18,10 +18,6 @@ public class FrameCardReader {
 	public static byte CashierCardBaseInfoCmd = 0x71;
 	
 	/**
-	 * 状态 0x01
-	 */
-	public static byte Status = 0x01;
-	/**
 	 * 心跳状态 0x02
 	 */
 	public static byte HeartStatus = 0x02;
