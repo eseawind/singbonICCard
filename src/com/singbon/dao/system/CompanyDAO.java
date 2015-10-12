@@ -22,14 +22,6 @@ public interface CompanyDAO extends BaseDAO {
 	public List<Company> selectCompanyList();
 
 	/**
-	 * 保存系统密码设置
-	 * 
-	 * @param obj
-	 * @return
-	 */
-	public void updateSystemPara(Company company);
-
-	/**
 	 * 所有列表
 	 * 
 	 * @return

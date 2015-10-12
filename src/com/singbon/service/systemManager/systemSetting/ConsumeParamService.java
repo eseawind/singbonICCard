@@ -3,8 +3,9 @@ package com.singbon.service.systemManager.systemSetting;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.singbon.dao.BaseDAO;
 import com.singbon.dao.systemManager.systemSetting.ConsumeParamDAO;
-import com.singbon.entity.ConsumeParam;
+import com.singbon.service.BaseService;
 
 /**
  * 消费参数设置业务层
@@ -13,35 +14,14 @@ import com.singbon.entity.ConsumeParam;
  * 
  */
 @Service
-public class ConsumeParamService {
+public class ConsumeParamService extends BaseService {
 
 	@Autowired
 	public ConsumeParamDAO consumeParamDAO;
 
-	/**
-	 * 添加
-	 * 
-	 * @param consumeParam
-	 */
-	public void insert(Integer companyId) {
-		this.consumeParamDAO.insert(companyId);
+	@Override
+	public BaseDAO getBaseDAO() {
+		return consumeParamDAO;
 	}
 
-	/**
-	 * 修改
-	 * 
-	 * @param consumeParam
-	 */
-	public void update(ConsumeParam consumeParam) {
-		this.consumeParamDAO.update(consumeParam);
-	}
-
-	/**
-	 * 根据公司id查询
-	 * 
-	 * @return
-	 */
-	public ConsumeParam selectByCompanyId(Integer companyId) {
-		return this.consumeParamDAO.selectByCompanyId(companyId);
-	}
 }

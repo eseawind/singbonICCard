@@ -13,7 +13,7 @@
 		update batch set batchName=#{batchName},beginDate=#{beginDate},endDate=#{endDate},invalidDate=#{invalidDate}
 		where id=#{id}
 	</update>
-	<select id="selectList" resultMap="batch">
+	<select id="selectListByCompanyId" resultMap="batch">
 		select * from batch where companyId=#{companyId}
 	</select>
 	<select id="selectById" resultMap="batch">

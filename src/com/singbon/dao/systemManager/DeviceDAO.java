@@ -41,13 +41,6 @@ public interface DeviceDAO extends BaseDAO {
 	public List<Device> selectPosList(@Param("companyId") Integer companyId, @Param("onlyEnable") Integer onlyEnable);
 
 	/**
-	 * 列表
-	 * 
-	 * @return
-	 */
-	public List<Device> selectList(@Param("companyId") Integer companyId);
-
-	/**
 	 * 所有列表
 	 * 
 	 * @return

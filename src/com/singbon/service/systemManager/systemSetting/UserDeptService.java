@@ -5,8 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.singbon.dao.BaseDAO;
 import com.singbon.dao.systemManager.systemSetting.UserDeptDAO;
-import com.singbon.entity.UserDept;
+import com.singbon.service.BaseService;
 
 /**
  * 人员部门业务层
@@ -15,39 +16,14 @@ import com.singbon.entity.UserDept;
  * 
  */
 @Service
-public class UserDeptService {
+public class UserDeptService extends BaseService {
 
 	@Autowired
 	public UserDeptDAO userDeptDAO;
 
-	/**
-	 * 添加人员部门
-	 * 
-	 * @param userDept
-	 */
-	public void save(UserDept userDept) {
-		if (userDept.getParentId() == null) {
-			userDept.setParentId(0);
-		}
-		this.userDeptDAO.insert(userDept);
-	}
-
-	/**
-	 * 修改人员部门
-	 * 
-	 * @param userDept
-	 */
-	public void update(UserDept userDept) {
-		this.userDeptDAO.update(userDept);
-	}
-
-	/**
-	 * 删除人员部门
-	 * 
-	 * @param userDept
-	 */
-	public void delete(Integer id) {
-		this.userDeptDAO.delete(id);
+	@Override
+	public BaseDAO getBaseDAO() {
+		return userDeptDAO;
 	}
 
 	/**
@@ -63,22 +39,4 @@ public class UserDeptService {
 		return this.userDeptDAO.selectByParentId(companyId, parentId);
 	}
 
-	/**
-	 * 人员部门树列表
-	 * 
-	 * @return
-	 */
-	@SuppressWarnings("rawtypes")
-	public List selectTreeList(Integer companyId) {
-		return this.userDeptDAO.selectTreeList(companyId);
-	}
-
-	/**
-	 * 根据主键获取部门
-	 * 
-	 * @return
-	 */
-	public UserDept selectById(Integer id) {
-		return (UserDept) this.userDeptDAO.selectById(id);
-	}
 }

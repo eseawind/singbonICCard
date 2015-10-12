@@ -61,10 +61,14 @@ public class CardParamController extends BaseController {
 	public String index(HttpServletRequest request, HttpServletResponse response, Model model) {
 
 		Company company = (Company) request.getSession().getAttribute("company");
-		CardParam cardParam = this.cardParamService.selectByCompanyId(company.getId());
+		CardParam cardParam = (CardParam) this.cardParamService.selectByCompanyId(company.getId());
 		if (cardParam == null) {
-			this.cardParamService.insert(company.getId());
-			cardParam = this.cardParamService.selectByCompanyId(company.getId());
+			try {
+				this.cardParamService.insert(company.getId());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			cardParam = (CardParam) this.cardParamService.selectByCompanyId(company.getId());
 		}
 		model.addAttribute("cardParam", cardParam);
 		String url = request.getRequestURI();

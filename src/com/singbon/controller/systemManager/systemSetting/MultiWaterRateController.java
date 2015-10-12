@@ -61,10 +61,10 @@ public class MultiWaterRateController extends BaseController {
 	public String index(HttpServletRequest request, HttpServletResponse response, Model model) {
 
 		Company company = (Company) request.getSession().getAttribute("company");
-		MultiWaterRate multiWaterRate = this.multiWaterRateService.selectByCompanyId(company.getId());
+		MultiWaterRate multiWaterRate = (MultiWaterRate) this.multiWaterRateService.selectByCompanyId(company.getId());
 		if (multiWaterRate == null) {
 			this.multiWaterRateService.insert(company.getId());
-			multiWaterRate = this.multiWaterRateService.selectByCompanyId(company.getId());
+			multiWaterRate = (MultiWaterRate) this.multiWaterRateService.selectByCompanyId(company.getId());
 		}
 		model.addAttribute("multiWaterRate", multiWaterRate);
 		String url = request.getRequestURI();

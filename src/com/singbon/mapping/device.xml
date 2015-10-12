@@ -28,7 +28,7 @@
 			 and enable=1
 		</if>
 	</select>
-	<select id="selectList" resultMap="device">
+	<select id="selectListByCompanyId" resultMap="device">
 		select * from device where companyId=#{companyId}
 	</select>
 	<select id="selectAllList" resultMap="device">

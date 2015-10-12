@@ -1,19 +1,14 @@
-package com.singbon.dao;
+package com.singbon.service;
 
 import java.util.List;
-import java.util.Map;
-
-import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
 
 /**
- * 基础数据库操作类
+ * 公共通用业务层
  * 
  * @author 郝威
  * 
  */
-@Repository
-public interface BaseDAO {
+public interface IBaseService{
 
 	/**
 	 * 添加对象
@@ -40,12 +35,12 @@ public interface BaseDAO {
 	public void delete(Object obj) throws Exception;
 
 	/**
-	 * 根据主键获取对象
+	 * 根据id查询
 	 * 
 	 * @param id
 	 * @return
 	 */
-	public Object selectById(@Param("id") Integer id);
+	public Object selectById(Integer id);
 
 	/**
 	 * 根据公司id查询单个对象
@@ -61,14 +56,4 @@ public interface BaseDAO {
 	 * @return
 	 */
 	public List<?> selectListByCompanyId(Integer companyId);
-
-	/**
-	 * 自定义sql查询fan
-	 * 
-	 * @param id
-	 * @return
-	 */
-	@SuppressWarnings("rawtypes")
-	public List<Map> selectBySql(@Param("sql") String sql);
-
 }

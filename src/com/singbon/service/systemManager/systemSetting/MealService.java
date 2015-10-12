@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.singbon.dao.BaseDAO;
 import com.singbon.dao.systemManager.systemSetting.MealDAO;
 import com.singbon.entity.Meal;
+import com.singbon.service.BaseService;
 
 /**
  * 餐别设置业务层
@@ -15,10 +17,15 @@ import com.singbon.entity.Meal;
  * 
  */
 @Service
-public class MealService {
+public class MealService extends BaseService {
 
 	@Autowired
 	public MealDAO mealDAO;
+
+	@Override
+	public BaseDAO getBaseDAO() {
+		return mealDAO;
+	}
 
 	/**
 	 * 添加
@@ -29,25 +36,6 @@ public class MealService {
 		this.mealDAO.insert(companyId);
 	}
 
-	/**
-	 * 修改
-	 * 
-	 * @param meal
-	 */
-	public void update(Meal meal) {
-		this.mealDAO.update(meal);
-	}
-
-	/**
-	 * 列表
-	 * 
-	 * @return
-	 */
-	public List<Meal> selectList(Integer companyId) {
-		return this.mealDAO.selectList(companyId);
-	}
-	
-	
 	/**
 	 * 所有列表
 	 * 

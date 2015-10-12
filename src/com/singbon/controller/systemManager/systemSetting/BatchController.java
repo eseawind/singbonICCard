@@ -47,7 +47,7 @@ public class BatchController extends BaseController {
 		try {
 			p = response.getWriter();
 			if (batch.getId() == null) {
-				this.batchService.save(batch);
+				this.batchService.insert(batch);
 			} else {
 				this.batchService.update(batch);
 			}
@@ -65,10 +65,11 @@ public class BatchController extends BaseController {
 	 * @param request
 	 * @param model
 	 */
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/list.do")
 	public String list(HttpServletRequest request, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
-		List<Batch> list = this.batchService.selectList(company.getId());
+		List<Batch> list = (List<Batch>) this.batchService.selectListByCompanyId(company.getId());
 		model.addAttribute("list", list);
 		return StringUtil.requestPath(request, "list");
 	}

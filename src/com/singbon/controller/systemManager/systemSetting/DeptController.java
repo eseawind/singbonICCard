@@ -46,7 +46,7 @@ public class DeptController {
 		try {
 			p = response.getWriter();
 			if (dept.getId() == null) {
-				this.deptService.save(dept);
+				this.deptService.insert(dept);
 			} else {
 				this.deptService.update(dept);
 			}
@@ -107,10 +107,11 @@ public class DeptController {
 	 * @param request
 	 * @param model
 	 */
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/treeList.do")
 	public String treeList(HttpServletRequest request, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
-		List<Dept> treeList = this.deptService.selectTreeList(company.getId());
+		List<Dept> treeList = (List<Dept>) this.deptService.selectListByCompanyId(company.getId());
 		model.addAttribute("treeList", treeList);
 		model.addAttribute("base", StringUtil.requestBase(request));
 		return StringUtil.requestPath(request, "treeList");

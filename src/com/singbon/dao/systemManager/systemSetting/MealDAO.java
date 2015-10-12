@@ -24,13 +24,6 @@ public interface MealDAO extends BaseDAO {
 	public void insert(@Param("companyId") Integer companyId);
 
 	/**
-	 * 列表
-	 * 
-	 * @return
-	 */
-	public List<Meal> selectList(@Param("companyId") Integer companyId);
-
-	/**
 	 * 所有列表
 	 * 
 	 * @return

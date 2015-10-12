@@ -45,7 +45,7 @@ public interface SysUserDAO extends BaseDAO {
 	 * @param user
 	 * @return
 	 */
-	public List<SysUser> selectList(@Param("companyId") Integer companyId);
+	public List<SysUser> selecSysUsertList(@Param("companyId") Integer companyId);
 
 	/**
 	 * 获取出纳员列表

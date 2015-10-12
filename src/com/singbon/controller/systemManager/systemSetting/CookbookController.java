@@ -69,10 +69,11 @@ public class CookbookController extends BaseController {
 	 * @param request
 	 * @param model
 	 */
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/list.do")
 	public String cookbookList(HttpServletRequest request, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
-		List<Cookbook> list = this.cookbookService.selectList(company.getId());
+		List<Cookbook> list = (List<Cookbook>) this.cookbookService.selectListByCompanyId(company.getId());
 		model.addAttribute("list", list);
 		return StringUtil.requestPath(request, "list");
 	}

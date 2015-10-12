@@ -56,7 +56,8 @@ public class MonitorController extends BaseController {
 		model.addAttribute("sysUser", sysUser);
 		model.addAttribute("company", company);
 
-		List<DeviceGroup> deviceGroupList = this.deviceGroupService.selectTreeList(company.getId());
+		@SuppressWarnings("unchecked")
+		List<DeviceGroup> deviceGroupList = (List<DeviceGroup>) this.deviceGroupService.selectListByCompanyId(company.getId());
 		model.addAttribute("deviceGroupList", deviceGroupList);
 		List<Device> deviceList = this.deviceService.selectPosList(company.getId(), 1);
 		for (Device d : deviceList) {

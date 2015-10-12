@@ -91,10 +91,10 @@ public class WaterRateController extends BaseController {
 	public String index(HttpServletRequest request, HttpServletResponse response, Model model) {
 
 		Company company = (Company) request.getSession().getAttribute("company");
-		WaterRate waterRate = this.waterRateService.selectByCompanyId(company.getId());
+		WaterRate waterRate = (WaterRate) this.waterRateService.selectByCompanyId(company.getId());
 		if (waterRate == null) {
 			this.waterRateService.insert(company.getId());
-			waterRate = this.waterRateService.selectByCompanyId(company.getId());
+			waterRate = (WaterRate) this.waterRateService.selectByCompanyId(company.getId());
 		}
 		model.addAttribute("waterRate", waterRate);
 		String url = request.getRequestURI();

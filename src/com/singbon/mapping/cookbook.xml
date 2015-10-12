@@ -19,7 +19,7 @@
 	<select id="selectById" resultMap="cookbook">
 		select * from cookbook where id=#{id}
 	</select>
-	<select id="selectList" resultMap="cookbook">
+	<select id="selectListByCompanyId" resultMap="cookbook">
 		select * from cookbook where companyId=#{companyId}
 	</select>
 </mapper>

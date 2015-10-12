@@ -1,12 +1,12 @@
 package com.singbon.service.systemManager.systemSetting;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.singbon.dao.BaseDAO;
 import com.singbon.dao.systemManager.systemSetting.BatchDAO;
 import com.singbon.entity.Batch;
+import com.singbon.service.BaseService;
 
 /**
  * 批次业务层
@@ -15,46 +15,14 @@ import com.singbon.entity.Batch;
  * 
  */
 @Service
-public class BatchService {
+public class BatchService extends BaseService {
 
 	@Autowired
 	public BatchDAO batchDAO;
 
-	/**
-	 * 添加批次
-	 * 
-	 * @param batch
-	 */
-	public void save(Batch batch) {
-		this.batchDAO.insert(batch);
-	}
-
-	/**
-	 * 修改批次
-	 * 
-	 * @param batch
-	 */
-	public void update(Batch batch) {
-		this.batchDAO.update(batch);
-	}
-
-	/**
-	 * 批次列表
-	 * 
-	 * @return
-	 */
-	public List<Batch> selectList(Integer companyId) {
-
-		return this.batchDAO.selectList(companyId);
-	}
-
-	/**
-	 * 根据主键获取批次
-	 * 
-	 * @return
-	 */
-	public Batch selectById(Integer id) {
-		return (Batch) this.batchDAO.selectById(id);
+	@Override
+	public BaseDAO getBaseDAO() {
+		return batchDAO;
 	}
 
 	/**

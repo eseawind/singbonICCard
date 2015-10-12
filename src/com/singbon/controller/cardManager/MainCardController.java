@@ -100,7 +100,7 @@ public class MainCardController extends BaseController {
 	@RequestMapping(value = "/treeList.do")
 	public String treeList(HttpServletRequest request, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
-		List<UserDept> list = this.userDeptService.selectTreeList(company.getId());
+		List<UserDept> list = (List<UserDept>) this.userDeptService.selectListByCompanyId(company.getId());
 		model.addAttribute("list", list);
 		return StringUtil.requestPath(request, "userDeptTreeList");
 	}
@@ -143,7 +143,7 @@ public class MainCardController extends BaseController {
 	 * @param model
 	 * @return
 	 */
-	@SuppressWarnings({ "rawtypes", "unused" })
+	@SuppressWarnings({ "rawtypes", "unused", "unchecked" })
 	@RequestMapping(value = "/userInfo.do", method = RequestMethod.GET)
 	public String userInfo(Integer userId, Integer deptId, Integer batchId, Integer editType, HttpServletRequest request, Model model) {
 		request.getSession().removeAttribute("companyId");
@@ -188,8 +188,8 @@ public class MainCardController extends BaseController {
 		cardIdentityList.add(m7);
 		cardIdentityList.add(m8);
 
-		List<Discount> discountList = discountService.selectList(company.getId());
-		Batch batch = batchService.selectById(batchId);
+		List<Discount> discountList = (List<Discount>) discountService.selectListByCompanyId(company.getId());
+		Batch batch = (Batch) batchService.selectById(batchId);
 		model.addAttribute("discountList", discountList);
 		model.addAttribute("cardFuncList", cardFuncList);
 		model.addAttribute("cardIdentityList", cardIdentityList);
@@ -199,7 +199,7 @@ public class MainCardController extends BaseController {
 		model.addAttribute("deptId", deptId);
 		model.addAttribute("editType", editType);
 		if (userId != null) {
-			User user = this.mainCardService.selectById(userId);
+			User user = (User) this.mainCardService.selectById(userId);
 			model.addAttribute("user", user);
 		}
 		if (device != null) {
@@ -307,7 +307,7 @@ public class MainCardController extends BaseController {
 			SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
 			if (socketChannel != null) {
 				try {
-					User user2 = this.mainCardService.selectById(user.getUserId());
+					User user2 = (User) this.mainCardService.selectById(user.getUserId());
 					user2.setCardSN(user.getCardSN());
 					int cardNO = this.mainCardService.selectMaxCardNO(company.getId());
 					user2.setCardNO(cardNO);
@@ -340,7 +340,7 @@ public class MainCardController extends BaseController {
 						p.print(2);
 						return;
 					}
-					this.mainCardService.save(user);
+					this.mainCardService.insert(user);
 				} else {
 					int userNONum = this.mainCardService.selectCountByUserNOUserId(company.getId(), user.getUserNO(), user.getUserId());
 					if (userNONum > 0) {
@@ -582,7 +582,7 @@ public class MainCardController extends BaseController {
 
 		String url = request.getRequestURI();
 		model.addAttribute("base", url.replace("/changeCard.do", ""));
-		User user = this.mainCardService.selectById(userId);
+		User user = (User) this.mainCardService.selectById(userId);
 		model.addAttribute("user", user);
 		model.addAttribute("device", device);
 		model.addAttribute("editType", editType);
@@ -657,7 +657,7 @@ public class MainCardController extends BaseController {
 			SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
 			if (socketChannel != null) {
 				try {
-					User user = this.mainCardService.selectById(userId);
+					User user = (User) this.mainCardService.selectById(userId);
 					user.setCardSN(cardSN);
 					int cardNO = this.mainCardService.selectMaxCardNO(company.getId());
 					user.setCardNO(cardNO);
@@ -756,7 +756,7 @@ public class MainCardController extends BaseController {
 		if (user == null) {
 			map.put("'r'", 0);
 		} else {
-			UserDept userDept = this.userDeptService.selectById(user.getDeptId());
+			UserDept userDept = (UserDept) this.userDeptService.selectById(user.getDeptId());
 			map.put("'r'", 1);
 
 			map.put("deptName", userDept.getDeptName());
@@ -817,7 +817,7 @@ public class MainCardController extends BaseController {
 			SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
 			if (socketChannel != null) {
 				try {
-					User user2 = this.mainCardService.selectById(user.getUserId());
+					User user2 = (User) this.mainCardService.selectById(user.getUserId());
 
 					CardAllInfo cardAllInfo = new CardAllInfo();
 					initUserInfo(user2, cardAllInfo);
@@ -851,10 +851,10 @@ public class MainCardController extends BaseController {
 	@RequestMapping(value = "/deptAdjust.do")
 	public String deptAdjust(Integer userId, HttpServletRequest request, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
-		List<UserDept> list = this.userDeptService.selectTreeList(company.getId());
+		List<UserDept> list = (List<UserDept>) this.userDeptService.selectListByCompanyId(company.getId());
 		model.addAttribute("list", list);
 		if (userId != -1) {
-			User user = this.mainCardService.selectById(userId);
+			User user = (User) this.mainCardService.selectById(userId);
 			model.addAttribute("user", user);
 		}
 		model.addAttribute("base", StringUtil.requestBase(request));

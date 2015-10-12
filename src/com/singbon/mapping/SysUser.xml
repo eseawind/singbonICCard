@@ -14,7 +14,7 @@
 	<select id="selectByLoginInfo" resultMap="sysUser">
 		select * from sysuser where loginName =#{loginName} and loginPwd =#{loginPwd}
 	</select>
-	<select id="selectList" resultMap="sysUser">
+	<select id="selectListByCompanyId" resultMap="sysUser">
 		select * from sysuser where companyId =#{companyId}
 	</select>
 	<select id="selectCashierList" resultMap="sysUser">

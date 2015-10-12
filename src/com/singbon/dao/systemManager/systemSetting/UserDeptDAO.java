@@ -15,14 +15,6 @@ import com.singbon.dao.BaseDAO;
 public interface UserDeptDAO extends BaseDAO {
 
 	/**
-	 * 人员部门树列表
-	 * 
-	 * @return
-	 */
-	@SuppressWarnings("rawtypes")
-	public List selectTreeList(@Param("companyId") Integer companyId);
-
-	/**
 	 * 人员部门列表
 	 * 
 	 * @return

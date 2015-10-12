@@ -22,7 +22,7 @@
 	<select id="selectByParentId" resultType="java.util.HashMap">
 		select d.deptName,p.deptName parentName from dept d,dept p where d.companyId=#{companyId} and d.parentId=p.id and p.id=#{parentId}
 	</select>
-	<select id="selectTreeList" resultMap="dept">
+	<select id="selectListByCompanyId" resultMap="dept">
 		select * from dept where companyId=#{companyId}
 	</select>
 </mapper>

@@ -6,11 +6,11 @@
 	<parameterMap type="com.singbon.entity.ConsumeParam" id="consumeParam2" />
 	<cache eviction="FIFO" size="1" readOnly="true"/>
 	<insert id="insert">
-		insert into consumeParam (companyId,cardMinFare,cardMinFareCardTypes,dayLimitFare,dayLimitFareCardTypes,timeLimitFare,timeLimitFareCardTypes,consumeType,userPwd)
-			select #{companyId},cardMinFare,cardMinFareCardTypes,dayLimitFare,dayLimitFareCardTypes,timeLimitFare,timeLimitFareCardTypes,consumeType,userPwd from consumeParamBase
+		insert into consumeParam (companyId,cardMinFare,cardMinFareCardTypes,dayLimitFare,dayLimitFareCardTypes,timeLimitFare,timeLimitFareCardTypes,userPwd)
+			select #{companyId},cardMinFare,cardMinFareCardTypes,dayLimitFare,dayLimitFareCardTypes,timeLimitFare,timeLimitFareCardTypes,userPwd from consumeParamBase
 	</insert>
 	<update id="update" parameterMap="consumeParam2">
-		update consumeParam set cardMinFare=#{cardMinFare},cardMinFareCardTypes=#{cardMinFareCardTypes},dayLimitFare=#{dayLimitFare},dayLimitFareCardTypes=#{dayLimitFareCardTypes},timeLimitFare=#{timeLimitFare},timeLimitFareCardTypes=#{timeLimitFareCardTypes},consumeType=#{consumeType},userPwd=#{userPwd}
+		update consumeParam set cardMinFare=#{cardMinFare},cardMinFareCardTypes=#{cardMinFareCardTypes},dayLimitFare=#{dayLimitFare},dayLimitFareCardTypes=#{dayLimitFareCardTypes},timeLimitFare=#{timeLimitFare},timeLimitFareCardTypes=#{timeLimitFareCardTypes},userPwd=#{userPwd}
 		where id=#{id}
 	</update>
 	<select id="selectByCompanyId" resultMap="consumeParam">

@@ -61,11 +61,12 @@ public class OrderTimeController extends BaseController {
 	 * @param request
 	 * @param model
 	 */
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/index.do")
 	public String index(HttpServletRequest request, HttpServletResponse response, Model model) {
 
 		Company company = (Company) request.getSession().getAttribute("company");
-		List<OrderTime> orderTimeList = this.orderTimeService.selectByCompanyId(company.getId());
+		List<OrderTime> orderTimeList = (List<OrderTime>) this.orderTimeService.selectListByCompanyId(company.getId());
 		if (orderTimeList.size() == 0) {
 			this.orderTimeService.insert(company.getId());
 			this.orderTimeService.selectByCompanyId(company.getId());
@@ -82,10 +83,11 @@ public class OrderTimeController extends BaseController {
 	 * @param request
 	 * @param model
 	 */
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/list.do")
 	public String list(HttpServletRequest request, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
-		List<OrderTime> list = this.orderTimeService.selectByCompanyId(company.getId());
+		List<OrderTime> list = (List<OrderTime>) this.orderTimeService.selectListByCompanyId(company.getId());
 		model.addAttribute("list", list);
 		return StringUtil.requestPath(request, "list");
 	}

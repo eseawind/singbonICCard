@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.singbon.dao.BaseDAO;
 import com.singbon.dao.systemManager.systemSetting.DeptDAO;
-import com.singbon.entity.Company;
-import com.singbon.entity.Dept;
+import com.singbon.service.BaseService;
 
 /**
  * 营业部门业务层
@@ -16,39 +16,14 @@ import com.singbon.entity.Dept;
  * 
  */
 @Service
-public class DeptService {
+public class DeptService extends BaseService {
 
 	@Autowired
 	public DeptDAO deptDAO;
 
-	/**
-	 * 添加
-	 * 
-	 * @param Dept
-	 */
-	public void save(Dept dept) {
-		if (dept.getParentId() == null) {
-			dept.setParentId(0);
-		}
-		this.deptDAO.insert(dept);
-	}
-
-	/**
-	 * 修改
-	 * 
-	 * @param Dept
-	 */
-	public void update(Dept dept) {
-		this.deptDAO.update(dept);
-	}
-
-	/**
-	 * 删除
-	 * 
-	 * @param Dept
-	 */
-	public void delete(Integer id) {
-		this.deptDAO.delete(id);
+	@Override
+	public BaseDAO getBaseDAO() {
+		return deptDAO;
 	}
 
 	/**
@@ -62,23 +37,5 @@ public class DeptService {
 			parentId = 0;
 		}
 		return this.deptDAO.selectByParentId(companyId, parentId);
-	}
-
-	/**
-	 * 树列表
-	 * 
-	 * @return
-	 */
-	public List<Dept> selectTreeList(Integer companyId) {
-		return this.deptDAO.selectTreeList(companyId);
-	}
-
-	/**
-	 * 根据主键获取部门
-	 * 
-	 * @return
-	 */
-	public Dept selectById(Integer id) {
-		return (Dept) this.deptDAO.selectById(id);
 	}
 }

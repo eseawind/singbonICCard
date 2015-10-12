@@ -13,7 +13,7 @@
 		update orderTime set orderTimeName=#{orderTimeName},beginTime=#{beginTime},endTime=#{endTime},remark=#{remark},enable=#{enable}
 		where id=#{id}
 	</update>
-	<select id="selectByCompanyId" resultMap="orderTime">
+	<select id="selectListByCompanyId" resultMap="orderTime">
 		select * from orderTime where companyId=#{companyId}
 	</select>
 </mapper>

@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.singbon.dao.BaseDAO;
 import com.singbon.dao.systemManager.DeviceDAO;
 import com.singbon.entity.Device;
+import com.singbon.service.BaseService;
 
 /**
  * 终端设备业务层
@@ -15,29 +17,16 @@ import com.singbon.entity.Device;
  * 
  */
 @Service
-public class DeviceService {
+public class DeviceService extends BaseService{
 
 	@Autowired
 	public DeviceDAO deviceDAO;
 
-	/**
-	 * 添加
-	 * 
-	 * @param device
-	 */
-	public void insert(Device device) {
-		this.deviceDAO.insert(device);
+	@Override
+	public BaseDAO getBaseDAO() {
+		return deviceDAO;
 	}
-
-	/**
-	 * 修改
-	 * 
-	 * @param device
-	 */
-	public void update(Device device) {
-		this.deviceDAO.update(device);
-	}
-
+	
 	/**
 	 * 通过userId查找
 	 * 
@@ -69,15 +58,6 @@ public class DeviceService {
 	 */
 	public List<Device> selectPosListByGroupId(Integer groupId, Integer onlyEnable) {
 		return this.deviceDAO.selectPosListByGroupId(groupId, onlyEnable);
-	}
-
-	/**
-	 * 列表根据公司查询
-	 * 
-	 * @return
-	 */
-	public List<Device> selectList(Integer companyId) {
-		return this.deviceDAO.selectList(companyId);
 	}
 
 	/**

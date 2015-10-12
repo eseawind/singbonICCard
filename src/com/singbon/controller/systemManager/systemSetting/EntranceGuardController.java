@@ -61,10 +61,10 @@ public class EntranceGuardController extends BaseController {
 	public String index(HttpServletRequest request, HttpServletResponse response, Model model) {
 
 		Company company = (Company) request.getSession().getAttribute("company");
-		EntranceGuard entranceGuard = this.entranceGuardService.selectByCompanyId(company.getId());
+		EntranceGuard entranceGuard = (EntranceGuard) this.entranceGuardService.selectByCompanyId(company.getId());
 		if (entranceGuard == null) {
 			this.entranceGuardService.insert(company.getId());
-			entranceGuard = this.entranceGuardService.selectByCompanyId(company.getId());
+			entranceGuard = (EntranceGuard) this.entranceGuardService.selectByCompanyId(company.getId());
 		}
 		model.addAttribute("entranceGuard", entranceGuard);
 		String url = request.getRequestURI();

@@ -3,8 +3,9 @@ package com.singbon.service.systemManager.systemSetting;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.singbon.dao.BaseDAO;
 import com.singbon.dao.systemManager.systemSetting.CardParamDAO;
-import com.singbon.entity.CardParam;
+import com.singbon.service.BaseService;
 
 /**
  * 制卡参数设置业务层
@@ -13,35 +14,13 @@ import com.singbon.entity.CardParam;
  * 
  */
 @Service
-public class CardParamService {
+public class CardParamService extends BaseService {
 
 	@Autowired
-	public CardParamDAO CardParamDAO;
+	public CardParamDAO cardParamDAO;
 
-	/**
-	 * 添加
-	 * 
-	 * @param CardParam
-	 */
-	public void insert(Integer companyId) {
-		this.CardParamDAO.insert(companyId);
-	}
-
-	/**
-	 * 修改
-	 * 
-	 * @param CardParam
-	 */
-	public void update(CardParam cardParam) {
-		this.CardParamDAO.update(cardParam);
-	}
-
-	/**
-	 * 根据公司id查询
-	 * 
-	 * @return
-	 */
-	public CardParam selectByCompanyId(Integer companyId) {
-		return this.CardParamDAO.selectByCompanyId(companyId);
+	@Override
+	public BaseDAO getBaseDAO() {
+		return cardParamDAO;
 	}
 }

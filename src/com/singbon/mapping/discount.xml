@@ -13,7 +13,7 @@
 		update discount set rate=#{rate},subsidy=#{subsidy},giveCash=#{giveCash}
 		where id=#{id}
 	</update>
-	<select id="selectList" resultMap="discount">
+	<select id="selectListByCompanyId" resultMap="discount">
 		select * from discount where companyId=#{companyId}
 	</select>
 </mapper>

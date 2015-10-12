@@ -50,7 +50,7 @@ public class UserDeptController {
 		try {
 			p = response.getWriter();
 			if (userDept.getId() == null) {
-				this.userDeptService.save(userDept);
+				this.userDeptService.insert(userDept);
 			} else {
 				this.userDeptService.update(userDept);
 			}
@@ -99,7 +99,7 @@ public class UserDeptController {
 	@RequestMapping(value = "/treeList.do")
 	public String treeList(HttpServletRequest request, HttpServletResponse response, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
-		List<UserDept> list = this.userDeptService.selectTreeList(company.getId());
+		List<UserDept> list = (List<UserDept>) this.userDeptService.selectListByCompanyId(company.getId());
 		model.addAttribute("list", list);
 		return StringUtil.requestPath(request, "userDeptTreeList");
 	}
@@ -127,10 +127,11 @@ public class UserDeptController {
 	 * @param request
 	 * @param model
 	 */
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/index.do")
 	public String index(HttpServletRequest request, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
-		List<Batch> list = this.batchService.selectList(company.getId());
+		List<Batch> list = (List<Batch>) this.batchService.selectListByCompanyId(company.getId());
 		model.addAttribute("batchList", list);
 		model.addAttribute("base", StringUtil.requestBase(request));
 		return StringUtil.requestPath(request, "index");

@@ -5,14 +5,14 @@
 	</resultMap>
 	<parameterMap type="com.singbon.entity.Company" id="company2" />
 	
+	<update id="update" parameterMap="company2">
+		update company set companyName=#{companyName},serialNumber=#{serialNumber},authNumber=#{authNumber},baseSection=#{baseSection}
+		where id=#{id}
+	</update>
 	<select id="selectById" resultMap="company">
 		select * from company where id=#{id}
 	</select>
 	<select id="selectAllList" resultMap="company">
 		select * from company
 	</select>
-	<update id="updateSystemPara" parameterMap="company2">
-		update company set companyName=#{companyName},serialNumber=#{serialNumber},authNumber=#{authNumber},baseSection=#{baseSection}
-		where id=#{id}
-	</update>
 </mapper>

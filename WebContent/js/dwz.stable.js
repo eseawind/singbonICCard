@@ -88,6 +88,8 @@
 						cookbookClick($(this));
 					}else if(target=="orderTime"){
 						orderTimeClick($(this));
+					}else if(target=="posParamGroup"){
+						posParamGroupClick($(this));
 					}
 					$trs.filter(".selected").removeClass("selected");
 					$tr.addClass("selected");

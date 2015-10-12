@@ -1,12 +1,11 @@
 package com.singbon.service.systemManager;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.singbon.dao.BaseDAO;
 import com.singbon.dao.systemManager.DeviceGroupDAO;
-import com.singbon.entity.DeviceGroup;
+import com.singbon.service.BaseService;
 
 /**
  * 终端设备分组业务层
@@ -15,17 +14,13 @@ import com.singbon.entity.DeviceGroup;
  * 
  */
 @Service
-public class DeviceGroupService {
+public class DeviceGroupService extends BaseService{
 
 	@Autowired
 	public DeviceGroupDAO deviceGroupDAO;
-
-	/**
-	 * 终端设备分组树列表
-	 * F
-	 * @return
-	 */
-	public List<DeviceGroup> selectTreeList(Integer companyId) {
-		return this.deviceGroupDAO.selectTreeList(companyId);
+	
+	@Override
+	public BaseDAO getBaseDAO() {
+		return deviceGroupDAO;
 	}
 }

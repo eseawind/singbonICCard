@@ -3,7 +3,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<script src="/js/comet4j.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(function() {
 	$('#waterRateForm .add').click(

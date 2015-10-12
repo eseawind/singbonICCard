@@ -103,7 +103,7 @@ public class UserInfoController extends BaseController {
 	@RequestMapping(value = "/treeList.do")
 	public String treeList(HttpServletRequest request, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
-		List<UserDept> list = this.userDeptService.selectTreeList(company.getId());
+		List<UserDept> list = (List<UserDept>) this.userDeptService.selectListByCompanyId(company.getId());
 		model.addAttribute("list", list);
 		return StringUtil.requestPath(request, "userDeptTreeList");
 	}

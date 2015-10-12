@@ -15,8 +15,7 @@ public class ConsumeParam implements Serializable {
 	// 卡底金（单位元、默认0） 选择卡类型
 	// 日限额（单位元、默认0）
 	// 次限额（单位元、默认0）
-	// 优先消费方式 补助钱包、大钱包、先补助后大钱包（默认）
-	// 用户密码 88888
+	// 用户密码 8888
 	private Integer id;
 	private Integer companyId;
 	private Integer cardMinFare;
@@ -25,7 +24,6 @@ public class ConsumeParam implements Serializable {
 	private String dayLimitFareCardTypes;
 	private Integer timeLimitFare;
 	private String timeLimitFareCardTypes;
-	private Integer consumeType;
 	private String userPwd;
 
 	public Integer getId() {
@@ -90,14 +88,6 @@ public class ConsumeParam implements Serializable {
 
 	public void setTimeLimitFareCardTypes(String timeLimitFareCardTypes) {
 		this.timeLimitFareCardTypes = timeLimitFareCardTypes;
-	}
-
-	public Integer getConsumeType() {
-		return consumeType;
-	}
-
-	public void setConsumeType(Integer consumeType) {
-		this.consumeType = consumeType;
 	}
 
 	public String getUserPwd() {

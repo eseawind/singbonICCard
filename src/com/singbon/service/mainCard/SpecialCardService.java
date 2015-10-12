@@ -3,7 +3,9 @@ package com.singbon.service.mainCard;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.singbon.dao.BaseDAO;
 import com.singbon.dao.SysUserDAO;
+import com.singbon.service.BaseService;
 
 /**
  * 制功能卡业务层
@@ -12,11 +14,16 @@ import com.singbon.dao.SysUserDAO;
  * 
  */
 @Service
-public class SpecialCardService {
+public class SpecialCardService extends BaseService{
 
 	@Autowired
 	public SysUserDAO sysUserDAO;
 
+	@Override
+	public BaseDAO getBaseDAO() {
+		return sysUserDAO;
+	}
+	
 	/**
 	 * 以物理卡号查询绑定数量
 	 * 

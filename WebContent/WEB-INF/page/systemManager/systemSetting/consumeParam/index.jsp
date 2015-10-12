@@ -3,7 +3,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<script src="/js/comet4j.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(function() {
 	$('#consumeParamForm .add').click(
@@ -124,14 +123,6 @@ $(function() {
 			<dt>用户密码：</dt>
 			<dd>
 				<input name="userPwd" type="text" class="required digits" minlength="5" maxlength="5" value="${consumeParam.userPwd}"/>
-			</dd>
-		</dl>
-		<dl>
-			<dt>优先消费方式：</dt>
-			<dd>
-				<input name="consumeType" type="radio" <c:if test="${consumeParam.consumeType==0}">checked</c:if> value="0"/>补助钱
-				<input name="consumeType" type="radio" <c:if test="${consumeParam.consumeType==1}">checked</c:if> value="1"/>大钱包
-				<input name="consumeType" type="radio" <c:if test="${consumeParam.consumeType==2}">checked</c:if> value="2"/>先补助后大钱包
 			</dd>
 		</dl>
 	</div>

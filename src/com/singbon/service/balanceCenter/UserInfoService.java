@@ -5,9 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.singbon.dao.BaseDAO;
 import com.singbon.dao.common.UserDAO;
 import com.singbon.entity.Pagination;
 import com.singbon.entity.User;
+import com.singbon.service.BaseService;
 
 /**
  * 用户信息查询业务层
@@ -16,10 +18,15 @@ import com.singbon.entity.User;
  * 
  */
 @Service
-public class UserInfoService {
+public class UserInfoService extends BaseService {
 
 	@Autowired
 	public UserDAO userDAO;
+
+	@Override
+	public BaseDAO getBaseDAO() {
+		return userDAO;
+	}
 
 	/**
 	 * 分页查询

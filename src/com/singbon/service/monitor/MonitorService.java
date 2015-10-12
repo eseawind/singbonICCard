@@ -21,10 +21,10 @@ import com.singbon.device.CommandDevice;
 import com.singbon.device.DeviceCommunicateStr;
 import com.singbon.device.DeviceType;
 import com.singbon.device.PosFrame;
-import com.singbon.device.SendCommand;
 import com.singbon.device.PosSubFrameCookbook;
 import com.singbon.device.PosSubFrameOther;
 import com.singbon.device.PosSubFrameSysPara;
+import com.singbon.device.SendCommand;
 import com.singbon.device.TerminalManager;
 import com.singbon.entity.Company;
 import com.singbon.entity.ConsumeParam;
@@ -64,6 +64,11 @@ public class MonitorService implements Runnable {
 		this.deviceList = deviceList;
 	}
 
+//	@Override
+//	public BaseDAO getBaseDAO() {
+//		return sysUserDAO;
+//	}
+	
 	/**
 	 * 校时
 	 * 
@@ -97,7 +102,7 @@ public class MonitorService implements Runnable {
 			return;
 		String sendBufStr = StringUtil.hexLeftPad(PosFrame.SysPara, 2) + StringUtil.hexLeftPad(PosSubFrameSysPara.SysPara, 2) + "0000" + StringUtil.hexLeftPad(command.getCommandCode(), 4)
 				+ "00000000000000" + StringUtil.hexLeftPad(consumeParam.getCardMinFare(), 2) + StringUtil.hexLeftPad(consumeParam.getDayLimitFare(), 4)
-				+ StringUtil.hexLeftPad(consumeParam.getTimeLimitFare(), 4) + StringUtil.hexLeftPad(consumeParam.getConsumeType(), 2) + "0000000003"
+//				+ StringUtil.hexLeftPad(consumeParam.getTimeLimitFare(), 4) + StringUtil.hexLeftPad(consumeParam.getConsumeType(), 2) + "0000000003"
 				+ getHexString(consumeParam.getCardMinFareCardTypes()) + getHexString(consumeParam.getDayLimitFareCardTypes()) + getHexString(consumeParam.getTimeLimitFareCardTypes()) + "0000";
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
 		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + CommandDevice.NoSubDeviceNum + DeviceType.Main + DeviceType.POS + bufLen + sendBufStr;
@@ -463,11 +468,11 @@ public class MonitorService implements Runnable {
 			// 系统参数
 		} else if ("sysPara".equals(cmd)) {
 			// 设置消费参数
-			ConsumeParam consumeParam = consumeParamDAO.selectByCompanyId(company.getId());
+			ConsumeParam consumeParam =null; //consumeParamDAO.selectListByCompanyId(companyId) selectByCompanyId(company.getId());
 			// 设置订参别限次
-			List<Meal> mealList = mealDAO.selectList(company.getId());
+			List<Meal> mealList = (List<Meal>) mealDAO.selectListByCompanyId(company.getId());
 			// 设置订餐时间段
-			List<OrderTime> orderTimeList = orderTimeDAO.selectByCompanyId(company.getId());
+			List<OrderTime> orderTimeList = (List<OrderTime>) orderTimeDAO.selectByCompanyId(company.getId());
 
 			// 系统参数
 			SendCommand sendCommand1 = new SendCommand();
@@ -502,7 +507,7 @@ public class MonitorService implements Runnable {
 			sendCommandList.add(sendCommand4);
 			// 折扣费率及管理费
 		} else if ("discount".equals(cmd)) {
-			List<Discount> discountList = discountDAO.selectList(company.getId());
+			List<Discount> discountList = (List<Discount>) discountDAO.selectListByCompanyId(company.getId());
 
 			SendCommand sendCommand = new SendCommand();
 			sendCommand.setFrame(PosFrame.SysPara);
@@ -523,7 +528,7 @@ public class MonitorService implements Runnable {
 					return;
 				}
 			}
-			List<Cookbook> cookbookList = cookbookDAO.selectList(company.getId());
+			List<Cookbook> cookbookList = (List<Cookbook>) cookbookDAO.selectListByCompanyId(company.getId());
 
 			SendCommand sendCommand = new SendCommand();
 			sendCommand.setFrame(PosFrame.Cookbook);
@@ -562,7 +567,7 @@ public class MonitorService implements Runnable {
 			sendCommand.setCommandCode(commandIndex++);
 			sendCommandList.add(sendCommand);
 
-			List<Cookbook> cookbookList = cookbookDAO.selectList(company.getId());
+			List<Cookbook> cookbookList = (List<Cookbook>) cookbookDAO.selectListByCompanyId(company.getId());
 
 			int index = 0;
 			for (Cookbook cookbook : cookbookList) {

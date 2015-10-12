@@ -7,15 +7,17 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.singbon.dao.BaseDAO;
 import com.singbon.dao.common.UserDAO;
-import com.singbon.device.CardReaderFrame;
 import com.singbon.device.CardReaderCommandCode;
+import com.singbon.device.CardReaderFrame;
 import com.singbon.device.CommandDevice;
 import com.singbon.device.DeviceType;
 import com.singbon.device.TerminalManager;
 import com.singbon.entity.CardAllInfo;
 import com.singbon.entity.Device;
 import com.singbon.entity.User;
+import com.singbon.service.BaseService;
 import com.singbon.util.StringUtil;
 
 /**
@@ -25,30 +27,16 @@ import com.singbon.util.StringUtil;
  * 
  */
 @Service
-public class MainCardService {
+public class MainCardService extends BaseService{
 
 	@Autowired
 	public UserDAO mainCardDAO;
 
-	/**
-	 * 添加人员
-	 * 
-	 * @param user
-	 * @throws Exception
-	 */
-	public Object save(User user) throws Exception {
-		return this.mainCardDAO.insert(user);
+	@Override
+	public BaseDAO getBaseDAO() {
+		return mainCardDAO;
 	}
-
-	/**
-	 * 修改人员
-	 * 
-	 * @param user
-	 */
-	public void update(User user) throws Exception {
-		this.mainCardDAO.update(user);
-	}
-
+	
 	/**
 	 * 删除未发卡人员
 	 * 
@@ -56,16 +44,6 @@ public class MainCardService {
 	 */
 	public void delete(Integer[] userIds) throws Exception {
 		this.mainCardDAO.delete(userIds);
-	}
-
-	/**
-	 * 根据主键查询人员
-	 * 
-	 * @param id
-	 * @return
-	 */
-	public User selectById(Integer userId) {
-		return this.mainCardDAO.selectByUserId(userId);
 	}
 
 	/**

@@ -91,10 +91,14 @@ public class ConsumeParamController extends BaseController {
 	public String index(HttpServletRequest request, HttpServletResponse response, Model model) {
 
 		Company company = (Company) request.getSession().getAttribute("company");
-		ConsumeParam consumeParam = this.consumeParamService.selectByCompanyId(company.getId());
+		ConsumeParam consumeParam = (ConsumeParam) this.consumeParamService.selectByCompanyId(company.getId());
 		if (consumeParam == null) {
-			this.consumeParamService.insert(company.getId());
-			consumeParam = this.consumeParamService.selectByCompanyId(company.getId());
+			try {
+				this.consumeParamService.insert(company.getId());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			consumeParam = (ConsumeParam) this.consumeParamService.selectByCompanyId(company.getId());
 		}
 		model.addAttribute("consumeParam", consumeParam);
 		String url = request.getRequestURI();

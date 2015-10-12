@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.singbon.dao.BaseDAO;
 import com.singbon.dao.system.CompanyDAO;
 import com.singbon.entity.Company;
+import com.singbon.service.BaseService;
 
 /**
  * 公司业务层
@@ -15,20 +17,16 @@ import com.singbon.entity.Company;
  * 
  */
 @Service
-public class CompanyService {
+public class CompanyService extends BaseService{
 
 	@Autowired
 	public CompanyDAO companyDAO;
-
-	/**
-	 * 获取公司
-	 * 
-	 * @return
-	 */
-	public Company selectById(Integer id) {
-		return (Company) this.companyDAO.selectById(id);
+	
+	@Override
+	public BaseDAO getBaseDAO() {
+		return companyDAO;
 	}
-
+	
 	/**
 	 * 所有列表
 	 * 
@@ -36,16 +34,6 @@ public class CompanyService {
 	 */
 	public List<Company> selectAllList() {
 		return this.companyDAO.selectAllList();
-	}
-
-	/**
-	 * 保存系统密码设置
-	 * 
-	 * @param obj
-	 * @return
-	 */
-	public void updateSystemPara(Company company) {
-		this.companyDAO.updateSystemPara(company);
 	}
 
 	public int getSection(Integer companyId) {

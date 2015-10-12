@@ -19,7 +19,7 @@ import com.singbon.util.StringUtil;
  * 
  */
 @Service
-public class CardReaderService {
+public class CardReaderService{
 
 	/**
 	 * 单位名称

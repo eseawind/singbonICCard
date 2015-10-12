@@ -3,8 +3,9 @@ package com.singbon.service.systemManager.systemSetting;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.singbon.dao.BaseDAO;
 import com.singbon.dao.systemManager.systemSetting.MultiWaterRateDAO;
-import com.singbon.entity.MultiWaterRate;
+import com.singbon.service.BaseService;
 
 /**
  * 一控多水控费率业务层
@@ -13,10 +14,15 @@ import com.singbon.entity.MultiWaterRate;
  * 
  */
 @Service
-public class MultiWaterRateService {
+public class MultiWaterRateService extends BaseService {
 
 	@Autowired
 	public MultiWaterRateDAO multiWaterRateDAO;
+
+	@Override
+	public BaseDAO getBaseDAO() {
+		return multiWaterRateDAO;
+	}
 
 	/**
 	 * 添加
@@ -27,21 +33,4 @@ public class MultiWaterRateService {
 		this.multiWaterRateDAO.insert(companyId);
 	}
 
-	/**
-	 * 修改
-	 * 
-	 * @param multiWaterRate
-	 */
-	public void update(MultiWaterRate multiWaterRate) {
-		this.multiWaterRateDAO.update(multiWaterRate);
-	}
-
-	/**
-	 * 根据公司id查询
-	 * 
-	 * @return
-	 */
-	public MultiWaterRate selectByCompanyId(Integer companyId) {
-		return this.multiWaterRateDAO.selectByCompanyId(companyId);
-	}
 }

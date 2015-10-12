@@ -19,7 +19,7 @@
 	<select id="selectById" resultMap="deviceGroup">
 		select * from deviceGroup where id=#{id}
 	</select>
-	<select id="selectTreeList" resultMap="deviceGroup">
+	<select id="selectListByCompanyId" resultMap="deviceGroup">
 		select * from deviceGroup where companyId=#{companyId}
 	</select>
 </mapper>

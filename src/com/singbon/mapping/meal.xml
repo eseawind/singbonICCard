@@ -13,7 +13,7 @@
 		update meal set mealName=#{mealName},beginTime=#{beginTime},endTime=#{endTime},timeLimit=#{timeLimit}
 		where id=#{id}
 	</update>
-	<select id="selectList" resultMap="meal">
+	<select id="selectListByCompanyId" resultMap="meal">
 		select * from meal where companyId=#{companyId}
 	</select>
 	<select id="selectAllList" resultMap="meal">

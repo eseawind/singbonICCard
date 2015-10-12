@@ -65,7 +65,7 @@ public class SystemParaController extends BaseController {
 			e.printStackTrace();
 		}
 		try {
-			this.companyService.updateSystemPara(company);
+			this.companyService.update(company);
 			request.getSession().setAttribute("company", company);
 			p.print(1);
 		} catch (Exception e) {

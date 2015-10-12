@@ -34,10 +34,11 @@ public class DeviceGroupController {
 	 * @param request
 	 * @param model
 	 */
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/treeList.do")
 	public String treeList(HttpServletRequest request, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
-		List<DeviceGroup> treeList = this.deviceGroupService.selectTreeList(company.getId());
+		List<DeviceGroup> treeList = (List<DeviceGroup>) this.deviceGroupService.selectListByCompanyId(company.getId());
 		model.addAttribute("treeList", treeList);
 		return StringUtil.requestPath(request, "treeList");
 	}

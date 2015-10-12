@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.singbon.dao.BaseDAO;
 import com.singbon.dao.SysUserDAO;
 import com.singbon.entity.SysUser;
 
@@ -15,11 +16,16 @@ import com.singbon.entity.SysUser;
  * 
  */
 @Service
-public class SysUserService {
+public class SysUserService extends BaseService{
 
 	@Autowired
 	public SysUserDAO sysUserDAO;
 
+	@Override
+	public BaseDAO getBaseDAO() {
+		return sysUserDAO;
+	}
+	
 	/**
 	 * 根据operId获取出纳员
 	 * 
@@ -46,8 +52,8 @@ public class SysUserService {
 	 * @param user
 	 * @return
 	 */
-	public List<SysUser> selectList(Integer companyId) {
-		return this.sysUserDAO.selectList(companyId);
+	public List<SysUser> selecSysUsertList(Integer companyId) {
+		return this.sysUserDAO.selecSysUsertList(companyId);
 	}
 
 	/**
@@ -59,5 +65,4 @@ public class SysUserService {
 	public List<SysUser> selectCashierList(Integer companyId) {
 		return this.sysUserDAO.selectCashierList(companyId);
 	}
-
 }
