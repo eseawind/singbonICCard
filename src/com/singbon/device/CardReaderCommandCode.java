@@ -6,13 +6,12 @@ package com.singbon.device;
  * @author 郝威
  * 
  */
-public class CommandCodeCardReader {
+public class CardReaderCommandCode {
 
 	/**
 	 * 获取出纳卡基本信息 0x70
 	 */
 	public static byte CashierCardBaseInfo = 0x70;
-
 	/**
 	 * 单个发卡 0x01
 	 */

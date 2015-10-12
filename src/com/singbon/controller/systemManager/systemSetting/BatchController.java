@@ -67,7 +67,6 @@ public class BatchController extends BaseController {
 	 */
 	@RequestMapping(value = "/list.do")
 	public String list(HttpServletRequest request, Model model) {
-
 		Company company = (Company) request.getSession().getAttribute("company");
 		List<Batch> list = this.batchService.selectList(company.getId());
 		model.addAttribute("list", list);

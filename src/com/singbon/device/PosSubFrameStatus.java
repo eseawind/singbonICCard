@@ -6,7 +6,7 @@ package com.singbon.device;
  * @author 郝威
  * 
  */
-public class SubStatusFramePos {
+public class PosSubFrameStatus {
 
 	/**
 	 * 上位机主动询问

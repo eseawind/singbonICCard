@@ -322,11 +322,11 @@ public class StringUtil {
 	public static void main(String[] args) {
 		// 消费机初始化29 74 e7 0c 3c 9e 11 e5 83 9f d4 be d9 80 4c 01 00 bc 61 4e 00
 		// 00 00 00 00 00 02 02 00 0A 19 19 00 00 00 00 97 b0
-		byte[] b = StringUtil.strTobytes("29 74 e7 0c 3c 9e 11 e5 83 9f d4 be d9 80 4c 01 00 bc 61 4e 00 00 00 00 00 00 02 02 00 0E 07 01 00 00 00 00 1D 8A B6 11 B9 B7".replaceAll(" ", ""));
-		CRC16.generate(b);
+		byte[] b = StringUtil.strTobytes("41 59 A9 6E 83 8E 4D F5 BD EC D4 E2 D8 E9 40 F1 00 BC 61 4E 00 00 00 00 00 00 02 02 00 1A 04 0A 00 00 00 00 01010101010101010101010101010101 70 54".replaceAll(" ", ""));
+		CRC16.generate(b);				  
 		StringUtil.print(Integer.toHexString(b[b.length - 2]) + " ");
 		StringUtil.println(Integer.toHexString(b[b.length - 1]));
-
+		
 	}
 
 	public static void print(Object obj) {

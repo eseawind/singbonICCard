@@ -28,6 +28,6 @@ public interface DeptDAO extends BaseDAO {
 	 * @return
 	 */
 	@SuppressWarnings("rawtypes")
-	public List selectByParentId(@Param("parentId") Integer parentId);
+	public List selectByParentId(@Param("companyId") Integer companyId, @Param("parentId") Integer parentId);
 
 }

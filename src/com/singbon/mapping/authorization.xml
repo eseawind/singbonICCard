@@ -7,6 +7,8 @@
 	<resultMap id="userGroup" type="com.singbon.entity.AuthUserGroup">
 	</resultMap>
 	<parameterMap type="com.singbon.entity.AuthUserGroup" id="userGroup2"></parameterMap>
+	<cache eviction="FIFO" size="1000" readOnly="true"/>
+<!-- 	授权分组 -->
 	<select id="selectGroup" resultMap="group">
 		select * from authGroup where
 		companyId=#{companyId}
@@ -19,15 +21,16 @@
 		update authGroup set
 		groupName=#{groupName},remark=#{remark},roles=#{roles} where id=#{id}
 	</update>
-	<select id="selectGroupUserCount" resultType="java.lang.Integer">
+	<select id="selectGroupUserCount" resultType="java.lang.Integer" useCache="false">
 		select count(*) from authUserGroup where groupId=#{groupId}
 	</select>
 	
-	<update id="deleteGroup">
+	<delete id="deleteGroup">
 		delete from authGroup where id=#{id}
-	</update>
+	</delete>
 	
-	<select id="selectUserGroupList" resultType="java.util.Map">
+<!-- 	用户权限 -->
+	<select id="selectUserGroupList" resultType="java.util.Map" useCache="false">
 		select s.operId,s.loginName,GROUP_CONCAT(a.groupid) groupIds from sysuser s left join authusergroup a on s.operId=a.userId where
 		companyId=#{companyId} group by s.operId
 	</select>

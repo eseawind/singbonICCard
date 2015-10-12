@@ -69,10 +69,11 @@
 						<select class="combox" outerw="50" innerw="70"
 							name="status">
 							<option value="-1" width="70">全部</option>
-							<option value="0" width="70" <c:if test="${status==0}">selected</c:if>>正常</option>
-							<option value="1" width="70" <c:if test="${status==1}">selected</c:if>>挂失</option>
-							<option value="2" width="70" <c:if test="${status==2}">selected</c:if>>未发卡</option>
-							<option value="3" width="70" <c:if test="${status==3}">selected</c:if>>注销</option>
+							<option value="241" width="70" <c:if test="${status==241}">selected</c:if>>正常</option>
+							<option value="243" width="70" <c:if test="${status==243}">selected</c:if>>挂失</option>
+							<option value="0" width="70" <c:if test="${status==0}">selected</c:if>>未发卡</option>
+							<option value="244" width="70" <c:if test="${status==244}">selected</c:if>>注销</option>
+							<option value="-2" width="70" <c:if test="${status==-2}">selected</c:if>>异常</option>
 						</select>
 					</td>					
 					<td width="50">日期：</td>

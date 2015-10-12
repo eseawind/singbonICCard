@@ -105,7 +105,7 @@
 <div>
 	<div
 		style="float: left; display: block; overflow: auto; width: 240px; border: solid 1px #CCC; line-height: 21px; background: #fff">
-		<div id="userDeptTree" layoutH="200">
+		<div id="userDeptTree" layoutH="201">
 			<jsp:include page="${base }/treeList.do" />
 		</div>
 		<div class="form">

@@ -12,7 +12,7 @@ import com.singbon.dao.BaseDAO;
  * @author 郝威
  * 
  */
-public interface UserDeptDAO extends BaseDAO{
+public interface UserDeptDAO extends BaseDAO {
 
 	/**
 	 * 人员部门树列表
@@ -28,6 +28,6 @@ public interface UserDeptDAO extends BaseDAO{
 	 * @return
 	 */
 	@SuppressWarnings("rawtypes")
-	public List selectByParentId(@Param("parentId") Integer parentId);
+	public List selectByParentId(@Param("companyId") Integer companyId, @Param("parentId") Integer parentId);
 
 }

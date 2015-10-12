@@ -6,7 +6,8 @@
 	var selectedDeptId = -1;
 	$(function() {
 		$('#deptForm .add').click(function() {
-			if ($('#deptForm input').eq(1).val() == -1) {
+			var parentId=$('#deptForm input').eq(1).val();
+			if (parentId==null || parentId=='' || parentId == -1) {
 				alertMsg.warn('请选择上级人员部门');
 				return;
 			}
@@ -104,7 +105,7 @@
 <div>
 	<div
 		style="float: left; display: block; overflow: auto; width: 240px; border: solid 1px #CCC; line-height: 21px; background: #fff">
-		<div id="deptTree" layoutH="150">
+		<div id="deptTree" layoutH="170">
 			<jsp:include page="${base }/treeList.do" />
 		</div>
 		<div class="form">

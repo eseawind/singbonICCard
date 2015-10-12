@@ -6,7 +6,7 @@ package com.singbon.device;
  * @author 郝威
  * 
  */
-public class SubOtherFramePos {
+public class PosSubFrameOther {
 	/**
 	 * 系统时间
 	 */

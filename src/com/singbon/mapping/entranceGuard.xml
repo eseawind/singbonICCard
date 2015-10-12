@@ -4,6 +4,7 @@
 	<resultMap id="entranceGuard" type="com.singbon.entity.EntranceGuard">
 	</resultMap>
 	<parameterMap type="com.singbon.entity.EntranceGuard" id="entranceGuard2" />
+	<cache eviction="FIFO" size="1" readOnly="true"/>
 	<insert id="insert">
 		insert into entranceGuard (companyId,openDelay,cardPwdType,recordType,authType,openStatus,operPwd)
 			select #{companyId},openDelay,cardPwdType,recordType,authType,openStatus,operPwd from entranceGuardBase

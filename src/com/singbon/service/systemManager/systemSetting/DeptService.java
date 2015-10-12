@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.singbon.dao.systemManager.systemSetting.DeptDAO;
+import com.singbon.entity.Company;
 import com.singbon.entity.Dept;
 
 /**
@@ -56,11 +57,11 @@ public class DeptService {
 	 * @return
 	 */
 	@SuppressWarnings("rawtypes")
-	public List selectByParentId(Integer parentId) {
+	public List selectByParentId(Integer companyId, Integer parentId) {
 		if (parentId == null) {
 			parentId = 0;
 		}
-		return this.deptDAO.selectByParentId(parentId);
+		return this.deptDAO.selectByParentId(companyId, parentId);
 	}
 
 	/**

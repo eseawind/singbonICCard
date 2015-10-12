@@ -11,8 +11,8 @@
 	media="screen" />
 <link href="/themes/css/core.css" rel="stylesheet" type="text/css"
 	media="screen" />
-<link href="/themes/css/print.css" rel="stylesheet" type="text/css"
-	media="print" />
+<!-- <link href="/themes/css/print.css" rel="stylesheet" type="text/css" -->
+<!-- 	media="print" /> -->
 <!-- <link href="/themes/css/contextMenu.css" rel="stylesheet" type="text/css" /> -->
 <!-- <link href="uploadify/css/uploadify.css" rel="stylesheet" -->
 <!-- 	type="text/css" media="screen" /> -->
@@ -25,9 +25,10 @@
 <![endif]-->
 
 <script src="/js/jquery-1.7.2.js" type="text/javascript"></script>
-<script src="/js/jquery.cookie.js" type="text/javascript"></script>
-<script src="/js/jquery.validate.js" type="text/javascript"></script>
-<script src="/js/jquery.bgiframe.js" type="text/javascript"></script>
+
+<!-- <script src="/js/jquery.cookie.js" type="text/javascript"></script> -->
+<!-- <script src="/js/jquery.validate.js" type="text/javascript"></script> -->
+<!-- <script src="/js/jquery.bgiframe.js" type="text/javascript"></script> -->
 <!-- <script src="xheditor/xheditor-1.2.1.min.js" type="text/javascript"></script> -->
 <!-- <script src="xheditor/xheditor_lang/zh-cn.js" type="text/javascript"></script> -->
 <!-- <script src="uploadify/scripts/jquery.uploadify.js" -->
@@ -41,49 +42,44 @@
 <!-- <script type="text/javascript" src="chart/g.pie.js"></script> -->
 <!-- <script type="text/javascript" src="chart/g.dot.js"></script> -->
 
+<!-- <script src="/js/dwz.util.date.js" type="text/javascript"></script> -->
+<!-- <script src="/js/dwz.validate.method.js" type="text/javascript"></script> -->
+<!-- <script src="/js/dwz.regional.zh.js" type="text/javascript"></script> -->
+<!-- <script src="/js/dwz.drag.js" type="text/javascript"></script> -->
+<!-- <script src="/js/dwz.accordion.js" type="text/javascript"></script> -->
+<!-- <script src="/js/dwz.theme.js" type="text/javascript"></script> -->
+<!-- <script src="/js/dwz.switchEnv.js" type="text/javascript"></script> -->
+<!-- <script src="/js/dwz.alertMsg.js" type="text/javascript"></script> -->
+<!-- <script src="/js/dwz.contextmenu.js" type="text/javascript"></script> -->
+<!-- <script src="/js/dwz.resize.js" type="text/javascript"></script> -->
+<!-- <script src="/js/dwz.dialog.js" type="text/javascript"></script> -->
+<!-- <script src="/js/dwz.dialogDrag.js" type="text/javascript"></script> -->
+<!-- <script src="/js/dwz.sortDrag.js" type="text/javascript"></script> -->
+<!-- <script src="/js/dwz.taskBar.js" type="text/javascript"></script> -->
+<!-- <script src="/js/dwz.database.js" type="text/javascript"></script> -->
+<!-- <script src="/js/dwz.datepicker.js" type="text/javascript"></script> -->
+<!-- <script src="/js/dwz.effects.js" type="text/javascript"></script> -->
+<!-- <script src="/js/dwz.checkbox.js" type="text/javascript"></script> -->
+<!-- <script src="/js/dwz.history.js" type="text/javascript"></script> -->
+<!-- <script src="/js/dwz.combox.js" type="text/javascript"></script> -->
+<!-- <script src="/js/dwz.print.js" type="text/javascript"></script> -->
+
 <script src="/js/dwz.core.js" type="text/javascript"></script>
-<script src="/js/dwz.util.date.js" type="text/javascript"></script>
-<script src="/js/dwz.validate.method.js" type="text/javascript"></script>
-<script src="/js/dwz.regional.zh.js" type="text/javascript"></script>
 <script src="/js/dwz.barDrag.js" type="text/javascript"></script>
-<script src="/js/dwz.drag.js" type="text/javascript"></script>
 <script src="/js/dwz.tree.js" type="text/javascript"></script>
-<script src="/js/dwz.accordion.js" type="text/javascript"></script>
 <script src="/js/dwz.ui.js" type="text/javascript"></script>
-<script src="/js/dwz.theme.js" type="text/javascript"></script>
-<script src="/js/dwz.switchEnv.js" type="text/javascript"></script>
-<script src="/js/dwz.alertMsg.js" type="text/javascript"></script>
-<script src="/js/dwz.contextmenu.js" type="text/javascript"></script>
 <script src="/js/dwz.navTab.js" type="text/javascript"></script>
 <script src="/js/dwz.tab.js" type="text/javascript"></script>
-<script src="/js/dwz.resize.js" type="text/javascript"></script>
-<script src="/js/dwz.dialog.js" type="text/javascript"></script>
-<script src="/js/dwz.dialogDrag.js" type="text/javascript"></script>
-<script src="/js/dwz.sortDrag.js" type="text/javascript"></script>
 <script src="/js/dwz.cssTable.js" type="text/javascript"></script>
 <script src="/js/dwz.stable.js" type="text/javascript"></script>
-<script src="/js/dwz.taskBar.js" type="text/javascript"></script>
 <script src="/js/dwz.ajax.js" type="text/javascript"></script>
 <script src="/js/dwz.pagination.js" type="text/javascript"></script>
-<script src="/js/dwz.database.js" type="text/javascript"></script>
-<script src="/js/dwz.datepicker.js" type="text/javascript"></script>
-<script src="/js/dwz.effects.js" type="text/javascript"></script>
 <script src="/js/dwz.panel.js" type="text/javascript"></script>
-<script src="/js/dwz.checkbox.js" type="text/javascript"></script>
-<script src="/js/dwz.history.js" type="text/javascript"></script>
-<script src="/js/dwz.combox.js" type="text/javascript"></script>
-<script src="/js/dwz.print.js" type="text/javascript"></script>
 <script src="/js/comet4j.js" type="text/javascript"></script>
 <script src="/js/jquery.contextmenu.r2.js" type="text/javascript"></script>
-<script src="/js/jQuery.Hz2Py-min.js" type="text/javascript"></script>
-<script src="/js/common.js" type="text/javascript"></script>
 <script src="/js/jquery.timers.js" type="text/javascript"></script>
-<!--
-<script src="bin/dwz.min.js" type="text/javascript"></script>
--->
-<script src="/js/dwz.regional.zh.js" type="text/javascript"></script>
 <script type="text/javascript">
-	var maxRow=200;
+	var maxRow=100;
 	$(function() {
 // 		window.moveTo(0, 0);
 // 		window.resizeTo(screen.availWidth, screen.availHeight);
@@ -122,7 +118,6 @@
 		heart();
 		
 		$('#deviceList img').contextMenu('menu',monitorOps);
-// 		$('#log tbody tr').contextMenu('clearMenu',clearOps);
 	});
 	
 	var map = new Map();
@@ -276,7 +271,6 @@
 				var t=(d.getTime()-map.get(array[i]).getTime())/1000;
 				if(t>30){
 					$("#deviceList .device[id="+array[i]+"] img").attr('alt','离线').attr('src','/img/offline.png');
-// 					$.post('${base }/closeDatagramChannel.do?sn='+array[i]);
 					$.post('${base }/removeInetSocketAddress.do?sn='+array[i]);
 					map.remove(array[i]);
 				}
@@ -294,6 +288,9 @@
 	}
 	
 	var monitorOps = {
+		menuStyle: {
+			width: '120px'
+		},
 		bindings : {
 			'sysTime' : function(t, target) {
 				executeCmd(t,'sysTime');
@@ -304,8 +301,18 @@
 			'discount' : function(t, target) {
 				executeCmd(t,'discount');
 			},
-			'cookbook' : function(t, target) {
-				executeCmd(t,'cookbook');
+			'allCookbook' : function(t, target) {
+				executeCmd(t,'allCookbook');
+			},
+			'appendCookbook' : function(t, target) {
+				executeCmd(t,'appendCookbook');
+			},
+			'singelCookbook' : function(t, target) {
+				targetSN=$(t).parent().attr('id');
+				$('.singleCookbook').show();
+			},
+			'clear' : function(t, target) {
+				executeCmd(t,'clear');
 			},
 			'sysInit' : function(t, target) {
 				executeCmd(t,'sysInit');
@@ -345,6 +352,31 @@
 			var sn=$(t).parent().attr('id');
 			$.post("${base }/command.do?cmd="+cmd+"&sn="+sn);
 		}
+	}
+	function setCodeNull(){
+		var code=$('#jqContextMenu .singleCookbook #code').val();
+		if(code=="编号"){
+			$('#jqContextMenu .singleCookbook #code').val("")
+		}
+	}
+	
+	var targetSN=null;
+	function singleCookbook(){
+		var online=$('#'+targetSN).find('img').attr('src').indexOf('online');
+// 		if(online>0){
+			var code=$('#jqContextMenu .singleCookbook #code').val();
+			var ex=/^\d+$/;
+			if(ex.test(code)){
+				if(code>2000){
+					alert('菜单编号不能大于2000！');
+					return;					
+				}
+				$.post("${base }/command.do?cmd=singleCookbook&sn="+targetSN+"&cookbookCode="+code);
+				$('.singleCookbook').hide();
+			}else{
+				alert('请输入正确的菜单编号！');
+			}
+// 		}
 	}
 </script>
 <style type="text/css">
@@ -388,7 +420,13 @@
 			<li id="allAppend">全量名单</li>
 			<li id="incAppend">增量名单</li>
 <!-- 								<li class="divide" /> -->
-			<li id="cookbook">菜肴清单</li>
+			<li id="allCookbook">全部菜肴清单</li>
+			<li id="appendCookbook">追加菜肴清单</li>
+			<li id="singelCookbook">更新指定菜肴</li>
+			<li class="singleCookbook" style="display: none;">
+				<input type="text" id="code" value="编号" style="width: 35px;" onmousedown ="setCodeNull();"/><input type="button" value="确定" onclick="singleCookbook();"/>
+			</li>
+			<li id="clear">清空命令</li>
 <!-- 								<li class="divide" /> -->
 			<li id="sysInit">初始化</li>
 		</ul>
@@ -495,7 +533,7 @@
 																<th width="100">管理费</th>
 																<th width="100">操作额</th>
 																<th width="100">餐别名称</th>
-																<th width="200">操作时间</th>
+																<th width="1">操作时间</th>
 																<th width="100">卡计数</th>
 																<th width="100">补助卡计数</th>
 																<th width="100">记录序号</th>
@@ -506,7 +544,7 @@
 														</thead>
 														<tbody>
 															<tbody class="clearLog consumeRecord">
-															<c:forEach begin="1" end="200" step="1" var="i">
+															<c:forEach begin="1" end="100" step="1" var="i">
 																<tr index="${i}">
 																	<td index></td>
 																	<td deviceNum></td>
@@ -617,11 +655,11 @@
 																<th width="20">序号</th>
 																<th width="50">日志时间</th>
 																<th width="50">日期来源</th>
-																<th width="200">日志描述</th>
+																<th width="100">日志描述</th>
 															</tr>
 														</thead>
 														<tbody class="clearLog log">
-															<c:forEach begin="1" end="200" step="1" var="i">
+															<c:forEach begin="1" end="100" step="1" var="i">
 																<tr index="${i}"><td index></td><td time></td><td from></td><td des></td></tr>
 															</c:forEach>
 														</tbody>

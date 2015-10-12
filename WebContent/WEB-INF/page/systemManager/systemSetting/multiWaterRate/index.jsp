@@ -75,7 +75,7 @@ $(function() {
 	}
 </style>
 <form id="multiWaterRateForm" method="post" action="${base }/save.do" class="pageForm required-validate">
-	<div class="pageFormContent" layoutH="120">
+	<div class="pageFormContent" layoutH="138">
 		<div style="margin:30px 0 20px 33px;">
 			<dl>
 				<dt>消费模式：</dt>

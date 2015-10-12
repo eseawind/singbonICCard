@@ -4,6 +4,7 @@
 	<resultMap id="batch" type="com.singbon.entity.Batch">
 	</resultMap>
 	<parameterMap type="com.singbon.entity.Batch" id="batch2" />
+	<cache eviction="FIFO" size="2000" readOnly="true"/>
 	<insert id="insert" parameterMap="batch2">
 		insert into batch (companyId,batchName,beginDate,endDate,invalidDate)
 		values (#{companyId},#{batchName},#{beginDate},#{endDate},#{invalidDate})

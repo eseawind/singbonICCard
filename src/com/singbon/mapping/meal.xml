@@ -4,6 +4,7 @@
 	<resultMap id="meal" type="com.singbon.entity.Meal">
 	</resultMap>
 	<parameterMap type="com.singbon.entity.Meal" id="meal2" />
+	<cache eviction="FIFO" size="12" readOnly="true"/>
 	<insert id="insert">
 		insert into meal (companyId,mealName,beginTime,endTime,timeLimit)
 			select #{companyId},mealName,beginTime,endTime,timeLimit from mealBase;

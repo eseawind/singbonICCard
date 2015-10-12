@@ -23,7 +23,7 @@ import com.singbon.util.StringUtil;
  * @author 郝威
  * 
  */
-public class ExecPosCommand {
+public class PosCommandExec {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static void execCommand(InetSocketAddress inetSocketAddress, byte[] b) {
@@ -36,7 +36,7 @@ public class ExecPosCommand {
 		int recNO = 0;
 		Map map = new HashMap();
 		// 终端设备状态，设置sn与inetSocketAddress对照关系
-		if (b[30] == FramePos.Status && b[31] == SubStatusFramePos.SysStatus) {
+		if (b[30] == PosFrame.Status && b[31] == PosSubFrameStatus.SysStatus) {
 			map.put("'type'", "status");
 			map.put("'sn'", sn);
 			map.put("recordNum", StringUtil.byteToInt(b[36]) * 256 + StringUtil.byteToInt(b[37]));
@@ -170,12 +170,12 @@ public class ExecPosCommand {
 		record.setSubsidyOpCount(StringUtil.hexToInt(baseIndex + 37, baseIndex + 38, b));
 		record.setSubsidyOpFare(StringUtil.hexToInt(baseIndex + 39, baseIndex + 42, b));
 		Calendar c = Calendar.getInstance();
-		c.set(Calendar.YEAR, 2000 + b[43]);
-		c.set(Calendar.MONTH, b[44]);
-		c.set(Calendar.DAY_OF_MONTH, b[45]);
-		c.set(Calendar.HOUR_OF_DAY, b[46]);
-		c.set(Calendar.MINUTE, b[47]);
-		c.set(Calendar.SECOND, b[48]);
+		c.set(Calendar.YEAR, 2000 + StringUtil.byteToInt(b[43]));
+		c.set(Calendar.MONTH, StringUtil.byteToInt(b[44]));
+		c.set(Calendar.DAY_OF_MONTH, StringUtil.byteToInt(b[45]));
+		c.set(Calendar.HOUR_OF_DAY, StringUtil.byteToInt(b[46]));
+		c.set(Calendar.MINUTE, StringUtil.byteToInt(b[47]));
+		c.set(Calendar.SECOND, StringUtil.byteToInt(b[48]));
 		record.setOpTime(c.getTime());
 		int recordNO = StringUtil.hexToInt(baseIndex + 49, baseIndex + 50, b);
 		record.setRecordNO(recordNO);
@@ -208,39 +208,60 @@ public class ExecPosCommand {
 		byte subFrame = b[32];
 		switch (b[31]) {
 		// 校时
-		case FramePos.SysTime:
-			if (subFrame == SubOtherFramePos.SysTime) {
+		case PosFrame.SysTime:
+			if (subFrame == PosSubFrameOther.SysTime) {
 				map.put("des", DesUtil.decrypt(DeviceCommunicateStr.ExecSysTime));
 			}
 			break;
 		// 系统参数
-		case FramePos.SysPara:
-			if (subFrame == SubSysParaFramePos.SysPara) {
+		case PosFrame.SysPara:
+			if (subFrame == PosSubFrameSysPara.SysPara) {
 				map.put("des", DesUtil.decrypt(DeviceCommunicateStr.ExecSysPara));
-			} else if (subFrame == SubSysParaFramePos.Meal) {
+			} else if (subFrame == PosSubFrameSysPara.Meal) {
 				map.put("des", DesUtil.decrypt(DeviceCommunicateStr.ExecMeal));
-			} else if (subFrame == SubSysParaFramePos.Discount) {
+			} else if (subFrame == PosSubFrameSysPara.Discount) {
 				map.put("des", DesUtil.decrypt(DeviceCommunicateStr.ExecDiscount));
 			}
 			break;
 		// 菜单
-		case FramePos.Cookbook:
-			if (subFrame == SubCookbookFramePos.OrderTime1) {
+		case PosFrame.Cookbook:
+			if (subFrame == PosSubFrameCookbook.OrderTime1) {
 				map.put("des", DesUtil.decrypt(DeviceCommunicateStr.ExecOrderTime1));
-			} else if (subFrame == SubCookbookFramePos.OrderTime2) {
+			} else if (subFrame == PosSubFrameCookbook.OrderTime2) {
 				map.put("des", DesUtil.decrypt(DeviceCommunicateStr.ExecOrderTime2));
-			} else if (subFrame == SubCookbookFramePos.Update) {
+			} else if (subFrame == PosSubFrameCookbook.Update) {
 				map.put("des", DesUtil.decrypt(DeviceCommunicateStr.ExecUpdate));
-			} else if (subFrame == SubCookbookFramePos.Append) {
+			} else if (subFrame == PosSubFrameCookbook.Append) {
 				Cookbook cookbook = sendCommand.getCookbook();
 				String log = String.format(DesUtil.decrypt(DeviceCommunicateStr.ExecAppend), sendCommand.getCookbookIndex(), sendCommand.getCookbookTotal(), cookbook.getCookbookCode(),
 						cookbook.getPrice(), cookbook.getCookbookName());
 				map.put("des", log);
+			} else if (subFrame == PosSubFrameCookbook.GetLastNum) {
+				int code = StringUtil.byteToInt(b[38]) * 256 + StringUtil.byteToInt(b[39]);
+				ArrayList<SendCommand> tempList = new ArrayList<SendCommand>();
+				synchronized (TerminalManager.sendCommandObject) {
+					ArrayList<SendCommand> sendCommandList = TerminalManager.SNToSendCommandList.get(sn);
+					if (sendCommandList != null && sendCommandList.size() > 0) {
+						for (SendCommand command : sendCommandList) {
+							if (command.getFrame() == PosFrame.Cookbook) {
+								int code2 = command.getCookbook().getCookbookCode();
+								if (code2 > code) {
+									tempList.add(command);
+								}
+							} else {
+								tempList.add(command);
+							}
+						}
+						TerminalManager.SNToSendCommandList.put(sn, tempList);
+					}
+					System.out.println("new size:" + tempList.size());
+				}
+				map.put("des", DesUtil.decrypt(DeviceCommunicateStr.ExecGetLastNumCookbook));
 			}
 			break;
 		// 初始化
-		case FramePos.SysInit:
-			if (subFrame == SubOtherFramePos.SysInit) {
+		case PosFrame.SysInit:
+			if (subFrame == PosSubFrameOther.SysInit) {
 				map.put("des", DesUtil.decrypt(DeviceCommunicateStr.ExecSysInit));
 			}
 			break;

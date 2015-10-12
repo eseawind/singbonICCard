@@ -4,6 +4,7 @@
 	<resultMap id="waterRate" type="com.singbon.entity.WaterRate">
 	</resultMap>
 	<parameterMap type="com.singbon.entity.WaterRate" id="waterRate2" />
+	<cache eviction="FIFO" size="1" readOnly="true"/>
 	<insert id="insert">
 		insert into waterRate (companyId,consumeType,goWaterType,stopWaterType,rate1Status,rate1ConsumeFare,rate1ConsumeCycle,rate1NextDayReset,rate2Status,rate2BeginTime,rate2EndTime,rate2Value1,rate2Value2,rate2CardTypes,rate3Status,rate3BeginTime,rate3EndTime,rate3Value1,rate3Value2,rate3CardTypes,rate4Status,rate4BeginTime,rate4EndTime,rate4Value1,rate4Value2,rate4CardTypes,rate5DeductFare,rate5DeductCycle)
 			select #{companyId},consumeType,goWaterType,stopWaterType,rate1Status,rate1ConsumeFare,rate1ConsumeCycle,rate1NextDayReset,rate2Status,rate2BeginTime,rate2EndTime,rate2Value1,rate2Value2,rate2CardTypes,rate3Status,rate3BeginTime,rate3EndTime,rate3Value1,rate3Value2,rate3CardTypes,rate4Status,rate4BeginTime,rate4EndTime,rate4Value1,rate4Value2,rate4CardTypes,rate5DeductFare,rate5DeductCycle from waterRateBase

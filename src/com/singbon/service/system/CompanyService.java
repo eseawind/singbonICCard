@@ -44,8 +44,8 @@ public class CompanyService {
 	 * @param obj
 	 * @return
 	 */
-	public void updateSystemPwd(Company company) {
-		this.companyDAO.updateSystemPwd(company);
+	public void updateSystemPara(Company company) {
+		this.companyDAO.updateSystemPara(company);
 	}
 
 	public int getSection(Integer companyId) {

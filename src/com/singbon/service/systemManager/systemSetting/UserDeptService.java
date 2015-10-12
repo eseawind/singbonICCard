@@ -56,11 +56,11 @@ public class UserDeptService {
 	 * @return
 	 */
 	@SuppressWarnings("rawtypes")
-	public List selectByParentId(Integer parentId) {
+	public List selectByParentId(Integer companyId, Integer parentId) {
 		if (parentId == null) {
 			parentId = 0;
 		}
-		return this.userDeptDAO.selectByParentId(parentId);
+		return this.userDeptDAO.selectByParentId(companyId, parentId);
 	}
 
 	/**

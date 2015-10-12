@@ -41,9 +41,10 @@
 
 <div class="form"
 	style="float: left; display: block; overflow: auto; width: 240px; border: solid 1px #CCC; line-height: 21px; background: #fff">
+	<div layoutH="383"></div>
 	<form id="mealForm" method="post" action="${base}/save.do"
 		class="pageForm required-validate">
-		<div class="pageFormContent" style="padding-top: 100px;">
+		<div class="pageFormContent">
 			<dl style="margin: 10px 0;">
 				<dt>餐别名称：</dt>
 				<dd>

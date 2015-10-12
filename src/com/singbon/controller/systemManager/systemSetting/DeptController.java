@@ -67,10 +67,11 @@ public class DeptController {
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/delete.do")
 	public void delete(HttpServletRequest request, HttpServletResponse response, Model model, Integer id) {
+		Company company = (Company) request.getSession().getAttribute("company");
 		PrintWriter p = null;
 		try {
 			p = response.getWriter();
-			List list = this.deptService.selectByParentId(id);
+			List list = this.deptService.selectByParentId(company.getId(), id);
 			if (list.size() > 0) {
 				p.print(2);
 				return;
@@ -93,10 +94,9 @@ public class DeptController {
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/list.do")
 	public String list(Integer parentId, HttpServletRequest request, Model model) {
-		if (parentId != null) {
-			List list = this.deptService.selectByParentId(parentId);
-			model.addAttribute("list", list);
-		}
+		Company company = (Company) request.getSession().getAttribute("company");
+		List list = this.deptService.selectByParentId(company.getId(), parentId);
+		model.addAttribute("list", list);
 		return StringUtil.requestPath(request, "list");
 	}
 

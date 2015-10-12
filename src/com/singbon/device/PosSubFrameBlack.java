@@ -6,7 +6,7 @@ package com.singbon.device;
  * @author 郝威
  * 
  */
-public class SubBlackFramePos {
+public class PosSubFrameBlack {
 
 	/**
 	 * 批次更新

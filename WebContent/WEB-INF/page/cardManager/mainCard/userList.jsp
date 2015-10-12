@@ -38,6 +38,9 @@
 		fresh : false
 	};
 	var userListOps = {
+		menuStyle: {
+			width: '120px'
+		},
 		bindings : {
 			'info' : function(t, target) {
 				if (selectedDeptId <= '0') {
@@ -215,6 +218,8 @@
 		<li id="unloss">解挂</li>
 		<li id="remakeCard">补卡</li>
 		<li id="changeCard">换卡</li>		
+		<li id="offWithCard">有卡注销</li>		
+		<li id="offNoCard">无卡注销</li>		
 		<li id="charge">存、取款</li>		
 		<li id="delete">删除选中未发卡人员</li>
 	</ul>

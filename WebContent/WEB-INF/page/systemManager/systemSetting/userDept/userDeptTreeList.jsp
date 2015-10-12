@@ -3,7 +3,10 @@
 
 <script type="text/javascript">
 	var userDeptTree=$('.userDeptTree');
-	var list = $('#userDeptTree li');
+	var list = $('#userDeptTreeLi li');
+	if(list.length!=0){
+		$('li', userDeptTree).append("<ul class='expand'></ul>");
+	}
 	list.each(function() {
 		var $this = $(this);
 		var parentId = $this.attr('parentId');		
@@ -19,7 +22,7 @@
 	});
 </script>
 
-<div id="userDeptTree">
+<div id="userDeptTreeLi">
 	<c:forEach items="${list }" var="d">
 		<li deptId="${d.id }" parentId="${d.parentId }"><a href="javascript:;" module="userDept"
 			deptId="${d.id }" batchId="${d.batchId }">${d.deptName }</a></li>
@@ -27,7 +30,5 @@
 </div>
 <ul class="tree collapse userDeptTree">
 	<li deptId="0"><a href="javascript:;" module="userDept" deptId="0">部门列表</a>
-		<ul class="expand">
-
-		</ul></li>
+	</li>
 </ul>

@@ -162,8 +162,9 @@
 					</div>
 					<div class="accordionContent">
 						<ul class="tree">
+							<li><a href="/cardManager/mainCard/index.do" target="navTab">用户卡管理</a></li>
 							<li><a url="/cardManager/specialCard/index.do" target="navTab">功能卡制作</a></li>
-							<li><a href="/cardManager/mainCard/index.do" target="navTab">卡管理</a></li>
+							<li><a url="/cardManager/cardReader/index.do" target="navTab">读卡机参数下载</a></li>
 						</ul>
 					</div>
 					<div class="accordionHeader">

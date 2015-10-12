@@ -66,7 +66,7 @@ public class OrderTimeController extends BaseController {
 
 		Company company = (Company) request.getSession().getAttribute("company");
 		List<OrderTime> orderTimeList = this.orderTimeService.selectByCompanyId(company.getId());
-		if (orderTimeList == null) {
+		if (orderTimeList.size() == 0) {
 			this.orderTimeService.insert(company.getId());
 			this.orderTimeService.selectByCompanyId(company.getId());
 		}

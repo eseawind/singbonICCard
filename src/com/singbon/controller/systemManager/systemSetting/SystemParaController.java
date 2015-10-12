@@ -24,8 +24,8 @@ import com.singbon.service.system.CompanyService;
  * 
  */
 @Controller
-@RequestMapping(value = "/systemManager/systemSetting/systemPwd")
-public class SystemPwdController extends BaseController {
+@RequestMapping(value = "/systemManager/systemSetting/systemPara")
+public class SystemParaController extends BaseController {
 
 	@Autowired
 	public CompanyService companyService;
@@ -45,7 +45,7 @@ public class SystemPwdController extends BaseController {
 		model.addAttribute("sysUser", sysUser);
 		model.addAttribute("company", company);
 
-		String url = "/systemManager/systemSetting/systemPwd";
+		String url = "/systemManager/systemSetting/systemPara";
 		model.addAttribute("base", url);
 		return url + "/index";
 	}
@@ -65,7 +65,7 @@ public class SystemPwdController extends BaseController {
 			e.printStackTrace();
 		}
 		try {
-			this.companyService.updateSystemPwd(company);
+			this.companyService.updateSystemPara(company);
 			request.getSession().setAttribute("company", company);
 			p.print(1);
 		} catch (Exception e) {

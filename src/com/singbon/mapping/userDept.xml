@@ -4,6 +4,7 @@
 	<resultMap id="userDept" type="com.singbon.entity.UserDept">
 	</resultMap>
 	<parameterMap type="com.singbon.entity.UserDept" id="userDept2" />
+	<cache eviction="FIFO" size="2000" readOnly="true"/>
 	<insert id="insert" parameterMap="userDept2">
 		insert into userDept (companyId,deptName,parentId,batchId)
 		values (#{companyId},#{deptName},#{parentId},#{batchId})
@@ -18,8 +19,8 @@
 	<select id="selectById" resultMap="userDept">
 		select * from userDept where id=#{id}
 	</select>
-	<select id="selectByParentId" resultType="java.util.HashMap">
-		select deptName,batchName,beginDate,endDate,invalidDate from userDept d,batch b where d.parentId=#{parentId}
+	<select id="selectByParentId" resultType="java.util.HashMap" useCache="false">
+		select deptName,batchName,beginDate,endDate,invalidDate from userDept d,batch b where d.companyId=#{companyId} and d.parentId=#{parentId}
 		and d.batchId=b.id
 	</select>
 	<select id="selectTreeList" resultMap="userDept">

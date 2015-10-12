@@ -1,12 +1,12 @@
 package com.singbon.device;
 
 /**
- * 读卡机帧定义
+ * 读卡机返回结果命令码给客户端
  * 
  * @author 郝威
  * 
  */
-public class FrameCardReader {
+public class CardReaderResultCommandCode {
 
 	/**
 	 * 存在物理卡号 0x70
@@ -16,7 +16,15 @@ public class FrameCardReader {
 	 * 获取出纳员基本信息命令 0x71
 	 */
 	public static byte CashierCardBaseInfoCmd = 0x71;
-	
+	/**
+	 * 下载单位名称 0x72
+	 */
+	public static byte CompanyName = 0x72;
+	/**
+	 * 下载读卡机密码 0x73
+	 */
+	public static byte CardReaderPwd = 0x73;
+
 	/**
 	 * 心跳状态 0x02
 	 */

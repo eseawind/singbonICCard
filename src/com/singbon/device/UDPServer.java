@@ -68,7 +68,7 @@ class UDPSeverHandler extends SimpleChannelInboundHandler<DatagramPacket> {
 
 		// 处理数据
 		try {
-			ExecPosCommand.execCommand(packet.sender(), b);
+			PosCommandExec.execCommand(packet.sender(), b);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

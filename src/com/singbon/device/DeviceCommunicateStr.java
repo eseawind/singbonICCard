@@ -1,5 +1,6 @@
 package com.singbon.device;
 
+import com.singbon.util.DesUtil;
 
 /**
  * 设备交互字符串
@@ -85,17 +86,33 @@ public class DeviceCommunicateStr {
 	 * 执行初始化命令
 	 */
 	public static String ExecSysInit = "225e35c022a93de81bf6868449a5719544b497015179595bd0ae5e940207a7a9";
+	/**
+	 * 已经添加过菜单下载命令，不能重复添加
+	 */
+	public static String CookbookAdded = "c33c1de3b4061e1becf773956e3e6b09eb9ae5332ce8637408f0345a216caee428fb88937e928e3cc3b40662e9e8f8989abf8219795d5d22";
+	/**
+	 * 发送追加菜肴清单初始化命令
+	 */
+	public static String SendGetLastNumCookbook = "f0e28887812046680bd550dc89cb309e407a513b2afe27e4f0bc1d7f7943d6bed170faed669b6bdf";
+	/**
+	 * 执行追加菜肴清单初始化命令
+	 */
+	public static String ExecGetLastNumCookbook = "7f2bfe276f81e07a0bd550dc89cb309e407a513b2afe27e4f0bc1d7f7943d6bed170faed669b6bdf";
+	/**
+	 * 不存在编号为%s的菜单
+	 */
+	public static String NotExsitCookbook = "822ae4dfd77f30e17e02247a5d8ac51fd7345a206e0523ab7ea035a4f9ada537";
 
-//	public static void main(String[] args) {
-//		try {
-//			String test = "执行系统参数命令成功";
-//
-//			StringUtil.desInit("ycsty");
-//			System.out.println("加密前的字符：" + test);
-//			System.out.println("加密后的字符：" + StringUtil.encrypt(test));
-//			System.out.println("解密后的字符：" + DesUtil.decrypt(StringUtil.encrypt(test)));
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
+	public static void main(String[] args) {
+		try {
+			String test = "不存在编号为%s的菜单";
+
+			DesUtil.desInit("ycsty");
+			System.out.println("加密前的字符：" + test);
+			System.out.println("加密后的字符：" + DesUtil.encrypt(test));
+			System.out.println("解密后的字符：" + DesUtil.decrypt(DesUtil.encrypt(test)));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

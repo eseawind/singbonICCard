@@ -33,17 +33,18 @@
 
 <div class="form"
 	style="float: left; display: block; overflow: auto; width: 240px; border: solid 1px #CCC; line-height: 21px; background: #fff">
+	<div layoutH="332"></div>
 	<form id="discountForm" method="post" action="${base}/save.do"
 		class="pageForm required-validate">
-		<div class="pageFormContent" style="padding: 200px 0 50px;">
-			<dl>
+		<div class="pageFormContent">
+			<dl style="margin: 10px 0;">
 				<dt>补助金额：</dt>
 				<dd>
 					<input type="hidden" name="id"/>
 					<input type="text" name="subsidy" maxlength="20" class="digits required"/>
 				</dd>
 			</dl>
-			<dl>
+			<dl style="margin: 10px 0;">
 				<dt>扣费比例：</dt>
 				<dd>
 					<select class="combox" outerw="78" innerw="95"
@@ -54,7 +55,7 @@
 					</select>范围1-200
 				</dd>
 			</dl>
-			<dl style="width: 300px;">
+			<dl style="margin: 10px 0 50px;width: 300px;">
 				<dt>赠送金额：</dt>
 				<dd>
 					<input type="text" name="giveCash" maxlength="20"

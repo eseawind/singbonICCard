@@ -107,8 +107,13 @@
 		<if test="sex!=null and sex!=-1">
 		 and sex=#{sex}
 		</if>
-		<if test="status!=null and status!=-1">
-		 and status=#{status}
+		<if test="status!=null">
+			<if test="status!=-1 and status!=-2">
+		 		and status=#{status}
+		 	</if>
+			<if test="status==-2">
+		 		and status not in(0,241,243,244)
+		 	</if>
 		</if>
 		<if test="dateType!=null and dateType!=-1">
 			<if test="dateType==0">

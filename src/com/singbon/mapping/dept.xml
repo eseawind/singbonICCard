@@ -4,6 +4,7 @@
 	<resultMap id="dept" type="com.singbon.entity.Dept">
 	</resultMap>
 	<parameterMap type="com.singbon.entity.Dept" id="dept2" />
+	<cache eviction="FIFO" size="2000" readOnly="true"/>
 	<insert id="insert" parameterMap="dept2">
 		insert into dept (companyId,deptName,parentId)
 		values (#{companyId},#{deptName},#{parentId})
@@ -19,7 +20,7 @@
 		select * from dept where id=#{id}
 	</select>
 	<select id="selectByParentId" resultType="java.util.HashMap">
-		select d.deptName,p.deptName parentName from dept d,dept p where d.parentId=p.id and p.id=#{parentId}
+		select d.deptName,p.deptName parentName from dept d,dept p where d.companyId=#{companyId} and d.parentId=p.id and p.id=#{parentId}
 	</select>
 	<select id="selectTreeList" resultMap="dept">
 		select * from dept where companyId=#{companyId}

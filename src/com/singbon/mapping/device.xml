@@ -4,6 +4,7 @@
 	<resultMap id="device" type="com.singbon.entity.Device">
 	</resultMap>
 	<parameterMap type="com.singbon.entity.Device" id="device2" />
+	<cache eviction="FIFO" size="2000" readOnly="true"/>
 	<insert id="insert" parameterMap="device2">
 		insert into device (companyId,deviceName,beginDate,endDate,invalidDate)
 		values (#{companyId},#{deviceName},#{beginDate},#{endDate},#{invalidDate})

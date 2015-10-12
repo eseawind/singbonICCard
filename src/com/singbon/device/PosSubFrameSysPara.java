@@ -6,7 +6,7 @@ package com.singbon.device;
  * @author 郝威
  * 
  */
-public class SubSysParaFramePos {
+public class PosSubFrameSysPara {
 
 	/**
 	 * 系统参数

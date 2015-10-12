@@ -140,7 +140,7 @@ public class TerminalManager {
 	public static void getCardInfo(SocketChannel socketChannel, Device device, byte commandCode, List<Integer> sectionBlocks) throws IOException {
 		String deviceNum = StringUtil.hexLeftPad(device.getDeviceNum(), 8);
 		String commandCodeStr = "0000" + StringUtil.hexLeftPad(commandCode, 4);
-		String sendBufStr = CommandCardReader.ReadCard + commandCodeStr + CommandCardReader.NoValidateCardSN + CommandCardReader.NoCardSN;
+		String sendBufStr = CardReaderFrame.ReadCard + commandCodeStr + CardReaderFrame.NoValidateCardSN + CardReaderFrame.NoCardSN;
 		for (int i : sectionBlocks) {
 			int section = i / 10;
 			int block = i % 10;
@@ -164,9 +164,9 @@ public class TerminalManager {
 	 * @param b
 	 * @throws IOException
 	 */
-	public static void sendToCardReader(SocketChannel socketChannel, byte[] b) throws IOException {
-		CRC16.generate(b);
-		ByteBuffer byteBuffer = ByteBuffer.wrap(b);
+	public static void sendToCardReader(SocketChannel socketChannel, byte[] sendBuf) throws IOException {
+		CRC16.generate(sendBuf);
+		ByteBuffer byteBuffer = ByteBuffer.wrap(sendBuf);
 		socketChannel.write(byteBuffer);
 	}
 

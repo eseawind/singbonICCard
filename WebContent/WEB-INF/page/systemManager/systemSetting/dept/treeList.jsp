@@ -3,7 +3,10 @@
 
 <script type="text/javascript">
 	var deptTree=$('.deptTree');
-	var list = $('#deptTree li');
+	var list = $('#deptTreeLi li');
+	if(list.length!=0){
+		$('li', deptTree).append("<ul class='expand'></ul>");
+	}
 	list.each(function() {
 		var $this = $(this);
 		var parentId = $this.attr('parentId');		
@@ -19,15 +22,13 @@
 	});
 </script>
 
-<div id="deptTree">
+<div id="deptTreeLi">
 	<c:forEach items="${treeList }" var="d">
 		<li deptId="${d.id }" parentId="${d.parentId }"><a href="javascript:;" module="dept"
 			deptId="${d.id }">${d.deptName }</a></li>
 	</c:forEach>
 </div>
 <ul class="tree expand deptTree">
-	<li deptId="0"><a href="javascript:;" module="userDept" deptId="0">营业部门列表</a>
-		<ul class="expand">
-
-		</ul></li>
+	<li deptId="0"><a href="javascript:;" module="dept" deptId="0">营业部门列表</a>
+	</li>
 </ul>

@@ -6,7 +6,7 @@ package com.singbon.device;
  * @author 郝威
  * 
  */
-public class FramePos {
+public class PosFrame {
 
 	/**
 	 * 系统状态

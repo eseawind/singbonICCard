@@ -4,7 +4,8 @@
 	<resultMap id="cookbook" type="com.singbon.entity.Cookbook">
 	</resultMap>
 	<parameterMap type="com.singbon.entity.Cookbook" id="cookbook2" />
-	<insert id="insert">
+	<cache eviction="FIFO" size="2000" readOnly="true"/>
+	<insert id="insert" flushCache="true">
 		insert into cookbook (companyId,cookbookCode,cookbookName,price,remark,enable)
 		values (#{companyId},#{cookbookCode},#{cookbookName},#{price},#{remark},#{enable})
 	</insert>
@@ -12,8 +13,11 @@
 		update cookbook set cookbookName=#{cookbookName},price=#{price},remark=#{remark},enable=#{enable}
 		where id=#{id}
 	</update>
-	<select id="selectMaxCode" resultType="java.lang.Integer">
+	<select id="selectMaxCode" resultType="java.lang.Integer" useCache="false">
 		select ifnull(max(cookbookCode),0)+1 code from cookbook where companyId=#{companyId}
+	</select>
+	<select id="selectById" resultMap="cookbook">
+		select * from cookbook where id=#{id}
 	</select>
 	<select id="selectList" resultMap="cookbook">
 		select * from cookbook where companyId=#{companyId}

@@ -15,7 +15,7 @@ import com.singbon.util.StringUtil;
  * @author 郝威
  * 
  */
-public class ExecCardReaderCommand {
+public class CardReaderCommandExec {
 
 	/**
 	 * 分发命令
@@ -45,79 +45,88 @@ public class ExecCardReaderCommand {
 		Map map = new HashMap();
 		// 获取机器号序列号
 		if (frameByte[0] == 0x03 && frameByte[1] == 0x08) {
-			byte frame = FrameCardReader.HeartStatus;
+			byte frame = CardReaderResultCommandCode.HeartStatus;
 			TerminalManager.UuidToSNList.put(selectionKey.attachment().toString(), sn);
 			TerminalManager.SNToSocketChannelList.put(sn, (SocketChannel) selectionKey.channel());
 			map.put("'f1'", frame);
 			map.put("'r'", 1);
+			// 下载读卡机参数
+		} else if (frameByte[1] == 0x04) {
+			// 单位名称
+			if (frameByte[2] == 0x08) {
+				map.put("'f1'", CardReaderResultCommandCode.CompanyName);
+			//密码
+			} else if (frameByte[2] == 0x03) {
+				map.put("'f1'", CardReaderResultCommandCode.CardReaderPwd);
+			}
 			// //////////////////////////////////////////////////////////////////////////////
 			// /////////////////////////////////////////////写卡回复
 			// //////////////////////////////////////////////////////////////////////////////
 		} else if (Arrays.equals(frameByte, new byte[] { 0x03, (byte) 0xcd, 0x01, 0x01 })) {
 			// 单个发卡完成
-			if (commandCode == CommandCodeCardReader.SingleCard) {
-				map.put("'f1'", FrameCardReader.SingleCardDone);
+			if (commandCode == CardReaderCommandCode.SingleCard) {
+				map.put("'f1'", CardReaderResultCommandCode.SingleCardDone);
 				map.put("'r'", cardStatus);
 			}
 			// 信息发卡完成
-			else if (commandCode == CommandCodeCardReader.InfoCard) {
-				map.put("'f1'", FrameCardReader.InfoCardDone);
+			else if (commandCode == CardReaderCommandCode.InfoCard) {
+				map.put("'f1'", CardReaderResultCommandCode.InfoCardDone);
 				map.put("'r'", cardStatus);
 			}
 			// 解挂完成
-			else if (commandCode == CommandCodeCardReader.Unloss) {
-				map.put("'f1'", FrameCardReader.UnlossDone);
+			else if (commandCode == CardReaderCommandCode.Unloss) {
+				map.put("'f1'", CardReaderResultCommandCode.UnlossDone);
 				map.put("'r'", cardStatus);
 			}
 			// 补卡完成
-			else if (commandCode == CommandCodeCardReader.RemakeCard) {
-				map.put("'f1'", FrameCardReader.RemakeCardDone);
+			else if (commandCode == CardReaderCommandCode.RemakeCard) {
+				map.put("'f1'", CardReaderResultCommandCode.RemakeCardDone);
 				map.put("'r'", cardStatus);
 			}
 			// 换新卡完成
-			else if (commandCode == CommandCodeCardReader.ChangeNewCard) {
-				map.put("'f1'", FrameCardReader.ChangeNewCardDone);
+			else if (commandCode == CardReaderCommandCode.ChangeNewCard) {
+				map.put("'f1'", CardReaderResultCommandCode.ChangeNewCardDone);
 				map.put("'r'", cardStatus);
 			}
 			// 读卡修正完成
-			else if (commandCode == CommandCodeCardReader.ReadCard) {
-				map.put("'f1'", FrameCardReader.ReadCardDone);
+			else if (commandCode == CardReaderCommandCode.ReadCard) {
+				map.put("'f1'", CardReaderResultCommandCode.ReadCardDone);
 				map.put("'r'", cardStatus);
 			}
 			// 制出纳卡完成
-			else if (commandCode == CommandCodeCardReader.MakeCashierCard) {
-				map.put("'f1'", FrameCardReader.MakeCashierCardDone);
+			else if (commandCode == CardReaderCommandCode.MakeCashierCard) {
+				map.put("'f1'", CardReaderResultCommandCode.MakeCashierCardDone);
 				map.put("'r'", cardStatus);
 				map.put("'newCardSN'", cardSN);
 			}
 			// 挂失出纳卡完成
-			else if (commandCode == CommandCodeCardReader.LossCashierCard) {
-				map.put("'f1'", FrameCardReader.LossCashierCardDone);
+			else if (commandCode == CardReaderCommandCode.LossCashierCard) {
+				map.put("'f1'", CardReaderResultCommandCode.LossCashierCardDone);
 				map.put("'r'", cardStatus);
 			}
 			// 解挂出纳卡完成
-			else if (commandCode == CommandCodeCardReader.UnLossCashierCard) {
-				map.put("'f1'", FrameCardReader.UnLossCashierCardDone);
+			else if (commandCode == CardReaderCommandCode.UnLossCashierCard) {
+				map.put("'f1'", CardReaderResultCommandCode.UnLossCashierCardDone);
 				map.put("'r'", cardStatus);
 			}
 			// 解挂出纳卡完成
-			else if (commandCode == CommandCodeCardReader.UnLossCashierCard) {
-				map.put("'f1'", FrameCardReader.UnLossCashierCardDone);
+			else if (commandCode == CardReaderCommandCode.UnLossCashierCard) {
+				map.put("'f1'", CardReaderResultCommandCode.UnLossCashierCardDone);
 				map.put("'r'", cardStatus);
 			}
 			// 补办出纳卡完成
-			else if (commandCode == CommandCodeCardReader.RemakeCashierCard) {
-				map.put("'f1'", FrameCardReader.RemakeCashierCardDone);
+			else if (commandCode == CardReaderCommandCode.RemakeCashierCard) {
+				map.put("'f1'", CardReaderResultCommandCode.RemakeCashierCardDone);
 				map.put("'r'", cardStatus);
 			}
 			// 修改出纳卡有效期完成
-			else if (commandCode == CommandCodeCardReader.InvalidDateCashierCard) {
-				map.put("'f1'", FrameCardReader.InvalidDateCashierCardDone);
+			else if (commandCode == CardReaderCommandCode.InvalidDateCashierCard) {
+				map.put("'f1'", CardReaderResultCommandCode.InvalidDateCashierCardDone);
 				map.put("'r'", cardStatus);
 			}
 			// 存取款完成
-			else if (commandCode == CommandCodeCardReader.Charge) {
-				map.put("'f1'", FrameCardReader.ChargeDone);
+			else if (commandCode == CardReaderCommandCode.Charge) {
+				map.put("'f1'", CardReaderResultCommandCode.ChargeDone);
 				map.put("'r'", cardStatus);
 			}
 			// //////////////////////////////////////////////////////////////////////////////
@@ -126,55 +135,55 @@ public class ExecCardReaderCommand {
 		} else if (Arrays.equals(frameByte, new byte[] { 0x03, (byte) 0xcd, 0x00, 0x01 })) {
 			int baseLen = 43;
 			// 获取出纳卡基本信息命令
-			if (commandCode == CommandCodeCardReader.CashierCardBaseInfo) {
-				map.put("'f1'", FrameCardReader.CashierCardBaseInfoCmd);
+			if (commandCode == CardReaderCommandCode.CashierCardBaseInfo) {
+				map.put("'f1'", CardReaderResultCommandCode.CashierCardBaseInfoCmd);
 				map.put("'r'", cardStatus);
 				map.put("'cardSN'", cardSN);
 				map.put("'cardNO'", cardSN);
 			}
 			// 发送单个发卡命令
-			else if (commandCode == CommandCodeCardReader.SingleCard) {
-				map.put("'f1'", FrameCardReader.SingleCardCmd);
+			else if (commandCode == CardReaderCommandCode.SingleCard) {
+				map.put("'f1'", CardReaderResultCommandCode.SingleCardCmd);
 				map.put("'r'", cardStatus);
 				map.put("'cardSN'", cardSN);
 			}
 			// 发送信息发卡命令
-			else if (commandCode == CommandCodeCardReader.InfoCard) {
-				map.put("'f1'", FrameCardReader.InfoCardCmd);
+			else if (commandCode == CardReaderCommandCode.InfoCard) {
+				map.put("'f1'", CardReaderResultCommandCode.InfoCardCmd);
 				map.put("'r'", cardStatus);
 				map.put("'cardSN'", cardSN);
 			}
 			// 发解挂命令
-			else if (commandCode == CommandCodeCardReader.Unloss) {
-				map.put("'f1'", FrameCardReader.UnlossCmd);
+			else if (commandCode == CardReaderCommandCode.Unloss) {
+				map.put("'f1'", CardReaderResultCommandCode.UnlossCmd);
 				map.put("'r'", cardStatus);
 				map.put("'cardInfoStr'", StringUtil.byteToHexStr(baseLen, b.length - 1, b));
 				map.put("'cardSN'", cardSN);
 				map.put("'userId'", Integer.parseInt(StringUtil.byteToHexStr(baseLen + 3, baseLen + 3 + 3, b), 16));
 			}
 			// 发补卡命令
-			else if (commandCode == CommandCodeCardReader.RemakeCard) {
-				map.put("'f1'", FrameCardReader.RemakeCardCmd);
+			else if (commandCode == CardReaderCommandCode.RemakeCard) {
+				map.put("'f1'", CardReaderResultCommandCode.RemakeCardCmd);
 				map.put("'r'", cardStatus);
 				map.put("'cardSN'", cardSN);
 			}
 			// 换卡读原卡命令
-			else if (commandCode == CommandCodeCardReader.ReadOldCard) {
-				map.put("'f1'", FrameCardReader.ReadOldCardCmd);
+			else if (commandCode == CardReaderCommandCode.ReadOldCard) {
+				map.put("'f1'", CardReaderResultCommandCode.ReadOldCardCmd);
 				map.put("'r'", cardStatus);
 				map.put("'cardSN'", cardSN);
 				map.put("'userId'", Integer.parseInt(StringUtil.byteToHexStr(baseLen + 3, baseLen + 3 + 3, b), 16));
 				map.put("'cardInfoStr'", StringUtil.byteToHexStr(baseLen, b.length - 1, b));
 			}
 			// 换卡换新卡命令
-			else if (commandCode == CommandCodeCardReader.ChangeNewCard) {
-				map.put("'f1'", FrameCardReader.ChangeNewCardCmd);
+			else if (commandCode == CardReaderCommandCode.ChangeNewCard) {
+				map.put("'f1'", CardReaderResultCommandCode.ChangeNewCardCmd);
 				map.put("'r'", cardStatus);
 				map.put("'newCardSN'", cardSN);
 			}
 			// 读卡修正命令
-			else if (commandCode == CommandCodeCardReader.ReadCard) {
-				map.put("'f1'", FrameCardReader.ReadCardCmd);
+			else if (commandCode == CardReaderCommandCode.ReadCard) {
+				map.put("'f1'", CardReaderResultCommandCode.ReadCardCmd);
 				map.put("'r'", cardStatus);
 				map.put("'cardSN'", cardSN);
 				int base0 = baseLen + 3;
@@ -260,36 +269,36 @@ public class ExecCardReaderCommand {
 				}
 			}
 			// 制出纳卡命令
-			else if (commandCode == CommandCodeCardReader.MakeCashierCard) {
-				map.put("'f1'", FrameCardReader.MakeCashierCardCmd);
+			else if (commandCode == CardReaderCommandCode.MakeCashierCard) {
+				map.put("'f1'", CardReaderResultCommandCode.MakeCashierCardCmd);
 				map.put("'r'", cardStatus);
 				map.put("'cardSN'", cardSN);
 			}
 			// 挂失出纳卡命令
-			else if (commandCode == CommandCodeCardReader.LossCashierCard) {
-				map.put("'f1'", FrameCardReader.LossCashierCardCmd);
+			else if (commandCode == CardReaderCommandCode.LossCashierCard) {
+				map.put("'f1'", CardReaderResultCommandCode.LossCashierCardCmd);
 				map.put("'r'", cardStatus);
 				map.put("'operId'", Integer.parseInt(getCashierOperId(b), 16));
 				map.put("'cardSN'", cardSN);
 				map.put("'cardInfoStr'", StringUtil.byteToHexStr(baseLen, b.length - 1, b));
 			}
 			// 解挂出纳卡命令
-			else if (commandCode == CommandCodeCardReader.UnLossCashierCard) {
-				map.put("'f1'", FrameCardReader.UnLossCashierCardCmd);
+			else if (commandCode == CardReaderCommandCode.UnLossCashierCard) {
+				map.put("'f1'", CardReaderResultCommandCode.UnLossCashierCardCmd);
 				map.put("'r'", cardStatus);
 				map.put("'operId'", Integer.parseInt(getCashierOperId(b), 16));
 				map.put("'cardSN'", cardSN);
 				map.put("'cardInfoStr'", StringUtil.byteToHexStr(baseLen, b.length - 1, b));
 			}
 			// 补办出纳卡命令
-			else if (commandCode == CommandCodeCardReader.RemakeCashierCard) {
-				map.put("'f1'", FrameCardReader.RemakeCashierCardCmd);
+			else if (commandCode == CardReaderCommandCode.RemakeCashierCard) {
+				map.put("'f1'", CardReaderResultCommandCode.RemakeCashierCardCmd);
 				map.put("'r'", cardStatus);
 				map.put("'cardSN'", cardSN);
 			}
 			// 读取出纳卡命令
-			else if (commandCode == CommandCodeCardReader.ReadCashierCard) {
-				map.put("'f1'", FrameCardReader.ReadCashierCardCmd);
+			else if (commandCode == CardReaderCommandCode.ReadCashierCard) {
+				map.put("'f1'", CardReaderResultCommandCode.ReadCashierCardCmd);
 				map.put("'r'", cardStatus);
 
 				map.put("'operId'", Integer.parseInt(getCashierOperId(b), 16));
@@ -299,8 +308,8 @@ public class ExecCardReaderCommand {
 				map.put("'cardInfoStr'", StringUtil.byteToHexStr(baseLen, b.length - 1, b));
 			}
 			// 读取卡余额命令
-			else if (commandCode == CommandCodeCardReader.ReadCardOddFare) {
-				map.put("'f1'", FrameCardReader.ReadCardOddFareCmd);
+			else if (commandCode == CardReaderCommandCode.ReadCardOddFare) {
+				map.put("'f1'", CardReaderResultCommandCode.ReadCardOddFareCmd);
 				map.put("'r'", cardStatus);
 
 				int base0 = baseLen + 3;

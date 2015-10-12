@@ -91,9 +91,10 @@
 </style>
 <div class="form" layoutH="30"
 	style="float: left; display: block; overflow: auto; width: 240px; border: solid 1px #CCC; line-height: 21px; background: #fff">
+	<div layoutH="332"></div>
 	<form id="batchForm" method="post" action="${base}/addEdit.do"
 		class="pageForm required-validate">
-		<div class="pageFormContent" style="padding-top: 200px;">
+		<div class="pageFormContent">
 			<dl style="margin: 10px 0;">
 				<dt>批次名称：</dt>
 				<dd>

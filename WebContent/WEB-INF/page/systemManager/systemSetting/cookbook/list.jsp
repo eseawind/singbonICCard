@@ -55,7 +55,7 @@
 			</table>
 		</div>
 	</div>
-	<table class="table" width="99%" rel="jbsxBox" layoutH="90">
+	<table class="table" width="99%" rel="jbsxBox" layoutH="120">
 		<thead>
 			<tr>
 				<th width="100">编号</th>

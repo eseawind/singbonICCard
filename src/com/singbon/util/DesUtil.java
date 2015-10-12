@@ -63,7 +63,7 @@ public class DesUtil {
 
 	public static String decrypt(String strIn) {
 		try {
-			return new String(decrypt(hexStr2ByteArr(strIn)));
+			return new String(decrypt(hexStr2ByteArr(strIn)),"utf-8");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

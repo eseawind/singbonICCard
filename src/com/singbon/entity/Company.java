@@ -16,6 +16,9 @@ public class Company implements Serializable {
 	private String serialNumber;
 	private String authNumber;
 	private Integer baseSection;
+	private Integer heartInterval;
+	private Integer uploadInterval;
+	private Integer uploadErrTime;
 
 	public Integer getId() {
 		return id;
@@ -55,6 +58,30 @@ public class Company implements Serializable {
 
 	public void setBaseSection(Integer baseSection) {
 		this.baseSection = baseSection;
+	}
+
+	public Integer getHeartInterval() {
+		return heartInterval;
+	}
+
+	public void setHeartInterval(Integer heartInterval) {
+		this.heartInterval = heartInterval;
+	}
+
+	public Integer getUploadInterval() {
+		return uploadInterval;
+	}
+
+	public void setUploadInterval(Integer uploadInterval) {
+		this.uploadInterval = uploadInterval;
+	}
+
+	public Integer getUploadErrTime() {
+		return uploadErrTime;
+	}
+
+	public void setUploadErrTime(Integer uploadErrTime) {
+		this.uploadErrTime = uploadErrTime;
 	}
 
 }

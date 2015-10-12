@@ -1,4 +1,4 @@
-<!-- 卡制作 -->
+<!-- 用户信息查询 -->
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 

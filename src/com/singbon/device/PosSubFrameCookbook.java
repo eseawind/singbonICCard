@@ -6,7 +6,7 @@ package com.singbon.device;
  * @author 郝威
  * 
  */
-public class SubCookbookFramePos {
+public class PosSubFrameCookbook {
 	/**
 	 * 菜单更新
 	 */
@@ -23,5 +23,13 @@ public class SubCookbookFramePos {
 	 * 点餐时间段7到12
 	 */
 	public final static byte OrderTime2 = 0x04;
+	/**
+	 * 查询最后菜单编号
+	 */
+	public final static byte GetLastNum = 0x05;
+	/**
+	 * 单独下载菜单
+	 */
+	public final static byte DownloadSigel = 0x06;
 
 }

@@ -4,6 +4,7 @@
 	<resultMap id="cardParam" type="com.singbon.entity.CardParam">
 	</resultMap>
 	<parameterMap type="com.singbon.entity.CardParam" id="cardParam2" />
+	<cache eviction="FIFO" size="1" readOnly="true"/>
 	<insert id="insert">
 		insert into cardParam (companyId,cardCost,cardDeposit,prepayFare)
 			select #{companyId},cardCost,cardDeposit,prepayFare from cardParamBase

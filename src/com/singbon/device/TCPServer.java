@@ -103,7 +103,7 @@ public class TCPServer implements Runnable {
 
 				// 处理数据
 				try {
-					ExecCardReaderCommand.execCommand(selectionKey, b);
+					CardReaderCommandExec.execCommand(selectionKey, b);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

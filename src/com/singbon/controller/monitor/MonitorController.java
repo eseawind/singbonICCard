@@ -111,7 +111,7 @@ public class MonitorController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/command.do", method = RequestMethod.POST)
-	public void command(String sn, Integer groupId, String cmd, HttpServletRequest request, HttpServletResponse response, Model model) {
+	public void command(String sn, Integer groupId, String cmd, Integer cookbookCode, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
 
 		List<String> snList = new ArrayList<String>();
@@ -140,7 +140,8 @@ public class MonitorController extends BaseController {
 						commandIndex = sendCommand.getCommandCode() + 1;
 					}
 				}
-				MonitorService.addCommand(company, sn2, cmd, commandIndex, sendCommandList);
+				Device device = TerminalManager.SNToDevicelList.get(sn2);
+				this.monitorService.addCommand(company, device, cmd, cookbookCode, commandIndex, sendCommandList);
 			}
 		}
 	}

@@ -4,10 +4,11 @@
 	<resultMap id="sysUser" type="com.singbon.entity.SysUser">
 	</resultMap>
 	<parameterMap type="com.singbon.entity.SysUser" id="sysUser2" />
+	<cache eviction="FIFO" size="2000" readOnly="true"/>
 	<select id="selectByOperId" resultMap="sysUser">
 		select * from sysuser where operId=#{operId}
 	</select>
-	<select id="login" resultMap="sysUser">
+	<select id="login" resultMap="sysUser" useCache="false">
 		select u.* from sysuser u,company c where u.companyId=c.id and u.loginName =#{loginName} and u.loginPwd=#{loginPwd} and c.companyName =#{companyName}
 	</select>
 	<select id="selectByLoginInfo" resultMap="sysUser">
@@ -19,7 +20,7 @@
 	<select id="selectCashierList" resultMap="sysUser">
 		select * from sysuser where userType=2 and companyId =#{companyId}
 	</select>
-	<select id="selectMaxCardNO" resultType="java.lang.Integer">
+	<select id="selectMaxCardNO" resultType="java.lang.Integer" useCache="false">
 		select ifnull(max(cardNO),0)+1 cardNO from sysUser where companyId=#{companyId}
 	</select>
 	<select id="selectCountByCardSN" resultType="java.lang.Integer">

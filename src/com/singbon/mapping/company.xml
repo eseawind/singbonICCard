@@ -11,7 +11,7 @@
 	<select id="selectAllList" resultMap="company">
 		select * from company
 	</select>
-	<update id="updateSystemPwd" parameterMap="company2">
+	<update id="updateSystemPara" parameterMap="company2">
 		update company set companyName=#{companyName},serialNumber=#{serialNumber},authNumber=#{authNumber},baseSection=#{baseSection}
 		where id=#{id}
 	</update>

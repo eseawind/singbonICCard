@@ -4,6 +4,7 @@
 	<resultMap id="orderTime" type="com.singbon.entity.OrderTime">
 	</resultMap>
 	<parameterMap type="com.singbon.entity.OrderTime" id="orderTime2" />
+	<cache eviction="FIFO" size="12" readOnly="true"/>
 	<insert id="insert">
 		insert into orderTime (companyId,orderTimeName,beginTime,endTime,enable)
 			select #{companyId},orderTimeName,beginTime,endTime,1 from orderTimeBase

@@ -4,6 +4,7 @@
 	<resultMap id="multiWaterRate" type="com.singbon.entity.MultiWaterRate">
 	</resultMap>
 	<parameterMap type="com.singbon.entity.MultiWaterRate" id="multiWaterRate2" />
+	<cache eviction="FIFO" size="1" readOnly="true"/>
 	<insert id="insert">
 		insert into multiWaterRate (companyId,consumeType,chargeType,rate1Status,rate1DeductFare,rate1DeductCycle,rate2Status,rate2DeductFare,rate2DeductCycle,rate3Status,rate3DeductFare,rate3DeductCycle,rate4Status,rate4DeductFare,rate4DeductCycle)
 			select #{companyId},consumeType,chargeType,rate1Status,rate1DeductFare,rate1DeductCycle,rate2Status,rate2DeductFare,rate2DeductCycle,rate3Status,rate3DeductFare,rate3DeductCycle,rate4Status,rate4DeductFare,rate4DeductCycle from multiWaterRateBase

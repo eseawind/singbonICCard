@@ -27,7 +27,7 @@ public interface CompanyDAO extends BaseDAO {
 	 * @param obj
 	 * @return
 	 */
-	public void updateSystemPwd(Company company);
+	public void updateSystemPara(Company company);
 
 	/**
 	 * 所有列表

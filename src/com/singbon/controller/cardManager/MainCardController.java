@@ -22,8 +22,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.singbon.controller.BaseController;
-import com.singbon.device.CommandCodeCardReader;
-import com.singbon.device.FrameCardReader;
+import com.singbon.device.CardReaderCommandCode;
+import com.singbon.device.CardReaderResultCommandCode;
 import com.singbon.device.TerminalManager;
 import com.singbon.entity.Batch;
 import com.singbon.entity.CardAllInfo;
@@ -237,7 +237,7 @@ public class MainCardController extends BaseController {
 		int cardSNCount = this.mainCardService.selectCountByCardSN(companyId, cardSN);
 		if (cardSNCount > 0) {
 			Map map = new HashMap();
-			map.put("'f1'", FrameCardReader.ExsitCardSN);
+			map.put("'f1'", CardReaderResultCommandCode.ExsitCardSN);
 			TerminalManager.sendToCardManager(map, sn);
 			return 1;
 		}
@@ -279,7 +279,7 @@ public class MainCardController extends BaseController {
 				try {
 					int cardNO = this.mainCardService.selectMaxCardNO(company.getId());
 					user.setCompanyId(company.getId());
-					user.setStatus(1);
+					user.setStatus(241);
 					user.setCardSeq(1);
 					user.setCardNO(cardNO);
 					user.setCardMakeDate(new Date());
@@ -292,7 +292,7 @@ public class MainCardController extends BaseController {
 
 					cardAllInfo.setCardBatch(batchId);
 
-					this.mainCardService.makeCardByUserInfo(device, socketChannel, user, cardAllInfo, cardSN, CommandCodeCardReader.SingleCard, section);
+					this.mainCardService.makeCardByUserInfo(device, socketChannel, user, cardAllInfo, cardSN, CardReaderCommandCode.SingleCard, section);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -324,7 +324,7 @@ public class MainCardController extends BaseController {
 					} else {
 						cardAllInfo.setCardBatch(batch.getId());
 					}
-					this.mainCardService.makeCardByUserInfo(device, socketChannel, user2, cardAllInfo, cardSN, CommandCodeCardReader.InfoCard, section);
+					this.mainCardService.makeCardByUserInfo(device, socketChannel, user2, cardAllInfo, cardSN, CardReaderCommandCode.InfoCard, section);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -418,7 +418,7 @@ public class MainCardController extends BaseController {
 						// 获取基本扇区0块
 						List<Integer> sectionBlocks = new ArrayList<Integer>();
 						sectionBlocks.add(section * 10);
-						TerminalManager.getCardInfo(socketChannel, device, CommandCodeCardReader.SingleCard, sectionBlocks);
+						TerminalManager.getCardInfo(socketChannel, device, CardReaderCommandCode.SingleCard, sectionBlocks);
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -459,7 +459,7 @@ public class MainCardController extends BaseController {
 					// 获取基本信息区0块
 					List<Integer> sectionBlocks = new ArrayList<Integer>();
 					sectionBlocks.add(section * 10);
-					TerminalManager.getCardInfo(socketChannel, device, CommandCodeCardReader.InfoCard, sectionBlocks);
+					TerminalManager.getCardInfo(socketChannel, device, CardReaderCommandCode.InfoCard, sectionBlocks);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -473,7 +473,7 @@ public class MainCardController extends BaseController {
 					// 获取基本信息区0块
 					List<Integer> sectionBlocks = new ArrayList<Integer>();
 					sectionBlocks.add(section * 10);
-					TerminalManager.getCardInfo(socketChannel, device, CommandCodeCardReader.Unloss, sectionBlocks);
+					TerminalManager.getCardInfo(socketChannel, device, CardReaderCommandCode.Unloss, sectionBlocks);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -487,7 +487,7 @@ public class MainCardController extends BaseController {
 					// 获取全部扇区
 					List<Integer> sectionBlocks = new ArrayList<Integer>();
 					sectionBlocks.add(section * 10);
-					TerminalManager.getCardInfo(socketChannel, device, CommandCodeCardReader.RemakeCard, sectionBlocks);
+					TerminalManager.getCardInfo(socketChannel, device, CardReaderCommandCode.RemakeCard, sectionBlocks);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -504,7 +504,7 @@ public class MainCardController extends BaseController {
 					sectionBlocks.add(section * 10 + 2);
 					sectionBlocks.add((section + 1) * 10);
 					sectionBlocks.add((section + 2) * 10);
-					TerminalManager.getCardInfo(socketChannel, device, CommandCodeCardReader.ReadOldCard, sectionBlocks);
+					TerminalManager.getCardInfo(socketChannel, device, CardReaderCommandCode.ReadOldCard, sectionBlocks);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -518,7 +518,7 @@ public class MainCardController extends BaseController {
 					// 获取基本扇区0块
 					List<Integer> sectionBlocks = new ArrayList<Integer>();
 					sectionBlocks.add(section * 10);
-					TerminalManager.getCardInfo(socketChannel, device, CommandCodeCardReader.ChangeNewCard, sectionBlocks);
+					TerminalManager.getCardInfo(socketChannel, device, CardReaderCommandCode.ChangeNewCard, sectionBlocks);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -536,7 +536,7 @@ public class MainCardController extends BaseController {
 					sectionBlocks.add(section * 10 + 2);
 					sectionBlocks.add((section + 1) * 10);
 					sectionBlocks.add((section + 2) * 10);
-					TerminalManager.getCardInfo(socketChannel, device, CommandCodeCardReader.ReadCard, sectionBlocks);
+					TerminalManager.getCardInfo(socketChannel, device, CardReaderCommandCode.ReadCard, sectionBlocks);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -552,7 +552,7 @@ public class MainCardController extends BaseController {
 					sectionBlocks.add(section * 10);
 					sectionBlocks.add(section * 10 + 2);
 					sectionBlocks.add(section * 20);
-					TerminalManager.getCardInfo(socketChannel, device, CommandCodeCardReader.ReadCardOddFare, sectionBlocks);
+					TerminalManager.getCardInfo(socketChannel, device, CardReaderCommandCode.ReadCardOddFare, sectionBlocks);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -677,7 +677,7 @@ public class MainCardController extends BaseController {
 					} else {
 						cardAllInfo.setCardBatch(batch.getId());
 					}
-					this.mainCardService.makeCardByUserInfo(device, socketChannel, user, cardAllInfo, cardSN, CommandCodeCardReader.RemakeCard, section);
+					this.mainCardService.makeCardByUserInfo(device, socketChannel, user, cardAllInfo, cardSN, CardReaderCommandCode.RemakeCard, section);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -807,18 +807,6 @@ public class MainCardController extends BaseController {
 		// 按卡修正
 		if (updateType == 0) {
 			try {
-				// "未发卡", "正常", "挂失", "异常"
-				int status = user.getStatus();
-				if (status == 241) {
-					status = 1;
-				} else if (status == 242) {
-					status = 3;
-				} else if (status == 243) {
-					status = 2;
-				} else {
-					status = 99;
-				}
-				user.setStatus(status);
 				this.mainCardService.updateByCard(user);
 				p.print(1);
 			} catch (Exception e) {
@@ -844,7 +832,7 @@ public class MainCardController extends BaseController {
 					} else {
 						cardAllInfo.setCardBatch(batch.getId());
 					}
-					this.mainCardService.makeCardByUserInfo(device, socketChannel, user2, cardAllInfo, user2.getCardSN(), CommandCodeCardReader.ReadCard, section);
+					this.mainCardService.makeCardByUserInfo(device, socketChannel, user2, cardAllInfo, user2.getCardSN(), CardReaderCommandCode.ReadCard, section);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

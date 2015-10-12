@@ -12,8 +12,6 @@ public class User implements Serializable {
 
 	private static final long serialVersionUID = -4349415810057681133L;
 
-	String[] statusDescList = { "未发卡", "正常", "挂失", "未开户或注销", "异常" };
-
 	// 卡基本信息
 	// 用户帐号
 	private Integer userId;
@@ -266,16 +264,39 @@ public class User implements Serializable {
 		this.invalidDate = invalidDate;
 	}
 
+	/**
+	 * 0未发卡、241正常、243挂失、244注销卡，其他都是异常卡
+	 * 
+	 * @return
+	 */
 	public Integer getStatus() {
 		return status;
 	}
 
+	/**
+	 * 0未发卡、241正常、243挂失、244注销卡，其他都是异常卡
+	 */
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
 
+	/**
+	 * 0未发卡、241正常、243挂失、244注销卡，其他都是异常卡
+	 */
 	public String getStatusDesc() {
-		return this.statusDescList[status];
+		String des = null;
+		if (status == 0) {
+			des = "未发卡";
+		} else if (status == 241) {
+			des = "正常";
+		} else if (status == 243) {
+			des = "挂失";
+		} else if (status == 244) {
+			des = "注销";
+		} else  {
+			des = "异常卡";
+		}
+		return des;
 	}
 
 	public void setStatusDesc(String statusDesc) {

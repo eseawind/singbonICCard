@@ -190,19 +190,34 @@ function initUI(_box){
 		$(this).click(function(event){
 			var $this = $(this);
 			var url=$this.attr('url');
-			if(url!=null && url.indexOf('specialCard/index.do')!=-1){
-				var specialOptions = {
-					width : 900,
-					height : 550,
-					max : false,
-					mask : true,
-					mixable : false,
-					minable : false,
-					resizable : true,
-					drawable : true,
-					fresh : false
-				};
-				$.pdialog.open(url, 'dialog', '功能卡制作', specialOptions);
+			if(url!=null){
+				if(url.indexOf('specialCard/index.do')!=-1){
+					var specialOptions = {
+							width : 900,
+							height : 550,
+							max : false,
+							mask : true,
+							mixable : false,
+							minable : false,
+							resizable : true,
+							drawable : true,
+							fresh : false
+					};
+					$.pdialog.open(url, 'dialog', '功能卡制作', specialOptions);
+				}else if(url.indexOf('cardReader/index.do')!=-1){
+					var specialOptions = {
+							width : 300,
+							height : 200,
+							max : false,
+							mask : true,
+							mixable : false,
+							minable : false,
+							resizable : true,
+							drawable : true,
+							fresh : false
+					};
+					$.pdialog.open(url, 'dialog', '参数下载', specialOptions);					
+				}
 				return;
 			}
 			var title = $this.attr("title") || $this.text();

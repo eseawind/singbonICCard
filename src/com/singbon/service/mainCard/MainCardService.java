@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.singbon.dao.common.UserDAO;
-import com.singbon.device.CommandCardReader;
-import com.singbon.device.CommandCodeCardReader;
+import com.singbon.device.CardReaderFrame;
+import com.singbon.device.CardReaderCommandCode;
 import com.singbon.device.CommandDevice;
 import com.singbon.device.DeviceType;
 import com.singbon.device.TerminalManager;
@@ -152,11 +152,11 @@ public class MainCardService {
 	 * @throws Exception
 	 */
 	public void makeCardByUserInfo(Device device, SocketChannel socketChannel, User user, CardAllInfo cardAllInfo, String cardSN, int commandCode, int section) throws Exception {
-		if (commandCode == CommandCodeCardReader.SingleCard) {
+		if (commandCode == CardReaderCommandCode.SingleCard) {
 			this.mainCardDAO.insert(user);
-		} else if (commandCode == CommandCodeCardReader.InfoCard) {
+		} else if (commandCode == CardReaderCommandCode.InfoCard) {
 			this.mainCardDAO.infoCard(user);
-		} else if (commandCode == CommandCodeCardReader.RemakeCard) {
+		} else if (commandCode == CardReaderCommandCode.RemakeCard) {
 			this.mainCardDAO.remakeCard(user);
 		}
 
@@ -179,7 +179,7 @@ public class MainCardService {
 		String tmLimitDayFare = StringUtil.hexLeftPad(cardAllInfo.getLimitDayFare(), 2);// 1
 		String tmLimitTimesFare = StringUtil.hexLeftPad(cardAllInfo.getLimitTimesFare(), 4);// 2
 		String tmCardSeq = "01";// 1
-		if (commandCode != CommandCodeCardReader.SingleCard && commandCode != CommandCodeCardReader.InfoCard) {
+		if (commandCode != CardReaderCommandCode.SingleCard && commandCode != CardReaderCommandCode.InfoCard) {
 			tmCardSeq = StringUtil.hexLeftPad(user.getCardSeq(), 2);// 1
 		}
 		String tmCardType = StringUtil.hexLeftPad(user.getCardTypeId(), 2);// 1
@@ -248,7 +248,7 @@ public class MainCardService {
 
 		// 静态ID（16字节高字节在前）+设备机器号（4字节高字节在前）+数据长度（2字节高字节在前）+cd+01+是否校验卡号标志（1字节）+物理卡号（4字节高字节在前）+读卡扇区号（1字节）+读卡块号（1字节）+读写状态字节（1字节）+块数据（16字节高字节在前）+读卡扇区号（1字节）+读卡块号（1字节）+读写状态字节（1字节）+块数据（16字节高字节在前）+...+CRC校验（字节高字节在前）
 		String commandCodeStr = "0000" + StringUtil.hexLeftPad(commandCode, 4);
-		String sendStr = CommandCardReader.WriteCard + commandCodeStr + CommandCardReader.ValidateCardSN + cardSN + baseBlock0 + baseBlock1 + baseBlock2 + consumeBlock0 + consumeBlock1
+		String sendStr = CardReaderFrame.WriteCard + commandCodeStr + CardReaderFrame.ValidateCardSN + cardSN + baseBlock0 + baseBlock1 + baseBlock2 + consumeBlock0 + consumeBlock1
 				+ consumeBlock2 + subsidyBlock0 + subsidyBlock1 + subsidyBlock2 + forthBlock0 + forthBlock1 + forthBlock2 + "0000";
 		String bufLen = StringUtil.hexLeftPad(2 + sendStr.length() / 2, 4);
 		sendStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + CommandDevice.NoSubDeviceNum + "0000" + DeviceType.CardReader + bufLen + sendStr;
@@ -281,8 +281,8 @@ public class MainCardService {
 	public void unloss(Integer userId, SocketChannel socketChannel, Device device, String cardSN, String cardInfoStr) throws Exception {
 		this.mainCardDAO.changeStatus(userId, 1);
 
-		String commandCodeStr = "0000" + StringUtil.hexLeftPad(CommandCodeCardReader.Unloss, 4);
-		String sendBufStr = CommandCardReader.WriteCard + commandCodeStr + CommandCardReader.ValidateCardSN + cardSN + cardInfoStr;
+		String commandCodeStr = "0000" + StringUtil.hexLeftPad(CardReaderCommandCode.Unloss, 4);
+		String sendBufStr = CardReaderFrame.WriteCard + commandCodeStr + CardReaderFrame.ValidateCardSN + cardSN + cardInfoStr;
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
 		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + CommandDevice.NoSubDeviceNum + DeviceType.Main + DeviceType.CardReader + bufLen + sendBufStr;
 		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
@@ -305,8 +305,8 @@ public class MainCardService {
 		String cardNOStr = StringUtil.hexLeftPad(cardNO, 8);
 		String cardSeq = StringUtil.hexLeftPad(Integer.valueOf(cardInfoStr.substring(52, 54), 16) + 1, 2);
 		cardInfoStr = cardInfoStr.substring(0, 14) + cardNOStr + cardInfoStr.substring(22, 52) + cardSeq + cardInfoStr.substring(54);
-		String commandCodeStr = "0000" + StringUtil.hexLeftPad(CommandCodeCardReader.ChangeNewCard, 4);
-		String sendBufStr = CommandCardReader.WriteCard + commandCodeStr + CommandCardReader.ValidateCardSN + cardSN + cardInfoStr;
+		String commandCodeStr = "0000" + StringUtil.hexLeftPad(CardReaderCommandCode.ChangeNewCard, 4);
+		String sendBufStr = CardReaderFrame.WriteCard + commandCodeStr + CardReaderFrame.ValidateCardSN + cardSN + cardInfoStr;
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
 		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + CommandDevice.NoSubDeviceNum + DeviceType.Main + DeviceType.CardReader + bufLen + sendBufStr;
 		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
@@ -369,8 +369,8 @@ public class MainCardService {
 		}
 
 		cardInfoStr = cardInfoStr.substring(0, 26) + StringUtil.hexLeftPad(totalFare, 8) + cardInfoStr.substring(34, 50) + StringUtil.hexLeftPad(oddFare, 6) + cardInfoStr.substring(56);
-		String commandCodeStr = "0000" + StringUtil.hexLeftPad(CommandCodeCardReader.Charge, 4);
-		String sendBufStr = CommandCardReader.WriteCard + commandCodeStr + CommandCardReader.ValidateCardSN + user.getCardSN() + cardInfoStr;
+		String commandCodeStr = "0000" + StringUtil.hexLeftPad(CardReaderCommandCode.Charge, 4);
+		String sendBufStr = CardReaderFrame.WriteCard + commandCodeStr + CardReaderFrame.ValidateCardSN + user.getCardSN() + cardInfoStr;
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
 		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + CommandDevice.NoSubDeviceNum + DeviceType.Main + DeviceType.CardReader + bufLen + sendBufStr;
 		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);

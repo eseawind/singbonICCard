@@ -17,8 +17,6 @@ public class SysUser implements Serializable {
 	private Integer operId;
 	private Integer companyId;
 	private String operName;
-	private Integer cardNO;
-	private String cardSN;
 	private String superAdmin;
 	private String loginName;
 	private String loginPwd;
@@ -141,22 +139,6 @@ public class SysUser implements Serializable {
 
 	public void setCompanyId(Integer companyId) {
 		this.companyId = companyId;
-	}
-
-	public Integer getCardNO() {
-		return cardNO;
-	}
-
-	public void setCardNO(Integer cardNO) {
-		this.cardNO = cardNO;
-	}
-
-	public String getCardSN() {
-		return cardSN;
-	}
-
-	public void setCardSN(String cardSN) {
-		this.cardSN = cardSN;
 	}
 
 }

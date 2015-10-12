@@ -32,35 +32,36 @@
 
 <div class="form"
 	style="float: left; display: block; overflow: auto; width: 240px; border: solid 1px #CCC; line-height: 21px; background: #fff">
+	<div layoutH="434"></div>
 	<form id="orderTimeForm" method="post" action="${base}/save.do"
 		class="pageForm required-validate">
-		<div class="pageFormContent" style="padding: 200px 0 50px;">
-			<dl>
+		<div class="pageFormContent">
+			<dl style="margin: 10px 0;">
 				<dt>餐别：</dt>
 				<dd>
 					<input type="hidden" name="id"/>
 					<input type="text" name="orderTimeName" maxlength="20" class="required"/>
 				</dd>
 			</dl>
-			<dl style="width: 300px;">
+			<dl style="margin: 10px 0;width: 300px;">
 				<dt>开始时间：</dt>
 				<dd>
 					<input type="text" name="beginTime" maxlength="20" class="date required" datefmt="HH:mm"/>
 				</dd>
 			</dl>
-			<dl style="width: 300px;">
+			<dl style="margin: 10px 0;width: 300px;">
 				<dt>结束时间：</dt>
 				<dd>
 					<input type="text" name="endTime" maxlength="20" class="date required" datefmt="HH:mm"/>
 				</dd>
 			</dl>
-			<dl>
+			<dl style="margin: 10px 0;">
 				<dt>备注：</dt>
 				<dd>
 					<input type="text" name="remark" maxlength="20" class=""/>
 				</dd>
 			</dl>
-			<dl>
+			<dl style="margin: 10px 0 50px;">
 				<dt>&nbsp;</dt>
 				<dd>
 					<input type="checkbox" name="status" checked="checked" style="width:13px;"/>是否启用

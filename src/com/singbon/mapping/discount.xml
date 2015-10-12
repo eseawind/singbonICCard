@@ -4,6 +4,7 @@
 	<resultMap id="discount" type="com.singbon.entity.Discount">
 	</resultMap>
 	<parameterMap type="com.singbon.entity.Discount" id="discount2" />
+	<cache eviction="FIFO" size="16" readOnly="true"/>
 	<insert id="insert">
 		insert into discount (companyId,discountType,rate,subsidy,giveCash)
 			select #{companyId},discountType,rate,subsidy,giveCash from discountBase

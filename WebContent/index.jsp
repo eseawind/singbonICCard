@@ -140,7 +140,8 @@
 				</tr>
 				<tr>
 					<td>单位名称:</td>
-					<td><input type='text' name='companyName' value='1'/><span>单位名称不能为空</span> </td>
+					<td><input type='text' name='companyName' value='河南郑州电子有限公司'/><span>单位名称不能为空</span> </td>
+<!-- 					<td><input type='text' name='companyName' value='1'/><span>单位名称不能为空</span> </td> -->
 				</tr>
 				<tr>
 					<td>用户名:</td>
