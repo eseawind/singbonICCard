@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.singbon.dao.common.UserDAO">
+<mapper namespace="com.singbon.dao.UserDAO">
 	<resultMap id="user" type="com.singbon.entity.User">
 	</resultMap>
 	<parameterMap type="com.singbon.entity.User" id="user2" />
@@ -16,11 +16,15 @@
 		where userId=#{userId}
 	</update>
 	<update id="infoCard" parameterMap="user2">
-		update user set cardNO=#{cardNO},cardSN=#{cardSN},cardSeq=1,status=1,cardMakeDate=now(),totalFare=#{totalFare},oddFare=#{oddFare},opCount=#{opCount}
+		update user set cardNO=#{cardNO},cardSN=#{cardSN},cardSeq=1,status=241,cardMakeDate=now(),totalFare=#{totalFare},oddFare=#{oddFare},opCount=#{opCount}
 		where userId=#{userId}
 	</update>
 	<update id="remakeCard" parameterMap="user2">
-		update user set cardNO=#{cardNO},cardSN=#{cardSN},cardSeq=#{cardSeq},status=1
+		update user set cardNO=#{cardNO},cardSN=#{cardSN},cardSeq=#{cardSeq},status=241
+		where userId=#{userId}
+	</update>
+	<update id="unloss" parameterMap="user2">
+		update user set cardNO=#{cardNO},status=241
 		where userId=#{userId}
 	</update>
 	<update id="changeStatus">
@@ -56,8 +60,8 @@
 		</foreach>
 		)
 	</delete>
-	<select id="selectByUserId" resultMap="user">
-		select * from user where userId=#{userId}
+	<select id="selectById" resultMap="user">
+		select * from user where userId=#{id}
 	</select>
 	<select id="selectByUserIdCardSN" resultMap="user">
 		select * from user where companyId=#{companyId} and cardSN=#{cardSN}
@@ -135,7 +139,7 @@
 		</if>
 	</sql>
 	<select id="selectByPage" resultMap="user">
-		select count(userId) userId,null userNO,null username,null sex,null cardID,null cardTypeId,null status from user <include refid="whereSelectByPage"/> union 
-		(select userId,userNO,username,sex,cardID,cardTypeId,status from user <include refid="whereSelectByPage"/> limit #{offset},#{numPerPage});
+		select count(userId) userId,null userNO,null username, null cardNO,null sex,null cardID,null cardTypeId,null status from user <include refid="whereSelectByPage"/> union 
+		(select userId,userNO,username,cardNO,sex,cardID,cardTypeId,status from user <include refid="whereSelectByPage"/> limit #{offset},#{numPerPage});
 	</select>
 </mapper>

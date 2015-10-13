@@ -85,6 +85,18 @@
 				alertMsg.warn('读卡机当前处于离线状态不能换新卡！');
 			}
 		});
+		$('#userinfo .offWithCard').click(function() {
+			if(isOnline){
+// 				alertMsg.confirm('确定要注销该人员吗？', {
+// 					okCall : function() {
+						$.post('${base }/command.do?comm=offWithCard',function(e){
+						});
+// 					}
+// 				});
+			}else{
+				alertMsg.warn('读卡机当前处于离线状态不能注销卡！');
+			}
+		});
 	});
 
 	function init() {
@@ -93,22 +105,19 @@
 		JS.Engine.on({
 			'c${sn}' : function(e) {//侦听一个channel
 				var e2 = eval('(' + e + ')');
+				heartTime=new Date();
 				//存在物理卡号
 				if(e2.f1==0x70){
 					alertMsg.warn('该卡片已经发行，请放置新卡！');
 				}
 				//读卡器状态
-				else if (e2.f1 == 0x01 && e2.r == 1) {
-					heartTime=new Date();
+				else if (e2.f1 == 0x02 && e2.r == 1) {
 					$('.dialogHeader_c h1').html(title + '——读卡机状态：在线');
 					isOnline=true;
 					if(!isHeart){
 						heart();
 						isHeart=true;
 					}
-				//心跳
-// 				} else if (e2.f1 == 0x02) {
-// 					heartTime=new Date();
 				//解挂命令
 				} else if (e2.f1 == 0x07) {
 					if(e2.r==1){
@@ -131,6 +140,31 @@
 						refreshUserList();
 						$('#userinfo .close').click();								
 						alertMsg.correct('解挂成功！');
+					}else{
+						opCardResult(e2.r);
+					}	
+				//有卡注销命令
+				} else if (e2.f1 == 0x1c) {
+					if(e2.r==1){
+						var userId= $('#userinfo input[name=userId]').val();
+						var cardSN= $('#userinfo input[name=cardSN]').val();
+						
+						if(userId==e2.userId && cardSN==e2.cardSN){
+							$('#userinfo input[name=cardInfoStr]').val(e2.cardInfoStr);
+							validateCallback($('#userinfo'), function(e) {
+							}, null);
+						}else{
+							alertMsg.warn('该卡片与用户信息不匹配请更换！');					
+						}
+					}else{
+						opCardResult(e2.r);
+					}
+				//有卡注销完成
+				}else if(e2.f1==0x1d){
+					if(e2.r==1){
+						refreshUserList();
+						$('#userinfo .close').click();								
+						alertMsg.correct('有卡注销完成！');
 					}else{
 						opCardResult(e2.r);
 					}	
@@ -273,7 +307,11 @@
 			<legend>挂失原因</legend>
 			<dl>
 				<dt>
-					<label><input type="radio" name="lossReason" checked="checked" value="0" />卡遗失  <input type="radio" name="lossReason" value="1" />卡损坏</label> 
+					<label>
+						<input type="hidden" name="cardNO" value="${user.cardNO }" />
+						<input type="radio" name="lossReason" checked="checked" value="0" />卡遗失 
+						<input type="radio" name="lossReason" value="1" />卡损坏
+					</label> 
 				</dt>
 			</dl>
 		</fieldset>
@@ -309,6 +347,13 @@
 						</div>
 						<div class="buttonContent changeNewCard" style="display: none;">
 							<button type="button">换新卡</button>
+						</div>
+					</div></li>
+			</c:if>
+			<c:if test="${editType==5 }">
+				<li><div class="button">
+						<div class="buttonContent offWithCard">
+							<button type="button">注销</button>
 						</div>
 					</div></li>
 			</c:if>

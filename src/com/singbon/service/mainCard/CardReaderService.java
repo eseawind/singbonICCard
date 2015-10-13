@@ -19,7 +19,7 @@ import com.singbon.util.StringUtil;
  * 
  */
 @Service
-public class CardReaderService{
+public class CardReaderService {
 
 	/**
 	 * 单位名称
@@ -30,6 +30,21 @@ public class CardReaderService{
 	 */
 	public void downloadName(Company company, SocketChannel socketChannel, Device device) throws Exception {
 		String sendBufStr = CardReaderFrame.CompanyName + "00000000" + StringUtil.strRightPad(StringUtil.strToGB2312(company.getCompanyName()), 64) + "0000";
+		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
+		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + CommandDevice.NoSubDeviceNum + DeviceType.Main + DeviceType.CardReader + bufLen + sendBufStr;
+		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
+		TerminalManager.sendToCardReader(socketChannel, sendBuf);
+	}
+
+	/**
+	 * 系统密码
+	 * 
+	 * @param userId
+	 * @return
+	 * @throws Exception
+	 */
+	public void sysPwd(Company company, SocketChannel socketChannel, Device device) throws Exception {
+		String sendBufStr = CardReaderFrame.CardReaderPwd + "00000000" + StringUtil.getSysPwd(company) + StringUtil.hexLeftPad(company.getBaseSection(), 2) + "0000";
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
 		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + CommandDevice.NoSubDeviceNum + DeviceType.Main + DeviceType.CardReader + bufLen + sendBufStr;
 		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);

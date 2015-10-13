@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.singbon.controller.BaseController;
 import com.singbon.entity.Company;
 import com.singbon.entity.SysUser;
-import com.singbon.service.system.CompanyService;
+import com.singbon.service.CompanyService;
 
 /**
  * 系统密码控制类

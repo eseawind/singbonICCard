@@ -6,12 +6,12 @@ package com.singbon.device;
  * @author 郝威
  * 
  */
-public class PosSubFrameSysPara {
+public class PosSubFrameSysParam {
 
 	/**
-	 * 系统参数
+	 * 消费参数
 	 */
-	public final static byte SysPara = 0x01;
+	public final static byte ConsumeParam = 0x01;
 	/**
 	 * 餐别限次
 	 */

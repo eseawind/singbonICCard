@@ -19,9 +19,9 @@ import com.singbon.device.TerminalManager;
 import com.singbon.entity.Company;
 import com.singbon.entity.Device;
 import com.singbon.entity.SysUser;
+import com.singbon.service.CompanyService;
 import com.singbon.service.SysUserService;
 import com.singbon.service.mainCard.SpecialCardService;
-import com.singbon.service.system.CompanyService;
 import com.singbon.util.StringUtil;
 
 /**
@@ -93,149 +93,166 @@ public class SpecialCardController extends BaseController {
 		return StringUtil.requestPath(request, "cashierList");
 	}
 
-//	/**
-//	 * 制出纳卡
-//	 * 
-//	 * @param user
-//	 * @param editType
-//	 *            0制卡、1补卡
-//	 * @param invalidDate
-//	 * @param request
-//	 * @param response
-//	 * @param model
-//	 */
-//	@RequestMapping(value = "/makeCashierCard.do", method = RequestMethod.POST)
-//	public void makeCashierCard(@ModelAttribute SysUser user, Integer editType, Date invalidDate, HttpServletRequest request, HttpServletResponse response, Model model) {
-//		Company company = (Company) request.getSession().getAttribute("company");
-//		Device device = (Device) request.getSession().getAttribute("device");
-//		String sn = device.getSn();
-//		int section = companyService.getSection(company.getId());
-//
-//		int cardSNCount = getCardSNCount(company.getId(), user.getCardSN(), sn);
-//		if (cardSNCount > 0) {
-//			return;
-//		}
-//		SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
-//		if (socketChannel != null) {
-//			try {
-//				int cardNO = this.specialCardService.selectMaxCardNO(company.getId());
-//				byte commandCode = CardReaderCommandCode.MakeCashierCard;
-//				if (editType == 1) {
-//					commandCode = CardReaderCommandCode.RemakeCashierCard;
-//					String cardSN = user.getCardSN();
-//					user = this.sysUserService.selectByOperId(user.getOperId());
-//					user.setCardSN(cardSN);
-//				}
-//				user.setCardNO(cardNO);
-//				user.setStatus(1);
-//				this.specialCardService.makeCashierCard(company.getId(), device, socketChannel, user, commandCode, section);
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//		}
-//	}
+	// /**
+	// * 制出纳卡
+	// *
+	// * @param user
+	// * @param editType
+	// * 0制卡、1补卡
+	// * @param invalidDate
+	// * @param request
+	// * @param response
+	// * @param model
+	// */
+	// @RequestMapping(value = "/makeCashierCard.do", method =
+	// RequestMethod.POST)
+	// public void makeCashierCard(@ModelAttribute SysUser user, Integer
+	// editType, Date invalidDate, HttpServletRequest request,
+	// HttpServletResponse response, Model model) {
+	// Company company = (Company) request.getSession().getAttribute("company");
+	// Device device = (Device) request.getSession().getAttribute("device");
+	// String sn = device.getSn();
+	// int section = companyService.getSection(company.getId());
+	//
+	// int cardSNCount = getCardSNCount(company.getId(), user.getCardSN(), sn);
+	// if (cardSNCount > 0) {
+	// return;
+	// }
+	// SocketChannel socketChannel =
+	// TerminalManager.SNToSocketChannelList.get(sn);
+	// if (socketChannel != null) {
+	// try {
+	// int cardNO = this.specialCardService.selectMaxCardNO(company.getId());
+	// byte commandCode = CardReaderCommandCode.MakeCashierCard;
+	// if (editType == 1) {
+	// commandCode = CardReaderCommandCode.RemakeCashierCard;
+	// String cardSN = user.getCardSN();
+	// user = this.sysUserService.selectByOperId(user.getOperId());
+	// user.setCardSN(cardSN);
+	// }
+	// user.setCardNO(cardNO);
+	// user.setStatus(1);
+	// this.specialCardService.makeCashierCard(company.getId(), device,
+	// socketChannel, user, commandCode, section);
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// }
+	// }
+	// }
 
-//	/**
-//	 * 挂失
-//	 * 
-//	 * @param user
-//	 * @param invalidDate
-//	 * @param request
-//	 * @param response
-//	 * @param model
-//	 */
-//	@RequestMapping(value = "/loss.do", method = RequestMethod.POST)
-//	public void loss(@ModelAttribute SysUser sysUser, Integer lossType, String cardInfoStr, HttpServletRequest request, HttpServletResponse response, Model model) {
-//		Device device = (Device) request.getSession().getAttribute("device");
-//		PrintWriter p = null;
-//		try {
-//			p = response.getWriter();
-//		} catch (IOException e1) {
-//			e1.printStackTrace();
-//		}
-//		if (lossType == 0) {
-//			try {
-//				this.specialCardService.changeStatus(sysUser.getOperId(), 2);
-//				p.print(1);
-//			} catch (Exception e) {
-//				p.print(0);
-//				e.printStackTrace();
-//			}
-//		} else {
-//			SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(device.getSn());
-//			if (socketChannel != null) {
-//				try {
-//					this.specialCardService.loss(sysUser, socketChannel, device, cardInfoStr);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		}
-//	}
+	// /**
+	// * 挂失
+	// *
+	// * @param user
+	// * @param invalidDate
+	// * @param request
+	// * @param response
+	// * @param model
+	// */
+	// @RequestMapping(value = "/loss.do", method = RequestMethod.POST)
+	// public void loss(@ModelAttribute SysUser sysUser, Integer lossType,
+	// String cardInfoStr, HttpServletRequest request, HttpServletResponse
+	// response, Model model) {
+	// Device device = (Device) request.getSession().getAttribute("device");
+	// PrintWriter p = null;
+	// try {
+	// p = response.getWriter();
+	// } catch (IOException e1) {
+	// e1.printStackTrace();
+	// }
+	// if (lossType == 0) {
+	// try {
+	// this.specialCardService.changeStatus(sysUser.getOperId(), 2);
+	// p.print(1);
+	// } catch (Exception e) {
+	// p.print(0);
+	// e.printStackTrace();
+	// }
+	// } else {
+	// SocketChannel socketChannel =
+	// TerminalManager.SNToSocketChannelList.get(device.getSn());
+	// if (socketChannel != null) {
+	// try {
+	// this.specialCardService.loss(sysUser, socketChannel, device,
+	// cardInfoStr);
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// }
+	// }
+	// }
+	// }
 
-//	/**
-//	 * 解挂
-//	 * 
-//	 * @param user
-//	 * @param invalidDate
-//	 * @param request
-//	 * @param response
-//	 * @param model
-//	 */
-//	@RequestMapping(value = "/unLoss.do", method = RequestMethod.POST)
-//	public void unLoss(@ModelAttribute SysUser sysUser, String cardInfoStr, HttpServletRequest request, HttpServletResponse response, Model model) {
-//		Device device = (Device) request.getSession().getAttribute("device");
-//		SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(device.getSn());
-//		if (socketChannel != null) {
-//			try {
-//				this.specialCardService.unloss(sysUser, socketChannel, device, cardInfoStr);
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//		}
-//	}
-//
-//	/**
-//	 * 修改出纳卡有效期
-//	 * 
-//	 * @param user
-//	 * @param invalidDate
-//	 * @param request
-//	 * @param response
-//	 * @param model
-//	 */
-//	@RequestMapping(value = "/doInvalidDate.do", method = RequestMethod.POST)
-//	public void doInvalidDate(@ModelAttribute SysUser sysUser, String cardInfoStr, HttpServletRequest request, HttpServletResponse response, Model model) {
-//		Device device = (Device) request.getSession().getAttribute("device");
-//		SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(device.getSn());
-//		if (socketChannel != null) {
-//			try {
-//				this.specialCardService.doInvalidDate(sysUser, cardInfoStr, socketChannel, device);
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//		}
-//	}
-//
-//	/**
-//	 * 获取重复物理卡号数量
-//	 * 
-//	 * @param companyId
-//	 * @param cardSN
-//	 * @param sn
-//	 * @return
-//	 */
-//	@SuppressWarnings({ "unchecked", "rawtypes" })
-//	private int getCardSNCount(int companyId, String cardSN, String sn) {
-//		int cardSNCount = this.specialCardService.selectCountByCardSN(companyId, cardSN);
-//		if (cardSNCount > 0) {
-//			Map map = new HashMap();
-//			map.put("'f1'", CardReaderResultCommandCode.ExsitCardSN);
-//			TerminalManager.sendToCardManager(map, sn);
-//			return 1;
-//		}
-//		return 0;
-//	}
+	// /**
+	// * 解挂
+	// *
+	// * @param user
+	// * @param invalidDate
+	// * @param request
+	// * @param response
+	// * @param model
+	// */
+	// @RequestMapping(value = "/unLoss.do", method = RequestMethod.POST)
+	// public void unLoss(@ModelAttribute SysUser sysUser, String cardInfoStr,
+	// HttpServletRequest request, HttpServletResponse response, Model model) {
+	// Device device = (Device) request.getSession().getAttribute("device");
+	// SocketChannel socketChannel =
+	// TerminalManager.SNToSocketChannelList.get(device.getSn());
+	// if (socketChannel != null) {
+	// try {
+	// this.specialCardService.unloss(sysUser, socketChannel, device,
+	// cardInfoStr);
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// }
+	// }
+	// }
+	//
+	// /**
+	// * 修改出纳卡有效期
+	// *
+	// * @param user
+	// * @param invalidDate
+	// * @param request
+	// * @param response
+	// * @param model
+	// */
+	// @RequestMapping(value = "/doInvalidDate.do", method = RequestMethod.POST)
+	// public void doInvalidDate(@ModelAttribute SysUser sysUser, String
+	// cardInfoStr, HttpServletRequest request, HttpServletResponse response,
+	// Model model) {
+	// Device device = (Device) request.getSession().getAttribute("device");
+	// SocketChannel socketChannel =
+	// TerminalManager.SNToSocketChannelList.get(device.getSn());
+	// if (socketChannel != null) {
+	// try {
+	// this.specialCardService.doInvalidDate(sysUser, cardInfoStr,
+	// socketChannel, device);
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// }
+	// }
+	// }
+	//
+	// /**
+	// * 获取重复物理卡号数量
+	// *
+	// * @param companyId
+	// * @param cardSN
+	// * @param sn
+	// * @return
+	// */
+	// @SuppressWarnings({ "unchecked", "rawtypes" })
+	// private int getCardSNCount(int companyId, String cardSN, String sn) {
+	// int cardSNCount = this.specialCardService.selectCountByCardSN(companyId,
+	// cardSN);
+	// if (cardSNCount > 0) {
+	// Map map = new HashMap();
+	// map.put("'f1'", CardReaderResultCommandCode.ExsitCardSN);
+	// TerminalManager.sendToCardManager(map, sn);
+	// return 1;
+	// }
+	// return 0;
+	// }
 
 	/**
 	 * 命令处理
@@ -249,7 +266,7 @@ public class SpecialCardController extends BaseController {
 		Company company = (Company) request.getSession().getAttribute("company");
 		Device device = (Device) request.getSession().getAttribute("device");
 		String sn = device.getSn();
-		int section = TerminalManager.getSection(company.getId());
+		int section = company.getSerialNumber();
 		if ("closeSocketChannel".equals(comm)) {
 			try {
 				TerminalManager.closeSocketChannel(sn);

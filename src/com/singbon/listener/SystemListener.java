@@ -17,7 +17,7 @@ import com.singbon.device.UDPServer;
 import com.singbon.entity.Company;
 import com.singbon.entity.Device;
 import com.singbon.entity.Meal;
-import com.singbon.service.system.CompanyService;
+import com.singbon.service.CompanyService;
 import com.singbon.service.systemManager.DeviceService;
 import com.singbon.service.systemManager.systemSetting.MealService;
 import com.singbon.util.DesUtil;

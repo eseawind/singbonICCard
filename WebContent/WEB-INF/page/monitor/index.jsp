@@ -295,11 +295,11 @@
 			'sysTime' : function(t, target) {
 				executeCmd(t,'sysTime');
 			},
-			'sysPara' : function(t, target) {
-				executeCmd(t,'sysPara');
+			'baseConsumeParam' : function(t, target) {
+				executeCmd(t,'baseConsumeParam');
 			},
-			'discount' : function(t, target) {
-				executeCmd(t,'discount');
+			'deviceParam' : function(t, target) {
+				executeCmd(t,'deviceParam');
 			},
 			'allCookbook' : function(t, target) {
 				executeCmd(t,'allCookbook');
@@ -412,22 +412,22 @@
 	<div class="contextMenu" id="menu" style="display: none;">
 		<ul>
 			<li id="sysTime">校验时间</li>
-			<li id="sysPara">系统参数</li>
-			<li id="sysPwd">系统密码</li>
-			<li id="discount">折扣费率及管理费</li>
-<!-- 								<li class="divide" /> -->
+			<li id="baseConsumeParam">消费类参数</li>
+			<li id="deviceParam">设备参数</li>
+<!-- 			<li id="discount">折扣费率及管理费</li> -->
+			<li class="divide" />
 			<li id="batchBlack">批次名单</li>
 			<li id="allAppend">全量名单</li>
 			<li id="incAppend">增量名单</li>
-<!-- 								<li class="divide" /> -->
+			<li class="divide" />
 			<li id="allCookbook">全部菜肴清单</li>
 			<li id="appendCookbook">追加菜肴清单</li>
 			<li id="singelCookbook">更新指定菜肴</li>
 			<li class="singleCookbook" style="display: none;">
 				<input type="text" id="code" value="编号" style="width: 35px;" onmousedown ="setCodeNull();"/><input type="button" value="确定" onclick="singleCookbook();"/>
 			</li>
+			<li class="divide" />
 			<li id="clear">清空命令</li>
-<!-- 								<li class="divide" /> -->
 			<li id="sysInit">初始化</li>
 		</ul>
 	</div>

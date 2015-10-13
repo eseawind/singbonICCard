@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.singbon.dao.BaseDAO;
-import com.singbon.dao.common.UserDAO;
+import com.singbon.dao.UserDAO;
 import com.singbon.entity.Pagination;
 import com.singbon.entity.User;
 import com.singbon.service.BaseService;

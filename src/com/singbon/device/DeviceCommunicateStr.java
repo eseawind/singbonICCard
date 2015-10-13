@@ -19,9 +19,9 @@ public class DeviceCommunicateStr {
 	 */
 	public static String SendSysTime = "505c025133336813dc6ea22ce385c25b8bfddc4600b5973f91f2e222f1af8a27";
 	/**
-	 * 系统参数
+	 * 消费参数
 	 */
-	public static String SendSysPara = "3dd5c55bfb45dbdbcd85540efbb4c5fc5ff8847d2718fad891f2e222f1af8a27";
+	public static String SendConsumeParam = "a98b6af7cc6b8fc485c2b200e39e6492";
 	/**
 	 * 餐别限次
 	 */
@@ -30,6 +30,14 @@ public class DeviceCommunicateStr {
 	 * 折扣费率
 	 */
 	public static String SendDiscount = "ec66aed2d16b487e4c0ecc868b8f2114165fe0d34cd91405c5f743040598dde8c7a221784bb367f1";
+	/**
+	 * 系统密码
+	 */
+	public static String SendSysPwd = "dadbc46a44d2b3b48fc11336ba357e63";
+	/**
+	 * 单位名称
+	 */
+	public static String SendCompanyName = "a1ddbac062f07f32d62dafbb21a22c4a";
 	/**
 	 * 发送订餐时间段1-6命令
 	 */
@@ -55,9 +63,9 @@ public class DeviceCommunicateStr {
 	 */
 	public static String ExecSysTime = "b137826844568d21dc6ea22ce385c25b8bfddc4600b5973f3f9be93b874a5e4b";
 	/**
-	 * 执行系统参数
+	 * 执行消费参数
 	 */
-	public static String ExecSysPara = "306f7cdabf55f23ecd85540efbb4c5fc5ff8847d2718fad83f9be93b874a5e4b";
+	public static String ExecConsumeParams = "bf8efbf283e53f571e3f80012baa3e36d452df9c591904d5";
 	/**
 	 * 执行餐别限次
 	 */
@@ -66,6 +74,14 @@ public class DeviceCommunicateStr {
 	 * 执行折扣费率
 	 */
 	public static String ExecDiscount = "c44f569755aff39c4c0ecc868b8f2114165fe0d34cd9140531fb68d15ac3162a8c09701f385c4f0b";
+	/**
+	 * 执行系统密码
+	 */
+	public static String ExecSysPwd = "306f7cdabf55f23e1d1abb99d61485bf4bea6fbefa3cefd6";
+	/**
+	 * 执行单位名称
+	 */
+	public static String ExecCompanyName = "4119c47dd3a8734e7a5226a8649c87b70814630be90175ee";
 	/**
 	 * 执行订餐时间段1-6命令
 	 */
@@ -105,7 +121,7 @@ public class DeviceCommunicateStr {
 
 	public static void main(String[] args) {
 		try {
-			String test = "不存在编号为%s的菜单";
+			String test = "执行单位名称";
 
 			DesUtil.desInit("ycsty");
 			System.out.println("加密前的字符：" + test);

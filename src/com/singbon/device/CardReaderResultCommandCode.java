@@ -129,5 +129,13 @@ public class CardReaderResultCommandCode {
 	 * 存取款完成 0x1b
 	 */
 	public static byte ChargeDone = 0x1b;
+	/**
+	 * 有卡注销命令 0x1c
+	 */
+	public static byte OffWithCardCmd = 0x1c;
+	/**
+	 * 有卡注销完成 0x1d
+	 */
+	public static byte OffWithCardDone = 0x1d;
 
 }

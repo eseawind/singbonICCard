@@ -31,7 +31,6 @@ import org.springframework.util.Assert;
 import com.singbon.entity.Company;
 import com.singbon.entity.Device;
 import com.singbon.entity.SysUser;
-import com.singbon.service.system.CompanyService;
 import com.singbon.service.systemManager.DeviceService;
 
 /**

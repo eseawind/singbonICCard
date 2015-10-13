@@ -78,6 +78,11 @@ public class CardReaderCommandExec {
 				map.put("'f1'", CardReaderResultCommandCode.UnlossDone);
 				map.put("'r'", cardStatus);
 			}
+			// 有卡注销完成
+			else if (commandCode == CardReaderCommandCode.OffWithCard) {
+				map.put("'f1'", CardReaderResultCommandCode.OffWithCardDone);
+				map.put("'r'", cardStatus);
+			}
 			// 补卡完成
 			else if (commandCode == CardReaderCommandCode.RemakeCard) {
 				map.put("'f1'", CardReaderResultCommandCode.RemakeCardDone);
@@ -161,6 +166,14 @@ public class CardReaderCommandExec {
 				map.put("'cardSN'", cardSN);
 				map.put("'userId'", Integer.parseInt(StringUtil.byteToHexStr(baseLen + 3, baseLen + 3 + 3, b), 16));
 			}
+			// 发有卡注销命令
+			else if (commandCode == CardReaderCommandCode.OffWithCard) {
+				map.put("'f1'", CardReaderResultCommandCode.OffWithCardCmd);
+				map.put("'r'", cardStatus);
+				map.put("'cardInfoStr'", StringUtil.byteToHexStr(baseLen, b.length - 1, b));
+				map.put("'cardSN'", cardSN);
+				map.put("'userId'", Integer.parseInt(StringUtil.byteToHexStr(baseLen + 3, baseLen + 3 + 3, b), 16));
+			}
 			// 发补卡命令
 			else if (commandCode == CardReaderCommandCode.RemakeCard) {
 				map.put("'f1'", CardReaderResultCommandCode.RemakeCardCmd);
@@ -207,10 +220,10 @@ public class CardReaderCommandExec {
 					String statusDesc = "正常";
 					if (status == 241) {
 						statusDesc = "正常";
-					} else if (status == 242) {
-						statusDesc = "未开户或注销";
 					} else if (status == 243) {
 						statusDesc = "挂失";
+					} else if (status == 244) {
+						statusDesc = "注销";
 					} else {
 						statusDesc = "异常";
 					}

@@ -214,13 +214,17 @@ public class PosCommandExec {
 			}
 			break;
 		// 系统参数
-		case PosFrame.SysPara:
-			if (subFrame == PosSubFrameSysPara.SysPara) {
-				map.put("des", DesUtil.decrypt(DeviceCommunicateStr.ExecSysPara));
-			} else if (subFrame == PosSubFrameSysPara.Meal) {
+		case PosFrame.Sys:
+			if (subFrame == PosSubFrameSysParam.ConsumeParam) {
+				map.put("des", DesUtil.decrypt(DeviceCommunicateStr.ExecConsumeParams));
+			} else if (subFrame == PosSubFrameSysParam.Meal) {
 				map.put("des", DesUtil.decrypt(DeviceCommunicateStr.ExecMeal));
-			} else if (subFrame == PosSubFrameSysPara.Discount) {
+			} else if (subFrame == PosSubFrameSysParam.Discount) {
 				map.put("des", DesUtil.decrypt(DeviceCommunicateStr.ExecDiscount));
+			} else if (sendCommand.getSubFrame() == PosSubFrameSysParam.SysPwd) {
+				map.put("des", DesUtil.decrypt(DeviceCommunicateStr.ExecSysPwd));
+			} else if (sendCommand.getSubFrame() == PosSubFrameSysParam.SetCompanyName) {
+				map.put("des", DesUtil.decrypt(DeviceCommunicateStr.ExecCompanyName));
 			}
 			break;
 		// 菜单

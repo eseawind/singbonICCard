@@ -1,11 +1,10 @@
-package com.singbon.dao.common;
+package com.singbon.dao;
 
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import com.singbon.dao.BaseDAO;
 import com.singbon.entity.User;
 
 /**
@@ -74,6 +73,14 @@ public interface UserDAO extends BaseDAO {
 	 * @return
 	 */
 	public void remakeCard(User user) throws Exception;
+	
+	/**
+	 * 解挂
+	 * 
+	 * @param user
+	 * @return
+	 */
+	public void unloss(User user) throws Exception;
 
 	/**
 	 * 以物理卡号查询绑定数量

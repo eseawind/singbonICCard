@@ -36,9 +36,9 @@ import com.singbon.entity.Pagination;
 import com.singbon.entity.SysUser;
 import com.singbon.entity.User;
 import com.singbon.entity.UserDept;
+import com.singbon.service.CompanyService;
 import com.singbon.service.balanceCenter.UserInfoService;
 import com.singbon.service.mainCard.MainCardService;
-import com.singbon.service.system.CompanyService;
 import com.singbon.service.systemManager.systemSetting.BatchService;
 import com.singbon.service.systemManager.systemSetting.DiscountService;
 import com.singbon.service.systemManager.systemSetting.UserDeptService;
@@ -404,7 +404,7 @@ public class MainCardController extends BaseController {
 	public void singleCardInit(String userNO, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
 		Device device = (Device) request.getSession().getAttribute("device");
-		int section = TerminalManager.getSection(company.getId());
+		int section = company.getSerialNumber();
 		PrintWriter p = null;
 		try {
 			p = response.getWriter();
@@ -443,119 +443,73 @@ public class MainCardController extends BaseController {
 		Company company = (Company) request.getSession().getAttribute("company");
 		Device device = (Device) request.getSession().getAttribute("device");
 		String sn = device.getSn();
-		int section = TerminalManager.getSection(company.getId());
+		int section = company.getBaseSection();
 		if ("closeSocketChannel".equals(comm)) {
 			try {
 				TerminalManager.closeSocketChannel(sn);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		}
-		// 信息发卡初始化
-		else if ("infoCardInit".equals(comm)) {
+		} else {
 			SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
-			if (socketChannel != null) {
-				try {
-					// 获取基本信息区0块
-					List<Integer> sectionBlocks = new ArrayList<Integer>();
-					sectionBlocks.add(section * 10);
-					TerminalManager.getCardInfo(socketChannel, device, CardReaderCommandCode.InfoCard, sectionBlocks);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+			if (socketChannel == null) {
+				return;
 			}
-		}
-		// 解挂初始化
-		else if ("unlossInit".equals(comm)) {
-			SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
-			if (socketChannel != null) {
-				try {
-					// 获取基本信息区0块
-					List<Integer> sectionBlocks = new ArrayList<Integer>();
-					sectionBlocks.add(section * 10);
-					TerminalManager.getCardInfo(socketChannel, device, CardReaderCommandCode.Unloss, sectionBlocks);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+			byte commandCode = 0;
+			List<Integer> sectionBlocks = new ArrayList<Integer>();
+			// 信息发卡初始化
+			if ("infoCardInit".equals(comm)) {
+				sectionBlocks.add(section * 10);
+				commandCode = CardReaderCommandCode.InfoCard;
 			}
-		}
-		// 补卡初始化
-		else if ("remakeCardInit".equals(comm)) {
-			SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
-			if (socketChannel != null) {
-				try {
-					// 获取全部扇区
-					List<Integer> sectionBlocks = new ArrayList<Integer>();
-					sectionBlocks.add(section * 10);
-					TerminalManager.getCardInfo(socketChannel, device, CardReaderCommandCode.RemakeCard, sectionBlocks);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+			// 解挂初始化
+			else if ("unlossInit".equals(comm)) {
+				sectionBlocks.add(section * 10);
+				commandCode = CardReaderCommandCode.Unloss;
 			}
-		}
-		// 换卡读原卡
-		else if ("readOldCardInit".equals(comm)) {
-			SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
-			if (socketChannel != null) {
-				try {
-					// 获取基本扇区0块
-					List<Integer> sectionBlocks = new ArrayList<Integer>();
-					sectionBlocks.add(section * 10);
-					sectionBlocks.add(section * 10 + 2);
-					sectionBlocks.add((section + 1) * 10);
-					sectionBlocks.add((section + 2) * 10);
-					TerminalManager.getCardInfo(socketChannel, device, CardReaderCommandCode.ReadOldCard, sectionBlocks);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+			// 有卡注销初始化
+			else if ("offWithCard".equals(comm)) {
+				sectionBlocks.add(section * 10);
+				commandCode = CardReaderCommandCode.OffWithCard;
 			}
-		}
-		// 换卡换新卡
-		else if ("changeNewCardInit".equals(comm)) {
-			SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
-			if (socketChannel != null) {
-				try {
-					// 获取基本扇区0块
-					List<Integer> sectionBlocks = new ArrayList<Integer>();
-					sectionBlocks.add(section * 10);
-					TerminalManager.getCardInfo(socketChannel, device, CardReaderCommandCode.ChangeNewCard, sectionBlocks);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+			// 补卡初始化
+			else if ("remakeCardInit".equals(comm)) {
+				sectionBlocks.add(section * 10);
+				commandCode = CardReaderCommandCode.RemakeCard;
 			}
-		}
-		// 读卡
-		else if ("readCardInit".equals(comm)) {
-			SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
-			if (socketChannel != null) {
-				try {
-					// 获取全部扇区
-					List<Integer> sectionBlocks = new ArrayList<Integer>();
-					sectionBlocks.add(section * 10);
-					// sectionBlocks.add(section * 10 + 1);
-					sectionBlocks.add(section * 10 + 2);
-					sectionBlocks.add((section + 1) * 10);
-					sectionBlocks.add((section + 2) * 10);
-					TerminalManager.getCardInfo(socketChannel, device, CardReaderCommandCode.ReadCard, sectionBlocks);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+			// 换卡读原卡
+			else if ("readOldCardInit".equals(comm)) {
+				sectionBlocks.add(section * 10);
+				sectionBlocks.add(section * 10 + 2);
+				sectionBlocks.add((section + 1) * 10);
+				sectionBlocks.add((section + 2) * 10);
+				commandCode = CardReaderCommandCode.ReadOldCard;
 			}
-		}
-		// 读取卡余额
-		else if ("readCardOddFareInit".equals(comm)) {
-			SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
-			if (socketChannel != null) {
-				try {
-					// 获取基本扇区0块2块
-					List<Integer> sectionBlocks = new ArrayList<Integer>();
-					sectionBlocks.add(section * 10);
-					sectionBlocks.add(section * 10 + 2);
-					sectionBlocks.add(section * 20);
-					TerminalManager.getCardInfo(socketChannel, device, CardReaderCommandCode.ReadCardOddFare, sectionBlocks);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+			// 换卡换新卡
+			else if ("changeNewCardInit".equals(comm)) {
+				sectionBlocks.add(section * 10);
+				commandCode = CardReaderCommandCode.ChangeNewCard;
+			}
+			// 读卡
+			else if ("readCardInit".equals(comm)) {
+				sectionBlocks.add(section * 10);
+				// sectionBlocks.add(section * 10 + 1);
+				sectionBlocks.add(section * 10 + 2);
+				sectionBlocks.add((section + 1) * 10);
+				sectionBlocks.add((section + 2) * 10);
+				commandCode = CardReaderCommandCode.ReadCard;
+			}
+			// 读取卡余额
+			else if ("readCardOddFareInit".equals(comm)) {
+				sectionBlocks.add(section * 10);
+				sectionBlocks.add(section * 10 + 2);
+				sectionBlocks.add(section * 20);
+				commandCode = CardReaderCommandCode.ReadCardOddFare;
+			}
+			try {
+				TerminalManager.getCardInfo(socketChannel, device, commandCode, sectionBlocks);
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		}
 	}
@@ -603,7 +557,7 @@ public class MainCardController extends BaseController {
 	 * 
 	 * @param userId
 	 * @param editType
-	 *            0挂失，1解挂，2补卡，3换卡，4注销
+	 *            0挂失，1解挂，2补卡，3换卡，4无卡注销，5无卡注销
 	 * @param cardSN
 	 *            物理卡号
 	 * @param newCardSN
@@ -615,8 +569,8 @@ public class MainCardController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/doChangeCard.do", method = RequestMethod.POST)
-	public void doChangeCard(Integer userId, Integer editType, Integer lossReason, String cardSN, String newCardSN, String cardInfoStr, HttpServletRequest request, HttpServletResponse response,
-			Model model) {
+	public void doChangeCard(Integer userId, Integer editType, Integer lossReason, Integer cardNO, String cardSN, String newCardSN, String cardInfoStr, HttpServletRequest request,
+			HttpServletResponse response, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
 		Device device = (Device) request.getSession().getAttribute("device");
 		String sn = device.getSn();
@@ -627,10 +581,14 @@ public class MainCardController extends BaseController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		// 挂失
-		if (editType == 0) {
+		// 挂失、无卡注销
+		if (editType == 0 || editType == 4) {
 			try {
-				this.mainCardService.changeStatus(userId, 2);
+				int status = 243;
+				if (editType == 4) {
+					status = 244;
+				}
+				this.mainCardService.loss(userId, company.getId(), cardNO, status, lossReason);
 				p.print(1);
 			} catch (Exception e) {
 				p.print(2);
@@ -642,7 +600,22 @@ public class MainCardController extends BaseController {
 			SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
 			if (socketChannel != null) {
 				try {
-					this.mainCardService.unloss(userId, socketChannel, device, cardSN, cardInfoStr);
+					User user=new User();
+					user.setUserId(userId);
+					user.setCardSN(cardSN);
+					user.setCompanyId(company.getId());
+					this.mainCardService.unloss(user, socketChannel, device, cardInfoStr);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		// 有卡注销
+		else if (editType == 5) {
+			SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
+			if (socketChannel != null) {
+				try {
+					this.mainCardService.offWithCard(userId, socketChannel, device, cardSN, cardInfoStr);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -659,8 +632,8 @@ public class MainCardController extends BaseController {
 				try {
 					User user = (User) this.mainCardService.selectById(userId);
 					user.setCardSN(cardSN);
-					int cardNO = this.mainCardService.selectMaxCardNO(company.getId());
-					user.setCardNO(cardNO);
+					int newCardNO = this.mainCardService.selectMaxCardNO(company.getId());
+					user.setCardNO(newCardNO);
 					user.setCardSeq(user.getCardSeq() + 1);
 
 					CardAllInfo cardAllInfo = new CardAllInfo();
@@ -896,7 +869,8 @@ public class MainCardController extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/doDeptAdjust.do")
-	public void doDeptAdjust(Integer adjustType, Integer fromDeptId, Integer toDeptId, Integer selectedUserId, Integer[] userIds, HttpServletRequest request, HttpServletResponse response, Model model) {
+	public void doDeptAdjust(Integer adjustType, Integer fromDeptId, Integer toDeptId, Integer selectedUserId, Integer[] userIds, HttpServletRequest request, HttpServletResponse response,
+			Model model) {
 		PrintWriter p = null;
 		try {
 			p = response.getWriter();

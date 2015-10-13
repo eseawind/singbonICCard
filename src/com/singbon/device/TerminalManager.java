@@ -108,15 +108,6 @@ public class TerminalManager {
 	}
 
 	/**
-	 * 获取扇区
-	 * 
-	 * @return
-	 */
-	public static int getSection(int companyId) {
-		return 1;
-	}
-
-	/**
 	 * 关闭连接通道
 	 * 
 	 * @param socketChannel

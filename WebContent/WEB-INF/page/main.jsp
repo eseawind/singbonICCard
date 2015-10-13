@@ -84,6 +84,9 @@
 <script src="js/dwz.regional.zh.js" type="text/javascript"></script>
 <script type="text/javascript">
 	$(function() {
+// 		alert('${sessionScope.company.companyName}');
+		$.cookie('companyName','${sessionScope.company.companyName}',{expires:7});
+		
 		DWZ.init('dwz.frag.xml', {
 			loginUrl : 'login_dialog.html',
 			loginTitle : '登录', // 弹出登录对话框

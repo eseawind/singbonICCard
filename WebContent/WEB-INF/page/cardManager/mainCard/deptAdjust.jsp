@@ -11,7 +11,7 @@ $(function(){
 		if (parentId == '0') {
 			$('#deptAdjustForm .expand').append($this);
 		} else {
-			var $li = $('#deptAdjustForm li[deptId='' + parentId + '']');
+			var $li = $('#deptAdjustForm li[deptId=' + parentId + ']');
 			if ($('>ul', $li).size() == 0) {
 				$('<ul></ul>').appendTo($li);
 			}

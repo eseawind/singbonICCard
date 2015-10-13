@@ -1,8 +1,7 @@
-package com.singbon.dao.system;
+package com.singbon.dao;
 
 import java.util.List;
 
-import com.singbon.dao.BaseDAO;
 import com.singbon.entity.Company;
 
 /**

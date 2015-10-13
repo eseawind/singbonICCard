@@ -8,6 +8,7 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 
 import com.singbon.device.CRC16;
+import com.singbon.entity.Company;
 
 public class StringUtil {
 
@@ -118,6 +119,12 @@ public class StringUtil {
 	/**
 	 * 字符串左补字符
 	 * 
+	 * @param str
+	 *            原字符串
+	 * @param num
+	 *            总长度
+	 * @param c
+	 *            被补字符
 	 * @return
 	 */
 	public static String strLeftPadWithChar(String str, int num, String c) {
@@ -319,14 +326,50 @@ public class StringUtil {
 		return Integer.parseInt(byteToHexStr(begin, end, b), 16);
 	}
 
+	/**
+	 * 获取系统密码
+	 * 
+	 * @param company
+	 * @return
+	 */
+	public static String getSysPwd(Company company) {
+		int tmKey = 0;
+		String tmStr = "";
+
+		byte[] nameByte = null;
+		try {
+			nameByte = strTobytes(strToGB2312(company.getCompanyName()) + "0000");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		for (int i = 0; i < nameByte.length; i++) {
+			int b = byteToInt(nameByte[i]);
+			tmKey = tmKey + b;
+			if (b >= 127) {
+				if (i == nameByte.length - 1)
+					tmKey = tmKey + b * 10;
+				else
+					tmKey = tmKey + Integer.valueOf(b + "" + byteToInt(nameByte[i + 1]));
+			}
+		}
+		tmKey = tmKey + Integer.valueOf(company.getSerialNumber()) + company.getBaseSection() + Integer.valueOf(company.getAuthNumber());
+		tmStr = String.valueOf(tmKey);
+		tmStr = strLeftPadWithChar(tmStr, 12, "8");
+		tmStr = new StringBuffer(tmStr).reverse().toString();
+
+		return tmStr;
+	}
+
 	public static void main(String[] args) {
 		// 消费机初始化29 74 e7 0c 3c 9e 11 e5 83 9f d4 be d9 80 4c 01 00 bc 61 4e 00
 		// 00 00 00 00 00 02 02 00 0A 19 19 00 00 00 00 97 b0
-		byte[] b = StringUtil.strTobytes("41 59 A9 6E 83 8E 4D F5 BD EC D4 E2 D8 E9 40 F1 00 BC 61 4E 00 00 00 00 00 00 02 02 00 1A 04 0A 00 00 00 00 01010101010101010101010101010101 70 54".replaceAll(" ", ""));
-		CRC16.generate(b);				  
-		StringUtil.print(Integer.toHexString(b[b.length - 2]) + " ");
-		StringUtil.println(Integer.toHexString(b[b.length - 1]));
-		
+		// byte[] b = StringUtil.strTobytes("41 59 A9 6E 83 8E 4D F5 BD EC D4 E2
+		// D8 E9 40 F1 00 BC 61 4E 00 00 00 00 00 00 02 02 00 1A 04 0A 00 00 00
+		// 00 01010101010101010101010101010101 70 54".replaceAll(" ", ""));
+		// CRC16.generate(b);
+		// StringUtil.print(Integer.toHexString(b[b.length - 2]) + " ");
+		// StringUtil.println(Integer.toHexString(b[b.length - 1]));
+
 	}
 
 	public static void print(Object obj) {

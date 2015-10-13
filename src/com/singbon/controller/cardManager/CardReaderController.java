@@ -19,7 +19,7 @@ import com.singbon.entity.SysUser;
 import com.singbon.service.mainCard.CardReaderService;
 
 /**
- * 读卡机参数控制类
+ * 读卡机参数下载控制类
  * 
  * @author 郝威
  * 
@@ -29,7 +29,7 @@ import com.singbon.service.mainCard.CardReaderService;
 public class CardReaderController extends BaseController {
 
 	@Autowired
-	public CardReaderService cardReaderController;
+	public CardReaderService cardReaderService;
 	
 	
 	/**
@@ -89,7 +89,7 @@ public class CardReaderController extends BaseController {
 			SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
 			if (socketChannel != null) {
 				try {
-					cardReaderController.downloadName(company, socketChannel, device);
+					cardReaderService.downloadName(company, socketChannel, device);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -97,14 +97,14 @@ public class CardReaderController extends BaseController {
 		}
 		// 下载读卡机密码
 		else if ("pwd".equals(comm)) {
-//			SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
-//			if (socketChannel != null) {
-//				try {
-//					cardReaderController.downloadName(company, socketChannel, device);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
+			SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
+			if (socketChannel != null) {
+				try {
+					cardReaderService.sysPwd(company, socketChannel, device);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 }

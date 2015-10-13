@@ -72,5 +72,9 @@ public class CardReaderCommandCode {
 	 * 存取款 0x0f
 	 */
 	public static byte Charge = 0x0f;
+	/**
+	 * 有卡注销 0x10
+	 */
+	public static byte OffWithCard = 0x10;
 
 }

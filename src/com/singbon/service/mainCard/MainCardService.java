@@ -8,13 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.singbon.dao.BaseDAO;
-import com.singbon.dao.common.UserDAO;
+import com.singbon.dao.CardLossDAO;
+import com.singbon.dao.UserDAO;
 import com.singbon.device.CardReaderCommandCode;
 import com.singbon.device.CardReaderFrame;
 import com.singbon.device.CommandDevice;
 import com.singbon.device.DeviceType;
 import com.singbon.device.TerminalManager;
 import com.singbon.entity.CardAllInfo;
+import com.singbon.entity.CardLoss;
 import com.singbon.entity.Device;
 import com.singbon.entity.User;
 import com.singbon.service.BaseService;
@@ -27,16 +29,18 @@ import com.singbon.util.StringUtil;
  * 
  */
 @Service
-public class MainCardService extends BaseService{
+public class MainCardService extends BaseService {
 
 	@Autowired
 	public UserDAO mainCardDAO;
+	@Autowired
+	public CardLossDAO cardLossDAO;
 
 	@Override
 	public BaseDAO getBaseDAO() {
 		return mainCardDAO;
 	}
-	
+
 	/**
 	 * 删除未发卡人员
 	 * 
@@ -226,8 +230,8 @@ public class MainCardService extends BaseService{
 
 		// 静态ID（16字节高字节在前）+设备机器号（4字节高字节在前）+数据长度（2字节高字节在前）+cd+01+是否校验卡号标志（1字节）+物理卡号（4字节高字节在前）+读卡扇区号（1字节）+读卡块号（1字节）+读写状态字节（1字节）+块数据（16字节高字节在前）+读卡扇区号（1字节）+读卡块号（1字节）+读写状态字节（1字节）+块数据（16字节高字节在前）+...+CRC校验（字节高字节在前）
 		String commandCodeStr = "0000" + StringUtil.hexLeftPad(commandCode, 4);
-		String sendStr = CardReaderFrame.WriteCard + commandCodeStr + CardReaderFrame.ValidateCardSN + cardSN + baseBlock0 + baseBlock1 + baseBlock2 + consumeBlock0 + consumeBlock1
-				+ consumeBlock2 + subsidyBlock0 + subsidyBlock1 + subsidyBlock2 + forthBlock0 + forthBlock1 + forthBlock2 + "0000";
+		String sendStr = CardReaderFrame.WriteCard + commandCodeStr + CardReaderFrame.ValidateCardSN + cardSN + baseBlock0 + baseBlock1 + baseBlock2 + consumeBlock0 + consumeBlock1 + consumeBlock2
+				+ subsidyBlock0 + subsidyBlock1 + subsidyBlock2 + forthBlock0 + forthBlock1 + forthBlock2 + "0000";
 		String bufLen = StringUtil.hexLeftPad(2 + sendStr.length() / 2, 4);
 		sendStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + CommandDevice.NoSubDeviceNum + "0000" + DeviceType.CardReader + bufLen + sendStr;
 
@@ -250,23 +254,64 @@ public class MainCardService extends BaseService{
 	}
 
 	/**
+	 * 挂失、无卡注销
+	 * 
+	 * @param userId
+	 * @return
+	 * @throws Exception
+	 */
+	public void loss(Integer userId, Integer companyId, Integer cardNO, Integer status, Integer lossReason) throws Exception {
+		this.mainCardDAO.changeStatus(userId, status);
+		if (cardNO != null && (status == 244 || 0 == lossReason)) {
+			CardLoss cardLoss = new CardLoss();
+			cardLoss.setCompanyId(companyId);
+			cardLoss.setCardNO(cardNO);
+			this.cardLossDAO.insert(cardLoss);
+		}
+	}
+
+	/**
 	 * 解挂
 	 * 
 	 * @param userId
 	 * @return
 	 * @throws Exception
 	 */
-	public void unloss(Integer userId, SocketChannel socketChannel, Device device, String cardSN, String cardInfoStr) throws Exception {
-		this.mainCardDAO.changeStatus(userId, 1);
-
+	public void unloss(User user, SocketChannel socketChannel, Device device, String cardInfoStr) throws Exception {
+		int newCardNO = this.mainCardDAO.selectMaxCardNO(user.getCompanyId());
+		user.setCardNO(newCardNO);
+		this.mainCardDAO.unloss(user);
 		String commandCodeStr = "0000" + StringUtil.hexLeftPad(CardReaderCommandCode.Unloss, 4);
+		String sendBufStr = CardReaderFrame.WriteCard + commandCodeStr + CardReaderFrame.ValidateCardSN + user.getCardSN() + cardInfoStr.substring(0, 14) + StringUtil.hexLeftPad(newCardNO, 8)
+				+ cardInfoStr.substring(22);
+		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
+		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + CommandDevice.NoSubDeviceNum + DeviceType.Main + DeviceType.CardReader + bufLen + sendBufStr;
+		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
+		sendBuf[sendBuf.length - 6] = (byte) 0xf1;
+		TerminalManager.sendToCardReader(socketChannel, sendBuf);
+	}
+
+	/**
+	 * 有卡注销
+	 * 
+	 * @param userId
+	 * @return
+	 * @throws Exception
+	 */
+	public void offWithCard(Integer userId, SocketChannel socketChannel, Device device, String cardSN, String cardInfoStr) throws Exception {
+		this.mainCardDAO.changeStatus(userId, 244);
+
+		String commandCodeStr = "0000" + StringUtil.hexLeftPad(CardReaderCommandCode.OffWithCard, 4);
 		String sendBufStr = CardReaderFrame.WriteCard + commandCodeStr + CardReaderFrame.ValidateCardSN + cardSN + cardInfoStr;
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
 		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + CommandDevice.NoSubDeviceNum + DeviceType.Main + DeviceType.CardReader + bufLen + sendBufStr;
 		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
-		sendBuf[sendBuf.length - 5] = (byte) 0xf1;
-		// CRC16.generate(sendBuf);
+		sendBuf[sendBuf.length - 6] = (byte) 0xf4;
 		TerminalManager.sendToCardReader(socketChannel, sendBuf);
+	}
+
+	public static void main(String[] args) {
+		System.out.println((byte) 0xf1);
 	}
 
 	/**
@@ -288,7 +333,6 @@ public class MainCardService extends BaseService{
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
 		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + CommandDevice.NoSubDeviceNum + DeviceType.Main + DeviceType.CardReader + bufLen + sendBufStr;
 		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
-		// CRC16.generate(sendBuf);
 		TerminalManager.sendToCardReader(socketChannel, sendBuf);
 	}
 
@@ -352,7 +396,6 @@ public class MainCardService extends BaseService{
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
 		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + CommandDevice.NoSubDeviceNum + DeviceType.Main + DeviceType.CardReader + bufLen + sendBufStr;
 		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
-		// CRC16.generate(sendBuf);
 		TerminalManager.sendToCardReader(socketChannel, sendBuf);
 	}
 }

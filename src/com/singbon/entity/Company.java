@@ -13,7 +13,7 @@ public class Company implements Serializable {
 	private static final long serialVersionUID = -4349415810057681133L;
 	private Integer id;
 	private String companyName;
-	private String serialNumber;
+	private Integer serialNumber;
 	private String authNumber;
 	private Integer baseSection;
 	private Integer heartInterval;
@@ -36,11 +36,11 @@ public class Company implements Serializable {
 		this.companyName = companyName;
 	}
 
-	public String getSerialNumber() {
+	public Integer getSerialNumber() {
 		return serialNumber;
 	}
 
-	public void setSerialNumber(String serialNumber) {
+	public void setSerialNumber(Integer serialNumber) {
 		this.serialNumber = serialNumber;
 	}
 

@@ -9,13 +9,13 @@
 			searchAdjustUserList();
 		});
 		$('#adjustSearchList .clearAdjust').click(function() {
-			$('input[name='searchStr']').val('');
+			$('input[name=searchStr]').val('');
 			searchAdjustUserList();
 		});
 	});
 	function searchAdjustUserList(){
 		$('#adjustUserList')
-		.loadUrl('${base}/adjustUserList.do?load=true&searchStr='+$('#adjustSearchList input[name='searchStr']').val(), {}, function(){
+		.loadUrl('${base}/adjustUserList.do?load=true&searchStr='+$('#adjustSearchList input[name=searchStr]').val(), {}, function(){
 			$('#adjustUserList').find('[layoutH]').layoutH();
 		});
 	}

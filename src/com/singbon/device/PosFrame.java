@@ -13,9 +13,9 @@ public class PosFrame {
 	 */
 	public final static byte Status = 0x03;
 	/**
-	 * 系统参数
+	 * 系统
 	 */
-	public final static byte SysPara = 0x04;
+	public final static byte Sys = 0x04;
 	/**
 	 * 黑名单
 	 */

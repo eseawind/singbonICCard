@@ -9,13 +9,20 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>用户登录</title>
 <script type="text/javascript" src="js/jquery-1.7.2.js"></script>
-<script src="/js/comet4j.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/jquery.cookie.js"></script>
+
+<!-- <script src="/js/comet4j.js" type="text/javascript"></script> -->
 <script type="text/javascript">
-	var isInit=false;
+// 	var isInit=false;
+	
 	$(function(){
+		var companyName=$.cookie('companyName');
+		if(companyName!=null && companyName!=''){
+			$('#login-box input[name=companyName]').val(companyName);
+		}
 		$('#login-box #loginButton').click(function(){
 			var valErr=false;
-			$('#login-box input:not(:radio):not(:hidden)').each(function(){
+			$('#login-box input:not(:hidden)').each(function(){
 				var val=$(this).val().trim();
 				if(val==''){
 					valErr=true;
@@ -25,9 +32,9 @@
 			if(valErr){
 				return;
 			}
-			var loginType=$('#login-box :radio[checked]').val();
+			//var loginType=$('#login-box :radio[checked]').val();
 // 			if(loginType==1){
-				$('#loginForm').submit();
+			$('#loginForm').submit();
 // 			}else{
 // 				var companyName=$('#login-box input[name=companyName]').val();
 // 				var username=$('#login-box input[name=username]').val();
@@ -53,16 +60,16 @@
 // 			}
 		});
 
-		$('#login-box input:not(:radio)').click(function(){
+		$('#login-box input').click(function(){
 			$('#login-box .error').hide();
 			$(this).next().hide();
 		});
 		
 	});
 	
-	function valCashierCard(){
-		$.post("/valCashierCard.do");
-	}
+// 	function valCashierCard(){
+// 		$.post("/valCashierCard.do");
+// 	}
 	
 </script>
 <style type="text/css">
@@ -131,16 +138,16 @@
 					<td>&nbsp;</td>
 					<td>
 						<div id="error" class="error">公司名称、用户名或密码错误</div>
-						<div id="noDevice" class="error">该用户没有绑定读卡机</div>
-						<div id="offline" class="error">读卡机不在线</div>
-						<div id="errInfo" class="error">卡信息和用户信息不匹配</div>
-						<input type="hidden" name="cardNO"/>
-						<input type="hidden" name="cardSN"/>
+<!-- 						<div id="noDevice" class="error">该用户没有绑定读卡机</div> -->
+<!-- 						<div id="offline" class="error">读卡机不在线</div> -->
+<!-- 						<div id="errInfo" class="error">卡信息和用户信息不匹配</div> -->
+<!-- 						<input type="hidden" name="cardNO"/> -->
+<!-- 						<input type="hidden" name="cardSN"/> -->
 					</td>
 				</tr>
 				<tr>
 					<td>单位名称:</td>
-					<td><input type='text' name='companyName' value='河南郑州电子有限公司'/><span>单位名称不能为空</span> </td>
+					<td><input type='text' name='companyName' value=''/><span>单位名称不能为空</span> </td>
 <!-- 					<td><input type='text' name='companyName' value='1'/><span>单位名称不能为空</span> </td> -->
 				</tr>
 				<tr>
