@@ -30,11 +30,11 @@
 <!-- 	<div class="tabsHeader"> -->
 <!-- 		<div class="tabsHeaderContent"> -->
 <!-- 			<ul> -->
-<%-- 				<li><a href="${base }/waterRate/index.do" class="j-ajax"><span>水控费率</span></a></li> --%>
-<%-- 				<li><a href="${base }/waterRate/index.do" class="j-ajax"><span>水控费率</span></a></li> --%>
-<%-- 				<li><a href="${base }/waterRate/index.do" class="j-ajax"><span>水控费率</span></a></li> --%>
-<%-- 				<li><a href="${base }/waterRate/index.do" class="j-ajax"><span>水控费率</span></a></li> --%>
-<%-- 				<li><a href="${base }/waterRate/index.do" class="j-ajax"><span>水控费率2</span></a></li> --%>
+<%-- 				<li><a href="${base }/waterRateGroup/index.do" class="j-ajax"><span>水控费率</span></a></li> --%>
+<%-- 				<li><a href="${base }/waterRateGroup/index.do" class="j-ajax"><span>水控费率</span></a></li> --%>
+<%-- 				<li><a href="${base }/waterRateGroup/index.do" class="j-ajax"><span>水控费率</span></a></li> --%>
+<%-- 				<li><a href="${base }/waterRateGroup/index.do" class="j-ajax"><span>水控费率</span></a></li> --%>
+<%-- 				<li><a href="${base }/waterRateGroup/index.do" class="j-ajax"><span>水控费率2</span></a></li> --%>
 <!-- 			</ul> -->
 <!-- 		</div> -->
 <!-- 	</div> -->

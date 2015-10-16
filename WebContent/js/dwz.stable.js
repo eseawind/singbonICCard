@@ -82,8 +82,10 @@
 						cashierCardClick($(this));
 					}else if(target=="meal"){
 						mealClick($(this));
-					}else if(target=="waterRate"){
-						waterRateClick($(this));
+					}else if(target=="waterRateGroup"){
+						waterRateGroupClick($(this));
+					}else if(target=="multiWaterRateGroup"){
+						multiWaterRateGroupClick($(this));
 					}else if(target=="cookbook"){
 						cookbookClick($(this));
 					}else if(target=="orderTime"){

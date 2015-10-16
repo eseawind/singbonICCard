@@ -124,7 +124,7 @@
 </div>
 <div class="pageContent"
 	style="border-left: 1px #B8D0D6 solid; border-right: 1px #B8D0D6 solid">
-	<table class="table" width="99%" layoutH="117">
+	<table class="table" width="99%" layoutH="148">
 		<thead>
 			<tr>
 				<th width="80">序号</th>

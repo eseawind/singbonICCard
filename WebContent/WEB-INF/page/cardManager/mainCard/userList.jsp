@@ -264,7 +264,7 @@
 </div>
 <div class="pageContent"
 	style="border-left: 1px #B8D0D6 solid; border-right: 1px #B8D0D6 solid">
-	<table class="table" width="99%" layoutH="95">
+	<table class="table" width="99%" layoutH="125">
 		<thead>
 			<tr>
 				<th width="10"><input type="checkbox" group="userIds"

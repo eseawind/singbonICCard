@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.singbon.dao.systemManager.systemSetting.MultiWaterRateGroupDAO">
+	<resultMap id="multiWaterRateGroup" type="com.singbon.entity.MultiWaterRateGroup">
+	</resultMap>
+	<parameterMap type="com.singbon.entity.MultiWaterRateGroup" id="multiWaterRateGroup2" />
+	<cache eviction="FIFO" size="1" readOnly="true"/>
+	<insert id="insert">
+		insert into multiWaterRateGroup (companyId,groupName,consumeType,waterPrecision,rate1Fare,rate1Cycle,rate1Water,rate1Status,rate2Fare,rate2Cycle,rate2Water,rate2Status,rate3Fare,rate3Cycle,rate3Water,rate3Status,rate4Fare,rate4Cycle,rate4Water,rate4Status,pwd,bound,subsidyReset,subsidyFirst,enableCheckTime,enableCharge,updateNum,deviceNum)
+			select #{companyId},#{groupName},consumeType,waterPrecision,rate1Fare,rate1Cycle,rate1Water,rate1Status,rate2Fare,rate2Cycle,rate2Water,rate2Status,rate3Fare,rate3Cycle,rate3Water,rate3Status,rate4Fare,rate4Cycle,rate4Water,rate4Status,pwd,bound,subsidyReset,subsidyFirst,enableCheckTime,enableCharge,updateNum,deviceNum from multiWaterRateGroupBase
+	</insert>
+	<update id="update" parameterMap="multiWaterRateGroup2">
+		update multiWaterRateGroup set 
+		<if test="groupName!=null">
+			groupName=#{groupName}
+		</if>
+		<if test="groupName==null">
+			consumeType=#{consumeType},waterPrecision=#{waterPrecision},rate1Fare=#{rate1Fare},rate1Cycle=#{rate1Cycle},rate1Water=#{rate1Water},rate1Status=#{rate1Status},rate2Fare=#{rate2Fare},rate2Cycle=#{rate2Cycle},rate2Water=#{rate2Water},rate2Status=#{rate2Status},rate3Fare=#{rate3Fare},rate3Cycle=#{rate3Cycle},rate3Water=#{rate3Water},rate3Status=#{rate3Status},rate4Fare=#{rate4Fare},rate4Cycle=#{rate4Cycle},rate4Water=#{rate4Water},rate4Status=#{rate4Status},pwd=#{pwd},bound=#{bound},subsidyReset=#{subsidyReset},subsidyFirst=#{subsidyFirst},enableCheckTime=#{enableCheckTime},enableCharge=#{enableCharge},updateNum=#{updateNum},deviceNum=#{deviceNum}
+		</if>
+		where id=#{id}
+	</update>
+	
+	<delete id="delete">
+		delete from multiWaterRateGroup where id=#{id}
+	</delete>
+	<select id="selectById" resultMap="multiWaterRateGroup">
+		select * from multiWaterRateGroup where id=#{id}
+	</select>
+	<select id="selectListByCompanyId" resultMap="multiWaterRateGroup">
+		select * from multiWaterRateGroup where companyId=#{companyId}
+	</select>
+	<select id="selectCountWithPos" resultType="java.lang.Integer">
+		select count(*) count from device where deviceType=3 and groupId=#{groupId}
+	</select>
+</mapper>

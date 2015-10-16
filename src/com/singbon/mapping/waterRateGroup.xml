@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.singbon.dao.systemManager.systemSetting.WaterRateGroupDAO">
+	<resultMap id="waterRateGroup" type="com.singbon.entity.WaterRateGroup">
+	</resultMap>
+	<parameterMap type="com.singbon.entity.WaterRateGroup" id="waterRateGroup2" />
+	<cache eviction="FIFO" size="1" readOnly="true"/>
+	<insert id="insert">
+		insert into waterRateGroup (companyId,groupName,consumeType,goWaterType,stopWaterType,waterPrecision,rate1Fare,rate1Cycle,rate1Water,rate1NextDayReset,rate1Status,rate1CardTypes,rate2Fare,rate2Cycle,rate2Water,rate2BeginTime,rate2EndTime,rate2CardTypes,rate3Fare,rate3Cycle,rate3Water,rate3BeginTime,rate3EndTime,rate3CardTypes,rate4Fare,rate4Cycle,rate4Water,rate4BeginTime,rate4EndTime,rate4CardTypes,rate5Fare,rate5Cycle,rate5Water,pwd,bound,subsidyReset,subsidyFirst,enableCheckTime,enableCardMinFare,enableTimeLimitFare,enableDayLimitFare,enableDiscount,enableMeal,updateNum,deviceNum)
+			select #{companyId},#{groupName},consumeType,goWaterType,stopWaterType,waterPrecision,rate1Fare,rate1Cycle,rate1Water,rate1NextDayReset,rate1Status,rate1CardTypes,rate2Fare,rate2Cycle,rate2Water,rate2BeginTime,rate2EndTime,rate2CardTypes,rate3Fare,rate3Cycle,rate3Water,rate3BeginTime,rate3EndTime,rate3CardTypes,rate4Fare,rate4Cycle,rate4Water,rate4BeginTime,rate4EndTime,rate4CardTypes,rate5Fare,rate5Cycle,rate5Water,pwd,bound,subsidyReset,subsidyFirst,enableCheckTime,enableCardMinFare,enableTimeLimitFare,enableDayLimitFare,enableDiscount,enableMeal,updateNum,deviceNum from waterRateGroupBase
+	</insert>
+	<update id="update" parameterMap="waterRateGroup2">
+		update waterRateGroup set 
+		<if test="groupName!=null">
+			groupName=#{groupName}
+		</if>
+		<if test="groupName==null">
+			consumeType=#{consumeType},goWaterType=#{goWaterType},stopWaterType=#{stopWaterType},deviceNum=#{deviceNum},rate1Fare=#{rate1Fare},rate1Cycle=#{rate1Cycle},rate1Water=#{rate1Water},rate1NextDayReset=#{rate1NextDayReset},rate1Status=#{rate1Status},rate1CardTypes=#{rate1CardTypes},rate2Fare=#{rate2Fare},rate2Cycle=#{rate2Cycle},rate2Water=#{rate2Water},rate2BeginTime=#{rate2BeginTime},rate2EndTime=#{rate2EndTime},rate2CardTypes=#{rate2CardTypes},rate3Fare=#{rate3Fare},rate3Cycle=#{rate3Cycle},rate3Water=#{rate3Water},rate3BeginTime=#{rate3BeginTime},rate3EndTime=#{rate3EndTime},rate3CardTypes=#{rate3CardTypes},rate4Fare=#{rate4Fare},rate4Cycle=#{rate4Cycle},rate4Water=#{rate4Water},rate4BeginTime=#{rate4BeginTime},rate4EndTime=#{rate4EndTime},rate4CardTypes=#{rate4CardTypes},rate5Fare=#{rate5Fare},rate5Cycle=#{rate5Cycle},rate5Water=#{rate5Water},pwd=#{pwd},bound=#{bound},subsidyReset=#{subsidyReset},subsidyFirst=#{subsidyFirst},enableCheckTime=#{enableCheckTime},enableCardMinFare=#{enableCardMinFare},enableTimeLimitFare=#{enableTimeLimitFare},enableDayLimitFare=#{enableDayLimitFare},enableDiscount=#{enableDiscount},enableMeal=#{enableMeal},updateNum=#{updateNum},deviceNum=#{deviceNum}			
+		</if>
+		where id=#{id}
+	</update>
+	<delete id="delete">
+		delete from waterRateGroup where id=#{id}
+	</delete>
+	<select id="selectById" resultMap="waterRateGroup">
+		select * from waterRateGroup where id=#{id}
+	</select>
+	<select id="selectListByCompanyId" resultMap="waterRateGroup">
+		select * from waterRateGroup where companyId=#{companyId}
+	</select>
+	<select id="selectCountWithPos" resultType="java.lang.Integer">
+		select count(*) count from device where deviceType=2 and groupId=#{groupId}
+	</select>
+</mapper>

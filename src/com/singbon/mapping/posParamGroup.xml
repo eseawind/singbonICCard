@@ -19,9 +19,9 @@
 		</if>
 		where id=#{id}
 	</update>
-	<update id="delete">
+	<delete id="delete">
 		delete from posParamGroup where id=#{id}
-	</update>
+	</delete>
 	<select id="selectById" resultMap="posParamGroup">
 		select * from posParamGroup where id=#{id}
 	</select>
@@ -29,6 +29,6 @@
 		select * from posParamGroup where companyId=#{companyId}
 	</select>
 	<select id="selectCountWithPos" resultType="java.lang.Integer">
-		select count(*) count from device where groupId=#{groupId}
+		select count(*) count from device where deviceType=1 and groupId=#{groupId}
 	</select>
 </mapper>

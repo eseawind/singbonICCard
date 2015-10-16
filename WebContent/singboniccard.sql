@@ -678,10 +678,10 @@ INSERT INTO `mealbase` VALUES ('5', '加班一', '20:30:01', '22:30:00', '0');
 INSERT INTO `mealbase` VALUES ('6', '加班二', '22:00:01', '23:59:59', '0');
 
 -- ----------------------------
--- Table structure for `multiwaterrate`
+-- Table structure for `multiwaterRateGroup`
 -- ----------------------------
-DROP TABLE IF EXISTS `multiwaterrate`;
-CREATE TABLE `multiwaterrate` (
+DROP TABLE IF EXISTS `multiwaterRateGroup`;
+CREATE TABLE `multiwaterRateGroup` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `companyId` int(11) DEFAULT NULL,
   `consumeType` int(11) DEFAULT NULL,
@@ -702,16 +702,16 @@ CREATE TABLE `multiwaterrate` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of multiwaterrate
+-- Records of multiwaterRateGroup
 -- ----------------------------
-INSERT INTO `multiwaterrate` VALUES ('1', '1', '0', '0', '1', '10', '1', '0', '12', '6', '1', '13', '2', '1', '16', '3');
-INSERT INTO `multiwaterrate` VALUES ('2', '2', '0', '0', '1', '10', '5', '1', '10', '5', '1', '10', '5', '1', '10', '5');
+INSERT INTO `multiwaterRateGroup` VALUES ('1', '1', '0', '0', '1', '10', '1', '0', '12', '6', '1', '13', '2', '1', '16', '3');
+INSERT INTO `multiwaterRateGroup` VALUES ('2', '2', '0', '0', '1', '10', '5', '1', '10', '5', '1', '10', '5', '1', '10', '5');
 
 -- ----------------------------
--- Table structure for `multiwaterratebase`
+-- Table structure for `multiwaterRateGroupbase`
 -- ----------------------------
-DROP TABLE IF EXISTS `multiwaterratebase`;
-CREATE TABLE `multiwaterratebase` (
+DROP TABLE IF EXISTS `multiwaterRateGroupbase`;
+CREATE TABLE `multiwaterRateGroupbase` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `consumeType` int(11) DEFAULT NULL,
   `chargeType` int(11) DEFAULT NULL,
@@ -731,9 +731,9 @@ CREATE TABLE `multiwaterratebase` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of multiwaterratebase
+-- Records of multiwaterRateGroupbase
 -- ----------------------------
-INSERT INTO `multiwaterratebase` VALUES ('1', '0', '0', '1', '10', '5', '1', '10', '5', '1', '10', '5', '1', '10', '5');
+INSERT INTO `multiwaterRateGroupbase` VALUES ('1', '0', '0', '1', '10', '5', '1', '10', '5', '1', '10', '5', '1', '10', '5');
 
 -- ----------------------------
 -- Table structure for `ordertime`
@@ -1010,10 +1010,10 @@ INSERT INTO `userdept` VALUES ('35', '财务部1', '1', '20', '1');
 INSERT INTO `userdept` VALUES ('36', '部门1', '2', '0', '16');
 
 -- ----------------------------
--- Table structure for `waterrate`
+-- Table structure for `waterRateGroup`
 -- ----------------------------
-DROP TABLE IF EXISTS `waterrate`;
-CREATE TABLE `waterrate` (
+DROP TABLE IF EXISTS `waterRateGroup`;
+CREATE TABLE `waterRateGroup` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `companyId` int(11) DEFAULT NULL,
   `consumeType` int(11) DEFAULT NULL,
@@ -1047,16 +1047,16 @@ CREATE TABLE `waterrate` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of waterrate
+-- Records of waterRateGroup
 -- ----------------------------
-INSERT INTO `waterrate` VALUES ('1', '1', '0', '1', '1', '0', '101', '6', '0', '0', '00:00', '00:00', '0', '1', ',0,1,3,4,5,6,7,8,9,10,11,13,14,15,,', '1', '00:46', '00:49', '0', '2', ',0,2,3,4,5,6,7,8,9,10,11,12,13,14,15,,', '1', '00:00', '00:00', '0', '3', ',0,1,2,3,4,5,6,8,9,10,11,12,13,14,15,,', '10', '50');
-INSERT INTO `waterrate` VALUES ('2', '2', '0', '0', '0', '0', '10', '5', '0', '0', '00:00', '00:00', '0', '0', ',0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,', '0', '00:00', '00:00', '0', '0', ',0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,', '0', '00:00', '00:00', '0', '0', ',0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,', '10', '5');
+INSERT INTO `waterRateGroup` VALUES ('1', '1', '0', '1', '1', '0', '101', '6', '0', '0', '00:00', '00:00', '0', '1', ',0,1,3,4,5,6,7,8,9,10,11,13,14,15,,', '1', '00:46', '00:49', '0', '2', ',0,2,3,4,5,6,7,8,9,10,11,12,13,14,15,,', '1', '00:00', '00:00', '0', '3', ',0,1,2,3,4,5,6,8,9,10,11,12,13,14,15,,', '10', '50');
+INSERT INTO `waterRateGroup` VALUES ('2', '2', '0', '0', '0', '0', '10', '5', '0', '0', '00:00', '00:00', '0', '0', ',0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,', '0', '00:00', '00:00', '0', '0', ',0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,', '0', '00:00', '00:00', '0', '0', ',0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,', '10', '5');
 
 -- ----------------------------
--- Table structure for `waterratebase`
+-- Table structure for `waterRateGroupbase`
 -- ----------------------------
-DROP TABLE IF EXISTS `waterratebase`;
-CREATE TABLE `waterratebase` (
+DROP TABLE IF EXISTS `waterRateGroupbase`;
+CREATE TABLE `waterRateGroupbase` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `consumeType` int(11) DEFAULT NULL,
   `goWaterType` int(11) DEFAULT NULL,
@@ -1089,6 +1089,6 @@ CREATE TABLE `waterratebase` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of waterratebase
+-- Records of waterRateGroupbase
 -- ----------------------------
-INSERT INTO `waterratebase` VALUES ('1', '0', '0', '0', '0', '10', '5', '0', '0', '00:00', '00:00', '0', '0', ',0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,', '0', '00:00', '00:00', '0', '0', ',0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,', '0', '00:00', '00:00', '0', '0', ',0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,', '10', '5');
+INSERT INTO `waterRateGroupbase` VALUES ('1', '0', '0', '0', '0', '10', '5', '0', '0', '00:00', '00:00', '0', '0', ',0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,', '0', '00:00', '00:00', '0', '0', ',0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,', '0', '00:00', '00:00', '0', '0', ',0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,', '10', '5');
