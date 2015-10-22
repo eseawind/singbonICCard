@@ -186,7 +186,7 @@
 					map.put(sn,new Date());
 					$("#deviceList .device[id="+sn+"] img").attr('alt','在线').attr('src','/img/online.png');
 					var statusTr=$("#deviceStatusList tr.deviceStatus[id="+sn+"]");
-					$('td[recordNum] div',statusTr).html(e2.recordNum);
+ 					$('td[recordNum] div',statusTr).html(e2.recordNum);
 					$('td[batchNum] div',statusTr).html(e2.batchNum);
 					$('td[blackNum] div',statusTr).html(e2.blackNum);
 					$('td[subsidyVersion] div',statusTr).html(e2.subsidyVersion);
@@ -219,6 +219,8 @@
 					$('td[cookbookName] div',tr).html(e2.consumeRecord.cookbookName);
 					$('td[cookbookCode] div',tr).html(e2.consumeRecord.cookbookCode);
 					consumeRecordIndex++;
+
+					getStatus(sn);
 				//订餐取餐记录
 				}else if(e2.type=='cookbookRecord'){
 					var sn=e2.sn;
@@ -246,6 +248,8 @@
 					$('td[cookbookName] div',tr).html(e2.consumeRecord.cookbookName);
 					$('td[cookbookCode] div',tr).html(e2.consumeRecord.cookbookCode);
 					cookbookRecordIndex++;
+					
+					getStatus(sn);
 				//日志
 				}else if(e2.type=='log'){
 					if(logIndex>=maxRow){
@@ -263,13 +267,22 @@
 		});
 	}
 	
+	function getStatus(sn){
+		var recordNum=$("#status"+sn+" div").html();
+		if(recordNum==null || recordNum=='' || recordNum=='0'){
+			$.post("${base }/command.do?cmd=getStatus&sn="+sn);
+		}else{
+			$("#status"+sn+" div").html(parseInt(recordNum)-1);
+		}
+	}
+	
 	function heart(){
 		$('body').everyTime('1s','getCardReaderStatus', function() {
 			var d=new Date();
 			var array = map.keySet();
 			for(var i in array) {
 				var t=(d.getTime()-map.get(array[i]).getTime())/1000;
-				if(t>30){
+				if(t>12){
 					$("#deviceList .device[id="+array[i]+"] img").attr('alt','离线').attr('src','/img/offline.png');
 					$.post('${base }/removeInetSocketAddress.do?sn='+array[i]);
 					map.remove(array[i]);
@@ -309,7 +322,7 @@
 			},
 			'singelCookbook' : function(t, target) {
 				targetSN=$(t).parent().attr('id');
-				$('.singleCookbook').show();
+				$('.modifyCookbook').show();
 			},
 			'clear' : function(t, target) {
 				executeCmd(t,'clear');
@@ -354,25 +367,25 @@
 		}
 	}
 	function setCodeNull(){
-		var code=$('#jqContextMenu .singleCookbook #code').val();
+		var code=$('#jqContextMenu .modifyCookbook #code').val();
 		if(code=="编号"){
-			$('#jqContextMenu .singleCookbook #code').val("")
+			$('#jqContextMenu .modifyCookbook #code').val("")
 		}
 	}
 	
 	var targetSN=null;
-	function singleCookbook(){
+	function modifyCookbook(){
 		var online=$('#'+targetSN).find('img').attr('src').indexOf('online');
 // 		if(online>0){
-			var code=$('#jqContextMenu .singleCookbook #code').val();
+			var code=$('#jqContextMenu .modifyCookbook #code').val();
 			var ex=/^\d+$/;
 			if(ex.test(code)){
 				if(code>2000){
 					alert('菜单编号不能大于2000！');
 					return;					
 				}
-				$.post("${base }/command.do?cmd=singleCookbook&sn="+targetSN+"&cookbookCode="+code);
-				$('.singleCookbook').hide();
+				$.post("${base }/command.do?cmd=modifyCookbook&sn="+targetSN+"&cookbookCode="+code);
+				$('.modifyCookbook').hide();
 			}else{
 				alert('请输入正确的菜单编号！');
 			}
@@ -423,8 +436,8 @@
 			<li id="allCookbook">全部菜肴清单</li>
 			<li id="appendCookbook">追加菜肴清单</li>
 			<li id="singelCookbook">更新指定菜肴</li>
-			<li class="singleCookbook" style="display: none;">
-				<input type="text" id="code" value="编号" style="width: 35px;" onmousedown ="setCodeNull();"/><input type="button" value="确定" onclick="singleCookbook();"/>
+			<li class="modifyCookbook" style="display: none;">
+				<input type="text" id="code" value="编号" style="width: 35px;" onmousedown ="setCodeNull();"/><input type="button" value="确定" onclick="modifyCookbook();"/>
 			</li>
 			<li class="divide" />
 			<li id="clear">清空命令</li>
@@ -507,7 +520,7 @@
 																<tr class="deviceStatus" id="${d.sn}" groupId="${d.groupId }">
 																	<td>${d.deviceName }</td>
 																	<td>${d.deviceNum }</td>
-																	<td recordNum></td>
+																	<td id="status${d.sn}" recordNum></td>
 																	<td batchNum></td>
 																	<td blackNum></td>
 																	<td subsidyVersion></td>
@@ -533,7 +546,7 @@
 																<th width="100">管理费</th>
 																<th width="100">操作额</th>
 																<th width="100">餐别名称</th>
-																<th width="1">操作时间</th>
+																<th width="200">操作时间</th>
 																<th width="100">卡计数</th>
 																<th width="100">补助卡计数</th>
 																<th width="100">记录序号</th>

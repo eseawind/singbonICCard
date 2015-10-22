@@ -93,6 +93,13 @@
 				<input name="enableMeal" type="radio" <c:if test="${posParamGroup.enableMeal==0}">checked</c:if> value="0"/>禁用
 			</dd>
 		</dl>
+		<dl style="margin: 10px 0;">
+			<dt>波特率：</dt>
+			<dd>
+				<input name="bound" type="radio" <c:if test="${posParamGroup.bound==1}">checked</c:if> value="1"/>9600
+				<input name="bound" type="radio" <c:if test="${posParamGroup.bound==3}">checked</c:if> value="3"/>115200
+			</dd>
+		</dl>
 	</div>
 	<div class="formBar">
 		<ul>

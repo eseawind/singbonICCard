@@ -29,6 +29,6 @@
 		select * from waterRateGroup where companyId=#{companyId}
 	</select>
 	<select id="selectCountWithPos" resultType="java.lang.Integer">
-		select count(*) count from device where deviceType=2 and groupId=#{groupId}
+		select count(*) count from device where deviceType=3 and groupId=#{groupId}
 	</select>
 </mapper>

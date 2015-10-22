@@ -17,13 +17,13 @@
 		select * from device where operId=#{operId}
 	</select>
 	<select id="selectPosList" resultMap="device">
-		select * from device where companyId=#{companyId} and deviceType=1 
+		select * from device where companyId=#{companyId} and deviceType!=8
 		<if test="onlyEnable!=null and onlyEnable = 1">
 			 and enable=1
 		</if>
 	</select>
 	<select id="selectPosListByGroupId" resultMap="device">
-		select * from device where groupId=#{groupId} and deviceType=1 
+		select * from device where groupId=#{groupId} and deviceType=2
 		<if test="onlyEnable!=null and onlyEnable = 1">
 			 and enable=1
 		</if>

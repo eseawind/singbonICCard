@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50528
 File Encoding         : 65001
 
-Date: 2015-10-13 14:52:19
+Date: 2015-10-17 04:28:24
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -89,6 +89,21 @@ INSERT INTO `batch` VALUES ('13', '112221233', '2015-05-28 00:00:00', '2015-05-2
 INSERT INTO `batch` VALUES ('14', '0731', '2015-05-28 00:00:00', '2015-08-28 00:00:00', null, '1');
 INSERT INTO `batch` VALUES ('15', 'sdssfsdf', '2015-05-07 00:00:00', '2015-05-29 00:00:00', null, '1');
 INSERT INTO `batch` VALUES ('16', '批次1', '2015-10-10 00:00:00', '2029-10-31 00:00:00', null, '2');
+
+-- ----------------------------
+-- Table structure for `cardloss`
+-- ----------------------------
+DROP TABLE IF EXISTS `cardloss`;
+CREATE TABLE `cardloss` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `companyId` int(11) DEFAULT NULL,
+  `cardNO` int(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of cardloss
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for `cardparam`
@@ -516,7 +531,7 @@ CREATE TABLE `discount` (
 -- ----------------------------
 -- Records of discount
 -- ----------------------------
-INSERT INTO `discount` VALUES ('4', '1', '0', '1', '0', '10');
+INSERT INTO `discount` VALUES ('4', '1', '0', '1', '0', '0');
 INSERT INTO `discount` VALUES ('5', '1', '1', '1', '0', '100');
 INSERT INTO `discount` VALUES ('6', '1', '2', '1', '0', '0');
 INSERT INTO `discount` VALUES ('7', '1', '3', '1', '0', '12');
@@ -678,62 +693,90 @@ INSERT INTO `mealbase` VALUES ('5', '加班一', '20:30:01', '22:30:00', '0');
 INSERT INTO `mealbase` VALUES ('6', '加班二', '22:00:01', '23:59:59', '0');
 
 -- ----------------------------
--- Table structure for `multiwaterRateGroup`
+-- Table structure for `multiwaterrategroup`
 -- ----------------------------
-DROP TABLE IF EXISTS `multiwaterRateGroup`;
-CREATE TABLE `multiwaterRateGroup` (
+DROP TABLE IF EXISTS `multiwaterrategroup`;
+CREATE TABLE `multiwaterrategroup` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `companyId` int(11) DEFAULT NULL,
+  `groupName` varchar(50) DEFAULT NULL,
   `consumeType` int(11) DEFAULT NULL,
-  `chargeType` int(11) DEFAULT NULL,
+  `waterPrecision` int(11) DEFAULT NULL,
+  `rate1Fare` int(11) DEFAULT NULL,
+  `rate1Cycle` int(11) DEFAULT NULL,
+  `rate1Water` int(11) DEFAULT NULL,
   `rate1Status` int(11) DEFAULT NULL,
-  `rate1DeductFare` int(11) DEFAULT NULL,
-  `rate1DeductCycle` int(11) DEFAULT NULL,
+  `rate2Fare` int(11) DEFAULT NULL,
+  `rate2Cycle` int(11) DEFAULT NULL,
+  `rate2Water` int(11) DEFAULT NULL,
   `rate2Status` int(11) DEFAULT NULL,
-  `rate2DeductFare` int(11) DEFAULT NULL,
-  `rate2DeductCycle` int(11) DEFAULT NULL,
+  `rate3Fare` int(11) DEFAULT NULL,
+  `rate3Cycle` int(11) DEFAULT NULL,
+  `rate3Water` int(11) DEFAULT NULL,
   `rate3Status` int(11) DEFAULT NULL,
-  `rate3DeductFare` int(11) DEFAULT NULL,
-  `rate3DeductCycle` int(11) DEFAULT NULL,
+  `rate4Fare` int(11) DEFAULT NULL,
+  `rate4Cycle` int(11) DEFAULT NULL,
+  `rate4Water` int(11) DEFAULT NULL,
   `rate4Status` int(11) DEFAULT NULL,
-  `rate4DeductFare` int(11) DEFAULT NULL,
-  `rate4DeductCycle` int(11) DEFAULT NULL,
+  `rate4BeginTime` varchar(255) DEFAULT NULL,
+  `pwd` int(11) DEFAULT NULL,
+  `bound` int(11) DEFAULT NULL,
+  `subsidyReset` int(11) DEFAULT NULL,
+  `subsidyFirst` int(11) DEFAULT NULL,
+  `enableCheckTime` int(11) DEFAULT NULL,
+  `enableCharge` int(11) DEFAULT NULL,
+  `updateNum` int(11) DEFAULT NULL,
+  `deviceNum` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of multiwaterRateGroup
+-- Records of multiwaterrategroup
 -- ----------------------------
-INSERT INTO `multiwaterRateGroup` VALUES ('1', '1', '0', '0', '1', '10', '1', '0', '12', '6', '1', '13', '2', '1', '16', '3');
-INSERT INTO `multiwaterRateGroup` VALUES ('2', '2', '0', '0', '1', '10', '5', '1', '10', '5', '1', '10', '5', '1', '10', '5');
+INSERT INTO `multiwaterrategroup` VALUES ('1', null, null, '97', '2', '0', '0', '100', '0', '0', '0', '100', '0', '0', '0', '100', '0', '0', '0', '100', '0', '00:00', '8888', '3', '0', '0', '0', '0', '0', '1');
+INSERT INTO `multiwaterrategroup` VALUES ('2', '1', '一控多', '73', '2', '0', '0', '100', '0', '0', '0', '100', '0', '0', '0', '100', '0', '0', '0', '100', '0', '00:00', '8888', '3', '0', '0', '0', '0', '0', '1');
+INSERT INTO `multiwaterrategroup` VALUES ('3', '1', '一控多', '97', '2', '0', '0', '100', '0', '0', '0', '100', '0', '0', '0', '100', '0', '0', '0', '100', '0', null, '8888', '3', '0', '0', '0', '0', '0', '1');
 
 -- ----------------------------
--- Table structure for `multiwaterRateGroupbase`
+-- Table structure for `multiwaterrategroupbase`
 -- ----------------------------
-DROP TABLE IF EXISTS `multiwaterRateGroupbase`;
-CREATE TABLE `multiwaterRateGroupbase` (
+DROP TABLE IF EXISTS `multiwaterrategroupbase`;
+CREATE TABLE `multiwaterrategroupbase` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `consumeType` int(11) DEFAULT NULL,
-  `chargeType` int(11) DEFAULT NULL,
+  `waterPrecision` int(11) DEFAULT NULL,
+  `rate1Fare` int(11) DEFAULT NULL,
+  `rate1Cycle` int(11) DEFAULT NULL,
+  `rate1Water` int(11) DEFAULT NULL,
   `rate1Status` int(11) DEFAULT NULL,
-  `rate1DeductFare` int(11) DEFAULT NULL,
-  `rate1DeductCycle` int(11) DEFAULT NULL,
+  `rate2Fare` int(11) DEFAULT NULL,
+  `rate2Cycle` int(11) DEFAULT NULL,
+  `rate2Water` int(11) DEFAULT NULL,
   `rate2Status` int(11) DEFAULT NULL,
-  `rate2DeductFare` int(11) DEFAULT NULL,
-  `rate2DeductCycle` int(11) DEFAULT NULL,
+  `rate3Fare` int(11) DEFAULT NULL,
+  `rate3Cycle` int(11) DEFAULT NULL,
+  `rate3Water` int(11) DEFAULT NULL,
   `rate3Status` int(11) DEFAULT NULL,
-  `rate3DeductFare` int(11) DEFAULT NULL,
-  `rate3DeductCycle` int(11) DEFAULT NULL,
+  `rate4Fare` int(11) DEFAULT NULL,
+  `rate4Cycle` int(11) DEFAULT NULL,
+  `rate4Water` int(11) DEFAULT NULL,
   `rate4Status` int(11) DEFAULT NULL,
-  `rate4DeductFare` int(11) DEFAULT NULL,
-  `rate4DeductCycle` int(11) DEFAULT NULL,
+  `rate4BeginTime` varchar(255) DEFAULT NULL,
+  `pwd` int(11) DEFAULT NULL,
+  `bound` int(11) DEFAULT NULL,
+  `subsidyReset` int(11) DEFAULT NULL,
+  `subsidyFirst` int(11) DEFAULT NULL,
+  `enableCheckTime` int(11) DEFAULT NULL,
+  `enableCharge` int(11) DEFAULT NULL,
+  `updateNum` int(11) DEFAULT NULL,
+  `deviceNum` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of multiwaterRateGroupbase
+-- Records of multiwaterrategroupbase
 -- ----------------------------
-INSERT INTO `multiwaterRateGroupbase` VALUES ('1', '0', '0', '1', '10', '5', '1', '10', '5', '1', '10', '5', '1', '10', '5');
+INSERT INTO `multiwaterrategroupbase` VALUES ('1', '97', '2', '0', '0', '100', '0', '0', '0', '100', '0', '0', '0', '100', '0', '0', '0', '100', '0', '00:00', '8888', '3', '0', '0', '0', '0', '0', '1');
 
 -- ----------------------------
 -- Table structure for `ordertime`
@@ -823,7 +866,7 @@ CREATE TABLE `posparamgroup` (
   `enableDiscount` int(11) DEFAULT NULL,
   `enableMeal` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of posparamgroup
@@ -915,67 +958,35 @@ CREATE TABLE `user` (
   `subsidyVersion` int(11) DEFAULT '0',
   `subsidyInvalidDate` date DEFAULT NULL,
   PRIMARY KEY (`userId`)
-) ENGINE=InnoDB AUTO_INCREMENT=126 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=118 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('48', '1', '14', '001', '001', '001', '123456789012345678', '1', 'bca6552f', '1', '241', '0', '0', '0', '1', '2015-05-28', null, '2018-07-01', '2002-01-30', '8888', '8888', '1000', '1000', null, '0', '1', '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('51', '1', '10', '005', '005', '005', '123456789012345678', '30', '7025f025', '1', '241', '0', '0', '0', '1', '2015-05-28', null, '2018-07-01', '2015-09-20', '8888', '8888', '101000', '101000', null, '0', '1', '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('52', '1', '14', '006', '006', '006', '123456789012345678', null, null, '1', '0', '0', '0', '0', '1', '2015-05-28', null, '2018-07-01', '2002-01-29', '8888', '8888', '124400', '124400', null, '0', '1', '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('53', '1', '13', '王亮', 'WL', '1001', '123456789012345678', '32', 'a48a2a41', '2', '241', '0', '0', '0', '1', '2015-07-20', null, '2018-07-01', '2015-08-19', '8888', '8888', '132000', '132000', null, '0', '1', '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('55', '1', '13', '党晓菲', 'DXF', '1003', '123456789012345678', '31', '90d24626', '2', '241', '0', '0', '0', '1', '2015-07-20', null, '2018-07-01', '2002-01-09', '8888', '8888', '101000', '101000', null, '0', '1', '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('56', '1', '13', '王真平', 'WZP', '1004', '123456789012345678', '28', '24fa5a41', '1', '241', '0', '0', '0', '1', '2015-07-20', null, '2018-07-01', '2015-09-14', '8888', '8888', '11000', '11000', null, '0', '1', '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('60', '1', '18', '任鸿飞', 'RHF', '4001', '123456789012345678', '29', 'd4841941', '1', '241', '0', '0', '0', '1', '2015-07-06', null, '2018-07-01', '2015-09-16', '8888', '8888', '101000', '101000', null, '0', '1', '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('61', '1', '18', '王晓光', 'WXG', '4002', '123456789012345678', null, null, '0', '0', '0', '0', '0', '1', '2015-07-06', null, '2018-07-01', null, '8888', '8888', null, null, null, '0', null, '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('62', '1', '18', '郭永帅', 'GYS', '4003', '123456789012345678', null, null, '0', '0', '0', '0', '0', '1', '2015-07-06', null, '2018-07-01', null, '8888', '8888', null, null, null, '0', null, '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('63', '1', '18', '董山园', 'DSY', '4004', '123456789012345678', null, null, '0', '242', '0', '0', '0', '1', '2015-07-06', null, '2018-07-01', null, '8888', '8888', null, null, null, '0', null, '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('64', '1', '18', '曹翠翠', 'CCC', '4005', '123456789012345678', null, null, '0', '242', '0', '0', '0', '1', '2015-07-06', null, '2018-07-01', null, '8888', '8888', null, null, null, '0', null, '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('65', '1', '18', '李全政', 'LQZ', '4006', '123456789012345678', null, null, '0', '243', '0', '0', '0', '1', '2015-07-06', null, '2018-07-01', null, '8888', '8888', null, null, null, '0', null, '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('71', '1', '19', '王勤', 'WQ', '5001', '123456789012345678', null, null, '0', '243', '0', '3', '0', '1', '2015-07-06', null, '2018-07-01', null, '8888', '8888', null, null, null, '0', null, '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('72', '1', '19', '詹广阳', 'ZGY', '5002', '123456789012345678', null, null, '0', '244', '0', '3', '0', '1', '2015-07-06', null, '2018-07-01', null, '8888', '8888', null, null, null, '0', null, '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('73', '1', '19', '朱留升', 'ZLS', '5003', '123456789012345678', null, null, '0', '244', '0', '5', '0', '1', '2015-07-06', null, '2018-07-01', null, '8888', '8888', null, null, null, '0', null, '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('74', '1', '19', '周浩', 'ZH', '5004', '123456789012345678', null, null, '0', '245', '0', '5', '0', '1', '2015-07-06', null, '2018-07-01', null, '8888', '8888', null, null, null, '0', null, '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('75', '1', '19', '张翠娟', 'ZCJ', '5005', '123456789012345678', null, null, '0', '245', '0', '5', '0', '1', '2015-07-06', null, '2018-07-01', null, '8888', '8888', null, null, null, '0', null, '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('83', '1', '16', '王宇', 'WY', '2001', '123456789012345678', null, null, '0', '0', '0', '3', '0', '1', '2015-07-06', null, '2018-07-01', null, '8888', '8888', null, null, null, '0', null, '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('84', '1', '16', '颜贝', 'YB', '2002', '123456789012345678', null, null, '0', '0', '0', '3', '0', '1', '2015-07-06', null, '2018-07-01', null, '8888', '8888', null, null, null, '0', null, '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('85', '1', '16', '申妞妞', 'SNN', '2003', '123456789012345678', null, null, '0', '0', '0', '3', '0', '1', '2015-07-06', null, '2018-07-01', null, '8888', '8888', null, null, null, '0', null, '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('86', '1', '16', '马慧丹', 'MHD', '2004', '123456789012345678', null, null, '0', '0', '0', '3', '0', '1', '2015-07-06', null, '2018-07-01', null, '8888', '8888', null, null, null, '0', null, '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('88', '1', '17', '周金平', 'ZJP', '3001', '123456789012345678', null, null, '0', '0', '0', '4', '0', '1', '2015-07-06', null, '2018-07-01', null, '8888', '8888', null, null, null, '0', null, '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('89', '1', '17', '张丹丹', 'ZDD', '3002', '123456789012345678', null, null, '0', '0', '0', '4', '0', '1', '2015-07-06', null, '2018-07-01', null, '8888', '8888', null, null, null, '0', null, '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('90', '1', '17', '司文文', 'SWW', '3003', '123456789012345678', null, null, '0', '0', '0', '4', '0', '1', '2015-07-06', null, '2018-07-01', null, '8888', '8888', null, null, null, '0', null, '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('92', '1', '17', '崔连杰', 'CLJ', '3005', '123456789012345678', null, null, '0', '0', '0', '4', '0', '1', '2015-07-06', null, '2018-07-01', '2002-01-02', '8888', '8888', '1000', '1000', null, '0', '1', '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('93', '1', '17', '3006', '3006', '3006', '123456789012345678', null, null, '0', '0', '0', '3', '0', '4', '2015-07-06', null, '2018-07-01', '2002-01-02', '8888', '8888', '11000', '11000', null, '0', '1', '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('96', '1', '22', '3', '3', '3', '123456789012345678', '2', '450f671d', '1', '241', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', '2015-08-19', '8888', '8888', '1000', '1000', null, '0', '1', '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('97', '1', '22', '4', '4', '4', '123456789012345678', '3', '7511401c', '1', '241', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', '2015-08-19', '8888', '8888', '1000', '1000', null, '0', '1', '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('98', '1', '22', '5', '5', '5', '123456789012345678', '4', 'd57e6c1c', '1', '241', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', '2015-08-19', '8888', '8888', '1000', '1000', null, '0', '1', '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('99', '1', '22', '6', '6', '6', '123456789012345678', '5', '319992d5', '1', '241', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', '2015-08-19', '8888', '8888', '1000', '1000', null, '0', '1', '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('100', '1', '22', '7', '7', '7', '123456789012345678', '6', 'c4883641', '1', '241', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', '2015-08-19', '8888', '8888', '1000', '1000', null, '0', '1', '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('101', '1', '22', '8', '8', '8', '123456789012345678', '7', 'b0195a99', '1', '241', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', '2015-08-19', '8888', '8888', '1000', '1000', null, '0', '1', '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('102', '1', '22', '9', '9', '9', '123456789012345678', '11', 'cdcde79b', '1', '241', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', '2015-08-21', '8888', '8888', '10000', '10000', null, '0', '1', '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('103', '1', '22', '10', '10', '10', '123456789012345678', '12', 'c5ed2b20', '1', '241', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', '2015-08-21', '8888', '8888', '120000', '120000', null, '0', '1', '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('104', '1', '22', '11', '11', '11', '123456789012345678', '13', 'd4b5f940', '1', '241', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', '2015-08-21', '8888', '8888', '10000', '10000', null, '0', '1', '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('105', '1', '22', '12', '12', '12', '123456789012345678', '14', '0a6ad304', '1', '241', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', '2015-08-21', '8888', '8888', '10000', '10000', null, '0', '1', '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('106', '1', '22', '13', '13', '13', '123456789012345678', '15', '204d6d99', '1', '241', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', '2015-08-21', '8888', '8888', '10000', '10000', null, '0', '1', '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('107', '1', '22', '14', '14', '14', '123456789012345678', '16', 'a417cf24', '1', '241', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', '2015-08-21', '8888', '8888', '10000', '10000', null, '0', '1', '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('108', '1', '22', '15', '15', '15', '123456789012345678', '23', 'c1f775d5', '1', '241', '0', '0', '0', '1', '2015-08-17', null, '2015-08-21', '2015-08-19', '8888', '8888', '1000', '1000', null, '0', '1', '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('109', '1', '22', '16', '16', '16', '123456789012345678', '9', '1c924e2f', '1', '241', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', '2015-08-19', '8888', '8888', '1000', '1000', null, '0', '1', '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('110', '1', '22', '17', '17', '17', '123456789012345678', '17', '000df125', '1', '241', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', '2015-08-21', '8888', '8888', '10000', '10000', null, '0', '1', '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('111', '1', '22', '18', '18', '18', '123456789012345678', '18', 'b10759d6', '1', '241', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', '2015-08-21', '8888', '8888', '10000', '10000', null, '0', '1', '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('112', '1', '22', '19', '19', '19', '123456789012345678', '19', '54683e41', '1', '241', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', '2015-08-21', '8888', '8888', '10000', '10000', null, '0', '1', '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('113', '1', '22', '20', '20', '20', '123456789012345678', '20', '746c3c41', '1', '241', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', '2015-08-21', '8888', '8888', '10000', '10000', null, '0', '1', '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('114', '1', '22', '21', '21', '21', '123456789012345678', '21', '40d7f125', '1', '241', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', '2015-08-21', '8888', '8888', '10000', '10000', null, '0', '1', '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('115', '1', '22', '22', '22', '22', '123456789012345678', '22', 'c4314441', '1', '241', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', '2015-08-21', '8888', '8888', '20000', '20000', null, '0', '1', '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('116', '1', '22', '23', '23', '23', '123456789012345678', '24', '60795231', '1', '241', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', '2002-01-09', '8888', '8888', '11000', '11000', null, '0', '1', '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('117', '1', '22', '24', '24', '24', '123456789012345678', '26', 'c4283b41', '1', '241', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', '2002-01-09', '8888', '8888', '11000', '11000', null, '0', '1', '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('118', '1', '22', '25', '25', '25', '123456789012345678', null, null, null, '0', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', null, '8888', '8888', null, null, null, '0', null, '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('119', '1', '22', '26', '26', '26', '123456789012345678', null, null, null, '0', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', null, '8888', '8888', null, null, null, '0', null, '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('120', '1', '22', '27', '27', '27', '123456789012345678', null, null, null, '0', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', null, '8888', '8888', null, null, null, '0', null, '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('121', '1', '22', '28', '28', '28', '123456789012345678', null, null, null, '0', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', null, '8888', '8888', null, null, null, '0', null, '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('122', '1', '22', '29', '29', '29', '123456789012345678', null, null, null, '0', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', null, '8888', '8888', null, null, null, '0', null, '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('123', '1', '22', '30', '30', '30', '123456789012345678', null, null, null, '0', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', null, '8888', '8888', null, null, null, '0', null, '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('124', '1', '22', '31', '31', '31', '123456789012345678', null, null, null, '0', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', null, '8888', '8888', null, null, null, '0', null, '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('125', '1', '22', '32', '32', '32', '123456789012345678', null, null, null, '0', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', null, '8888', '8888', null, null, null, '0', null, '0', null, '0', '0', '0', null);
+INSERT INTO `user` VALUES ('48', '1', '13', '001', '001', '001', '123456789012345678', '7', '90d24626', '1', '241', '0', '0', '0', '1', '2015-05-28', null, '2018-07-01', '2015-10-13', '8888', '8888', '101000', '101000', null, '0', '1', '0', null, '0', '0', '0', null);
+INSERT INTO `user` VALUES ('51', '1', '13', '005', '005', '005', '123456789012345678', null, null, '0', '0', '0', '0', '0', '1', '2015-05-28', null, '2018-07-01', '2015-09-20', '8888', '8888', '101000', '101000', null, '0', '1', '0', null, '0', '0', '0', null);
+INSERT INTO `user` VALUES ('96', '1', '13', '3', '3', '3', '123456789012345678', '2', '817878d6', '1', '244', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', '2015-10-13', '8888', '8888', '100000', '100000', null, '0', '1', '0', null, '0', '0', '0', null);
+INSERT INTO `user` VALUES ('97', '1', '13', '4', '4', '4', '123456789012345678', null, null, '0', '0', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', '2015-08-19', '8888', '8888', '1000', '1000', null, '0', '1', '0', null, '0', '0', '0', null);
+INSERT INTO `user` VALUES ('98', '1', '13', '5', '5', '5', '123456789012345678', null, null, '0', '0', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', '2015-08-19', '8888', '8888', '1000', '1000', null, '0', '1', '0', null, '0', '0', '0', null);
+INSERT INTO `user` VALUES ('99', '1', '13', '6', '6', '6', '123456789012345678', null, null, '0', '0', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', '2015-08-19', '8888', '8888', '1000', '1000', null, '0', '1', '0', null, '0', '0', '0', null);
+INSERT INTO `user` VALUES ('100', '1', '13', '7', '7', '7', '123456789012345678', null, null, '0', '0', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', '2015-08-19', '8888', '8888', '1000', '1000', null, '0', '1', '0', null, '0', '0', '0', null);
+INSERT INTO `user` VALUES ('101', '1', '13', '8', '8', '8', '123456789012345678', null, null, '0', '0', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', '2015-08-19', '8888', '8888', '1000', '1000', null, '0', '1', '0', null, '0', '0', '0', null);
+INSERT INTO `user` VALUES ('102', '1', '13', '9', '9', '9', '123456789012345678', null, null, '0', '0', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', '2015-08-21', '8888', '8888', '10000', '10000', null, '0', '1', '0', null, '0', '0', '0', null);
+INSERT INTO `user` VALUES ('103', '1', '13', '10', '10', '10', '123456789012345678', null, null, '0', '0', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', '2015-08-21', '8888', '8888', '120000', '120000', null, '0', '1', '0', null, '0', '0', '0', null);
+INSERT INTO `user` VALUES ('104', '1', '13', '11', '11', '11', '123456789012345678', null, null, '0', '0', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', '2015-08-21', '8888', '8888', '10000', '10000', null, '0', '1', '0', null, '0', '0', '0', null);
+INSERT INTO `user` VALUES ('105', '1', '13', '12', '12', '12', '123456789012345678', null, null, '0', '0', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', '2015-08-21', '8888', '8888', '10000', '10000', null, '0', '1', '0', null, '0', '0', '0', null);
+INSERT INTO `user` VALUES ('106', '1', '13', '13', '13', '13', '123456789012345678', null, null, '0', '0', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', '2015-08-21', '8888', '8888', '10000', '10000', null, '0', '1', '0', null, '0', '0', '0', null);
+INSERT INTO `user` VALUES ('107', '1', '13', '14', '14', '14', '123456789012345678', null, null, '0', '0', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', '2015-08-21', '8888', '8888', '10000', '10000', null, '0', '1', '0', null, '0', '0', '0', null);
+INSERT INTO `user` VALUES ('108', '1', '13', '15', '15', '15', '123456789012345678', null, null, '0', '0', '0', '0', '0', '1', '2015-08-17', null, '2015-08-21', '2015-08-19', '8888', '8888', '1000', '1000', null, '0', '1', '0', null, '0', '0', '0', null);
+INSERT INTO `user` VALUES ('109', '1', '13', '16', '16', '16', '123456789012345678', null, null, '0', '0', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', '2015-08-19', '8888', '8888', '1000', '1000', null, '0', '1', '0', null, '0', '0', '0', null);
+INSERT INTO `user` VALUES ('110', '1', '13', '17', '17', '17', '123456789012345678', null, null, '0', '0', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', '2015-08-21', '8888', '8888', '10000', '10000', null, '0', '1', '0', null, '0', '0', '0', null);
+INSERT INTO `user` VALUES ('111', '1', '13', '18', '18', '18', '123456789012345678', null, null, '0', '0', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', '2015-08-21', '8888', '8888', '10000', '10000', null, '0', '1', '0', null, '0', '0', '0', null);
+INSERT INTO `user` VALUES ('112', '1', '13', '19', '19', '19', '123456789012345678', null, null, '0', '0', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', '2015-08-21', '8888', '8888', '10000', '10000', null, '0', '1', '0', null, '0', '0', '0', null);
+INSERT INTO `user` VALUES ('113', '1', '13', '20', '20', '20', '123456789012345678', null, null, '0', '0', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', '2015-08-21', '8888', '8888', '10000', '10000', null, '0', '1', '0', null, '0', '0', '0', null);
+INSERT INTO `user` VALUES ('114', '1', '13', '21', '21', '21', '123456789012345678', null, null, '0', '0', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', '2015-08-21', '8888', '8888', '10000', '10000', null, '0', '1', '0', null, '0', '0', '0', null);
+INSERT INTO `user` VALUES ('115', '1', '13', '22', '22', '22', '123456789012345678', null, null, '0', '0', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', '2015-08-21', '8888', '8888', '20000', '20000', null, '0', '1', '0', null, '0', '0', '0', null);
+INSERT INTO `user` VALUES ('116', '1', '13', '23', '23', '23', '123456789012345678', null, null, '0', '0', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', '2002-01-09', '8888', '8888', '11000', '11000', null, '0', '1', '0', null, '0', '0', '0', null);
+INSERT INTO `user` VALUES ('117', '1', '13', '24', '24', '24', '123456789012345678', null, null, '0', '0', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', '2002-01-09', '8888', '8888', '11000', '11000', null, '0', '1', '0', null, '0', '0', '0', null);
 
 -- ----------------------------
 -- Table structure for `userdept`
@@ -1010,85 +1021,118 @@ INSERT INTO `userdept` VALUES ('35', '财务部1', '1', '20', '1');
 INSERT INTO `userdept` VALUES ('36', '部门1', '2', '0', '16');
 
 -- ----------------------------
--- Table structure for `waterRateGroup`
+-- Table structure for `waterrategroup`
 -- ----------------------------
-DROP TABLE IF EXISTS `waterRateGroup`;
-CREATE TABLE `waterRateGroup` (
+DROP TABLE IF EXISTS `waterrategroup`;
+CREATE TABLE `waterrategroup` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `companyId` int(11) DEFAULT NULL,
+  `groupName` varchar(50) DEFAULT NULL,
   `consumeType` int(11) DEFAULT NULL,
   `goWaterType` int(11) DEFAULT NULL,
   `stopWaterType` int(11) DEFAULT NULL,
-  `rate1Status` int(11) DEFAULT NULL,
-  `rate1ConsumeFare` int(11) DEFAULT NULL,
-  `rate1ConsumeCycle` int(11) DEFAULT NULL,
+  `waterPrecision` int(11) DEFAULT NULL,
+  `rate1Fare` int(11) DEFAULT NULL,
+  `rate1Cycle` int(11) DEFAULT NULL,
+  `rate1Water` int(11) DEFAULT NULL,
   `rate1NextDayReset` int(11) DEFAULT NULL,
-  `rate2Status` int(11) DEFAULT NULL,
+  `rate1Status` int(11) DEFAULT NULL,
+  `rate1CardTypes` varchar(255) DEFAULT NULL,
+  `rate2Fare` int(11) DEFAULT NULL,
+  `rate2Cycle` int(11) DEFAULT NULL,
+  `rate2Water` int(11) DEFAULT NULL,
   `rate2BeginTime` varchar(255) DEFAULT NULL,
   `rate2EndTime` varchar(255) DEFAULT NULL,
-  `rate2Value1` int(11) DEFAULT NULL,
-  `rate2Value2` int(11) DEFAULT NULL,
   `rate2CardTypes` varchar(255) DEFAULT NULL,
-  `rate3Status` int(11) DEFAULT NULL,
+  `rate3Fare` int(11) DEFAULT NULL,
+  `rate3Cycle` int(11) DEFAULT NULL,
+  `rate3Water` int(11) DEFAULT NULL,
   `rate3BeginTime` varchar(255) DEFAULT NULL,
   `rate3EndTime` varchar(255) DEFAULT NULL,
-  `rate3Value1` int(11) DEFAULT NULL,
-  `rate3Value2` int(11) DEFAULT NULL,
   `rate3CardTypes` varchar(255) DEFAULT NULL,
-  `rate4Status` int(11) DEFAULT NULL,
+  `rate4Fare` int(11) DEFAULT NULL,
+  `rate4Cycle` int(11) DEFAULT NULL,
+  `rate4Water` int(11) DEFAULT NULL,
   `rate4BeginTime` varchar(255) DEFAULT NULL,
   `rate4EndTime` varchar(255) DEFAULT NULL,
-  `rate4Value1` int(11) DEFAULT NULL,
-  `rate4Value2` int(11) DEFAULT NULL,
   `rate4CardTypes` varchar(255) DEFAULT NULL,
-  `rate5DeductFare` int(11) DEFAULT NULL,
-  `rate5DeductCycle` int(11) DEFAULT NULL,
+  `rate5Fare` int(11) DEFAULT NULL,
+  `rate5Cycle` int(11) DEFAULT NULL,
+  `rate5Water` int(11) DEFAULT NULL,
+  `pwd` int(11) DEFAULT NULL,
+  `bound` int(11) DEFAULT NULL,
+  `subsidyReset` int(11) DEFAULT NULL,
+  `subsidyFirst` int(11) DEFAULT NULL,
+  `enableCheckTime` int(11) DEFAULT NULL,
+  `enableCardMinFare` int(11) DEFAULT NULL,
+  `enableTimeLimitFare` int(11) DEFAULT NULL,
+  `enableDayLimitFare` int(11) DEFAULT NULL,
+  `enableDiscount` int(11) DEFAULT NULL,
+  `enableMeal` int(11) DEFAULT NULL,
+  `updateNum` int(11) DEFAULT NULL,
+  `deviceNum` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of waterRateGroup
+-- Records of waterrategroup
 -- ----------------------------
-INSERT INTO `waterRateGroup` VALUES ('1', '1', '0', '1', '1', '0', '101', '6', '0', '0', '00:00', '00:00', '0', '1', ',0,1,3,4,5,6,7,8,9,10,11,13,14,15,,', '1', '00:46', '00:49', '0', '2', ',0,2,3,4,5,6,7,8,9,10,11,12,13,14,15,,', '1', '00:00', '00:00', '0', '3', ',0,1,2,3,4,5,6,8,9,10,11,12,13,14,15,,', '10', '50');
-INSERT INTO `waterRateGroup` VALUES ('2', '2', '0', '0', '0', '0', '10', '5', '0', '0', '00:00', '00:00', '0', '0', ',0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,', '0', '00:00', '00:00', '0', '0', ',0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,', '0', '00:00', '00:00', '0', '0', ',0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,', '10', '5');
+INSERT INTO `waterrategroup` VALUES ('3', '1', '111', '97', '0', '1', '2', '0', '0', '100', '1', '0', ',,', '0', '0', '100', '00:00', '00:00', ',,', '0', '0', '100', '00:00', '00:00', ',,', '0', '0', '100', '00:00', '00:00', ',,', '0', '0', '0', '8888', '3', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1');
+INSERT INTO `waterrategroup` VALUES ('4', '1', '1112', '97', '0', '1', '2', '0', '0', '100', '0', '0', null, '0', '0', '100', '00:00', '00:00', '', '0', '0', '100', '00:00', '00:00', null, '0', '0', '100', '00:00', '00:00', null, '0', '0', '0', '8888', '3', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1');
 
 -- ----------------------------
--- Table structure for `waterRateGroupbase`
+-- Table structure for `waterrategroupbase`
 -- ----------------------------
-DROP TABLE IF EXISTS `waterRateGroupbase`;
-CREATE TABLE `waterRateGroupbase` (
+DROP TABLE IF EXISTS `waterrategroupbase`;
+CREATE TABLE `waterrategroupbase` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `consumeType` int(11) DEFAULT NULL,
   `goWaterType` int(11) DEFAULT NULL,
   `stopWaterType` int(11) DEFAULT NULL,
-  `rate1Status` int(11) DEFAULT NULL,
-  `rate1ConsumeFare` int(11) DEFAULT NULL,
-  `rate1ConsumeCycle` int(11) DEFAULT NULL,
+  `waterPrecision` int(11) DEFAULT NULL,
+  `rate1Fare` int(11) DEFAULT NULL,
+  `rate1Cycle` int(11) DEFAULT NULL,
+  `rate1Water` int(11) DEFAULT NULL,
   `rate1NextDayReset` int(11) DEFAULT NULL,
-  `rate2Status` int(11) DEFAULT NULL,
+  `rate1Status` int(11) DEFAULT NULL,
+  `rate1CardTypes` varchar(255) DEFAULT NULL,
+  `rate2Fare` int(11) DEFAULT NULL,
+  `rate2Cycle` int(11) DEFAULT NULL,
+  `rate2Water` int(11) DEFAULT NULL,
   `rate2BeginTime` varchar(255) DEFAULT NULL,
   `rate2EndTime` varchar(255) DEFAULT NULL,
-  `rate2Value1` int(11) DEFAULT NULL,
-  `rate2Value2` int(11) DEFAULT NULL,
   `rate2CardTypes` varchar(255) DEFAULT NULL,
-  `rate3Status` int(11) DEFAULT NULL,
+  `rate3Fare` int(11) DEFAULT NULL,
+  `rate3Cycle` int(11) DEFAULT NULL,
+  `rate3Water` int(11) DEFAULT NULL,
   `rate3BeginTime` varchar(255) DEFAULT NULL,
   `rate3EndTime` varchar(255) DEFAULT NULL,
-  `rate3Value1` int(11) DEFAULT NULL,
-  `rate3Value2` int(11) DEFAULT NULL,
   `rate3CardTypes` varchar(255) DEFAULT NULL,
-  `rate4Status` int(11) DEFAULT NULL,
+  `rate4Fare` int(11) DEFAULT NULL,
+  `rate4Cycle` int(11) DEFAULT NULL,
+  `rate4Water` int(11) DEFAULT NULL,
   `rate4BeginTime` varchar(255) DEFAULT NULL,
   `rate4EndTime` varchar(255) DEFAULT NULL,
-  `rate4Value1` int(11) DEFAULT NULL,
-  `rate4Value2` int(11) DEFAULT NULL,
   `rate4CardTypes` varchar(255) DEFAULT NULL,
-  `rate5DeductFare` int(11) DEFAULT NULL,
-  `rate5DeductCycle` int(11) DEFAULT NULL,
+  `rate5Fare` int(11) DEFAULT NULL,
+  `rate5Cycle` int(11) DEFAULT NULL,
+  `rate5Water` int(11) DEFAULT NULL,
+  `pwd` int(11) DEFAULT NULL,
+  `bound` int(11) DEFAULT NULL,
+  `subsidyReset` int(11) DEFAULT NULL,
+  `subsidyFirst` int(11) DEFAULT NULL,
+  `enableCheckTime` int(11) DEFAULT NULL,
+  `enableCardMinFare` int(11) DEFAULT NULL,
+  `enableTimeLimitFare` int(11) DEFAULT NULL,
+  `enableDayLimitFare` int(11) DEFAULT NULL,
+  `enableDiscount` int(11) DEFAULT NULL,
+  `enableMeal` int(11) DEFAULT NULL,
+  `updateNum` int(11) DEFAULT NULL,
+  `deviceNum` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of waterRateGroupbase
+-- Records of waterrategroupbase
 -- ----------------------------
-INSERT INTO `waterRateGroupbase` VALUES ('1', '0', '0', '0', '0', '10', '5', '0', '0', '00:00', '00:00', '0', '0', ',0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,', '0', '00:00', '00:00', '0', '0', ',0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,', '0', '00:00', '00:00', '0', '0', ',0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,', '10', '5');
+INSERT INTO `waterrategroupbase` VALUES ('1', '97', '0', '1', '2', '0', '0', '100', '0', '0', null, '0', '0', '100', '00:00', '00:00', '', '0', '0', '100', '00:00', '00:00', null, '0', '0', '100', '00:00', '00:00', null, '0', '0', '0', '8888', '3', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1');

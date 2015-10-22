@@ -2,11 +2,14 @@ package com.singbon.device;
 
 import java.util.List;
 
+import com.singbon.entity.Company;
 import com.singbon.entity.ConsumeParam;
 import com.singbon.entity.Cookbook;
 import com.singbon.entity.Discount;
 import com.singbon.entity.Meal;
 import com.singbon.entity.OrderTime;
+import com.singbon.entity.PosParamGroup;
+import com.singbon.entity.WaterRateGroup;
 
 /**
  * 终端设备命令
@@ -24,9 +27,12 @@ public class SendCommand {
 	private int cookbookTotal;
 	private Cookbook cookbook;
 	private ConsumeParam consumeParam;
+	private PosParamGroup posParamGroup;
+	private WaterRateGroup waterRateGroup;
 	private List<Meal> mealList;
 	private List<OrderTime> orderTimeList;
 	private List<Discount> discountList;
+	private Company company;
 
 	public ConsumeParam getConsumeParam() {
 		return consumeParam;
@@ -114,6 +120,30 @@ public class SendCommand {
 
 	public void setCookbookTotal(int cookbookTotal) {
 		this.cookbookTotal = cookbookTotal;
+	}
+
+	public Company getCompany() {
+		return company;
+	}
+
+	public void setCompany(Company company) {
+		this.company = company;
+	}
+
+	public PosParamGroup getPosParamGroup() {
+		return posParamGroup;
+	}
+
+	public void setPosParamGroup(PosParamGroup posParamGroup) {
+		this.posParamGroup = posParamGroup;
+	}
+
+	public WaterRateGroup getWaterRateGroup() {
+		return waterRateGroup;
+	}
+
+	public void setWaterRateGroup(WaterRateGroup waterRateGroup) {
+		this.waterRateGroup = waterRateGroup;
 	}
 
 }

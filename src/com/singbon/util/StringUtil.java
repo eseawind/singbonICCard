@@ -209,9 +209,12 @@ public class StringUtil {
 	public static String binaryHexStr(String binary) {
 		String[] strs = binary.split(" ");
 		String result = "";
-		for (String string : strs) {
-			String hex = Integer.toString(Integer.parseInt(string, 2), 16);
+		for (String s : strs) {
+			String hex = Integer.toString(Integer.parseInt(s, 2), 16);
 			result += hex;
+		}
+		if (result.length() == 1) {
+			result = "0" + result;
 		}
 		return result;
 	}
@@ -361,15 +364,16 @@ public class StringUtil {
 	}
 
 	public static void main(String[] args) {
-		// 消费机初始化29 74 e7 0c 3c 9e 11 e5 83 9f d4 be d9 80 4c 01 00 bc 61 4e 00
-		// 00 00 00 00 00 02 02 00 0A 19 19 00 00 00 00 97 b0
-		// byte[] b = StringUtil.strTobytes("41 59 A9 6E 83 8E 4D F5 BD EC D4 E2
-		// D8 E9 40 F1 00 BC 61 4E 00 00 00 00 00 00 02 02 00 1A 04 0A 00 00 00
-		// 00 01010101010101010101010101010101 70 54".replaceAll(" ", ""));
-		// CRC16.generate(b);
-		// StringUtil.print(Integer.toHexString(b[b.length - 2]) + " ");
-		// StringUtil.println(Integer.toHexString(b[b.length - 1]));
+		// 密码 01010101010101010101010101010101 00 00 00 01 0000 00 00 00 00 02
+		// 02 00 11 04 03 00 00 00 00 43 74 61 61 88 88 01 B889
+		// 消费机初始化01010101010101010101010101010101 00 00 00 01 0000 00 00 00 00
+		// 02 02 00 0A 19 19 00 00 00 00 D6 70
+		byte[] b = StringUtil.strTobytes("03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 00 00 00 01 00 00 00 00 00 00 03 03 00 0A 04 01 01 02 03 04 78 0E".replaceAll(" ", ""));
+		CRC16.generate(b);
+		StringUtil.print(Integer.toHexString(b[b.length - 2]) + " ");
+		StringUtil.println(Integer.toHexString(b[b.length - 1]));
 
+		System.out.println(binaryHexStr("110101010"));
 	}
 
 	public static void print(Object obj) {
