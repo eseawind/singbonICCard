@@ -23,6 +23,7 @@ public class PosParamGroup implements Serializable {
 	private Integer enableDayLimitFare;
 	private Integer enableDiscount;
 	private Integer enableMeal;
+	private Integer bound;
 
 	public Integer getId() {
 		return id;
@@ -110,6 +111,14 @@ public class PosParamGroup implements Serializable {
 
 	public void setEnableMeal(Integer enableMeal) {
 		this.enableMeal = enableMeal;
+	}
+
+	public Integer getBound() {
+		return bound;
+	}
+
+	public void setBound(Integer bound) {
+		this.bound = bound;
 	}
 
 }

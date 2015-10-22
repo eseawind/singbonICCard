@@ -16,6 +16,7 @@ public class Device implements Serializable {
 	private Integer companyId;
 	private Integer operId;
 	private Integer groupId;
+	private Integer posParamGroupId;
 	private String deviceName;
 	private Integer deviceNum;
 	private Integer deviceType;
@@ -101,6 +102,14 @@ public class Device implements Serializable {
 
 	public void setIsOnline(Integer isOnline) {
 		this.isOnline = isOnline;
+	}
+
+	public Integer getPosParamGroupId() {
+		return posParamGroupId;
+	}
+
+	public void setPosParamGroupId(Integer posParamGroupId) {
+		this.posParamGroupId = posParamGroupId;
 	}
 
 }

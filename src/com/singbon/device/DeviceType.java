@@ -7,13 +7,13 @@ package com.singbon.device;
  * 
  */
 public class DeviceType {
-	
+
 	/**
 	 * 主设备 0000
 	 */
 	public static String Main = "0000";
 	/**
-	 * 读卡机 0808 
+	 * 读卡机 0808
 	 */
 	public static String CardReader = "0808";
 	/**
@@ -21,8 +21,7 @@ public class DeviceType {
 	 */
 	public static String POS = "0202";
 	/**
-	 * 水控
+	 * 水控 0303
 	 */
-	public static Integer WaterControl = 3;
-	public static Integer Arm = 4;
+	public static String WaterControl = "0303";
 }

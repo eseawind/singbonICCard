@@ -19,25 +19,25 @@ public class DeviceCommunicateStr {
 	 */
 	public static String SendSysTime = "505c025133336813dc6ea22ce385c25b8bfddc4600b5973f91f2e222f1af8a27";
 	/**
-	 * 消费参数
+	 * 发送消费参数命令
 	 */
-	public static String SendConsumeParam = "a98b6af7cc6b8fc485c2b200e39e6492";
+	public static String SendConsumeParam = "0b0015e3275115d11e3f80012baa3e365ff8847d2718fad891f2e222f1af8a27";
 	/**
-	 * 餐别限次
+	 * 发送餐别限次命令
 	 */
 	public static String SendMeal = "37b4714f8f7d1dff4d72588ee6dd225e3f009086ed220eb591f2e222f1af8a27";
 	/**
-	 * 折扣费率
+	 * 发送折扣费率命令
 	 */
 	public static String SendDiscount = "ec66aed2d16b487e4c0ecc868b8f2114165fe0d34cd91405c5f743040598dde8c7a221784bb367f1";
 	/**
-	 * 系统密码
+	 * 发送下载系统密码命令
 	 */
-	public static String SendSysPwd = "dadbc46a44d2b3b48fc11336ba357e63";
+	public static String SendSysPwd = "e5a2d4cd27ffdd33823ab584d508589128670a6fcfa0182db105234bd82351e2";
 	/**
-	 * 单位名称
+	 * 发送下载单位名称命令
 	 */
-	public static String SendCompanyName = "a1ddbac062f07f32d62dafbb21a22c4a";
+	public static String SendCompanyName = "e5a2d4cd27ffdd33379857d9c43c47a138ca6bdac3d65046b105234bd82351e2";
 	/**
 	 * 发送订餐时间段1-6命令
 	 */
@@ -59,13 +59,13 @@ public class DeviceCommunicateStr {
 	 */
 	public static String SendSysInit = "dea6282e44b6866a1bf6868449a57195fcacfd2c9648104e";
 	/**
-	 * 执行校时
+	 * 执行校时命令
 	 */
 	public static String ExecSysTime = "b137826844568d21dc6ea22ce385c25b8bfddc4600b5973f3f9be93b874a5e4b";
 	/**
-	 * 执行消费参数
+	 * 执行消费参数成功
 	 */
-	public static String ExecConsumeParams = "bf8efbf283e53f571e3f80012baa3e36d452df9c591904d5";
+	public static String ExecConsumeParams = "bf8efbf283e53f571e3f80012baa3e362c2e7162d74ef87991f2e222f1af8a27";
 	/**
 	 * 执行餐别限次
 	 */
@@ -75,13 +75,13 @@ public class DeviceCommunicateStr {
 	 */
 	public static String ExecDiscount = "c44f569755aff39c4c0ecc868b8f2114165fe0d34cd9140531fb68d15ac3162a8c09701f385c4f0b";
 	/**
-	 * 执行系统密码
+	 * 执行下载系统密码成功
 	 */
-	public static String ExecSysPwd = "306f7cdabf55f23e1d1abb99d61485bf4bea6fbefa3cefd6";
+	public static String ExecSysPwd = "10469d0be16b70e5823ab584d508589128670a6fcfa0182d3f9be93b874a5e4b";
 	/**
-	 * 执行单位名称
+	 * 执行下载单位名称成功
 	 */
-	public static String ExecCompanyName = "4119c47dd3a8734e7a5226a8649c87b70814630be90175ee";
+	public static String ExecCompanyName = "10469d0be16b70e5379857d9c43c47a138ca6bdac3d650463f9be93b874a5e4b";
 	/**
 	 * 执行订餐时间段1-6命令
 	 */
@@ -111,22 +111,30 @@ public class DeviceCommunicateStr {
 	 */
 	public static String SendGetLastNumCookbook = "f0e28887812046680bd550dc89cb309e407a513b2afe27e4f0bc1d7f7943d6bed170faed669b6bdf";
 	/**
-	 * 执行追加菜肴清单初始化命令
+	 * 执行追加菜肴清单初始化成功
 	 */
-	public static String ExecGetLastNumCookbook = "7f2bfe276f81e07a0bd550dc89cb309e407a513b2afe27e4f0bc1d7f7943d6bed170faed669b6bdf";
+	public static String ExecGetLastNumCookbook = "7f2bfe276f81e07a0bd550dc89cb309e407a513b2afe27e4f0bc1d7f7943d6be2d38c9d1b4370242";
 	/**
 	 * 不存在编号为%s的菜单
 	 */
 	public static String NotExsitCookbook = "822ae4dfd77f30e17e02247a5d8ac51fd7345a206e0523ab7ea035a4f9ada537";
+	/**
+	 * 发送修改菜肴命令：编号：%s，单价：%s，菜名：%s
+	 */
+	public static String SendModifyCookbook = "e4c30e0f68eb42d90a59c2f1cb65acb6fc718595944d9ed6ad688ba823b85352bd7f3ed733691eeeebc49cd6b5ed2557710ee81bd66d9ec91374e9ca7cb9d1e736a398ad21974e6b";
+	/**
+	 * 执行修改菜肴成功：编号：%s，单价：%s，菜名：%s
+	 */
+	public static String ExecModifyCookbook = "9c8c93cfc187831c0a59c2f1cb65acb6f1c054491c9ded39ad688ba823b85352bd7f3ed733691eeeebc49cd6b5ed2557710ee81bd66d9ec91374e9ca7cb9d1e736a398ad21974e6b";
 
 	public static void main(String[] args) {
 		try {
-			String test = "执行单位名称";
+			String test = "执行修改菜肴成功：编号：%s，单价：%s，菜名：%s";
 
 			DesUtil.desInit("ycsty");
-			System.out.println("加密前的字符：" + test);
-			System.out.println("加密后的字符：" + DesUtil.encrypt(test));
-			System.out.println("解密后的字符：" + DesUtil.decrypt(DesUtil.encrypt(test)));
+//			System.out.println("加密前的字符：" + test);
+			System.out.println(DesUtil.encrypt(test));
+//			System.out.println("解密后的字符：" + DesUtil.decrypt("37b4714f8f7d1dff4d72588ee6dd225e3f009086ed220eb591f2e222f1af8a27"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

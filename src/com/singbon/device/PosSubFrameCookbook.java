@@ -28,8 +28,8 @@ public class PosSubFrameCookbook {
 	 */
 	public final static byte GetLastNum = 0x05;
 	/**
-	 * 单独下载菜单
+	 * 修改菜肴
 	 */
-	public final static byte DownloadSigel = 0x06;
+	public final static byte Modify = 0x06;
 
 }

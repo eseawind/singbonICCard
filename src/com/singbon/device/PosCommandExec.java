@@ -30,12 +30,13 @@ public class PosCommandExec {
 		if (b == null)
 			return;
 		String sn = StringUtil.byteToHexStr(0, 15, b);
+		// 设置sn与inetSocketAddress对照关系
 		TerminalManager.SNToInetSocketAddressList.put(sn, inetSocketAddress);
 		// 命令码
 		int commandCode = StringUtil.byteToInt(b[36]) * 256 + StringUtil.byteToInt(b[37]);
 		int recNO = 0;
 		Map map = new HashMap();
-		// 终端设备状态，设置sn与inetSocketAddress对照关系
+		// 终端设备状态
 		if (b[30] == PosFrame.Status && b[31] == PosSubFrameStatus.SysStatus) {
 			map.put("'type'", "status");
 			map.put("'sn'", sn);
@@ -44,6 +45,12 @@ public class PosCommandExec {
 			map.put("blackNum", StringUtil.byteToInt(b[40]) * 256 + StringUtil.byteToInt(b[41]));
 			map.put("subsidyVersion", StringUtil.byteToInt(b[56]) * 256 + StringUtil.byteToInt(b[57]));
 			map.put("subsidyAuth", (b[58] >> 1) & 0x1);
+
+			// 命令码为1是主动询问返回的状态
+			commandCode = StringUtil.byteToInt(b[34]) * 256 + StringUtil.byteToInt(b[35]);
+			if (commandCode == 1) {
+				execReplyCommand(sn, commandCode, b, map, true);
+			}
 			// 普通记录
 		} else if (b[30] == 1 && b[31] == 1) {
 			map.put("'type'", "consumeRecord");
@@ -64,7 +71,7 @@ public class PosCommandExec {
 			}
 			// 命令回复
 		} else {
-			execReplyCommand(sn, commandCode, b, map);
+			execReplyCommand(sn, commandCode, b, map, false);
 			return;
 		}
 
@@ -189,7 +196,7 @@ public class PosCommandExec {
 
 	// 分解命令回复
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private static void execReplyCommand(String sn, int commandCode, byte[] b, Map map) {
+	private static void execReplyCommand(String sn, int commandCode, byte[] b, Map map, boolean statusReply) {
 		SendCommand sendCommand = null;
 		synchronized (TerminalManager.sendCommandObject) {
 			ArrayList<SendCommand> sendCommandList = TerminalManager.SNToSendCommandList.get(sn);
@@ -201,6 +208,11 @@ public class PosCommandExec {
 				}
 			}
 		}
+		// 如果是获取状态回复就返回
+		if (statusReply) {
+			return;
+		}
+
 		Device device = TerminalManager.SNToDevicelList.get(sn);
 		map.put("type", "log");
 		map.put("time", StringUtil.dateFormat(new Date(), "yyyyMMdd HH:mm:ss"));
@@ -239,6 +251,10 @@ public class PosCommandExec {
 				Cookbook cookbook = sendCommand.getCookbook();
 				String log = String.format(DesUtil.decrypt(DeviceCommunicateStr.ExecAppend), sendCommand.getCookbookIndex(), sendCommand.getCookbookTotal(), cookbook.getCookbookCode(),
 						cookbook.getPrice(), cookbook.getCookbookName());
+				map.put("des", log);
+			} else if (subFrame == PosSubFrameCookbook.Modify) {
+				Cookbook cookbook = sendCommand.getCookbook();
+				String log = String.format(DesUtil.decrypt(DeviceCommunicateStr.ExecModifyCookbook), cookbook.getCookbookCode(), cookbook.getPrice(), cookbook.getCookbookName());
 				map.put("des", log);
 			} else if (subFrame == PosSubFrameCookbook.GetLastNum) {
 				int code = StringUtil.byteToInt(b[38]) * 256 + StringUtil.byteToInt(b[39]);

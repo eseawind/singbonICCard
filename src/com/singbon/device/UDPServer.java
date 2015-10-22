@@ -1,5 +1,7 @@
 package com.singbon.device;
 
+import java.util.Date;
+
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -9,7 +11,6 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.DatagramPacket;
 import io.netty.channel.socket.nio.NioDatagramChannel;
-
 
 /**
  * 
@@ -65,6 +66,12 @@ class UDPSeverHandler extends SimpleChannelInboundHandler<DatagramPacket> {
 		if (!CRC16.compareCRC16(b)) {
 			return;
 		}
+
+//		System.out.println(new Date().toLocaleString());
+//		for (byte b2 : b) {
+//			System.out.print((b2 & 0xff) + " ");
+//		}
+//		System.out.println("");
 
 		// 处理数据
 		try {

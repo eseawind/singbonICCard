@@ -6,8 +6,8 @@
 	<parameterMap type="com.singbon.entity.PosParamGroup" id="posParamGroup2" />
 	<cache eviction="FIFO" size="1" readOnly="true"/>
 	<insert id="insert">
-		insert into posParamGroup (companyId,groupName,subsidyReset,subsidyFirst,enableCardMinFare,enableTimeLimitFare,enableDayLimitFare,enableDiscount,enableMeal)
-			select #{companyId},#{groupName},subsidyReset,subsidyFirst,enableCardMinFare,enableTimeLimitFare,enableDayLimitFare,enableDiscount,enableMeal from posParamGroupBase
+		insert into posParamGroup (companyId,groupName,subsidyReset,subsidyFirst,enableCardMinFare,enableTimeLimitFare,enableDayLimitFare,enableDiscount,enableMeal,bound)
+			select #{companyId},#{groupName},subsidyReset,subsidyFirst,enableCardMinFare,enableTimeLimitFare,enableDayLimitFare,enableDiscount,enableMeal,bound from posParamGroupBase
 	</insert>
 	<update id="update" parameterMap="posParamGroup2">
 		update posParamGroup set 
@@ -15,7 +15,7 @@
 			groupName=#{groupName}
 		</if>
 		<if test="groupName==null">
-			subsidyReset=#{subsidyReset},subsidyFirst=#{subsidyFirst},enableCardMinFare=#{enableCardMinFare},enableTimeLimitFare=#{enableTimeLimitFare},enableDayLimitFare=#{enableDayLimitFare},enableDiscount=#{enableDiscount},enableMeal=#{enableMeal}			
+			subsidyReset=#{subsidyReset},subsidyFirst=#{subsidyFirst},enableCardMinFare=#{enableCardMinFare},enableTimeLimitFare=#{enableTimeLimitFare},enableDayLimitFare=#{enableDayLimitFare},enableDiscount=#{enableDiscount},enableMeal=#{enableMeal},bound=#{bound}		
 		</if>
 		where id=#{id}
 	</update>
@@ -29,6 +29,6 @@
 		select * from posParamGroup where companyId=#{companyId}
 	</select>
 	<select id="selectCountWithPos" resultType="java.lang.Integer">
-		select count(*) count from device where deviceType=1 and groupId=#{groupId}
+		select count(*) count from device where deviceType=2 and groupId=#{groupId}
 	</select>
 </mapper>
