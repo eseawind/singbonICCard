@@ -74,4 +74,23 @@ public class BatchController extends BaseController {
 		return StringUtil.requestPath(request, "list");
 	}
 
+	/**
+	 * 挂失
+	 * 
+	 * @param batch
+	 * @param request
+	 * @param model
+	 */
+	@RequestMapping(value = "/black.do")
+	public void black(Integer batchId, HttpServletRequest request, HttpServletResponse response, Model model) {
+		PrintWriter p = null;
+		try {
+			p = response.getWriter();
+			this.batchService.black(batchId);
+			p.print(1);
+		} catch (Exception e) {
+			e.printStackTrace();
+			p.print(0);
+		}
+	}
 }

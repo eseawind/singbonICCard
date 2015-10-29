@@ -180,10 +180,10 @@
 		JS.Engine.on({
 			'Co${sessionScope.company.id}' : function(e) {//侦听一个channel
 				var e2 = eval('(' + e + ')');
+				var sn=e2.sn;
+				map.put(sn,new Date());
 			    //状态
 				if(e2.type=='status'){
-					var sn=e2.sn;
-					map.put(sn,new Date());
 					$("#deviceList .device[id="+sn+"] img").attr('alt','在线').attr('src','/img/online.png');
 					var statusTr=$("#deviceStatusList tr.deviceStatus[id="+sn+"]");
  					$('td[recordNum] div',statusTr).html(e2.recordNum);
@@ -193,8 +193,6 @@
 					$('td[subsidyAuth] div',statusTr).html(e2.subsidyAuth==1?'是':'否');
 				//消费记录
 				}else if(e2.type=='consumeRecord'){
-					var sn=e2.sn;
-					map.put(sn,new Date());
 					$("#deviceList .device[id="+sn+"] img").attr('alt','在线').attr('src','/img/online.png');
 					if(consumeRecordIndex>=maxRow){
 						consumeRecordIndex=0;
@@ -223,8 +221,6 @@
 					getStatus(sn);
 				//订餐取餐记录
 				}else if(e2.type=='cookbookRecord'){
-					var sn=e2.sn;
-					map.put(sn,new Date());
 					$("#deviceList .device[id="+sn+"] img").attr('alt','在线').attr('src','/img/online.png');
 					if(cookbookRecordIndex>=maxRow){
 						cookbookRecordIndex=0;
@@ -314,8 +310,8 @@
 			'deviceParam' : function(t, target) {
 				executeCmd(t,'deviceParam');
 			},
-			'authSubsidy' : function(t, target) {
-				executeCmd(t,'authSubsidy');
+			'grantSubsidy' : function(t, target) {
+				executeCmd(t,'grantSubsidy');
 			},
 			'disableSubsidy' : function(t, target) {
 				executeCmd(t,'disableSubsidy');
@@ -335,6 +331,9 @@
 			},
 			'sysInit' : function(t, target) {
 				executeCmd(t,'sysInit');
+			},
+			'batchBlack' : function(t, target) {
+				executeCmd(t,'batchBlack');
 			}
 		},
 		onShowMenu : function(e, menu) {
@@ -434,7 +433,7 @@
 			<li id="baseConsumeParam">消费类参数</li>
 			<li id="deviceParam">设备参数</li>
 			<li class="divide" />
-			<li id="authSubsidy">补助授权</li>
+			<li id="grantSubsidy">补助授权</li>
 			<li id="disableSubsidy">补助回收</li>
 			<li class="divide" />
 			<li id="batchBlack">批次名单</li>

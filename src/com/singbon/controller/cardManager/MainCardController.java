@@ -130,7 +130,7 @@ public class MainCardController extends BaseController {
 		}
 
 		List<Map> userList = this.commonService.selectByPage(columns, fromSql, whereSql, pagination);
-		int totalCount = Integer.valueOf(userList.get(0).get("count").toString());
+		int totalCount = Integer.valueOf(userList.get(0).get("userId").toString());
 		userList.remove(0);
 
 		for (Map m : userList) {

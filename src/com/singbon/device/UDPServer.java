@@ -65,7 +65,7 @@ class UDPSeverHandler extends SimpleChannelInboundHandler<DatagramPacket> {
 			return;
 		}
 
-//		System.out.println(new Date().toLocaleString());
+//		System.out.println(new java.util.Date().toLocaleString());
 //		for (byte b2 : b) {
 //			System.out.print((b2 & 0xff) + " ");
 //		}
@@ -73,7 +73,7 @@ class UDPSeverHandler extends SimpleChannelInboundHandler<DatagramPacket> {
 
 		// 处理数据
 		try {
-			PosCommandExec.execCommand(packet.sender(), b);
+			PosExecCommandDispatch.execCommand(packet.sender(), b);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

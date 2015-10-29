@@ -31,11 +31,13 @@ public class Batch implements Serializable {
 	public void setCompanyId(Integer companyId) {
 		this.companyId = companyId;
 	}
-	
+
 	private String batchName;
 	private Date beginDate;
 	private Date endDate;
 	private Date invalidDate;
+	private Integer status;
+	private String statusDesc;
 
 	public String getBatchName() {
 		return batchName;
@@ -67,5 +69,26 @@ public class Batch implements Serializable {
 
 	public void setInvalidDate(Date invalidDate) {
 		this.invalidDate = invalidDate;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
+	public String getStatusDesc() {
+		if (this.status == 0) {
+			statusDesc = "正常";
+		} else {
+			statusDesc = "挂失";
+		}
+		return statusDesc;
+	}
+
+	public void setStatusDesc(String statusDesc) {
+		this.statusDesc = statusDesc;
 	}
 }

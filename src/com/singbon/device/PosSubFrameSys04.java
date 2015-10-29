@@ -1,12 +1,12 @@
 package com.singbon.device;
 
 /**
- * 系统参数子帧定义
+ * 系统04子帧定义
  * 
  * @author 郝威
  * 
  */
-public class PosSubFrameSysParam {
+public class PosSubFrameSys04 {
 
 	/**
 	 * 消费参数 0x01

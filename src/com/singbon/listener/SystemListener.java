@@ -45,7 +45,7 @@ public class SystemListener implements ServletContextListener {
 		// 加载设备序列号到公司的映射,注册读卡机通道
 		List<Device> deviceList = deviceService.selectAllList();
 		for (Device d : deviceList) {
-			TerminalManager.SNToCompanyList.put(d.getSn(), d.getCompanyId());
+//			TerminalManager.SNToCompanyList.put(d.getSn(), d.getCompanyId());
 			//读卡机
 			if (d.getDeviceType() == 8) {
 				TerminalManager.registChannel("c" + d.getSn());

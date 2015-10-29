@@ -126,10 +126,42 @@ public class DeviceCommunicateStr {
 	 * 执行修改菜肴成功：编号：%s，单价：%s，菜名：%s
 	 */
 	public static String ExecModifyCookbook = "9c8c93cfc187831c0a59c2f1cb65acb6f1c054491c9ded39ad688ba823b85352bd7f3ed733691eeeebc49cd6b5ed2557710ee81bd66d9ec91374e9ca7cb9d1e736a398ad21974e6b";
+	/**
+	 * 发送补助授权命令
+	 */
+	public static String SendGrantSubsidy = "72b1374d0f6ec179c6e08454eb652cebd4c35bab85b2422091f2e222f1af8a27";
+	/**
+	 * 执行补助授权成功
+	 */
+	public static String ExecGrantSubsidy = "4b13a05eb79e5635c6e08454eb652ceb96dbb4f9a33fe38791f2e222f1af8a27";
+	/**
+	 * 发送补助回收命令
+	 */
+	public static String SendDisableSubsidy = "72b1374d0f6ec1790bdf00d66bf4f39a598e6b27aaa28a7f91f2e222f1af8a27";
+	/**
+	 * 执行补助回收成功
+	 */
+	public static String ExecDisableSubsidy = "4b13a05eb79e56350bdf00d66bf4f39a7d9c4456e0ca4fa391f2e222f1af8a27";
+	/**
+	 * 发送批次更新命令
+	 */
+	public static String SendBatchUpdate = "ab216de20fca31d104f304287b40c1e22dd4051878be69cb91f2e222f1af8a27";
+	/**
+	 * 执行批次更新成功
+	 */
+	public static String ExecBatchUpdate = "79af73a2c144a13704f304287b40c1e2f48b5f8c403f372f91f2e222f1af8a27";
+	/**
+	 * 发送批次追加命令：%s
+	 */
+	public static String SendBatchAppend = "ab216de20fca31d13b246808c512015b246f6518e2131e8d742ac890a2218f4f";
+	/**
+	 * 执行批次追加成功：%s
+	 */
+	public static String ExecBatchAppend = "79af73a2c144a1373b246808c512015b603a7eebff106332742ac890a2218f4f";
 
 	public static void main(String[] args) {
 		try {
-			String test = "执行修改菜肴成功：编号：%s，单价：%s，菜名：%s";
+			String test = "执行批次追加成功：%s";
 
 			DesUtil.desInit("ycsty");
 //			System.out.println("加密前的字符：" + test);

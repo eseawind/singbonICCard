@@ -1,5 +1,7 @@
 package com.singbon.device;
 
+import com.singbon.entity.Device;
+
 /**
  * 终端设备类型
  * 
@@ -24,4 +26,17 @@ public class DeviceType {
 	 * 水控 0303
 	 */
 	public static String WaterControl = "0303";
+	
+	/**
+	 * 获取设备类型
+	 * @param device
+	 * @return
+	 */
+	public static String getDeviceTypeFrame(Device device) {
+		String frame = "0202";
+		if (device.getDeviceType() == 3) {
+			frame = "0303";
+		}
+		return frame;
+	}
 }

@@ -47,7 +47,7 @@ public class StringUtil {
 	 * 
 	 * @return
 	 */
-	public static int byteToInt(byte b) {
+	public static Integer byteToInt(byte b) {
 		return b & 0xFF;
 	}
 
@@ -76,7 +76,7 @@ public class StringUtil {
 	}
 
 	/**
-	 * 16进制数字左补零
+	 * 转换成16进制字符串再左补零
 	 * 
 	 * @return
 	 */
@@ -298,14 +298,15 @@ public class StringUtil {
 	}
 
 	/**
-	 * 获取hex字节数据
+	 * 从字节数组中获取指定位置的hex字符形式数据 byte[]b= {00, 11, 22, 33, 44}; byteToHexStr(1, 3,
+	 * byte[] b) 结果11 22 33
 	 * 
 	 * @param begin
 	 * @param end
 	 * @param b
 	 * @return
 	 */
-	public static String byteToHexStr(int begin, int end, byte[] b) {
+	public static String getHexStrFromBytes(int begin, int end, byte[] b) {
 		String baseInfoStr = "";
 		for (int i = begin; i <= end; i++) {
 			String hex = Integer.toHexString(b[i] & 0xFF);
@@ -325,8 +326,8 @@ public class StringUtil {
 	 * @param b
 	 * @return
 	 */
-	public static int hexToInt(int begin, int end, byte[] b) {
-		return Integer.parseInt(byteToHexStr(begin, end, b), 16);
+	public static Integer hexToInt(int begin, int end, byte[] b) {
+		return Integer.parseInt(getHexStrFromBytes(begin, end, b), 16);
 	}
 
 	/**
@@ -363,17 +364,33 @@ public class StringUtil {
 		return tmStr;
 	}
 
+	/**
+	 * object类型int字符串转Integer
+	 * 
+	 * @return
+	 */
+	public static Integer objToInt(Object obj) {
+		return Integer.valueOf(obj.toString());
+	}
+
+	/**
+	 * object类型float字符串转Float
+	 * 
+	 * @return
+	 */
+	public static Float objToFloat(Object obj) {
+		return Float.valueOf(obj.toString());
+	}
+
 	public static void main(String[] args) {
 		// 密码 01010101010101010101010101010101 00 00 00 01 0000 00 00 00 00 02
 		// 02 00 11 04 03 00 00 00 00 43 74 61 61 88 88 01 B889
-		// 消费机初始化01010101010101010101010101010101 00 00 00 01 0000 00 00 00 00
-		// 02 02 00 0A 19 19 00 00 00 00 D6 70
-		byte[] b = StringUtil.strTobytes("03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 00 00 00 01 00 00 00 00 00 00 03 03 00 0A 04 01 01 02 03 04 78 0E".replaceAll(" ", ""));
+		// 消费机初始化01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 00 00 00 01 00 00 00 00 00 00 02 02 00 0A 19 19 00 00 00 00 46 1b
+		byte[] b = StringUtil.strTobytes("01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 00 00 00 01 00 00 00 00 00 00 02 02 00 19 06 01 00 00 00 00 00 00 00 30 00 00 00 07 01 00 02 00 00 02 58 3d d2".replaceAll(" ", ""));
 		CRC16.generate(b);
-		StringUtil.print(Integer.toHexString(b[b.length - 2]) + " ");
-		StringUtil.println(Integer.toHexString(b[b.length - 1]));
+		StringUtil.print(Integer.toHexString(b[b.length - 2]).replace("ffffff", "") + " ");
+		StringUtil.println(Integer.toHexString(b[b.length - 1]).replace("ffffff", ""));	
 
-		System.out.println(binaryHexStr("110101010"));
 	}
 
 	public static void print(Object obj) {

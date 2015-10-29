@@ -63,6 +63,27 @@
 						}
 					}, null, true);
 				});
+		$('#batchForm .delete').click(function(){
+			var form = $(this).parents('form');
+			var batchId = $('#batchForm input[name=id]').val();
+			if(batchId==''){
+				alertMsg.error('请选择一个批次！');				
+			}else{
+				var batchName = $('#batchForm input[name=batchName]').val();
+				alertMsg.confirm('确定要挂失'+batchName+'吗？挂失后不允许恢复正常！', {
+					okCall : function() {
+						$.post('${base }/black.do?batchId=' + batchId,function(e){
+							if (e == 1) {
+								alertMsg.correct('挂失成功！');
+								refreshBatchList();
+							} else {
+								alertMsg.warn('挂失失败！');
+							} 
+						});
+					}
+				});
+			}
+		});
 	});
 
 	function comparaDate() {
@@ -132,6 +153,9 @@
 					</security:authorize>
 					<security:authorize ifAnyGranted="ROLE_BATCH_EDIT,ROLE_ADMIN">
 						<li><a class="edit" href="javascript:;"><span>修改</span></a></li>
+					</security:authorize>
+					<security:authorize ifAnyGranted="ROLE_BATCH_BLACK,ROLE_ADMIN">
+						<li><a class="delete" href="javascript:;"><span>挂失</span></a></li>
 					</security:authorize>
 				</ul>
 			</div>

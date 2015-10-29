@@ -1,5 +1,6 @@
 package com.singbon.service.systemManager.systemSetting;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,5 +33,14 @@ public class BatchService extends BaseService {
 	 */
 	public Batch selectByDeptId(Integer deptId) {
 		return this.batchDAO.selectByDeptId(deptId);
+	}
+
+	/**
+	 * 挂失
+	 * 
+	 * @return
+	 */
+	public void black(@Param("id") Integer id) {
+		this.batchDAO.black(id);
 	}
 }

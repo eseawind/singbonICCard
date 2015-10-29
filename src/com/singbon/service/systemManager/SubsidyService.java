@@ -73,9 +73,11 @@ public class SubsidyService extends BaseService {
 	 * @throws Exception
 	 */
 	public void generateSubsidy(Company company, String invalidDate, HttpServletRequest request) throws Exception {
-		int subsidyVersion = company.getSubsidyVersion();
+		int subsidyVersion = company.getSubsidyVersion()+1;
 		this.subsidyDAO.generateSubsidy(company.getId(), subsidyVersion, invalidDate);
-		company.setSubsidyVersion(subsidyVersion + 1);
+		
+		//修改系统补助版本
+		company.setSubsidyVersion(subsidyVersion);
 		company.setSubsidyInvalidDate(invalidDate);
 		this.companyDAO.updateSubsidy(company);
 		request.getSession().setAttribute("company", company);

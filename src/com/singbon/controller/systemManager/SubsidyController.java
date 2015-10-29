@@ -89,17 +89,17 @@ public class SubsidyController extends BaseController {
 		String whereSql = getWhereSql(nameStr, deptIds, cardTypeId, cardIdentity, sex, company);
 
 		List<Map> userList = this.commonService.selectByPage(columns, fromSql, whereSql, pagination);
-		int totalCount = Integer.valueOf(userList.get(0).get("userId").toString());
+		int totalCount = StringUtil.objToInt(userList.get(0).get("userId"));
 		userList.remove(0);
 
 		for (Map m : userList) {
-			int sex2 = Integer.valueOf(m.get("sex").toString());
+			int sex2 = StringUtil.objToInt(m.get("sex"));
 			if (sex2 == 0) {
 				m.put("sexDesc", "男");
 			} else {
 				m.put("sexDesc", "女");
 			}
-			int status2 = Integer.valueOf(m.get("status").toString());
+			int status2 = StringUtil.objToInt(m.get("status"));
 			String statusDesc = "";
 			if (status2 == 0) {
 				statusDesc = "未发卡";
@@ -119,7 +119,7 @@ public class SubsidyController extends BaseController {
 			model.addAttribute("auto", autoSubsidyFare);
 			List<Discount> discountList = (List<Discount>) this.discountService.selectListByCompanyId(company.getId());
 			for (Map m : userList) {
-				int cardTypeId2 = Integer.valueOf(m.get("cardTypeId").toString());
+				int cardTypeId2 = StringUtil.objToInt(m.get("cardTypeId"));
 				m.put("subsidyFare", discountList.get(cardTypeId2).getSubsidy());
 			}
 		} else {
@@ -185,7 +185,7 @@ public class SubsidyController extends BaseController {
 			model.addAttribute("auto", autoSubsidyFare);
 			List<Discount> discountList = (List<Discount>) this.discountService.selectListByCompanyId(company.getId());
 			for (Map m : userList) {
-				int cardTypeId2 = Integer.valueOf(m.get("cardTypeId").toString());
+				int cardTypeId2 = StringUtil.objToInt(m.get("cardTypeId"));
 				m.put("subsidyFare", discountList.get(cardTypeId2).getSubsidy());
 			}
 		} else {
@@ -285,17 +285,17 @@ public class SubsidyController extends BaseController {
 		String whereSql = getWhereSql(nameStr, deptIds, cardTypeId, cardIdentity, sex, company);
 		whereSql = " u.userId=s.userId and " + whereSql;
 		List<Map> userList = this.commonService.selectByPage(columns, fromSql, whereSql, pagination);
-		int totalCount = Integer.valueOf(userList.get(0).get("id").toString());
+		int totalCount = StringUtil.objToInt(userList.get(0).get("id"));
 		userList.remove(0);
 
 		for (Map m : userList) {
-			int sex2 = Integer.valueOf(m.get("sex").toString());
+			int sex2 = StringUtil.objToInt(m.get("sex"));
 			if (sex2 == 0) {
 				m.put("sexDesc", "男");
 			} else {
 				m.put("sexDesc", "女");
 			}
-			int status2 = Integer.valueOf(m.get("status").toString());
+			int status2 = StringUtil.objToInt(m.get("status"));
 			String statusDesc = "";
 			if (status2 == 0) {
 				statusDesc = "未生成";

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50528
 File Encoding         : 65001
 
-Date: 2015-10-23 04:13:50
+Date: 2015-10-29 23:00:00
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -154,14 +154,17 @@ CREATE TABLE `company` (
   `heartInterval` int(11) DEFAULT NULL,
   `uploadInterval` int(11) DEFAULT NULL,
   `uploadErrTime` int(11) DEFAULT NULL,
+  `subsidyVersion` int(11) DEFAULT NULL,
+  `enableSubsidyReset` int(11) DEFAULT NULL,
+  `subsidyInvalidDate` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of company
 -- ----------------------------
-INSERT INTO `company` VALUES ('1', '郑州兴邦科技有限公司', '12345678', '0371', '1', '10', '5', '5');
-INSERT INTO `company` VALUES ('2', '1', '0312', '0771', '1', '10', '5', '5');
+INSERT INTO `company` VALUES ('1', '郑州兴邦科技有限公司', '12345678', '0371', '1', '10', '5', '5', '0', '0', '2015-10-31');
+INSERT INTO `company` VALUES ('2', '1', '0312', '0771', '1', '10', '5', '5', '0', null, null);
 
 -- ----------------------------
 -- Table structure for `consume`
@@ -532,7 +535,7 @@ CREATE TABLE `discount` (
 -- ----------------------------
 -- Records of discount
 -- ----------------------------
-INSERT INTO `discount` VALUES ('4', '1', '0', '1', '0', '0');
+INSERT INTO `discount` VALUES ('4', '1', '0', '1', '200', '100');
 INSERT INTO `discount` VALUES ('5', '1', '1', '1', '0', '100');
 INSERT INTO `discount` VALUES ('6', '1', '2', '1', '0', '0');
 INSERT INTO `discount` VALUES ('7', '1', '3', '1', '0', '12');
@@ -899,6 +902,25 @@ CREATE TABLE `posparamgroupbase` (
 INSERT INTO `posparamgroupbase` VALUES ('1', '1', '0', '1', '1', '1', '1', '1', '3');
 
 -- ----------------------------
+-- Table structure for `subsidy`
+-- ----------------------------
+DROP TABLE IF EXISTS `subsidy`;
+CREATE TABLE `subsidy` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `userId` int(11) NOT NULL,
+  `companyId` int(11) DEFAULT NULL,
+  `subsidyFare` float DEFAULT NULL,
+  `subsidyVersion` int(255) DEFAULT NULL,
+  `invalidDate` varchar(50) DEFAULT NULL,
+  `status` int(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of subsidy
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for `sysuser`
 -- ----------------------------
 DROP TABLE IF EXISTS `sysuser`;
@@ -966,7 +988,7 @@ CREATE TABLE `user` (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('48', '1', '13', '001', '001', '001', '123456789012345678', '7', '90d24626', '1', '241', '0', '0', '0', '1', '2015-05-28', null, '2018-07-01', '2015-10-13', '8888', '8888', '101000', '101000', null, '0', '1', '0', null, '0', '0', '0', null);
+INSERT INTO `user` VALUES ('48', '1', '18', '001', '001', '001', '123456789012345678', '7', '90d24626', '1', '241', '0', '0', '0', '1', '2015-05-28', null, '2018-07-01', '2015-10-13', '8888', '8888', '101000', '101000', null, '0', '1', '0', null, '0', '0', '0', null);
 INSERT INTO `user` VALUES ('51', '1', '13', '005', '005', '005', '123456789012345678', null, null, '0', '0', '0', '0', '0', '1', '2015-05-28', null, '2018-07-01', '2015-09-20', '8888', '8888', '101000', '101000', null, '0', '1', '0', null, '0', '0', '0', null);
 INSERT INTO `user` VALUES ('96', '1', '13', '3', '3', '3', '123456789012345678', '2', '817878d6', '1', '244', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', '2015-10-13', '8888', '8888', '100000', '100000', null, '0', '1', '0', null, '0', '0', '0', null);
 INSERT INTO `user` VALUES ('97', '1', '13', '4', '4', '4', '123456789012345678', null, null, '0', '0', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', '2015-08-19', '8888', '8888', '1000', '1000', null, '0', '1', '0', null, '0', '0', '0', null);

@@ -33,6 +33,8 @@ public class SendCommand {
 	private List<OrderTime> orderTimeList;
 	private List<Discount> discountList;
 	private Company company;
+	private String batchIds;
+	private String batchNames;
 
 	public ConsumeParam getConsumeParam() {
 		return consumeParam;
@@ -144,6 +146,22 @@ public class SendCommand {
 
 	public void setWaterRateGroup(WaterRateGroup waterRateGroup) {
 		this.waterRateGroup = waterRateGroup;
+	}
+
+	public String getBatchIds() {
+		return batchIds;
+	}
+
+	public void setBatchIds(String batchIds) {
+		this.batchIds = batchIds;
+	}
+
+	public String getBatchNames() {
+		return batchNames;
+	}
+
+	public void setBatchNames(String batchNames) {
+		this.batchNames = batchNames;
 	}
 
 }

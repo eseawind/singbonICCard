@@ -155,7 +155,7 @@ public class TerminalManager {
 	 * @param b
 	 * @throws IOException
 	 */
-	public static void sendToCardReader(SocketChannel socketChannel, byte[] sendBuf) throws IOException {
+	public static void sendToCardReader(SocketChannel socketChannel, byte[] sendBuf) throws Exception {
 		CRC16.generate(sendBuf);
 		ByteBuffer byteBuffer = ByteBuffer.wrap(sendBuf);
 		socketChannel.write(byteBuffer);
@@ -168,7 +168,7 @@ public class TerminalManager {
 	 * @param b
 	 * @throws IOException
 	 */
-	public static void sendToPos(InetSocketAddress inetSocketAddress, byte[] b) throws IOException {
+	public static void sendToPos(InetSocketAddress inetSocketAddress, byte[] b) throws Exception{
 		CRC16.generate(b);
 		StringUtil.print(StringUtil.toHexString(b[b.length - 2]) + " ");
 		StringUtil.print(StringUtil.toHexString(b[b.length - 1]) + " ");
