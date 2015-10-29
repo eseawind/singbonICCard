@@ -11,11 +11,15 @@
 	<update id="update" parameterMap="subsidy2">
 		update subsidy set subsidyFare=#{subsidyFare} where id=#{id}
 	</update>
-	<update id="generate" parameterMap="subsidy2">
-		update subsidy set stauts=1,subsidyVersion=#{subsidyVersion} where companyId=#{companyId}
+	<update id="generateSubsidy" parameterMap="subsidy2">
+		update subsidy set subsidyVersion=#{subsidyVersion},invalidDate=#{invalidDate},status=1 where companyId=#{companyId}
 	</update>
 	<delete id="delete" >
-		delete from Subsidy where id=#{id}    </delete>
+		delete from Subsidy where id in (		
+		<foreach collection="array" item="item" index="index" separator=",">  
+    		(#{item})
+		</foreach>
+		)    </delete>
   	<select id="selectCountByUserId" resultType="java.lang.Integer">
 		select count(userId) from subsidy where userId=#{userId}
 	</select>

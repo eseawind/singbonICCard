@@ -33,15 +33,21 @@ public class CommonService extends BaseService {
 
 	@SuppressWarnings("rawtypes")
 	public List<Map> selectByPage(String[] columns, String fromSql, String whereSql, Pagination pagination) {
-		String selectCountSql = "count(*) count,";
+		String selectCountSql = "";
 		String selectSql = "";
 		int i = 0;
 		for (String col : columns) {
-			if (i != 0) {
-				selectCountSql += "null " + col + ",";
+			selectSql += col + ",";
+			int dotIndex = col.indexOf(".");
+			if (dotIndex != -1) {
+				col = col.substring(dotIndex + 1);
+			}
+			if (i == 0) {
+				selectCountSql += "count(*) " + col + ",";
+			}else{
+				selectCountSql += "null " + col + ",";				
 			}
 			i++;
-			selectSql += col + ",";
 		}
 		selectCountSql = selectCountSql.substring(0, selectCountSql.length() - 1);
 		selectSql = selectSql.substring(0, selectSql.length() - 1);
