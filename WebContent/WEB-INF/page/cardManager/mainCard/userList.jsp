@@ -182,7 +182,7 @@
 						});
 				if (userIds != '') {
 					userIds = userIds.substring(0, userIds.length - 1);
-					alertMsg.confirm('确定要删除该人员吗？', {
+					alertMsg.confirm('确定要删除未发卡人员吗？', {
 						okCall : function() {
 							$.post('${base}/delete.do?checkedUserIds='+ userIds, function(e) {
 								refreshUserList();
@@ -267,8 +267,6 @@
 	<table class="table" width="99%" layoutH="125">
 		<thead>
 			<tr>
-				<th width="10"><input type="checkbox" group="userIds"
-					class="checkboxCtrl"></th>
 				<th width="80">序号</th>
 				<th width="100">编号</th>
 				<th width="100">姓名</th>
@@ -280,8 +278,7 @@
 		</thead>
 		<tbody class="userList">
 			<c:forEach var="user" items="${list}" varStatus="status">
-				<tr userId="${user.userId }" status="${user.status }" cardNO="${user.cardNO}">
-					<td><input name="userIds" value="${user.userId }" status="${user.status}" type="checkbox"></td>
+				<tr>
 					<td>${status.index+1}</td>
 					<td>${user.userNO}</td>
 					<td>${user.username}</td>

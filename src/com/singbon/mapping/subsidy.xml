@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.singbon.dao.systemManager.SubsidyDAO">
+	<resultMap id="subsidy" type="com.singbon.entity.Subsidy">
+	</resultMap>
+	<parameterMap type="com.singbon.entity.Subsidy" id="subsidy2"></parameterMap>
+	<insert id="insert" parameterMap="subsidy2">
+		insert into subsidy (companyId,userId,subsidyFare,status)
+		values (#{companyId},#{userId},#{subsidyFare},0)
+	</insert>
+	<update id="update" parameterMap="subsidy2">
+		update subsidy set subsidyFare=#{subsidyFare} where id=#{id}
+	</update>
+	<update id="generate" parameterMap="subsidy2">
+		update subsidy set stauts=1,subsidyVersion=#{subsidyVersion} where companyId=#{companyId}
+	</update>
+	<delete id="delete" >
+		delete from Subsidy where id=#{id}    </delete>
+  	<select id="selectCountByUserId" resultType="java.lang.Integer">
+		select count(userId) from subsidy where userId=#{userId}
+	</select>
+</mapper>

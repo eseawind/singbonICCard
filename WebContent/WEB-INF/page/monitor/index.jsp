@@ -314,6 +314,12 @@
 			'deviceParam' : function(t, target) {
 				executeCmd(t,'deviceParam');
 			},
+			'authSubsidy' : function(t, target) {
+				executeCmd(t,'authSubsidy');
+			},
+			'disableSubsidy' : function(t, target) {
+				executeCmd(t,'disableSubsidy');
+			},
 			'allCookbook' : function(t, target) {
 				executeCmd(t,'allCookbook');
 			},
@@ -427,7 +433,9 @@
 			<li id="sysTime">校验时间</li>
 			<li id="baseConsumeParam">消费类参数</li>
 			<li id="deviceParam">设备参数</li>
-<!-- 			<li id="discount">折扣费率及管理费</li> -->
+			<li class="divide" />
+			<li id="authSubsidy">补助授权</li>
+			<li id="disableSubsidy">补助回收</li>
 			<li class="divide" />
 			<li id="batchBlack">批次名单</li>
 			<li id="allAppend">全量名单</li>

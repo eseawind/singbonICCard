@@ -63,7 +63,7 @@ public interface BaseDAO {
 	public List<?> selectListByCompanyId(Integer companyId);
 
 	/**
-	 * 自定义sql查询fan
+	 * 自定义sql查询
 	 * 
 	 * @param id
 	 * @return

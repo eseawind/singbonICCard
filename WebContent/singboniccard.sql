@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50528
 File Encoding         : 65001
 
-Date: 2015-10-17 04:28:24
+Date: 2015-10-23 04:13:50
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -243,7 +243,7 @@ CREATE TABLE `cookbook` (
 -- ----------------------------
 -- Records of cookbook
 -- ----------------------------
-INSERT INTO `cookbook` VALUES ('1', '1', '1', '胡辣汤1', '1', null, '');
+INSERT INTO `cookbook` VALUES ('1', '1', '1', '胡辣汤frist', '1', '', '');
 INSERT INTO `cookbook` VALUES ('2', '1', '2', '胡辣汤2', '2', '', '');
 INSERT INTO `cookbook` VALUES ('3', '1', '3', '胡辣汤3', '2', null, '');
 INSERT INTO `cookbook` VALUES ('4', '1', '4', '胡辣汤4', '15', null, '');
@@ -380,6 +380,7 @@ CREATE TABLE `device` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `companyId` int(11) DEFAULT NULL,
   `groupId` int(11) DEFAULT NULL,
+  `posParamGroupId` int(11) DEFAULT NULL,
   `operId` int(11) DEFAULT NULL,
   `deviceName` varchar(255) DEFAULT NULL,
   `deviceNum` int(11) DEFAULT NULL,
@@ -392,107 +393,107 @@ CREATE TABLE `device` (
 -- ----------------------------
 -- Records of device
 -- ----------------------------
-INSERT INTO `device` VALUES ('1', '1', '1', '1', '读卡机', '12345678', '0', '1', '4159a96e838e4df5bdecd4e2d8e940f1');
-INSERT INTO `device` VALUES ('2', '1', '1', null, '点餐机1', '1', '1', '1', '01010101010101010101010101010101');
-INSERT INTO `device` VALUES ('3', '2', '1', null, '点餐机2', '2', '1', '1', '02020202020202020202020202020202');
-INSERT INTO `device` VALUES ('4', '1', '1', null, '点餐机3', '3', '1', '1', '02020202020202020202020202020203');
-INSERT INTO `device` VALUES ('5', '1', '1', null, '点餐机5', '5', '1', '1', '1f263bc66f2711e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('6', '1', '1', null, '点餐机6', '6', '1', '1', '1f8209336f2711e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('7', '1', '1', null, '点餐机7', '7', '1', '1', '22625a386f2711e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('8', '1', '1', null, '点餐机8', '8', '1', '1', '229d3eb46f2711e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('9', '1', '1', null, '点餐机9', '9', '1', '1', '22c376e36f2711e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('10', '1', '1', null, '点餐机10', '10', '1', '1', '22e689476f2711e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('11', '1', '1', null, '点餐机11', '11', '1', '1', '23080c2d6f2711e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('12', '1', '1', null, '点餐机12', '12', '1', '1', '232c507c6f2711e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('13', '1', '1', null, '点餐机13', '13', '1', '1', '234cb6ff6f2711e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('14', '1', '1', null, '点餐机14', '14', '1', '1', '236bdf7e6f2711e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('15', '1', '1', null, '点餐机15', '15', '1', '1', '239293fc6f2711e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('16', '1', '1', null, '点餐机16', '16', '1', '1', '23b4c7de6f2711e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('17', '1', '1', null, '点餐机17', '17', '1', '1', '23d80f8b6f2711e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('18', '1', '1', null, '点餐机18', '18', '1', '1', '23f851026f2711e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('19', '1', '1', null, '点餐机19', '19', '1', '1', '241b76b26f2711e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('20', '1', '1', null, '点餐机20', '20', '1', '1', '243e3e0f6f2711e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('21', '1', '1', null, '点餐机21', '21', '1', '1', '2462699e6f2711e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('22', '1', '1', null, '点餐机22', '22', '1', '1', '248ae2e66f2711e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('23', '1', '1', null, '点餐机23', '23', '1', '1', '24ae818d6f2711e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('24', '1', '1', null, '点餐机24', '24', '1', '1', '24d079886f2711e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('25', '1', '1', null, '点餐机25', '25', '1', '1', '24f96cdc6f2711e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('26', '1', '1', null, '点餐机26', '26', '1', '1', '251dc4286f2711e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('27', '1', '1', null, '点餐机27', '27', '1', '1', '25421bf16f2711e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('28', '1', '1', null, '点餐机28', '28', '1', '1', '2566d36e6f2711e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('29', '1', '1', null, '点餐机29', '29', '1', '1', '258bc7fd6f2711e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('30', '1', '1', null, '点餐机30', '30', '1', '1', '25b7ed7c6f2711e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('31', '1', '1', null, '点餐机31', '31', '1', '1', '25dd26ce6f2711e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('32', '1', '1', null, '点餐机32', '32', '1', '1', '25ffbe446f2711e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('33', '1', '1', null, '点餐机33', '33', '1', '1', '26221ea06f2711e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('34', '1', '1', null, '点餐机34', '34', '1', '1', '264b1fef6f2711e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('35', '1', '1', null, '点餐机35', '35', '1', '1', '2674e5b76f2711e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('36', '1', '1', null, '点餐机36', '36', '1', '1', '2698edd36f2711e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('37', '1', '1', null, '点餐机37', '37', '1', '1', '26c153396f2711e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('38', '1', '1', null, '点餐机38', '38', '1', '1', '26ee7cd96f2711e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('39', '1', '1', null, '点餐机39', '39', '1', '1', '2715548b6f2711e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('40', '1', '1', null, '点餐机40', '40', '1', '1', '273772ad6f2711e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('41', '1', '1', null, '点餐机41', '41', '1', '1', '2757282d6f2711e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('42', '1', '1', null, '点餐机42', '42', '1', '1', '327fb7e36f2711e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('43', '1', '1', null, '点餐机43', '43', '1', '1', '32b0ed556f2711e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('44', '1', '1', null, '点餐机44', '44', '1', '1', '32d783426f2711e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('45', '1', '1', null, '点餐机45', '45', '1', '1', '32fdd8216f2711e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('46', '1', '1', null, '点餐机46', '46', '1', '1', '332239bd6f2711e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('47', '1', '1', null, '点餐机47', '47', '1', '1', '3349d7a76f2711e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('48', '1', '1', null, '点餐机48', '48', '1', '1', '336d05936f2711e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('49', '1', '1', null, '点餐机49', '49', '1', '1', '3398045a6f2711e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('50', '1', '1', null, '点餐机50', '50', '1', '1', '33d76a4d6f2711e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('51', '1', '1', null, '点餐机51', '51', '1', '1', '3424bee36f2711e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('52', '2', '3', null, '点餐机52', '52', '1', '1', '5948beb56f2911e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('53', '2', '3', null, '点餐机53', '53', '1', '1', '59d96a196f2911e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('54', '2', '3', null, '点餐机54', '54', '1', '1', '5a1dcf0c6f2911e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('55', '2', '3', null, '点餐机55', '55', '1', '1', '5a5add2d6f2911e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('56', '2', '3', null, '点餐机56', '56', '1', '1', '5a9c64036f2911e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('57', '2', '3', null, '点餐机57', '57', '1', '1', '5addbedd6f2911e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('58', '2', '3', null, '点餐机58', '58', '1', '1', '5b1c1ee46f2911e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('59', '2', '3', null, '点餐机59', '59', '1', '1', '5b5cf22f6f2911e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('60', '2', '3', null, '点餐机60', '60', '1', '1', '5b9cc9806f2911e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('61', '2', '3', null, '点餐机61', '61', '1', '1', '5bde7bb26f2911e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('62', '2', '3', null, '点餐机62', '62', '1', '1', '5c205fd46f2911e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('63', '2', '3', null, '点餐机63', '63', '1', '1', '5c6221416f2911e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('64', '2', '3', null, '点餐机64', '64', '1', '1', '5ca4627e6f2911e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('65', '2', '3', null, '点餐机65', '65', '1', '1', '5ce3e1b46f2911e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('66', '2', '3', null, '点餐机66', '66', '1', '1', '5d2489b76f2911e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('67', '2', '3', null, '点餐机67', '67', '1', '1', '5d672a766f2911e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('68', '2', '3', null, '点餐机68', '68', '1', '1', '5da90f426f2911e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('69', '2', '3', null, '点餐机69', '69', '1', '1', '5dea83326f2911e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('70', '2', '3', null, '点餐机70', '70', '1', '1', '5e2ded996f2911e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('71', '2', '3', null, '点餐机71', '71', '1', '1', '5e71150f6f2911e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('72', '2', '3', null, '点餐机72', '72', '1', '1', '5eb0c1c66f2911e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('73', '2', '3', null, '点餐机73', '73', '1', '1', '5ef0f0916f2911e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('74', '2', '3', null, '点餐机74', '74', '1', '1', '5f323eb46f2911e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('75', '2', '3', null, '点餐机75', '75', '1', '1', '5f74ecf66f2911e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('76', '2', '3', null, '点餐机76', '76', '1', '1', '5fb7ae166f2911e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('77', '2', '3', null, '点餐机77', '77', '1', '1', '5ffd3f386f2911e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('78', '2', '3', null, '点餐机78', '78', '1', '1', '6040db9a6f2911e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('79', '2', '3', null, '点餐机79', '79', '1', '1', '60846b1e6f2911e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('80', '2', '3', null, '点餐机80', '80', '1', '1', '60c7dead6f2911e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('81', '2', '3', null, '点餐机81', '81', '1', '1', '6114b6856f2911e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('82', '2', '3', null, '点餐机82', '82', '1', '1', '615f1af26f2911e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('83', '2', '3', null, '点餐机83', '83', '1', '1', '61aabf406f2911e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('84', '2', '3', null, '点餐机84', '84', '1', '1', '61f3b4746f2911e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('85', '2', '3', null, '点餐机85', '85', '1', '1', '623c69976f2911e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('86', '2', '3', null, '点餐机86', '86', '1', '1', '628214976f2911e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('87', '2', '3', null, '点餐机87', '87', '1', '1', '62c6172e6f2911e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('88', '2', '3', null, '点餐机88', '88', '1', '1', '630917996f2911e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('89', '2', '3', null, '点餐机89', '89', '1', '1', '634f36f76f2911e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('90', '2', '3', null, '点餐机90', '90', '1', '1', '63911b136f2911e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('91', '2', '3', null, '点餐机91', '91', '1', '1', '63d499d16f2911e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('92', '2', '3', null, '点餐机92', '92', '1', '1', '641a360a6f2911e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('93', '2', '3', null, '点餐机93', '93', '1', '1', '646a6e416f2911e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('94', '2', '3', null, '点餐机94', '94', '1', '1', '64b949666f2911e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('95', '2', '3', null, '点餐机95', '95', '1', '1', '650daefe6f2911e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('96', '2', '3', null, '点餐机96', '96', '1', '1', '655e4e566f2911e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('97', '2', '3', null, '点餐机97', '97', '1', '1', '65b04d8c6f2911e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('98', '2', '3', null, '点餐机98', '98', '1', '1', '6605c7a66f2911e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('99', '2', '3', null, '点餐机99', '99', '1', '1', '66535f136f2911e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('100', '2', '3', null, '点餐机100', '100', '1', '1', '669d8bbe6f2911e5aa1500e04c828a8d');
-INSERT INTO `device` VALUES ('101', '2', '3', null, '点餐机101', '101', '1', '1', '67294b486f2911e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('1', '1', '1', '1', '1', '读卡机', '12345678', '8', '1', '4159a96e838e4df5bdecd4e2d8e940f1');
+INSERT INTO `device` VALUES ('2', '1', '1', '1', null, '点餐机1', '1', '2', '1', '01010101010101010101010101010101');
+INSERT INTO `device` VALUES ('3', '1', '1', '1', null, '点餐机2', '2', '2', '1', '02020202020202020202020202020202');
+INSERT INTO `device` VALUES ('4', '1', '1', '3', null, '水控1', '1', '3', '1', '03030303030303030303030303030303');
+INSERT INTO `device` VALUES ('5', '1', '1', '1', null, '水控2', '2', '3', '1', '04040404040404040404040404040404');
+INSERT INTO `device` VALUES ('6', '1', '1', '1', null, '点餐机6', '6', '2', '1', '1f8209336f2711e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('7', '1', '1', '1', null, '点餐机7', '7', '2', '1', '22625a386f2711e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('8', '1', '1', '1', null, '点餐机8', '8', '2', '1', '229d3eb46f2711e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('9', '1', '1', '1', null, '点餐机9', '9', '2', '1', '22c376e36f2711e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('10', '1', '1', '1', null, '点餐机10', '10', '2', '1', '22e689476f2711e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('11', '1', '1', '1', null, '点餐机11', '11', '2', '1', '23080c2d6f2711e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('12', '1', '1', '1', null, '点餐机12', '12', '2', '1', '232c507c6f2711e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('13', '1', '1', '1', null, '点餐机13', '13', '2', '1', '234cb6ff6f2711e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('14', '1', '1', '1', null, '点餐机14', '14', '2', '1', '236bdf7e6f2711e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('15', '1', '1', '1', null, '点餐机15', '15', '2', '1', '239293fc6f2711e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('16', '1', '1', '1', null, '点餐机16', '16', '2', '1', '23b4c7de6f2711e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('17', '1', '1', '1', null, '点餐机17', '17', '2', '1', '23d80f8b6f2711e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('18', '1', '1', '1', null, '点餐机18', '18', '2', '1', '23f851026f2711e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('19', '1', '1', '1', null, '点餐机19', '19', '2', '1', '241b76b26f2711e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('20', '1', '1', '1', null, '点餐机20', '20', '2', '1', '243e3e0f6f2711e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('21', '1', '1', '1', null, '点餐机21', '21', '2', '1', '2462699e6f2711e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('22', '1', '1', '1', null, '点餐机22', '22', '2', '1', '248ae2e66f2711e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('23', '1', '1', '1', null, '点餐机23', '23', '2', '1', '24ae818d6f2711e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('24', '1', '1', '1', null, '点餐机24', '24', '2', '1', '24d079886f2711e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('25', '1', '1', '1', null, '点餐机25', '25', '2', '1', '24f96cdc6f2711e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('26', '1', '1', '1', null, '点餐机26', '26', '2', '1', '251dc4286f2711e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('27', '1', '1', '1', null, '点餐机27', '27', '2', '1', '25421bf16f2711e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('28', '1', '1', '1', null, '点餐机28', '28', '2', '1', '2566d36e6f2711e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('29', '1', '1', '1', null, '点餐机29', '29', '2', '1', '258bc7fd6f2711e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('30', '1', '1', '1', null, '点餐机30', '30', '2', '1', '25b7ed7c6f2711e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('31', '1', '1', '1', null, '点餐机31', '31', '2', '1', '25dd26ce6f2711e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('32', '1', '1', '1', null, '点餐机32', '32', '2', '1', '25ffbe446f2711e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('33', '1', '1', '1', null, '点餐机33', '33', '2', '1', '26221ea06f2711e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('34', '1', '1', '1', null, '点餐机34', '34', '2', '1', '264b1fef6f2711e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('35', '1', '1', '1', null, '点餐机35', '35', '2', '1', '2674e5b76f2711e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('36', '1', '1', '1', null, '点餐机36', '36', '2', '1', '2698edd36f2711e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('37', '1', '1', '1', null, '点餐机37', '37', '2', '1', '26c153396f2711e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('38', '1', '1', '1', null, '点餐机38', '38', '2', '1', '26ee7cd96f2711e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('39', '1', '1', '1', null, '点餐机39', '39', '2', '1', '2715548b6f2711e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('40', '1', '1', '1', null, '点餐机40', '40', '2', '1', '273772ad6f2711e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('41', '1', '1', '1', null, '点餐机41', '41', '2', '1', '2757282d6f2711e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('42', '1', '1', '1', null, '点餐机42', '42', '2', '1', '327fb7e36f2711e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('43', '1', '1', '1', null, '点餐机43', '43', '2', '1', '32b0ed556f2711e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('44', '1', '1', '1', null, '点餐机44', '44', '2', '1', '32d783426f2711e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('45', '1', '1', '1', null, '点餐机45', '45', '2', '1', '32fdd8216f2711e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('46', '1', '1', '1', null, '点餐机46', '46', '2', '1', '332239bd6f2711e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('47', '1', '1', '1', null, '点餐机47', '47', '2', '1', '3349d7a76f2711e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('48', '1', '1', '1', null, '点餐机48', '48', '2', '1', '336d05936f2711e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('49', '1', '1', '1', null, '点餐机49', '49', '2', '1', '3398045a6f2711e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('50', '1', '1', '1', null, '点餐机50', '50', '2', '1', '33d76a4d6f2711e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('51', '1', '1', '1', null, '点餐机51', '51', '2', '1', '3424bee36f2711e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('52', '2', '3', '1', null, '点餐机52', '52', '2', '1', '5948beb56f2911e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('53', '2', '3', '1', null, '点餐机53', '53', '2', '1', '59d96a196f2911e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('54', '2', '3', '1', null, '点餐机54', '54', '2', '1', '5a1dcf0c6f2911e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('55', '2', '3', '1', null, '点餐机55', '55', '2', '1', '5a5add2d6f2911e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('56', '2', '3', '1', null, '点餐机56', '56', '2', '1', '5a9c64036f2911e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('57', '2', '3', '1', null, '点餐机57', '57', '2', '1', '5addbedd6f2911e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('58', '2', '3', '1', null, '点餐机58', '58', '2', '1', '5b1c1ee46f2911e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('59', '2', '3', '1', null, '点餐机59', '59', '2', '1', '5b5cf22f6f2911e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('60', '2', '3', '1', null, '点餐机60', '60', '2', '1', '5b9cc9806f2911e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('61', '2', '3', '1', null, '点餐机61', '61', '2', '1', '5bde7bb26f2911e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('62', '2', '3', '1', null, '点餐机62', '62', '2', '1', '5c205fd46f2911e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('63', '2', '3', '1', null, '点餐机63', '63', '2', '1', '5c6221416f2911e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('64', '2', '3', '1', null, '点餐机64', '64', '2', '1', '5ca4627e6f2911e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('65', '2', '3', '1', null, '点餐机65', '65', '2', '1', '5ce3e1b46f2911e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('66', '2', '3', '1', null, '点餐机66', '66', '2', '1', '5d2489b76f2911e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('67', '2', '3', '1', null, '点餐机67', '67', '2', '1', '5d672a766f2911e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('68', '2', '3', '1', null, '点餐机68', '68', '2', '1', '5da90f426f2911e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('69', '2', '3', '1', null, '点餐机69', '69', '2', '1', '5dea83326f2911e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('70', '2', '3', '1', null, '点餐机70', '70', '2', '1', '5e2ded996f2911e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('71', '2', '3', '1', null, '点餐机71', '71', '2', '1', '5e71150f6f2911e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('72', '2', '3', '1', null, '点餐机72', '72', '2', '1', '5eb0c1c66f2911e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('73', '2', '3', '1', null, '点餐机73', '73', '2', '1', '5ef0f0916f2911e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('74', '2', '3', '1', null, '点餐机74', '74', '2', '1', '5f323eb46f2911e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('75', '2', '3', '1', null, '点餐机75', '75', '2', '1', '5f74ecf66f2911e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('76', '2', '3', '1', null, '点餐机76', '76', '2', '1', '5fb7ae166f2911e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('77', '2', '3', '1', null, '点餐机77', '77', '2', '1', '5ffd3f386f2911e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('78', '2', '3', '1', null, '点餐机78', '78', '2', '1', '6040db9a6f2911e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('79', '2', '3', '1', null, '点餐机79', '79', '2', '1', '60846b1e6f2911e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('80', '2', '3', '1', null, '点餐机80', '80', '2', '1', '60c7dead6f2911e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('81', '2', '3', '1', null, '点餐机81', '81', '2', '1', '6114b6856f2911e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('82', '2', '3', '1', null, '点餐机82', '82', '2', '1', '615f1af26f2911e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('83', '2', '3', '1', null, '点餐机83', '83', '2', '1', '61aabf406f2911e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('84', '2', '3', '1', null, '点餐机84', '84', '2', '1', '61f3b4746f2911e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('85', '2', '3', '1', null, '点餐机85', '85', '2', '1', '623c69976f2911e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('86', '2', '3', '1', null, '点餐机86', '86', '2', '1', '628214976f2911e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('87', '2', '3', '1', null, '点餐机87', '87', '2', '1', '62c6172e6f2911e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('88', '2', '3', '1', null, '点餐机88', '88', '2', '1', '630917996f2911e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('89', '2', '3', '1', null, '点餐机89', '89', '2', '1', '634f36f76f2911e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('90', '2', '3', '1', null, '点餐机90', '90', '2', '1', '63911b136f2911e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('91', '2', '3', '1', null, '点餐机91', '91', '2', '1', '63d499d16f2911e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('92', '2', '3', '1', null, '点餐机92', '92', '2', '1', '641a360a6f2911e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('93', '2', '3', '1', null, '点餐机93', '93', '2', '1', '646a6e416f2911e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('94', '2', '3', '1', null, '点餐机94', '94', '2', '1', '64b949666f2911e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('95', '2', '3', '1', null, '点餐机95', '95', '2', '1', '650daefe6f2911e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('96', '2', '3', '1', null, '点餐机96', '96', '2', '1', '655e4e566f2911e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('97', '2', '3', '1', null, '点餐机97', '97', '2', '1', '65b04d8c6f2911e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('98', '2', '3', '1', null, '点餐机98', '98', '2', '1', '6605c7a66f2911e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('99', '2', '3', '1', null, '点餐机99', '99', '2', '1', '66535f136f2911e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('100', '2', '3', '1', null, '点餐机100', '100', '2', '1', '669d8bbe6f2911e5aa1500e04c828a8d');
+INSERT INTO `device` VALUES ('101', '2', '3', '1', null, '点餐机101', '101', '2', '1', '67294b486f2911e5aa1500e04c828a8d');
 
 -- ----------------------------
 -- Table structure for `devicegroup`
@@ -865,14 +866,15 @@ CREATE TABLE `posparamgroup` (
   `enableDayLimitFare` int(11) DEFAULT NULL,
   `enableDiscount` int(11) DEFAULT NULL,
   `enableMeal` int(11) DEFAULT NULL,
+  `bound` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of posparamgroup
 -- ----------------------------
-INSERT INTO `posparamgroup` VALUES ('1', '1', '消费机参数组1', '1', '0', '1', '1', '1', '1', '1');
-INSERT INTO `posparamgroup` VALUES ('3', '1', '消费机参数组2', '1', '1', '1', '1', '1', '1', '1');
+INSERT INTO `posparamgroup` VALUES ('1', '1', '消费机参数组1', '1', '0', '1', '1', '1', '1', '1', '3');
+INSERT INTO `posparamgroup` VALUES ('3', '1', '消费机参数组2', '1', '1', '1', '1', '1', '1', '1', '3');
 
 -- ----------------------------
 -- Table structure for `posparamgroupbase`
@@ -887,13 +889,14 @@ CREATE TABLE `posparamgroupbase` (
   `enableDayLimitFare` int(11) DEFAULT NULL,
   `enableDiscount` int(11) DEFAULT NULL,
   `enableMeal` int(11) DEFAULT NULL,
+  `bound` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of posparamgroupbase
 -- ----------------------------
-INSERT INTO `posparamgroupbase` VALUES ('1', '1', '0', '1', '1', '1', '1', '1');
+INSERT INTO `posparamgroupbase` VALUES ('1', '1', '0', '1', '1', '1', '1', '1', '3');
 
 -- ----------------------------
 -- Table structure for `sysuser`

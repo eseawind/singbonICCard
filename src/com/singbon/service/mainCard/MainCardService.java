@@ -32,13 +32,13 @@ import com.singbon.util.StringUtil;
 public class MainCardService extends BaseService {
 
 	@Autowired
-	public UserDAO mainCardDAO;
+	public UserDAO userDAO;
 	@Autowired
 	public CardLossDAO cardLossDAO;
 
 	@Override
 	public BaseDAO getBaseDAO() {
-		return mainCardDAO;
+		return userDAO;
 	}
 
 	/**
@@ -47,7 +47,7 @@ public class MainCardService extends BaseService {
 	 * @param user
 	 */
 	public void delete(Integer[] userIds) throws Exception {
-		this.mainCardDAO.delete(userIds);
+		this.userDAO.delete(userIds);
 	}
 
 	/**
@@ -57,7 +57,7 @@ public class MainCardService extends BaseService {
 	 * @return
 	 */
 	public User selectByUserIdCardSN(Integer companyId, Integer userId, String cardSN) {
-		return this.mainCardDAO.selectByUserIdCardSN(companyId, userId, cardSN);
+		return this.userDAO.selectByUserIdCardSN(companyId, userId, cardSN);
 	}
 
 	/**
@@ -68,7 +68,7 @@ public class MainCardService extends BaseService {
 	 */
 	@SuppressWarnings("rawtypes")
 	public List selectNoCardByDeptId(Integer deptId) {
-		return this.mainCardDAO.selectNoCardByDeptId(deptId);
+		return this.userDAO.selectNoCardByDeptId(deptId);
 	}
 
 	/**
@@ -78,7 +78,7 @@ public class MainCardService extends BaseService {
 	 * @return
 	 */
 	public int selectCountByCardSN(Integer companyId, String cardSN) {
-		return this.mainCardDAO.selectCountByCardSN(companyId, cardSN);
+		return this.userDAO.selectCountByCardSN(companyId, cardSN);
 	}
 
 	/**
@@ -88,7 +88,7 @@ public class MainCardService extends BaseService {
 	 * @return
 	 */
 	public int selectCountByUserNO(Integer companyId, String userNO) throws Exception {
-		return this.mainCardDAO.selectCountByUserNO(companyId, userNO);
+		return this.userDAO.selectCountByUserNO(companyId, userNO);
 	}
 
 	/**
@@ -98,7 +98,7 @@ public class MainCardService extends BaseService {
 	 * @return
 	 */
 	public int selectCountByUserNOUserId(Integer companyId, String userNO, Integer userId) throws Exception {
-		return this.mainCardDAO.selectCountByUserNOUserId(companyId, userNO, userId);
+		return this.userDAO.selectCountByUserNOUserId(companyId, userNO, userId);
 	}
 
 	/**
@@ -108,7 +108,7 @@ public class MainCardService extends BaseService {
 	 * @return
 	 */
 	public int selectMaxCardNO(Integer companyId) throws Exception {
-		return this.mainCardDAO.selectMaxCardNO(companyId);
+		return this.userDAO.selectMaxCardNO(companyId);
 	}
 
 	/**
@@ -117,7 +117,7 @@ public class MainCardService extends BaseService {
 	 * @return
 	 */
 	public List<User> selectByCondition(Integer deptId, String searchStr) {
-		return this.mainCardDAO.selectByCondition(deptId, searchStr);
+		return this.userDAO.selectByCondition(deptId, searchStr);
 	}
 
 	/**
@@ -135,11 +135,11 @@ public class MainCardService extends BaseService {
 	 */
 	public void makeCardByUserInfo(Device device, SocketChannel socketChannel, User user, CardAllInfo cardAllInfo, String cardSN, int commandCode, int section) throws Exception {
 		if (commandCode == CardReaderCommandCode.SingleCard) {
-			this.mainCardDAO.insert(user);
+			this.userDAO.insert(user);
 		} else if (commandCode == CardReaderCommandCode.InfoCard) {
-			this.mainCardDAO.infoCard(user);
+			this.userDAO.infoCard(user);
 		} else if (commandCode == CardReaderCommandCode.RemakeCard) {
-			this.mainCardDAO.remakeCard(user);
+			this.userDAO.remakeCard(user);
 		}
 
 		// 基本扇区
@@ -250,7 +250,7 @@ public class MainCardService extends BaseService {
 	 * @throws Exception
 	 */
 	public void changeStatus(Integer userId, Integer status) throws Exception {
-		this.mainCardDAO.changeStatus(userId, status);
+		this.userDAO.changeStatus(userId, status);
 	}
 
 	/**
@@ -261,7 +261,7 @@ public class MainCardService extends BaseService {
 	 * @throws Exception
 	 */
 	public void loss(Integer userId, Integer companyId, Integer cardNO, Integer status, Integer lossReason) throws Exception {
-		this.mainCardDAO.changeStatus(userId, status);
+		this.userDAO.changeStatus(userId, status);
 		if (cardNO != null && (status == 244 || 0 == lossReason)) {
 			CardLoss cardLoss = new CardLoss();
 			cardLoss.setCompanyId(companyId);
@@ -278,9 +278,9 @@ public class MainCardService extends BaseService {
 	 * @throws Exception
 	 */
 	public void unloss(User user, SocketChannel socketChannel, Device device, String cardInfoStr) throws Exception {
-		int newCardNO = this.mainCardDAO.selectMaxCardNO(user.getCompanyId());
+		int newCardNO = this.userDAO.selectMaxCardNO(user.getCompanyId());
 		user.setCardNO(newCardNO);
-		this.mainCardDAO.unloss(user);
+		this.userDAO.unloss(user);
 		String commandCodeStr = "0000" + StringUtil.hexLeftPad(CardReaderCommandCode.Unloss, 4);
 		String sendBufStr = CardReaderFrame.WriteCard + commandCodeStr + CardReaderFrame.ValidateCardSN + user.getCardSN() + cardInfoStr.substring(0, 14) + StringUtil.hexLeftPad(newCardNO, 8)
 				+ cardInfoStr.substring(22);
@@ -299,7 +299,7 @@ public class MainCardService extends BaseService {
 	 * @throws Exception
 	 */
 	public void offWithCard(Integer userId, SocketChannel socketChannel, Device device, String cardSN, String cardInfoStr) throws Exception {
-		this.mainCardDAO.changeStatus(userId, 244);
+		this.userDAO.changeStatus(userId, 244);
 
 		String commandCodeStr = "0000" + StringUtil.hexLeftPad(CardReaderCommandCode.OffWithCard, 4);
 		String sendBufStr = CardReaderFrame.WriteCard + commandCodeStr + CardReaderFrame.ValidateCardSN + cardSN + cardInfoStr;
@@ -322,8 +322,8 @@ public class MainCardService extends BaseService {
 	 * @throws Exception
 	 */
 	public void changeNewCard(Integer companyId, Integer userId, SocketChannel socketChannel, Device device, String cardSN, String cardInfoStr) throws Exception {
-		int cardNO = this.mainCardDAO.selectMaxCardNO(companyId);
-		this.mainCardDAO.changeNewCard(userId, cardNO, cardSN);
+		int cardNO = this.userDAO.selectMaxCardNO(companyId);
+		this.userDAO.changeNewCard(userId, cardNO, cardSN);
 
 		String cardNOStr = StringUtil.hexLeftPad(cardNO, 8);
 		String cardSeq = StringUtil.hexLeftPad(Integer.valueOf(cardInfoStr.substring(52, 54), 16) + 1, 2);
@@ -344,7 +344,7 @@ public class MainCardService extends BaseService {
 	 * @param cardSN
 	 */
 	public void updateByCard(User user) throws Exception {
-		this.mainCardDAO.updateByCard(user);
+		this.userDAO.updateByCard(user);
 	}
 
 	/**
@@ -355,7 +355,7 @@ public class MainCardService extends BaseService {
 	 * @throws Exception
 	 */
 	public void changeToNewDept(Integer[] userIds, Integer toDeptId) throws Exception {
-		this.mainCardDAO.changeToNewDept(userIds, toDeptId);
+		this.userDAO.changeToNewDept(userIds, toDeptId);
 	}
 
 	/**
@@ -366,7 +366,7 @@ public class MainCardService extends BaseService {
 	 * @throws Exception
 	 */
 	public void changeFromDeptToNew(Integer fromDeptId, Integer toDeptId) throws Exception {
-		this.mainCardDAO.changeFromDeptToNew(fromDeptId, toDeptId);
+		this.userDAO.changeFromDeptToNew(fromDeptId, toDeptId);
 	}
 
 	/**
@@ -383,11 +383,11 @@ public class MainCardService extends BaseService {
 		if (chargeType == 0) {
 			oddFare = (int) (100 * (oddFare2 + opCash));
 			totalFare += opCash * 100;
-			this.mainCardDAO.changeFare(user.getUserId(), (int) opCash * 100);
+			this.userDAO.changeFare(user.getUserId(), (int) opCash * 100);
 		} else {
 			oddFare = (int) (100 * (oddFare2 - opCash));
 			totalFare -= opCash * 100;
-			this.mainCardDAO.changeFare(user.getUserId(), -(int) opCash * 100);
+			this.userDAO.changeFare(user.getUserId(), -(int) opCash * 100);
 		}
 
 		cardInfoStr = cardInfoStr.substring(0, 26) + StringUtil.hexLeftPad(totalFare, 8) + cardInfoStr.substring(34, 50) + StringUtil.hexLeftPad(oddFare, 6) + cardInfoStr.substring(56);

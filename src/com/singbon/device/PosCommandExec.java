@@ -220,13 +220,13 @@ public class PosCommandExec {
 		byte subFrame = b[32];
 		switch (b[31]) {
 		// 校时
-		case PosFrame.SysTime:
+		case PosFrame.Sys04:
 			if (subFrame == PosSubFrameOther.SysTime) {
 				map.put("des", DesUtil.decrypt(DeviceCommunicateStr.ExecSysTime));
 			}
 			break;
 		// 系统参数
-		case PosFrame.Sys:
+		case PosFrame.Sys07:
 			if (subFrame == PosSubFrameSysParam.ConsumeParam) {
 				map.put("des", DesUtil.decrypt(DeviceCommunicateStr.ExecConsumeParams));
 			} else if (subFrame == PosSubFrameSysParam.Meal) {

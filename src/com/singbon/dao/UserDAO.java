@@ -73,7 +73,7 @@ public interface UserDAO extends BaseDAO {
 	 * @return
 	 */
 	public void remakeCard(User user) throws Exception;
-	
+
 	/**
 	 * 解挂
 	 * 
@@ -169,19 +169,4 @@ public interface UserDAO extends BaseDAO {
 	 */
 	public void changeFare(@Param("userId") Integer userId, @Param("opFare") Integer opFare) throws Exception;
 
-	/**
-	 * 分页查询
-	 * 
-	 * @param nameStr
-	 * @param deptId
-	 * @param cardTypeId
-	 * @param sex
-	 * @param beginDate
-	 * @param endDate
-	 * @param status
-	 * @return
-	 */
-	public List<User> selectByPage(@Param("companyId") Integer companyId, @Param("offset") Integer offset, @Param("numPerPage") Integer numPerPage, @Param("nameStr") String nameStr,
-			@Param("deptId") Integer deptId, @Param("cardTypeId") Integer cardTypeId, @Param("sex") Integer sex, @Param("status") Integer status, @Param("dateType") Integer dateType,
-			@Param("beginDate") String beginDate, @Param("endDate") String endDate);
 }

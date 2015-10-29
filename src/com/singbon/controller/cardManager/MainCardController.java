@@ -17,6 +17,7 @@ import org.comet4j.core.util.JSONUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -36,8 +37,8 @@ import com.singbon.entity.Pagination;
 import com.singbon.entity.SysUser;
 import com.singbon.entity.User;
 import com.singbon.entity.UserDept;
+import com.singbon.service.CommonService;
 import com.singbon.service.CompanyService;
-import com.singbon.service.balanceCenter.UserInfoService;
 import com.singbon.service.mainCard.MainCardService;
 import com.singbon.service.systemManager.systemSetting.BatchService;
 import com.singbon.service.systemManager.systemSetting.DiscountService;
@@ -65,7 +66,7 @@ public class MainCardController extends BaseController {
 	@Autowired
 	public CompanyService companyService;
 	@Autowired
-	public UserInfoService userInfoService;
+	public CommonService commonService;
 
 	/**
 	 * 首页
@@ -112,12 +113,48 @@ public class MainCardController extends BaseController {
 	 * @return
 	 * @throws Exception
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/list.do")
 	public String userList(@ModelAttribute Pagination pagination, Integer deptId, String nameStr, HttpServletRequest request, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
-		List<User> userList = this.userInfoService.selectByPage(company.getId(), pagination, nameStr, deptId, null, null, null, null, null, null);
-		int totalCount = userList.get(0).getUserId();
+
+		String[] columns = { "userId", "userNO", "username", "sex", "cardID", "cardTypeId", "status" };
+		String fromSql = "user";
+		String whereSql = "companyId=" + company.getId();
+		if (!StringUtils.isEmpty(nameStr)) {
+			whereSql += String.format(" and (userNO like '%%%s%%' or username like '%%%s%%' or shortName like '%%%s%%')", nameStr, nameStr, nameStr);
+		}
+
+		if (!StringUtils.isEmpty(deptId) && deptId != -1) {
+			whereSql += String.format(" and deptId = %s", deptId);
+		}
+
+		List<Map> userList = this.commonService.selectByPage(columns, fromSql, whereSql, pagination);
+		int totalCount = Integer.valueOf(userList.get(0).get("count").toString());
 		userList.remove(0);
+
+		for (Map m : userList) {
+			int sex2 = Integer.valueOf(m.get("sex").toString());
+			if (sex2 == 0) {
+				m.put("sexDesc", "男");
+			} else {
+				m.put("sexDesc", "女");
+			}
+			int status2 = Integer.valueOf(m.get("status").toString());
+			String statusDesc = "";
+			if (status2 == 0) {
+				statusDesc = "未发卡";
+			} else if (status2 == 241) {
+				statusDesc = "正常";
+			} else if (status2 == 243) {
+				statusDesc = "挂失";
+			} else if (status2 == 244) {
+				statusDesc = "注销";
+			} else {
+				statusDesc = "异常卡";
+			}
+			m.put("statusDesc", statusDesc);
+		}
 
 		model.addAttribute("list", userList);
 		model.addAttribute("pageNum", pagination.getPageNum());
@@ -600,7 +637,7 @@ public class MainCardController extends BaseController {
 			SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
 			if (socketChannel != null) {
 				try {
-					User user=new User();
+					User user = new User();
 					user.setUserId(userId);
 					user.setCardSN(cardSN);
 					user.setCompanyId(company.getId());

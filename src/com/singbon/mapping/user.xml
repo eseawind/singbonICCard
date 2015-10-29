@@ -97,49 +97,4 @@
 			</if>
 		</where>
 	</select>
-	<sql id="whereSelectByPage">
-		where companyId=#{companyId}
-		<if test="nameStr!=null and nameStr!=''">
-		 and (userNO like '%${nameStr}%' or username like '%${nameStr}%' or shortName like '%${nameStr}%')
-		</if>
-		<if test="deptId!=null and deptId!=-1">
-		 and deptId=#{deptId}
-		</if>
-		<if test="cardTypeId!=null and cardTypeId!=-1">
-		 and cardTypeId=#{cardTypeId}
-		</if>
-		<if test="sex!=null and sex!=-1">
-		 and sex=#{sex}
-		</if>
-		<if test="status!=null">
-			<if test="status!=-1 and status!=-2">
-		 		and status=#{status}
-		 	</if>
-			<if test="status==-2">
-		 		and status not in(0,241,243,244)
-		 	</if>
-		</if>
-		<if test="dateType!=null and dateType!=-1">
-			<if test="dateType==0">
-				<if test="beginDate!=null and beginDate!=''">
-					and cardMakeDate&gt;=#{beginDate}
-				</if>
-				<if test="endDate!=null and endDate!=''">
-					and cardMakeDate&lt;=#{endDate}
-				</if>
-			</if>
-			<if test="dateType==1">
-				<if test="beginDate!=null and beginDate!=''">
-					and invalidDate&gt;=#{beginDate}
-				</if>
-				<if test="endDate!=null and endDate!=''">
-					and invalidDate&lt;=#{endDate}
-				</if>
-			</if>
-		</if>
-	</sql>
-	<select id="selectByPage" resultMap="user">
-		select count(userId) userId,null userNO,null username, null cardNO,null sex,null cardID,null cardTypeId,null status from user <include refid="whereSelectByPage"/> union 
-		(select userId,userNO,username,cardNO,sex,cardID,cardTypeId,status from user <include refid="whereSelectByPage"/> limit #{offset},#{numPerPage});
-	</select>
 </mapper>

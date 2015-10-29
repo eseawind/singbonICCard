@@ -7,22 +7,22 @@
 <script type="text/javascript">
 	$(function() {
 		$('#authGroupForm .add').click(
-				function() {
-					$('#authGroupForm input').eq(0).val('');
-					var roles = '';
-					$('#authTree .indeterminate,#authTree .checked').each(
-							function(i, e2) {
-								roles += $(this).find('input').val() + ',';
-							});
+			function() {
+				$('#authGroupForm input').eq(0).val('');
+				var roles = '';
+				$('#authTree .indeterminate,#authTree .checked').each(
+					function(i, e2) {
+						roles += $(this).find('input').val() + ',';
+					});
 					$('#authGroupForm input').eq(1).val(roles);
 					validateCallback($(this).parents('form'), function(e) {
 						if (e == 1) {
 							refreshAuthGroupList();
 						} else {
-
+	
 						}
 					}, null);
-				});
+			});
 		$('#authGroupForm .edit').click(
 				function() {
 					var roles = '';

@@ -3,14 +3,15 @@ package com.singbon.service;
 import java.util.List;
 
 import com.singbon.dao.BaseDAO;
+import com.singbon.entity.Pagination;
 
 /**
- * 公共通用业务层
+ * 公共通用基础业务层
  * 
  * @author 郝威
  * 
  */
-public abstract class BaseService implements IBaseService{
+public abstract class BaseService implements IBaseService {
 
 	@Override
 	public Object insert(Object obj) throws Exception {
@@ -43,6 +44,4 @@ public abstract class BaseService implements IBaseService{
 	}
 
 	public abstract BaseDAO getBaseDAO();
-	
-	
 }

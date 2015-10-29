@@ -155,6 +155,9 @@
 								<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_USERROLES">
 									<li><a href="/systemManager/userRoles/index.do" target="navTab">授权管理</a></li>
 								</security:authorize>
+								<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_USERROLES">
+									<li><a href="/systemManager/subsidy/index.do" target="navTab">补助管理</a></li>
+								</security:authorize>
 							</ul>
 						</div>
 					</security:authorize>

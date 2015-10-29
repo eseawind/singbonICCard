@@ -13,17 +13,17 @@ public class PosFrame {
 	 */
 	public final static byte Status = 0x03;
 	/**
-	 * 系统 0x04
+	 * 系统4 0x04
 	 */
-	public final static byte Sys = 0x04;
+	public final static byte Sys04 = 0x04;
 	/**
 	 * 黑名单 0x05
 	 */
 	public final static byte Black = 0x05;
 	/**
-	 * 校时 0x07
+	 * 系统7 0x07
 	 */
-	public final static byte SysTime = 0x07;
+	public final static byte Sys07 = 0x07;
 	/**
 	 * 菜单 0x09
 	 */
