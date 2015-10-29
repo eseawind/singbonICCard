@@ -110,5 +110,4 @@ public class Company implements Serializable {
 	public void setSubsidyInvalidDate(String subsidyInvalidDate) {
 		this.subsidyInvalidDate = subsidyInvalidDate;
 	}
-
 }

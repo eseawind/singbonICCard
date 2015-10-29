@@ -21,12 +21,12 @@ public interface SubsidyDAO extends BaseDAO {
 	 * @throws Exception
 	 */
 	public Integer selectCountByCompanyId(@Param("companyId") Integer companyId);
-	
+
 	/**
 	 * 生成补助信息
 	 * 
 	 * @param list
 	 * @throws Exception
 	 */
-	public void generateSubsidy(@Param("companyId") Integer companyId,@Param("subsidyVersion") Integer subsidyVersion, @Param("invalidDate") String invalidDate) throws Exception;
+	public void generateSubsidy(@Param("companyId") Integer companyId, @Param("subsidyVersion") Integer subsidyVersion, @Param("invalidDate") String invalidDate) throws Exception;
 }
