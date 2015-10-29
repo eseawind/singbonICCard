@@ -1,7 +1,5 @@
 package com.singbon.device;
 
-import java.util.Date;
-
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;

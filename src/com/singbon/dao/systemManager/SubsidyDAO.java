@@ -13,4 +13,20 @@ import com.singbon.dao.BaseDAO;
 public interface SubsidyDAO extends BaseDAO {
 
 	public Integer selectCountByUserId(@Param("userId") Integer userId);
+
+	/**
+	 * 查询生成补助信息
+	 * 
+	 * @param list
+	 * @throws Exception
+	 */
+	public Integer selectCountByCompanyId(@Param("companyId") Integer companyId);
+	
+	/**
+	 * 生成补助信息
+	 * 
+	 * @param list
+	 * @throws Exception
+	 */
+	public void generateSubsidy(@Param("companyId") Integer companyId,@Param("subsidyVersion") Integer subsidyVersion, @Param("invalidDate") String invalidDate) throws Exception;
 }

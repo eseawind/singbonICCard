@@ -128,9 +128,9 @@ public class MonitorService implements Runnable {
 			PosParamGroup pos = command.getPosParamGroup();
 			if (pos == null)
 				return;
-			sendBufStr += "00000000000000" + StringUtil.hexLeftPad(p.getCardMinFare(), 2) + StringUtil.hexLeftPad(p.getDayLimitFare(), 4) + StringUtil.hexLeftPad(p.getTimeLimitFare(), 4) + "0000"
-					+ StringUtil.hexLeftPad(pos.getSubsidyFirst(), 2) + "00000000" + StringUtil.hexLeftPad(pos.getBound(), 2) + getCardTypesHexStr(p.getCardMinFareCardTypes())
-					+ getCardTypesHexStr(p.getDayLimitFareCardTypes()) + getCardTypesHexStr(p.getTimeLimitFareCardTypes())
+			sendBufStr += "00000000000000" + StringUtil.hexLeftPad(p.getCardMinFare(), 2) + StringUtil.hexLeftPad(p.getDayLimitFare(), 4) + StringUtil.hexLeftPad(p.getTimeLimitFare(), 4) + "00"
+					+ StringUtil.hexLeftPad(pos.getSubsidyReset(), 2) + StringUtil.hexLeftPad(pos.getSubsidyFirst(), 2) + "00000000" + StringUtil.hexLeftPad(pos.getBound(), 2)
+					+ getCardTypesHexStr(p.getCardMinFareCardTypes()) + getCardTypesHexStr(p.getDayLimitFareCardTypes()) + getCardTypesHexStr(p.getTimeLimitFareCardTypes())
 					+ StringUtil.binaryHexStr("" + pos.getEnableMeal() + pos.getEnableDiscount() + pos.getEnableDayLimitFare() + pos.getEnableTimeLimitFare() + pos.getEnableCardMinFare()) + "0000";
 		} else {
 			WaterRateGroup w = command.getWaterRateGroup();
@@ -720,7 +720,7 @@ public class MonitorService implements Runnable {
 
 			sendCommandList.add(sendCommand1);
 			sendCommandList.add(sendCommand2);
-			//补助授权
+			// 补助授权
 		} else if ("authSubsidy".equals(cmd)) {
 			SendCommand sendCommand1 = new SendCommand();
 			sendCommand1.setFrame(PosFrame.Sys07);

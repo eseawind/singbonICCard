@@ -11,10 +11,12 @@ public class Subsidy implements Serializable {
 
 	private static final long serialVersionUID = -4349415810057681133L;
 
+	private Integer id;
 	private Integer userId;
 	private Integer companyId;
 	private float subsidyFare;
 	private Integer subsidyVersion;
+	private String invalidDate;
 	private Integer status;
 
 	public Integer getUserId() {
@@ -55,6 +57,22 @@ public class Subsidy implements Serializable {
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getInvalidDate() {
+		return invalidDate;
+	}
+
+	public void setInvalidDate(String invalidDate) {
+		this.invalidDate = invalidDate;
 	}
 
 }

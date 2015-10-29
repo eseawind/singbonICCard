@@ -5,31 +5,35 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <script type="text/javascript">
+	var currentTr=null;
+	var selectedId=null;
 	$(function(){
-		$('#search').click(function(){
-			search();
+		$('#subsidyUserList .search').click(function(){
+			searchSubsidyUserList();
 		});
-		$('#changeSubsidyFare').click(function(){
-			var subsidyFare=$('#subsidyFare').val();
-			$('#pagerForm2 input[name=subsidyFare]').val(subsidyFare);
-			$('#pagerForm2 input[name=autoSubsidyFare]').val('');			
-			search();
+		$('#subsidyUserList .changeSubsidyFare').click(function(){
+			if(selectedId==null){
+				alertMsg.warn('还未选择修改人员！');
+				return;
+			}
+			var fare=$('#subsidyUserList #subsidyFare').val();
+			$.post('${base}/edit.do?id='+ selectedId+'&subsidyFare='+fare, function(e) {
+				currentTr.find('td').eq(8).find('div').html(fare);
+				selectedId=null;
+			});
 		});
-		$('#delete').click(function(){
-			var userIds = '';
-			$('.subsidyUserList input:checkbox').each(
+		$('#subsidyUserList .delete').click(function(){
+			var ids = '';
+			$('#subsidyUserList input:checkbox[name][checked]').each(
 					function() {
-						if ($(this).attr('checked')
-								&& $(this).attr('status') == 0) {
-							userIds += $(this).val() + ',';
-						}
+						ids += $(this).val() + ',';
 					});
-			if (userIds != '') {
-				userIds = userIds.substring(0, userIds.length - 1);
+			if (ids != '') {
+				ids = ids.substring(0, ids.length - 1);
 				alertMsg.confirm('确定要删除选定人员吗？', {
 					okCall : function() {
-						$.post('${base}/delete.do?checkedUserIds='+ userIds, function(e) {
-							search();
+						$.post('${base}/delete.do?checkedIds='+ ids, function(e) {
+							searchSubsidyUserList();
 						});
 					}
 				});
@@ -39,21 +43,26 @@
 		});
 	});
 	
-	function search(){
+	function searchSubsidyUserList(){
 		var deptIds = '';
-		$('#addUserUserDeptTree .checked').each(function(i, e2) {
+		$('#generateUserDeptTree .checked').each(function(i, e2) {
 				deptIds += $(this).next().next().attr('deptId') + ',';
 			});
-		$('#pagerForm2 input[name=deptIds]').val(deptIds);					
-		divSearch($('#pagerForm2'),'subsidyUserList');
+		$('#subsidyUserList #pagerForm input[name=deptIds]').val(deptIds);					
+		divSearch($('#subsidyUserList #pagerForm'),'subsidyUserList');
+	}
+	
+	function subsidyUserListClick(tr){
+		currentTr=tr;
+		var subsidyFare=tr.attr('subsidyFare');
+		$('#subsidyUserList #subsidyFare').val(subsidyFare);
+		selectedId=tr.attr('id');
 	}
 </script>
 
 <div class="pageHeader" style="border: 1px #B8D0D6 solid">
-	<form action="${base}/subsidyUserList.do" id="pagerForm2">		
+	<form action="${base}/subsidyUserList.do" id="pagerForm">		
 		<input type="hidden" name="deptIds"/>
-		<input type="hidden" name="autoSubsidyFare" value="${autoSubsidyFare}"/>
-		<input type="hidden" name="subsidyFare" value="${subsidyFare}"/>
 		<input type="hidden" name="pageNum" value="${pageNum}" />
 		<input type="hidden" name="numPerPage" value="${numPerPage}" />
 		<input type="hidden" name="totalCount" value="${totalCount}" />
@@ -85,10 +94,10 @@
 						<select class="combox" outerw="50" innerw="70" name="cardIdentity">
 							<option value="-1" width="70">全部</option>
 							<option value="1" width="70" <c:if test="${cardIdentity==1}">selected</c:if>>教师</option>
-							<option value="2" width="70" <c:if test="${status==2}">selected</c:if>>学生</option>
-							<option value="3" width="70" <c:if test="${status==3}">selected</c:if>>职工</option>
-							<option value="4" width="70" <c:if test="${status==4}">selected</c:if>>临时人员</option>
-							<option value="5" width="70" <c:if test="${status==5}">selected</c:if>>其他</option>
+							<option value="2" width="70" <c:if test="${cardIdentity==2}">selected</c:if>>学生</option>
+							<option value="3" width="70" <c:if test="${cardIdentity==3}">selected</c:if>>职工</option>
+							<option value="4" width="70" <c:if test="${cardIdentity==4}">selected</c:if>>临时人员</option>
+							<option value="5" width="70" <c:if test="${cardIdentity==5}">selected</c:if>>其他</option>
 						</select>
 					</td>
 					<td width="40">性别：</td>
@@ -104,19 +113,19 @@
 					<td colspan="12">
 						<div class="buttonActive">
 							<div class="buttonContent">
-								<button type="button" id="search">&nbsp;&nbsp;查询&nbsp;&nbsp;</button>
+								<button type="button" class="search">&nbsp;&nbsp;查询&nbsp;&nbsp;</button>
 							</div>
 						</div>
 						<span style="float: left;margin: 7px 0 0 80px;">补助金额：</span>
 						<input type="text" id="subsidyFare" size="10" value="${subsidyFare}" style="float: left;margin: 2px 5px 0px;"/>
 						<div class="buttonActive">
 							<div class="buttonContent">
-								<button type="button" id="changeSubsidyFare">修改补助金额</button>
+								<button type="button" class="changeSubsidyFare">修改补助金额</button>
 							</div>
 						</div>
 						<div class="buttonActive" style="margin: 0 10px;">
 							<div class="buttonContent">
-								<button type="button" id="delete">删除选中人员</button>
+								<button type="button" class="delete">删除选中人员</button>
 							</div>
 						</div>
 					</td>
@@ -127,10 +136,10 @@
 </div>
 <div class="pageContent"
 	style="border-left: 1px #B8D0D6 solid; border-right: 1px #B8D0D6 solid">
-	<table class="table" width="99%" layoutH="170">
+	<table class="table" width="99%" layoutH="172">
 		<thead>
 			<tr>
-				<th width="10"><input type="checkbox" group="userIds" class="checkboxCtrl"></th>
+				<th width="10"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
 				<th width="80">序号</th>
 				<th width="100">编号</th>
 				<th width="100">姓名</th>
@@ -143,8 +152,8 @@
 		</thead>
 		<tbody class="subsidyUserList">
 			<c:forEach var="user" items="${list}" varStatus="status">
-				<tr userId="${user.userId }" subsidyFare="${user.subsidyFare }">
-					<td><input name="userIds" value="${user.userId }" type="checkbox"></td>
+				<tr id="${user.id }" subsidyFare="${user.subsidyFare }" target="subsidyUserList">
+					<td><input name="ids" value="${user.id }" type="checkbox"></td>
 					<td>${status.index+1}</td>
 					<td>${user.userNO}</td>
 					<td>${user.username}</td>

@@ -3,7 +3,6 @@ package com.singbon.service;
 import java.util.List;
 
 import com.singbon.dao.BaseDAO;
-import com.singbon.entity.Pagination;
 
 /**
  * 公共通用基础业务层

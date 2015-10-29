@@ -92,6 +92,8 @@
 						orderTimeClick($(this));
 					}else if(target=="posParamGroup"){
 						posParamGroupClick($(this));
+					}else if(target=="subsidyUserList"){
+						subsidyUserListClick($(this));
 					}
 					$trs.filter(".selected").removeClass("selected");
 					$tr.addClass("selected");
