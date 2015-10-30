@@ -1,7 +1,7 @@
 <!-- 一控一水控参数分组 -->
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <script type="text/javascript">
 	var selectedwaterRateGroupId = -1;
 	$(function() {
@@ -93,15 +93,23 @@
 						</dd>
 					</dl>
 				</div>
+				<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_WATERRATE_ADD,ROLE_WATERRATE_EDIT,ROLE_WATERRATE_DEL">
 				<div class="formBar">
 					<div class="panelBar" style="border-style: none;">
 						<ul class="toolBar">
-							<li><a class="add" href="javascript:;"><span>添加</span></a></li>
-							<li><a class="edit" href="javascript:;"><span>修改</span></a></li>
-							<li><a class="delete" href="javascript:;"><span>删除</span></a></li>
+							<security:authorize ifAnyGranted="ROLE_WATERRATE_ADD,ROLE_ADMIN">
+								<li><a class="add" href="javascript:;"><span>添加</span></a></li>
+							</security:authorize>
+							<security:authorize ifAnyGranted="ROLE_WATERRATE_EDIT,ROLE_ADMIN">
+								<li><a class="edit" href="javascript:;"><span>修改</span></a></li>
+							</security:authorize>
+							<security:authorize ifAnyGranted="ROLE_WATERRATE_DEL,ROLE_ADMIN">
+								<li><a class="delete" href="javascript:;"><span>删除</span></a></li>
+							</security:authorize>
 						</ul>
 					</div>
 				</div>
+				</security:authorize>
 			</form>
 		</div>
 	</div>

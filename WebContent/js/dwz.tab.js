@@ -15,6 +15,10 @@
 			
 			return this.each(function(){
 				initTab($(this));
+				var loadIndex=$(this).attr('loadIndex');
+				if(loadIndex!=null){
+					$('.tabsHeaderContent a', $(this)).eq(loadIndex).click();
+				}
 			});
 			
 			function initTab(jT){
@@ -38,10 +42,11 @@
 						if ($(this).hasClass(op.ajaxClass)) {
 							$(this).click(function(event){
 								var jGroup = jGroups.eq(iTabIndex);
+								var refresh=$(this).hasClass('refresh');
 								if (this.href && !jGroup.attr("loaded")) jGroup.loadUrl(this.href,{},function(){
 									jGroup.find("[layoutH]").layoutH();
-									if(!jGroup.hasClass("refresh")){
-										jGroup.attr("loaded",true);										
+									if(!refresh){
+										jGroup.attr("loaded",true);
 									}
 								});
 								event.preventDefault();

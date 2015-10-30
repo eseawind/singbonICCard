@@ -2,11 +2,10 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="security"
-	uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 
 <script type="text/javascript">
-	$('#systemParaForm .save').click(function() {
+	$('#systemParamForm .save').click(function() {
 		validateCallback($(this).parents('form'), function(e) {
 			if (e == 1) {
 				alertMsg.correct('保存成功！');
@@ -18,43 +17,43 @@
 </script>
 
 <style type="text/css">
-	#systemParaForm .pageFormContent {
+	#systemParamForm .pageFormContent {
 		overflow: hidden;
 		padding: 0;
 	}
 	
-	#systemParaForm dl {
+	#systemParamForm dl {
 		width: 330px;
 	}
 	
-	#systemParaForm dt {
+	#systemParamForm dt {
 		margin: 0 0 0 5px;
 		padding: 0;
 		width: 110px;
 	}
 	
-	#systemParaForm dd {
+	#systemParamForm dd {
 		width: 200px;
 	}
 	
-	#systemParaForm .error { /* 	position: relative; */
+	#systemParamForm .error { /* 	position: relative; */
 		/* 	top: 0; */
 		
 	}
 	
-	#systemParaForm input {
+	#systemParamForm input {
 		width: 200px;
 		position: relative;
 	}
 	
-	#systemParaForm .button {
+	#systemParamForm .button {
  		margin-left: 255px;
 	}
-	#systemParaForm .pageFormContent dd span.error{
+	#systemParamForm .pageFormContent dd span.error{
 		left: 310px;
 	}
 </style>
-<form id="systemParaForm" method="post" action="${base}/save.do" class="pageForm required-validate">
+<form id="systemParamForm" method="post" action="${base}/save.do" class="pageForm required-validate">
 	<div class="pageFormContent" layoutH="188" style="width: 500px;margin: 50px 0 0 200px;">
 		<dl style="margin: 8px 0;">
 			<dt>单位名称：</dt>
@@ -121,13 +120,13 @@
 			</dd>
 		</dl>
 	</div>
+	<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_SYSTEMPARAM_SAVE">
 	<div class="formBar">
-		<ul>
-			<li><div class="buttonActive">
-					<div class="buttonContent save">
-						<button type="button">保存</button>
-					</div>
-				</div></li>
-		</ul>
+		<div class="panelBar" style="border-style: none;">
+			<ul class="toolBar">
+				<li><a class="save" href="javascript:;"><span>保存</span></a></li>
+			</ul>
+		</div>
 	</div>
+	</security:authorize>
 </form>

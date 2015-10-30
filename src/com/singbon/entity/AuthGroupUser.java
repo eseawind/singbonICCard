@@ -3,17 +3,17 @@ package com.singbon.entity;
 import java.io.Serializable;
 
 /**
- * 用户授权组
+ * 组用户
  * 
  * @author 郝威
  * 
  */
-public class AuthUserGroup implements Serializable {
+public class AuthGroupUser implements Serializable {
 
 	private static final long serialVersionUID = -4349415810057681133L;
 
 	private Integer id;
-	private Integer userId;
+	private Integer operId;
 	private Integer groupId;
 
 	public Integer getId() {
@@ -24,12 +24,12 @@ public class AuthUserGroup implements Serializable {
 		this.id = id;
 	}
 
-	public Integer getUserId() {
-		return userId;
+	public Integer getOperId() {
+		return operId;
 	}
 
-	public void setUserId(Integer userId) {
-		this.userId = userId;
+	public void setOperId(Integer operId) {
+		this.operId = operId;
 	}
 
 	public Integer getGroupId() {

@@ -138,7 +138,7 @@ public class AuthorizationController extends BaseController {
 		model.addAttribute("company", company);
 
 		List<AuthGroup> groupList = this.authorizationService.selectGroup(company.getId());
-		List<Map> sysUserList = this.authorizationService.selectUserGroupList(company.getId());
+		List<Map> sysUserList = this.authorizationService.selectGroupUserList(company.getId());
 		model.addAttribute("groupList", groupList);
 		model.addAttribute("sysUserList", sysUserList);
 		model.addAttribute("base", "/systemManager/userRoles");
@@ -154,12 +154,12 @@ public class AuthorizationController extends BaseController {
 	 * @param model
 	 */
 	@RequestMapping(value = "/saveUser.do")
-	public void saveUser(Integer userId, String groupIds, HttpServletRequest request, HttpServletResponse response, Model model) {
+	public void saveUser(Integer operId, String groupIds, HttpServletRequest request, HttpServletResponse response, Model model) {
 		PrintWriter p = null;
 		try {
 			p = response.getWriter();
 			
-			this.authorizationService.saveUserGroup(groupIds, userId);
+			this.authorizationService.saveGroupUser(groupIds, operId);
 			p.print(1);
 		} catch (Exception e) {
 			e.printStackTrace();

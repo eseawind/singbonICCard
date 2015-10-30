@@ -5,7 +5,7 @@
 
 <script type="text/javascript">
 	function authUserClick(tr) {
-		$('#authUserForm input:first').val(tr.attr('userId'));
+		$('#authUserForm input:first').val(tr.attr('operId'));
 		$('#authUserGroup input').attr('checked',false);
 		var groupIds=','+tr.attr('groupIds')+',';
 		$('#authUserGroup input:checkbox').each(function(){
@@ -17,8 +17,8 @@
 	}
 	$(function(){
 		$('#authUserForm .save').click(function(){
-			var userId=$('#authUserForm input:first').val();
-			if(userId==''){
+			var operId=$('#authUserForm input:first').val();
+			if(operId==''){
 				alertMsg.warn('请选择授权用户');
 				return;
 			}
@@ -36,7 +36,7 @@
 			$('#authUserForm input:last').val(groupIds);
 			validateCallback($(this).parents('form'), function(e) {
 				if (e == 1) {
-					$('#authUser tr[userId='+userId+']').attr('groupIds',groupIds);
+					$('#authUser tr[operId='+operId+']').attr('groupIds',groupIds);
 					$('#authUserForm input:first').val('');
 					$('#authUserForm input:last').val('');
 					alertMsg.correct('授权成功！');
@@ -53,7 +53,7 @@
 
 <div  id="authUserGroup"
 	style="float: left; display: block; overflow: auto; width: 600px; line-height: 21px;">
-	<table class="table" width="99%" layoutH="90" rel="jbsxBox">
+	<table class="table" width="99%" layoutH="160" rel="jbsxBox">
 		<thead>
 			<tr>
 				<th width="10"><input type="checkbox" group="ids"
@@ -75,7 +75,7 @@
 </div>
 
 <div id="authUser" class="unitBox" style="margin-left: 605px;">
-	<table class="table" width="99%" layoutH="90" rel="jbsxBox">
+	<table class="table" width="99%" layoutH="160" rel="jbsxBox">
 		<thead>
 			<tr>
 				<th width="100">授权用户</th>
@@ -83,7 +83,7 @@
 		</thead>
 		<tbody>
 			<c:forEach items="${sysUserList }" var="u">
-				<tr userId="${u.operId }" target="authUser" groupIds="${u.groupIds}">
+				<tr operId="${u.operId }" target="authUser" groupIds="${u.groupIds}">
 					<td>${u.loginName }</td>
 				</tr>
 			</c:forEach>
@@ -94,7 +94,7 @@
 	<form id="authUserForm" method="post" action="${base }/saveUser.do"
 		class="pageForm required-validate">
 		<div class="formBar">
-			<input type="hidden" name="userId" /><input type="hidden" name="groupIds" />
+			<input type="hidden" name="operId" /><input type="hidden" name="groupIds" />
 			<div class="panelBar" style="border-style: none;">
 				<ul class="toolBar">
 					<li><a class="save" href="javascript:;"><span>保存</span></a></li>

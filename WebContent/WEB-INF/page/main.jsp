@@ -141,26 +141,27 @@
 					<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_SYSTEMMANAGER">
 						<div class="accordionHeader">
 							<h2>
-								<span>Folder</span> <a href="/systemManager/index.do"
-									target="navTab">系统管理</a>
+								<span>Folder</span> <a href="/systemManager/index.do" target="navTab">系统管理</a>
 							</h2>
 						</div>
 						<div class="accordionContent">
 							<ul class="tree">
 								<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_SYSTEMSETTING">
-									<li><a href="/systemManager/systemSetting/index.do"
-										target="navTab">系统设置</a></li>
+									<li><a href="/systemManager/systemSetting/index.do" target="navTab">系统设置</a></li>
 								</security:authorize>
+								<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_DEVICEMANAGER">
 								<li><a href="/systemManager/deviceManager/index.do" target="navTab">设备管理</a></li>
+								</security:authorize>
 								<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_USERROLES">
 									<li><a href="/systemManager/userRoles/index.do" target="navTab">授权管理</a></li>
 								</security:authorize>
-								<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_USERROLES">
+								<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_SUBSIDY">
 									<li><a href="/systemManager/subsidy/index.do" target="navTab">补助管理</a></li>
 								</security:authorize>
 							</ul>
 						</div>
 					</security:authorize>
+					<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_CARDMANAGER">
 					<div class="accordionHeader">
 						<h2>
 							<span>Folder</span>制卡中心
@@ -168,11 +169,19 @@
 					</div>
 					<div class="accordionContent">
 						<ul class="tree">
+							<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MAINCARD">
 							<li><a href="/cardManager/mainCard/index.do" target="navTab">用户卡管理</a></li>
+							</security:authorize>
+							<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_FUNCCARD">
 							<li><a url="/cardManager/specialCard/index.do" target="navTab">功能卡制作</a></li>
+							</security:authorize>
+							<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_CARDREADER">
 							<li><a url="/cardManager/cardReader/index.do" target="navTab">读卡机参数下载</a></li>
+							</security:authorize>
 						</ul>
 					</div>
+					</security:authorize>
+					<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_ACCOUNTCENTER">
 					<div class="accordionHeader">
 						<h2>
 							<span>Folder</span>结算中心
@@ -198,12 +207,15 @@
 							<li><a href="/balanceCenter" target="navTab">部门营业分析</a></li>
 						</ul>
 					</div>
+					</security:authorize>
+					<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MONITOR">
 					<div class="accordionHeader">
 						<h2>
 <!-- 							<span>Folder</span><a onclick="javascript:window.open ('/monitor/index.do','监控平台','width=1024,height=500,top=80,left=80,toolbar=no, menubar=no, scrollbars=no, resizable=no');">监控平台</a> -->
 							<span>Folder</span><a onclick="javascript:window.open ('/monitor/index.do','监控平台','width=2024,height=1000,top=80,left=80,toolbar=no, menubar=no, scrollbars=no, resizable=no');">监控平台</a>
 						</h2>
 					</div>
+					</security:authorize>
 				</div>
 			</div>
 		</div>

@@ -6,7 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 
 import com.singbon.entity.AuthGroup;
-import com.singbon.entity.AuthUserGroup;
+import com.singbon.entity.AuthGroupUser;
 
 /**
  * 授权dao层
@@ -51,27 +51,34 @@ public interface AuthorizationDAO {
 	 */
 	public void deleteGroup(@Param("id") Integer id);
 
-	
 	/**
-	 * 用户组列表
+	 * 添加组用户
+	 * 
+	 * @return
+	 */
+	public void insertGroupUser(@Param("list") List<AuthGroupUser> list);
+
+	/**
+	 * 删除组用户
+	 * 
+	 * @return
+	 */
+	public void deleteGroupUser(@Param("operId") Integer operId);
+
+	/**
+	 * 组用户列表
 	 * 
 	 * @return
 	 */
 	@SuppressWarnings("rawtypes")
-	public List<Map> selectUserGroupList(@Param("companyId") Integer companyId);
-	
+	public List<Map> selectGroupUserList(@Param("companyId") Integer companyId);
 
 	/**
-	 * 添加用户组
+	 * 用户权限
 	 * 
 	 * @return
 	 */
-	public void insertUserGroup(@Param("list") List<AuthUserGroup> list);
+	@SuppressWarnings("rawtypes")
+	public List<String> selectRolesByOperId(@Param("operId") Integer operId);
 
-	/**
-	 * 删除用户组
-	 * 
-	 * @return
-	 */
-	public void deleteUserGroup(@Param("userId") Integer userId);
 }

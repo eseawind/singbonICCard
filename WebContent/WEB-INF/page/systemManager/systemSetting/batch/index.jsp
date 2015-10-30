@@ -2,8 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="security"
-	uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 
 <script type="text/javascript">
 	$(function() {
@@ -145,6 +144,7 @@
 <!-- 				</dd> -->
 <!-- 			</dl> -->
 		</div>
+		<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_BATCH_ADD,ROLE_BATCH_EDIT,ROLE_BATCH_DEL">
 		<div class="formBar">
 			<div class="panelBar" style="border-style: none;">
 				<ul class="toolBar">
@@ -154,12 +154,13 @@
 					<security:authorize ifAnyGranted="ROLE_BATCH_EDIT,ROLE_ADMIN">
 						<li><a class="edit" href="javascript:;"><span>修改</span></a></li>
 					</security:authorize>
-					<security:authorize ifAnyGranted="ROLE_BATCH_BLACK,ROLE_ADMIN">
+					<security:authorize ifAnyGranted="ROLE_BATCH_DEL,ROLE_ADMIN">
 						<li><a class="delete" href="javascript:;"><span>挂失</span></a></li>
 					</security:authorize>
 				</ul>
 			</div>
 		</div>
+		</security:authorize>
 	</form>
 </div>
 

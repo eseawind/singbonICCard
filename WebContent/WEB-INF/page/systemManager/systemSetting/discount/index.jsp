@@ -2,7 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <script type="text/javascript">
 	$(function() {
 		$('#discountForm .save').click(function() {
@@ -63,15 +63,15 @@
 				</dd>
 			</dl>
 		</div>
+		<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_DISCOUNT_SAVE">
 		<div class="formBar">
-			<ul class="toolBar">
-				<li><div class="buttonActive">
-						<div class="buttonContent save">
-							<button type="button">保存</button>
-						</div>
-					</div></li>
-			</ul>
+			<div class="panelBar" style="border-style: none;">
+				<ul class="toolBar">
+					<li><a class="save" href="javascript:;"><span>保存</span></a></li>
+				</ul>
+			</div>
 		</div>
+		</security:authorize>
 	</form>
 </div>
 <div id="discountList" class="unitBox" style="margin-left: 246px;">

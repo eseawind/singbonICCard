@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <c:set var="w" value="${waterRateGroup}"/>
 <script type="text/javascript">
 	$(function() {
@@ -443,13 +444,13 @@
 			</dl>
 		</fieldset>
 	</div>
+	<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_WATERRATE_SAVE">
 	<div class="formBar">
-		<ul>
-			<li><div class="buttonActive">
-					<div class="buttonContent save">
-						<button type="button">保存</button>
-					</div>
-				</div></li>
-		</ul>
+		<div class="panelBar" style="border-style: none;">
+			<ul class="toolBar">
+				<li><a class="save" href="javascript:;"><span>保存</span></a></li>
+			</ul>
+		</div>
 	</div>
+	</security:authorize>
 </form>

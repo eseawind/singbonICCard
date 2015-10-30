@@ -72,13 +72,13 @@
 			</dd>
 		</dl>
 	</div>
+	<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_CARDPARAM_SAVE">
 	<div class="formBar">
-		<ul>
-			<li><div class="buttonActive">
-					<div class="buttonContent save">
-						<button type="button">保存</button>
-					</div>
-				</div></li>
-		</ul>
+		<div class="panelBar" style="border-style: none;">
+			<ul class="toolBar">
+				<li><a class="save" href="javascript:;"><span>保存</span></a></li>
+			</ul>
+		</div>
 	</div>
+	</security:authorize>
 </form>

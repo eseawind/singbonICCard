@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50528
 File Encoding         : 65001
 
-Date: 2015-10-29 23:00:00
+Date: 2015-10-31 05:43:38
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -30,31 +30,25 @@ CREATE TABLE `authgroup` (
 -- ----------------------------
 -- Records of authgroup
 -- ----------------------------
-INSERT INTO `authgroup` VALUES ('1', '1', '管理员', null, null);
-INSERT INTO `authgroup` VALUES ('2', '1', '出纳员', null, null);
-INSERT INTO `authgroup` VALUES ('3', '1', '出纳员2', '', 'ROLE_SYSTEMSETTING,ROLE_BATCH,ROLE_BATCH_ADD,ROLE_ACCOUNTINGCENTER,');
-INSERT INTO `authgroup` VALUES ('6', '1', '好', null, 'ROLE_SYSTEMSETTING,ROLE_SYSTEMPARAMETER,ROLE_BATCH,ROLE_BATCH_ADD,ROLE_BATCH_EDIT,ROLE_USERDEPT,ROLE_USERDEPT_ADD,ROLE_USERDEPT_EDIT,ROLE_USERDEPT_DEL,ROLE_DISCOUNT,ROLE_DISCOUNT_ADD,ROLE_DISCOUNT_EDIT,ROLE_DISCOUNT_DEL,');
-INSERT INTO `authgroup` VALUES ('7', '1', '出纳员23', null, 'ffsff');
-INSERT INTO `authgroup` VALUES ('8', '1', '出纳员234', null, 'ROLE_SYSTEMSETTING,ROLE_SYSTEMPARAMETER,ROLE_BATCH,ROLE_BATCH_ADD,ROLE_BATCH_EDIT,ROLE_USERDEPT,ROLE_USERDEPT_ADD,ROLE_USERDEPT_EDIT,ROLE_USERDEPT_DEL,ROLE_DISCOUNT,ROLE_DISCOUNT_ADD,ROLE_DISCOUNT_EDIT,ROLE_DISCOUNT_DEL,ROLE_CARDCENTER,ROLE_FUNCCARD,ROLE_CARDMANAGER,ROLE_ACCOUNTINGCENTER,');
+INSERT INTO `authgroup` VALUES ('1', '1', '管理员', '', 'ROLE_SYSTEMMANAGER,ROLE_SYSTEMSETTING,ROLE_SYSTEMPARAM,ROLE_SYSTEMPARAM_SAVE,ROLE_BATCH,ROLE_BATCH_ADD,ROLE_BATCH_EDIT,ROLE_BATCH_DEL,ROLE_USERDEPT,ROLE_USERDEPT_ADD,ROLE_USERDEPT_EDIT,ROLE_USERDEPT_DEL,ROLE_DEPT,ROLE_DEPT_ADD,ROLE_DEPT_EDIT,ROLE_DEPT_DEL,ROLE_MEAL,ROLE_MEAL_SAVE,ROLE_COOKBOOK,ROLE_COOKBOOK_SAVE,ROLE_ORDERTIME,ROLE_ORDERTIME_SAVE,ROLE_DISCOUNT,ROLE_ORDERTIME_SAVE,ROLE_CONSUMEPARAM,ROLE_CONSUMEPARAM_SAVE,ROLE_POSPARAMGROUP,ROLE_POSPARAMGROUP_ADD,ROLE_POSPARAMGROUP_EDIT,ROLE_POSPARAMGROUP_DEL,ROLE_POSPARAMGROUP_SAVE,ROLE_WATERRATEGROUP,ROLE_WATERRATEGROUP_ADD,ROLE_WATERRATEGROUP_EDIT,ROLE_WATERRATEGROUP_DEL,ROLE_WATERRATEGROUP_SAVE,ROLE_CARDPARAM,ROLE_CARDPARAM_SAVE,ROLE_CARDPARAM,ROLE_CARDPARAM_SAVE,ROLE_ENTRANCEGUARD,ROLE_ENTRANCEGUARD_SAVE,ROLE_DEVICEMANAGER,ROLE_SYSTEMPARAM,ROLE_SYSTEMPARAM_SAVE,ROLE_SUBSIDY,ROLE_ADDSUBSIDY,ROLE_ADDSUBSIDY_ADD_SUBSIDYFARE,ROLE_ADDSUBSIDY_AUTO_SUBSIDYFARE,ROLE_ADDSUBSIDY_ADD_SUBSIDY,ROLE_GENERATESUBSIDY,ROLE_GENERATESUBSIDY_EDIT_SUBSIDYFARE,ROLE_GENERATESUBSIDY_DEL,ROLE_GENERATESUBSIDY_GENERATE,ROLE_CARDMANAGER,ROLE_MAINDCARD,ROLE_FUNCCARD,ROLE_CARDREADER,ROLE_ACCOUNTCENTER,ROLE_MONITOR,');
+INSERT INTO `authgroup` VALUES ('2', '1', '出纳员', '', 'ROLE_SYSTEMMANAGER,ROLE_SYSTEMSETTING,ROLE_BATCH,ROLE_BATCH_ADD,ROLE_BATCH_EDIT,ROLE_USERDEPT,ROLE_USERDEPT_ADD,ROLE_USERDEPT_EDIT,ROLE_DEPT,ROLE_DEPT_DEL,ROLE_MEAL,ROLE_MEAL_SAVE,ROLE_SUBSIDY,ROLE_GENERATESUBSIDY,ROLE_GENERATESUBSIDY_DEL,ROLE_GENERATESUBSIDY_GENERATE,ROLE_CARDMANAGER,ROLE_MAINDCARD,ROLE_CARDREADER,');
 
 -- ----------------------------
--- Table structure for `authusergroup`
+-- Table structure for `authgroupuser`
 -- ----------------------------
-DROP TABLE IF EXISTS `authusergroup`;
-CREATE TABLE `authusergroup` (
+DROP TABLE IF EXISTS `authgroupuser`;
+CREATE TABLE `authgroupuser` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `userId` int(11) DEFAULT NULL,
+  `operId` int(11) DEFAULT NULL,
   `groupId` int(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of authusergroup
+-- Records of authgroupuser
 -- ----------------------------
-INSERT INTO `authusergroup` VALUES ('1', '1', '1');
-INSERT INTO `authusergroup` VALUES ('2', '1', '2');
-INSERT INTO `authusergroup` VALUES ('3', '2', '3');
-INSERT INTO `authusergroup` VALUES ('4', '1', '4');
+INSERT INTO `authgroupuser` VALUES ('1', '1', '1');
+INSERT INTO `authgroupuser` VALUES ('6', '3', '2');
 
 -- ----------------------------
 -- Table structure for `batch`
@@ -67,28 +61,29 @@ CREATE TABLE `batch` (
   `endDate` datetime DEFAULT NULL,
   `invalidDate` datetime DEFAULT NULL,
   `companyId` int(11) DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of batch
 -- ----------------------------
-INSERT INTO `batch` VALUES ('1', '11112', '2015-05-28 00:00:00', '2015-08-28 00:00:00', '2015-10-31 00:00:00', '1');
-INSERT INTO `batch` VALUES ('2', '112', '2015-05-28 00:00:00', '2015-08-29 00:00:00', '2015-10-31 00:00:00', '1');
-INSERT INTO `batch` VALUES ('3', '33341', '2015-05-28 00:00:00', '2015-05-29 00:00:00', '2015-05-30 00:00:00', '1');
-INSERT INTO `batch` VALUES ('4', '11222', '2015-05-28 00:00:00', '2015-05-29 00:00:00', '2015-10-28 00:00:00', '1');
-INSERT INTO `batch` VALUES ('5', '111', '2015-05-28 00:00:00', '2015-05-29 00:00:00', null, '1');
-INSERT INTO `batch` VALUES ('6', '33341', '2015-05-07 00:00:00', '2015-05-29 00:00:00', '2015-05-30 00:00:00', '1');
-INSERT INTO `batch` VALUES ('7', '11222', '2015-05-28 00:00:00', '2015-05-29 00:00:00', '2015-06-16 00:00:00', '1');
-INSERT INTO `batch` VALUES ('8', '11222去去去', '2015-05-28 00:00:00', '2015-05-29 00:00:00', null, '1');
-INSERT INTO `batch` VALUES ('9', '112222222', '2015-05-28 00:00:00', '2015-05-29 00:00:00', '2015-06-17 00:00:00', '1');
-INSERT INTO `batch` VALUES ('10', '1122222223', '2015-05-28 00:00:00', '2015-05-29 00:00:00', '2015-06-17 00:00:00', '1');
-INSERT INTO `batch` VALUES ('11', '批次n1', '2015-05-28 00:00:00', '2015-05-29 00:00:00', '2015-06-17 00:00:00', '1');
-INSERT INTO `batch` VALUES ('12', 'fdf', '2015-07-02 00:00:00', '2015-07-08 00:00:00', '2015-07-22 00:00:00', '1');
-INSERT INTO `batch` VALUES ('13', '112221233', '2015-05-28 00:00:00', '2015-05-29 00:00:00', null, '1');
-INSERT INTO `batch` VALUES ('14', '0731', '2015-05-28 00:00:00', '2015-08-28 00:00:00', null, '1');
-INSERT INTO `batch` VALUES ('15', 'sdssfsdf', '2015-05-07 00:00:00', '2015-05-29 00:00:00', null, '1');
-INSERT INTO `batch` VALUES ('16', '批次1', '2015-10-10 00:00:00', '2029-10-31 00:00:00', null, '2');
+INSERT INTO `batch` VALUES ('1', '11112', '2015-05-28 00:00:00', '2015-08-28 00:00:00', '2015-10-31 00:00:00', '1', '1');
+INSERT INTO `batch` VALUES ('2', '112', '2015-05-28 00:00:00', '2015-08-29 00:00:00', '2015-10-31 00:00:00', '1', '1');
+INSERT INTO `batch` VALUES ('3', '33341', '2015-05-28 00:00:00', '2015-05-29 00:00:00', '2015-05-30 00:00:00', '1', '1');
+INSERT INTO `batch` VALUES ('4', '11222', '2015-05-28 00:00:00', '2015-05-29 00:00:00', '2015-10-28 00:00:00', '1', '1');
+INSERT INTO `batch` VALUES ('5', '111', '2015-05-28 00:00:00', '2015-05-29 00:00:00', null, '1', '0');
+INSERT INTO `batch` VALUES ('6', '33341', '2015-05-07 00:00:00', '2015-05-29 00:00:00', '2015-05-30 00:00:00', '1', '0');
+INSERT INTO `batch` VALUES ('7', '11222', '2015-05-28 00:00:00', '2015-05-29 00:00:00', '2015-06-16 00:00:00', '1', '1');
+INSERT INTO `batch` VALUES ('8', '11222去去去', '2015-05-28 00:00:00', '2015-05-29 00:00:00', null, '1', '0');
+INSERT INTO `batch` VALUES ('9', '112222222', '2015-05-28 00:00:00', '2015-05-29 00:00:00', '2015-06-17 00:00:00', '1', '0');
+INSERT INTO `batch` VALUES ('10', '1122222223', '2015-05-28 00:00:00', '2015-05-29 00:00:00', '2015-06-17 00:00:00', '1', '0');
+INSERT INTO `batch` VALUES ('11', '批次n1', '2015-05-28 00:00:00', '2015-05-29 00:00:00', '2015-06-17 00:00:00', '1', '1');
+INSERT INTO `batch` VALUES ('12', 'fdf', '2015-07-02 00:00:00', '2015-07-08 00:00:00', '2015-07-22 00:00:00', '1', '0');
+INSERT INTO `batch` VALUES ('13', '112221233', '2015-05-28 00:00:00', '2015-05-29 00:00:00', null, '1', '0');
+INSERT INTO `batch` VALUES ('14', '0731', '2015-05-28 00:00:00', '2015-08-28 00:00:00', null, '1', '0');
+INSERT INTO `batch` VALUES ('15', 'sdssfsdf', '2015-05-07 00:00:00', '2015-05-29 00:00:00', null, '1', '0');
+INSERT INTO `batch` VALUES ('16', '批次1', '2015-10-10 00:00:00', '2029-10-31 00:00:00', null, '2', '0');
 
 -- ----------------------------
 -- Table structure for `cardloss`
@@ -163,7 +158,7 @@ CREATE TABLE `company` (
 -- ----------------------------
 -- Records of company
 -- ----------------------------
-INSERT INTO `company` VALUES ('1', '郑州兴邦科技有限公司', '12345678', '0371', '1', '10', '5', '5', '0', '0', '2015-10-31');
+INSERT INTO `company` VALUES ('1', '郑州兴邦科技有限公司', '12345678', '0371', '1', '5', '5', '5', '6', '0', '2015-10-31');
 INSERT INTO `company` VALUES ('2', '1', '0312', '0771', '1', '10', '5', '5', '0', null, null);
 
 -- ----------------------------
@@ -535,14 +530,14 @@ CREATE TABLE `discount` (
 -- ----------------------------
 -- Records of discount
 -- ----------------------------
-INSERT INTO `discount` VALUES ('4', '1', '0', '1', '200', '100');
-INSERT INTO `discount` VALUES ('5', '1', '1', '1', '0', '100');
-INSERT INTO `discount` VALUES ('6', '1', '2', '1', '0', '0');
-INSERT INTO `discount` VALUES ('7', '1', '3', '1', '0', '12');
-INSERT INTO `discount` VALUES ('8', '1', '4', '1', '0', '0');
-INSERT INTO `discount` VALUES ('9', '1', '5', '1', '0', '1');
+INSERT INTO `discount` VALUES ('4', '1', '0', '100', '200', '100');
+INSERT INTO `discount` VALUES ('5', '1', '1', '100', '100', '100');
+INSERT INTO `discount` VALUES ('6', '1', '2', '100', '0', '0');
+INSERT INTO `discount` VALUES ('7', '1', '3', '100', '0', '12');
+INSERT INTO `discount` VALUES ('8', '1', '4', '100', '0', '0');
+INSERT INTO `discount` VALUES ('9', '1', '5', '100', '0', '1');
 INSERT INTO `discount` VALUES ('10', '1', '6', '100', '0', '0');
-INSERT INTO `discount` VALUES ('11', '1', '7', '1', '1', '20');
+INSERT INTO `discount` VALUES ('11', '1', '7', '100', '1', '20');
 INSERT INTO `discount` VALUES ('12', '1', '8', '100', '0', '0');
 INSERT INTO `discount` VALUES ('13', '1', '9', '100', '0', '0');
 INSERT INTO `discount` VALUES ('14', '1', '10', '100', '0', '0');
@@ -877,7 +872,7 @@ CREATE TABLE `posparamgroup` (
 -- Records of posparamgroup
 -- ----------------------------
 INSERT INTO `posparamgroup` VALUES ('1', '1', '消费机参数组1', '1', '0', '1', '1', '1', '1', '1', '3');
-INSERT INTO `posparamgroup` VALUES ('3', '1', '消费机参数组2', '1', '1', '1', '1', '1', '1', '1', '3');
+INSERT INTO `posparamgroup` VALUES ('3', '1', '消费机参数组2', '1', '0', '1', '1', '1', '1', '1', '3');
 
 -- ----------------------------
 -- Table structure for `posparamgroupbase`
@@ -914,11 +909,35 @@ CREATE TABLE `subsidy` (
   `invalidDate` varchar(50) DEFAULT NULL,
   `status` int(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of subsidy
 -- ----------------------------
+INSERT INTO `subsidy` VALUES ('1', '48', '1', '1', '6', '2015-10-31', '1');
+INSERT INTO `subsidy` VALUES ('2', '51', '1', '1', '6', '2015-10-31', '1');
+INSERT INTO `subsidy` VALUES ('3', '96', '1', '1', '6', '2015-10-31', '1');
+INSERT INTO `subsidy` VALUES ('4', '97', '1', '1', '6', '2015-10-31', '1');
+INSERT INTO `subsidy` VALUES ('5', '98', '1', '1', '6', '2015-10-31', '1');
+INSERT INTO `subsidy` VALUES ('6', '99', '1', '1', '6', '2015-10-31', '1');
+INSERT INTO `subsidy` VALUES ('7', '100', '1', '1', '6', '2015-10-31', '1');
+INSERT INTO `subsidy` VALUES ('8', '101', '1', '1', '6', '2015-10-31', '1');
+INSERT INTO `subsidy` VALUES ('9', '102', '1', '1', '6', '2015-10-31', '1');
+INSERT INTO `subsidy` VALUES ('10', '103', '1', '1', '6', '2015-10-31', '1');
+INSERT INTO `subsidy` VALUES ('11', '104', '1', '1', '6', '2015-10-31', '1');
+INSERT INTO `subsidy` VALUES ('12', '105', '1', '1', '6', '2015-10-31', '1');
+INSERT INTO `subsidy` VALUES ('13', '106', '1', '1', '6', '2015-10-31', '1');
+INSERT INTO `subsidy` VALUES ('14', '107', '1', '1', '6', '2015-10-31', '1');
+INSERT INTO `subsidy` VALUES ('15', '108', '1', '1', '6', '2015-10-31', '1');
+INSERT INTO `subsidy` VALUES ('16', '109', '1', '1', '6', '2015-10-31', '1');
+INSERT INTO `subsidy` VALUES ('17', '110', '1', '1', '6', '2015-10-31', '1');
+INSERT INTO `subsidy` VALUES ('18', '111', '1', '1', '6', '2015-10-31', '1');
+INSERT INTO `subsidy` VALUES ('19', '112', '1', '1', '6', '2015-10-31', '1');
+INSERT INTO `subsidy` VALUES ('20', '113', '1', '1', '6', '2015-10-31', '1');
+INSERT INTO `subsidy` VALUES ('21', '114', '1', '1', '6', '2015-10-31', '1');
+INSERT INTO `subsidy` VALUES ('22', '115', '1', '1', '6', '2015-10-31', '1');
+INSERT INTO `subsidy` VALUES ('23', '116', '1', '1', '6', '2015-10-31', '1');
+INSERT INTO `subsidy` VALUES ('24', '117', '1', '1', '6', '2015-10-31', '1');
 
 -- ----------------------------
 -- Table structure for `sysuser`
@@ -937,13 +956,14 @@ CREATE TABLE `sysuser` (
   `invalidDate` datetime DEFAULT NULL,
   `status` int(11) DEFAULT NULL,
   PRIMARY KEY (`operId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sysuser
 -- ----------------------------
 INSERT INTO `sysuser` VALUES ('1', 'admin', '1', '1', null, '0', '1', '1', '1', null, '0');
 INSERT INTO `sysuser` VALUES ('2', 'admin', '1', '1', null, '0', '2', '1', '1', '2015-10-31 00:00:00', '0');
+INSERT INTO `sysuser` VALUES ('3', '出纳员', '2', '2', null, '0', '1', '1', '1', null, '0');
 
 -- ----------------------------
 -- Table structure for `user`
@@ -983,12 +1003,11 @@ CREATE TABLE `user` (
   `subsidyVersion` int(11) DEFAULT '0',
   `subsidyInvalidDate` date DEFAULT NULL,
   PRIMARY KEY (`userId`)
-) ENGINE=InnoDB AUTO_INCREMENT=118 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=481 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('48', '1', '18', '001', '001', '001', '123456789012345678', '7', '90d24626', '1', '241', '0', '0', '0', '1', '2015-05-28', null, '2018-07-01', '2015-10-13', '8888', '8888', '101000', '101000', null, '0', '1', '0', null, '0', '0', '0', null);
 INSERT INTO `user` VALUES ('51', '1', '13', '005', '005', '005', '123456789012345678', null, null, '0', '0', '0', '0', '0', '1', '2015-05-28', null, '2018-07-01', '2015-09-20', '8888', '8888', '101000', '101000', null, '0', '1', '0', null, '0', '0', '0', null);
 INSERT INTO `user` VALUES ('96', '1', '13', '3', '3', '3', '123456789012345678', '2', '817878d6', '1', '244', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', '2015-10-13', '8888', '8888', '100000', '100000', null, '0', '1', '0', null, '0', '0', '0', null);
 INSERT INTO `user` VALUES ('97', '1', '13', '4', '4', '4', '123456789012345678', null, null, '0', '0', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', '2015-08-19', '8888', '8888', '1000', '1000', null, '0', '1', '0', null, '0', '0', '0', null);
@@ -1012,6 +1031,7 @@ INSERT INTO `user` VALUES ('114', '1', '13', '21', '21', '21', '1234567890123456
 INSERT INTO `user` VALUES ('115', '1', '13', '22', '22', '22', '123456789012345678', null, null, '0', '0', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', '2015-08-21', '8888', '8888', '20000', '20000', null, '0', '1', '0', null, '0', '0', '0', null);
 INSERT INTO `user` VALUES ('116', '1', '13', '23', '23', '23', '123456789012345678', null, null, '0', '0', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', '2002-01-09', '8888', '8888', '11000', '11000', null, '0', '1', '0', null, '0', '0', '0', null);
 INSERT INTO `user` VALUES ('117', '1', '13', '24', '24', '24', '123456789012345678', null, null, '0', '0', '0', '0', '0', '1', '2015-08-17', null, '2099-12-30', '2002-01-09', '8888', '8888', '11000', '11000', null, '0', '1', '0', null, '0', '0', '0', null);
+INSERT INTO `user` VALUES ('480', '1', '18', '001', '001', '001', '123456789012345678', '7', '90d24626', '1', '241', '0', '0', '0', '1', '2015-05-28', null, '2018-07-01', '2015-10-13', '8888', '8888', '101000', '101000', null, '0', '1', '0', null, '0', '0', '0', null);
 
 -- ----------------------------
 -- Table structure for `userdept`
@@ -1032,7 +1052,7 @@ CREATE TABLE `userdept` (
 INSERT INTO `userdept` VALUES ('13', '第四部门', '1', '0', '2');
 INSERT INTO `userdept` VALUES ('14', '第5部门', '1', '13', '1');
 INSERT INTO `userdept` VALUES ('16', '销售部', '1', '0', '1');
-INSERT INTO `userdept` VALUES ('17', '客服部', '1', '0', '12');
+INSERT INTO `userdept` VALUES ('17', '客服部', '1', '0', '11');
 INSERT INTO `userdept` VALUES ('18', '技术部', '1', '0', '12');
 INSERT INTO `userdept` VALUES ('19', '生产部', '1', '0', '12');
 INSERT INTO `userdept` VALUES ('20', '财务部', '1', '0', '12');
@@ -1102,7 +1122,7 @@ CREATE TABLE `waterrategroup` (
 -- ----------------------------
 -- Records of waterrategroup
 -- ----------------------------
-INSERT INTO `waterrategroup` VALUES ('3', '1', '111', '97', '0', '1', '2', '0', '0', '100', '1', '0', ',,', '0', '0', '100', '00:00', '00:00', ',,', '0', '0', '100', '00:00', '00:00', ',,', '0', '0', '100', '00:00', '00:00', ',,', '0', '0', '0', '8888', '3', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1');
+INSERT INTO `waterrategroup` VALUES ('3', '1', '111', '97', '0', '1', '2', '0', '0', '100', '0', '0', ',,', '0', '0', '100', '00:00', '00:00', ',,', '0', '0', '100', '00:00', '00:00', ',,', '0', '0', '100', '00:00', '00:00', ',,', '0', '0', '0', '8888', '3', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1');
 INSERT INTO `waterrategroup` VALUES ('4', '1', '1112', '97', '0', '1', '2', '0', '0', '100', '0', '0', null, '0', '0', '100', '00:00', '00:00', '', '0', '0', '100', '00:00', '00:00', null, '0', '0', '100', '00:00', '00:00', null, '0', '0', '0', '8888', '3', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1');
 
 -- ----------------------------

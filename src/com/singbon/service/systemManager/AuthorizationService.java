@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.singbon.dao.systemManager.AuthorizationDAO;
 import com.singbon.entity.AuthGroup;
-import com.singbon.entity.AuthUserGroup;
+import com.singbon.entity.AuthGroupUser;
 
 /**
  * 人员权限业务层
@@ -74,27 +74,27 @@ public class AuthorizationService {
 	 * @return
 	 */
 	@SuppressWarnings("rawtypes")
-	public List<Map> selectUserGroupList(Integer companyId) {
-		return this.authorizationDAO.selectUserGroupList(companyId);
+	public List<Map> selectGroupUserList(Integer companyId) {
+		return this.authorizationDAO.selectGroupUserList(companyId);
 	}
 
 	/**
-	 * 保存用户组
+	 * 保存组用户
 	 * 
 	 * @return
 	 */
-	public void saveUserGroup(String groupIds, Integer userId) {
-		this.authorizationDAO.deleteUserGroup(userId);
+	public void saveGroupUser(String groupIds, Integer operId) {
+		this.authorizationDAO.deleteGroupUser(operId);
 		if (groupIds != null && !"".equals(groupIds)) {
-			List<AuthUserGroup> list = new ArrayList<AuthUserGroup>();
+			List<AuthGroupUser> list = new ArrayList<AuthGroupUser>();
 			String[] groupIds2 = groupIds.split(",");
 			for (String g : groupIds2) {
-				AuthUserGroup group = new AuthUserGroup();
-				group.setUserId(userId);
-				group.setGroupId(Integer.valueOf(g));
-				list.add(group);
+				AuthGroupUser user = new AuthGroupUser();
+				user.setOperId(operId);
+				user.setGroupId(Integer.valueOf(g));
+				list.add(user);
 			}
-			this.authorizationDAO.insertUserGroup(list);
+			this.authorizationDAO.insertGroupUser(list);
 		}
 	}
 }

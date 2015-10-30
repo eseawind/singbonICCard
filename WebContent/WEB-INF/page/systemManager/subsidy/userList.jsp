@@ -3,7 +3,7 @@
 	pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <script type="text/javascript">
 	$(function(){
 		$('#userList2 .search').click(function(){
@@ -109,6 +109,7 @@
 								<button type="button" class="search">&nbsp;&nbsp;查询&nbsp;&nbsp;</button>
 							</div>
 						</div>
+						<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_ADDSUBSIDY_ADD_SUBSIDYFARE">
 						<span style="float: left;margin: 7px 0 0 80px;">补助金额：</span>
 						<input type="text" id="subsidyFare" size="10" value="${subsidyFare}" style="float: left;margin: 2px 5px 0px;"/>
 						<div class="buttonActive">
@@ -116,16 +117,21 @@
 								<button type="button" class="addSubsidyFare">添加补助金额</button>
 							</div>
 						</div>
+						</security:authorize>
+						<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_ADDSUBSIDY_AUTO_SUBSIDYFARE">
 						<div class="buttonActive" style="margin: 0 5px;">
 							<div class="buttonContent">
 								<button type="button" class="autoSubsidyFare">自动生成补助金额</button>
 							</div>
 						</div>
+						</security:authorize>
+						<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_ADDSUBSIDY_ADD_SUBSIDY">
 						<div class="buttonActive">
 							<div class="buttonContent">
 								<button type="button" class="addSubsidy">添加补助准备</button>
 							</div>
 						</div>
+						</security:authorize>
 					</td>
 				</tr>
 			</table>

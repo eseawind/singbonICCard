@@ -24,8 +24,8 @@ import com.singbon.service.CompanyService;
  * 
  */
 @Controller
-@RequestMapping(value = "/systemManager/systemSetting/systemPara")
-public class SystemParaController extends BaseController {
+@RequestMapping(value = "/systemManager/systemSetting/systemParam")
+public class SystemParamController extends BaseController {
 
 	@Autowired
 	public CompanyService companyService;
@@ -45,7 +45,7 @@ public class SystemParaController extends BaseController {
 		model.addAttribute("sysUser", sysUser);
 		model.addAttribute("company", company);
 
-		String url = "/systemManager/systemSetting/systemPara";
+		String url = "/systemManager/systemSetting/systemParam";
 		model.addAttribute("base", url);
 		return url + "/index";
 	}
