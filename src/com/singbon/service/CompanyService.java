@@ -16,16 +16,16 @@ import com.singbon.entity.Company;
  * 
  */
 @Service
-public class CompanyService extends BaseService{
+public class CompanyService extends BaseService {
 
 	@Autowired
 	public CompanyDAO companyDAO;
-	
+
 	@Override
 	public BaseDAO getBaseDAO() {
 		return companyDAO;
 	}
-	
+
 	/**
 	 * 所有列表
 	 * 
@@ -37,5 +37,14 @@ public class CompanyService extends BaseService{
 
 	public int getSection(Integer companyId) {
 		return 1;
+	}
+
+	/**
+	 * 后台更新
+	 * 
+	 * @return
+	 */
+	public void updateAdmin(Company company) {
+		this.companyDAO.updateAdmin(company);
 	}
 }

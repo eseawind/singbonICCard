@@ -22,6 +22,7 @@ public class Company implements Serializable {
 	private Integer subsidyVersion;
 	private Integer enableSubsidyReset;
 	private String subsidyInvalidDate;
+	private String invalidDate;
 
 	public Integer getId() {
 		return id;
@@ -109,5 +110,13 @@ public class Company implements Serializable {
 
 	public void setSubsidyInvalidDate(String subsidyInvalidDate) {
 		this.subsidyInvalidDate = subsidyInvalidDate;
+	}
+
+	public String getInvalidDate() {
+		return invalidDate;
+	}
+
+	public void setInvalidDate(String invalidDate) {
+		this.invalidDate = invalidDate;
 	}
 }

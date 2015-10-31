@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50528
 File Encoding         : 65001
 
-Date: 2015-10-31 05:43:38
+Date: 2015-10-31 10:07:14
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -152,14 +152,15 @@ CREATE TABLE `company` (
   `subsidyVersion` int(11) DEFAULT NULL,
   `enableSubsidyReset` int(11) DEFAULT NULL,
   `subsidyInvalidDate` varchar(50) DEFAULT NULL,
+  `invalidDate` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of company
 -- ----------------------------
-INSERT INTO `company` VALUES ('1', '郑州兴邦科技有限公司', '12345678', '0371', '1', '5', '5', '5', '6', '0', '2015-10-31');
-INSERT INTO `company` VALUES ('2', '1', '0312', '0771', '1', '10', '5', '5', '0', null, null);
+INSERT INTO `company` VALUES ('1', '郑州兴邦科技有限公司', '12345678', '0371', '1', '5', '5', '5', '6', '0', '2015-10-31', '');
+INSERT INTO `company` VALUES ('3', '吾问无为谓', '1', '0312', '1', '10', '10', '10', '0', '0', null, '');
 
 -- ----------------------------
 -- Table structure for `consume`
@@ -895,6 +896,22 @@ CREATE TABLE `posparamgroupbase` (
 -- Records of posparamgroupbase
 -- ----------------------------
 INSERT INTO `posparamgroupbase` VALUES ('1', '1', '0', '1', '1', '1', '1', '1', '3');
+
+-- ----------------------------
+-- Table structure for `singbon`
+-- ----------------------------
+DROP TABLE IF EXISTS `singbon`;
+CREATE TABLE `singbon` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `loginName` varchar(255) DEFAULT NULL,
+  `loginPwd` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of singbon
+-- ----------------------------
+INSERT INTO `singbon` VALUES ('1', 'c66fc61212bbc6ed', 'c66fc61212bbc6ed');
 
 -- ----------------------------
 -- Table structure for `subsidy`

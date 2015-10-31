@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>兴邦IC卡管理系统</title>
+<title>${sessionScope.company.companyName}——IC卡管理系统</title>
 <link href="themes/default/style.css" rel="stylesheet" type="text/css"
 	media="screen" />
 <link href="themes/css/core.css" rel="stylesheet" type="text/css"

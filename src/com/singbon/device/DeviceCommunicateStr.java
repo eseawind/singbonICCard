@@ -161,7 +161,7 @@ public class DeviceCommunicateStr {
 
 	public static void main(String[] args) {
 		try {
-			String test = "执行批次追加成功：%s";
+			String test = "admin";
 
 			DesUtil.desInit("ycsty");
 //			System.out.println("加密前的字符：" + test);

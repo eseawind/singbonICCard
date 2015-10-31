@@ -26,12 +26,19 @@ public interface CompanyDAO extends BaseDAO {
 	 * @return
 	 */
 	public List<Company> selectAllList();
-	
+
 	/**
 	 * 更新补助版本号
 	 * 
 	 * @return
 	 */
 	public void updateSubsidy(Company company);
-	
+
+	/**
+	 * 后台更新
+	 * 
+	 * @return
+	 */
+	public void updateAdmin(Company company);
+
 }

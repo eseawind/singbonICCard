@@ -94,6 +94,8 @@
 						posParamGroupClick($(this));
 					}else if(target=="subsidyUserList"){
 						subsidyUserListClick($(this));
+					}else if(target=="company"){
+						companyClick($(this));
 					}
 					$trs.filter(".selected").removeClass("selected");
 					$tr.addClass("selected");
