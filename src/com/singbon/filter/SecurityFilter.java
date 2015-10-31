@@ -27,14 +27,20 @@ public class SecurityFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest req = (HttpServletRequest) request;
 		String url = req.getRequestURI();
-		if (url.equals("/") || url.startsWith("/disuserlogin.htm") || url.startsWith("/js/") || url.startsWith("/img/") || url.startsWith("/themes/") || url.equals("/favicon.ico")) {
+		if (url.equals("/") || url.startsWith("/disuserlogin.htm") || url.startsWith("/js/") || url.startsWith("/img/") || url.startsWith("/themes/") || url.equals("/favicon.ico")
+				|| url.equals("/singbon/backgroud/system/admin/login.do") || url.equals("/singbon/backgroud/system/admin/loginin.do")) {
 			chain.doFilter(request, response);
 		} else {
 			SysUser sysUser = (SysUser) req.getSession().getAttribute("sysUser");
-			if (sysUser == null) {
-				((HttpServletResponse) response).sendRedirect("/");
+			if (sysUser != null || req.getSession().getAttribute("adminLogin") != null) {
+				chain.doFilter(request, response);
+			} else {
+				if (url.startsWith("/singbon/backgroud/system/admin")) {
+					((HttpServletResponse) response).sendRedirect("/singbon/backgroud/system/admin/login.do");
+				} else {
+					((HttpServletResponse) response).sendRedirect("/");
+				}
 			}
-			chain.doFilter(request, response);
 		}
 	}
 

@@ -5,14 +5,24 @@
 	</resultMap>
 	<parameterMap type="com.singbon.entity.Company" id="company2" />
 	
+	<insert id="insert" parameterMap="company2">
+		insert into company (companyName,serialNumber,authNumber,baseSection,heartInterval,uploadInterval,uploadErrTime,subsidyVersion,enableSubsidyReset)
+		values (#{companyName},#{serialNumber},#{authNumber},#{baseSection},10,10,10,0,0)
+	</insert>
+	<update id="updateAdmin" parameterMap="company2">
+		update company set companyName=#{companyName},serialNumber=#{serialNumber},authNumber=#{authNumber},baseSection=#{baseSection},invalidDate=#{invalidDate}
+		where id=#{id}
+	</update>
 	<update id="update" parameterMap="company2">
-		update company set 
-			companyName=#{companyName},serialNumber=#{serialNumber},authNumber=#{authNumber},baseSection=#{baseSection},heartInterval=#{heartInterval},uploadInterval=#{uploadInterval},uploadErrTime=#{uploadErrTime},enableSubsidyReset=#{enableSubsidyReset}
+		update company set companyName=#{companyName},baseSection=#{baseSection},heartInterval=#{heartInterval},uploadInterval=#{uploadInterval},uploadErrTime=#{uploadErrTime},enableSubsidyReset=#{enableSubsidyReset}
 		where id=#{id}
 	</update>
 	<update id="updateSubsidy" parameterMap="company2">
 		update company set subsidyVersion=#{subsidyVersion},subsidyInvalidDate=#{subsidyInvalidDate} where id=#{id}
 	</update>
+	<delete id="delete" parameterType="int">
+		delete from company where id=#{0}
+	</delete>
 	<select id="selectById" resultMap="company">
 		select * from company where id=#{id}
 	</select>
