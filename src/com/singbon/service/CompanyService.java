@@ -40,6 +40,18 @@ public class CompanyService extends BaseService {
 	}
 
 	/**
+	 * 添加单位
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public void insert(Company company) throws Exception {
+		this.companyDAO.insert(company);
+		Integer cId=company.getId();
+		this.companyDAO.insertInit(cId);
+	}
+
+	/**
 	 * 后台更新
 	 * 
 	 * @return

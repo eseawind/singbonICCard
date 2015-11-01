@@ -100,6 +100,7 @@ public class CompanyController {
 	 * @return
 	 * @throws Exception
 	 */
+	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/list.do")
 	public String userList(@ModelAttribute Pagination pagination, String nameStr, HttpServletRequest request, Model model) {
 		String[] columns = { "id", "companyName", "serialNumber", "authNumber", "baseSection","invalidDate" };

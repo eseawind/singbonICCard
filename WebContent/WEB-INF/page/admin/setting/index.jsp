@@ -107,7 +107,6 @@
 				}); // themeBase 相对于index页面的主题base路径
 			}
 		});
-
 	});
 </script>
 </head>

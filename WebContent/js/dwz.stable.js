@@ -96,6 +96,8 @@
 						subsidyUserListClick($(this));
 					}else if(target=="company"){
 						companyClick($(this));
+					}else if(target=="sysUser"){
+						sysUserClick($(this));
 					}
 					$trs.filter(".selected").removeClass("selected");
 					$tr.addClass("selected");

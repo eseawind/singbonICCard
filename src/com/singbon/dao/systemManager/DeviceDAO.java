@@ -16,13 +16,6 @@ import com.singbon.entity.Device;
 public interface DeviceDAO extends BaseDAO {
 
 	/**
-	 * 通过operId查找
-	 * 
-	 * @return
-	 */
-	public Device selectByOperId(@Param("operId") Integer operId);
-
-	/**
 	 * 根据分组查询列表
 	 * 
 	 * @param groupId
@@ -31,6 +24,14 @@ public interface DeviceDAO extends BaseDAO {
 	 * @return
 	 */
 	public List<Device> selectPosListByGroupId(Integer groupId, Integer onlyEnable);
+	
+	/**
+	 * 读卡机列表
+	 * @param companyId
+	 * @param onlyEnable 1只包含启用，0全部
+	 * @return
+	 */
+	public List<Device> selectCardReaderListByCompanyId(@Param("companyId") Integer companyId);
 	
 	/**
 	 * 消费机列表

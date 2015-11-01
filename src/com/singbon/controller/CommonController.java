@@ -1,9 +1,11 @@
 package com.singbon.controller;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -72,5 +74,23 @@ public class CommonController {
 	@RequestMapping(value = "/main.do")
 	public String main(@ModelAttribute SysUser user, HttpServletRequest request, Model model) {
 		return "main";
+	}
+
+	/***
+	 * 登出
+	 * 
+	 * @param user
+	 * @param request
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/loginout.do")
+	public void loginout(@ModelAttribute SysUser user, HttpServletRequest request, HttpServletResponse response, Model model) {
+		request.getSession().removeAttribute("sysUser");
+		try {
+			response.sendRedirect("/");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

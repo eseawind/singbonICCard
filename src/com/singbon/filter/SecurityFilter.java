@@ -26,19 +26,25 @@ public class SecurityFilter implements Filter {
 
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest req = (HttpServletRequest) request;
+		HttpServletResponse res = (HttpServletResponse) response;
 		String url = req.getRequestURI();
-		if (url.equals("/") || url.startsWith("/disuserlogin.htm") || url.startsWith("/js/") || url.startsWith("/img/") || url.startsWith("/themes/") || url.equals("/favicon.ico")
-				|| url.equals("/singbon/backgroud/system/admin/login.do") || url.equals("/singbon/backgroud/system/admin/loginin.do")) {
+		if (url.equals("/") || url.startsWith("/index.jsp") || url.contains("dwz.frag.xml") || url.startsWith("/disuserlogin.htm") || url.startsWith("/js/") || url.startsWith("/img/")
+				|| url.startsWith("/themes/") || url.equals("/favicon.ico") || url.equals("/singbon/backgroud/system/admin/login.do") || url.equals("/singbon/backgroud/system/admin/loginin.do")) {
 			chain.doFilter(request, response);
 		} else {
-			SysUser sysUser = (SysUser) req.getSession().getAttribute("sysUser");
-			if (sysUser != null || req.getSession().getAttribute("adminLogin") != null) {
-				chain.doFilter(request, response);
-			} else {
-				if (url.startsWith("/singbon/backgroud/system/admin")) {
-					((HttpServletResponse) response).sendRedirect("/singbon/backgroud/system/admin/login.do");
+			// 后台
+			if (url.startsWith("/singbon/backgroud/system/admin")) {
+				if (req.getSession().getAttribute("adminLogin") != null) {
+					chain.doFilter(request, response);
 				} else {
-					((HttpServletResponse) response).sendRedirect("/");
+					res.sendRedirect("/singbon/backgroud/system/admin/login.do");
+				}
+			} else {
+				SysUser sysUser = (SysUser) req.getSession().getAttribute("sysUser");
+				if (sysUser != null) {
+					chain.doFilter(request, response);
+				} else {
+					res.sendRedirect("/");
 				}
 			}
 		}

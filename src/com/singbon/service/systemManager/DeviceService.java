@@ -2,6 +2,7 @@ package com.singbon.service.systemManager;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +18,7 @@ import com.singbon.service.BaseService;
  * 
  */
 @Service
-public class DeviceService extends BaseService{
+public class DeviceService extends BaseService {
 
 	@Autowired
 	public DeviceDAO deviceDAO;
@@ -26,14 +27,17 @@ public class DeviceService extends BaseService{
 	public BaseDAO getBaseDAO() {
 		return deviceDAO;
 	}
-	
+
 	/**
-	 * 通过userId查找
+	 * 读卡机列表
 	 * 
+	 * @param companyId
+	 * @param onlyEnable
+	 *            1只包含启用，0全部
 	 * @return
 	 */
-	public Device selectByOperId(Integer operId) {
-		return this.deviceDAO.selectByOperId(operId);
+	public List<Device> selectCardReaderListByCompanyId(@Param("companyId") Integer companyId) {
+		return this.deviceDAO.selectCardReaderListByCompanyId(companyId);
 	}
 
 	/**
@@ -47,7 +51,7 @@ public class DeviceService extends BaseService{
 	public List<Device> selectPosList(Integer companyId, Integer onlyEnable) {
 		return this.deviceDAO.selectPosList(companyId, onlyEnable);
 	}
-	
+
 	/**
 	 * 根据分组查询列表
 	 * 

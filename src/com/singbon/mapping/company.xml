@@ -5,10 +5,14 @@
 	</resultMap>
 	<parameterMap type="com.singbon.entity.Company" id="company2" />
 	
-	<insert id="insert" parameterMap="company2">
+	<insert id="insert" parameterMap="company2" useGeneratedKeys="true" keyProperty="id">
 		insert into company (companyName,serialNumber,authNumber,baseSection,heartInterval,uploadInterval,uploadErrTime,subsidyVersion,enableSubsidyReset)
 		values (#{companyName},#{serialNumber},#{authNumber},#{baseSection},10,10,10,0,0)
 	</insert>
+	<select id="insertInit" statementType="CALLABLE">
+        {CALL insertInit(#{companyId,mode=IN,jdbcType=INTEGER})}
+    </select>
+	
 	<update id="updateAdmin" parameterMap="company2">
 		update company set companyName=#{companyName},serialNumber=#{serialNumber},authNumber=#{authNumber},baseSection=#{baseSection},invalidDate=#{invalidDate}
 		where id=#{id}

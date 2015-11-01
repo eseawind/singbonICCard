@@ -13,8 +13,11 @@
 		update device set deviceName=#{deviceName},beginDate=#{beginDate},endDate=#{endDate},invalidDate=#{invalidDate}
 		where id=#{id}
 	</update>
-	<select id="selectByOperId" resultMap="device">
-		select * from device where operId=#{operId}
+	<select id="selectById" resultMap="device">
+		select * from device where id=#{id}
+	</select>
+	<select id="selectCardReaderListByCompanyId" resultMap="device">
+		select * from device where companyId=#{companyId} and deviceType=8
 	</select>
 	<select id="selectPosList" resultMap="device">
 		select * from device where companyId=#{companyId} and deviceType!=8

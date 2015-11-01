@@ -18,6 +18,7 @@ import com.singbon.entity.AuthGroup;
 import com.singbon.entity.Company;
 import com.singbon.entity.SysUser;
 import com.singbon.service.systemManager.AuthorizationService;
+import com.singbon.util.DesUtil;
 
 /**
  * 用户授权控制类
@@ -77,7 +78,7 @@ public class AuthorizationController extends BaseController {
 			p.print(0);
 		}
 	}
-	
+
 	/**
 	 * 添加修改分组
 	 * 
@@ -87,14 +88,14 @@ public class AuthorizationController extends BaseController {
 	 */
 	@RequestMapping(value = "/deleteGroup.do")
 	public void deleteGroup(Integer groupId, HttpServletRequest request, HttpServletResponse response, Model model) {
-		
+
 		PrintWriter p = null;
 		try {
 			p = response.getWriter();
-			Integer count= this.authorizationService.selectGroupUserCount(groupId);
-			if(count>0){
-				p.print(2);				
-			}else{
+			Integer count = this.authorizationService.selectGroupUserCount(groupId);
+			if (count > 0) {
+				p.print(2);
+			} else {
 				this.authorizationService.deleteGroup(groupId);
 				p.print(1);
 			}
@@ -129,7 +130,7 @@ public class AuthorizationController extends BaseController {
 	 * @param module
 	 * @return
 	 */
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value = "/userIndex.do")
 	public String userIndex(HttpServletRequest request, Model model) {
 		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
@@ -139,6 +140,9 @@ public class AuthorizationController extends BaseController {
 
 		List<AuthGroup> groupList = this.authorizationService.selectGroup(company.getId());
 		List<Map> sysUserList = this.authorizationService.selectGroupUserList(company.getId());
+		for (Map m : sysUserList) {
+			m.put("loginName", DesUtil.decrypt(m.get("loginName").toString()));
+		}
 		model.addAttribute("groupList", groupList);
 		model.addAttribute("sysUserList", sysUserList);
 		model.addAttribute("base", "/systemManager/userRoles");
@@ -158,7 +162,6 @@ public class AuthorizationController extends BaseController {
 		PrintWriter p = null;
 		try {
 			p = response.getWriter();
-			
 			this.authorizationService.saveGroupUser(groupIds, operId);
 			p.print(1);
 		} catch (Exception e) {

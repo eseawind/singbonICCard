@@ -390,7 +390,18 @@ public class StringUtil {
 		CRC16.generate(b);
 		StringUtil.print(Integer.toHexString(b[b.length - 2]).replace("ffffff", "") + " ");
 		StringUtil.println(Integer.toHexString(b[b.length - 1]).replace("ffffff", ""));	
-
+		try {
+			DesUtil.desInit("ycsty");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+try {
+	System.out.println(DesUtil.encrypt("0"));
+} catch (Exception e) {
+	// TODO Auto-generated catch block
+	e.printStackTrace();
+}
 	}
 
 	public static void print(Object obj) {

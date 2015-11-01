@@ -105,26 +105,51 @@
 										<li><a href="javascript:;" tvalue="ROLE_SYSTEMPARAM_SAVE">保存</a></li>
 									</ul></li>
 							</ul></li>
-<!-- 						<li><a href="javascript:;" tvalue="ROLE_USERROLES">授权管理</a> -->
-<!-- 							<ul> -->
-<!-- 								<li><a href="javascript:;" tvalue="ROLE_SYSTEMPARAM">系统参数</a> -->
-<!-- 									<ul> -->
-<!-- 										<li><a href="javascript:;" tvalue="ROLE_SYSTEMPARAM_SAVE">保存</a></li> -->
-<!-- 									</ul></li> -->
-<!-- 							</ul></li> -->
+						<!-- 						<li><a href="javascript:;" tvalue="ROLE_USERROLES">授权管理</a> -->
+						<!-- 							<ul> -->
+						<!-- 								<li><a href="javascript:;" tvalue="ROLE_SYSTEMPARAM">系统参数</a> -->
+						<!-- 									<ul> -->
+						<!-- 										<li><a href="javascript:;" tvalue="ROLE_SYSTEMPARAM_SAVE">保存</a></li> -->
+						<!-- 									</ul></li> -->
+						<!-- 							</ul></li> -->
+						<li><a href="javascript:;" tvalue="ROLE_SYSUSER">用户管理</a>
+							<ul>
+								<li><a href="javascript:;" tvalue="ROLE_SYSUSER_ADD">添加</a></li>
+								<li><a href="javascript:;" tvalue="ROLE_SYSUSER_EDIT">修改</a></li>
+								<li><a href="javascript:;" tvalue="ROLE_SYSUSER_DEL">删除</a></li>
+							</ul></li>
+						<li><a href="javascript:;" tvalue="ROLE_USERROLES">授权管理</a>
+							<ul>
+								<li><a href="javascript:;" tvalue="ROLE_USERROLES_GROUP">授权分组</a>
+									<ul>
+										<li><a href="javascript:;" tvalue="ROLE_SYSUSER_ADD">添加</a></li>
+										<li><a href="javascript:;" tvalue="ROLE_SYSUSER_EDIT">修改</a></li>
+										<li><a href="javascript:;" tvalue="ROLE_SYSUSER_DEL">删除</a></li>
+									</ul></li>
+								<li><a href="javascript:;" tvalue="ROLE_USERROLES_USER">用户授权</a>
+									<ul>
+										<li><a href="javascript:;" tvalue="ROLE_USERROLES_USER_SAVE">保存</a></li>
+									</ul></li>
+							</ul></li>
 						<li><a href="javascript:;" tvalue="ROLE_SUBSIDY">补助管理</a>
 							<ul>
 								<li><a href="javascript:;" tvalue="ROLE_ADDSUBSIDY">添加补助</a>
 									<ul>
-										<li><a href="javascript:;" tvalue="ROLE_ADDSUBSIDY_ADD_SUBSIDYFARE">添加补助金额</a></li>
-										<li><a href="javascript:;" tvalue="ROLE_ADDSUBSIDY_AUTO_SUBSIDYFARE">自动生成补助金额</a></li>
-										<li><a href="javascript:;" tvalue="ROLE_ADDSUBSIDY_ADD_SUBSIDY">添加补助准备</a></li>
+										<li><a href="javascript:;"
+											tvalue="ROLE_ADDSUBSIDY_ADD_SUBSIDYFARE">添加补助金额</a></li>
+										<li><a href="javascript:;"
+											tvalue="ROLE_ADDSUBSIDY_AUTO_SUBSIDYFARE">自动生成补助金额</a></li>
+										<li><a href="javascript:;"
+											tvalue="ROLE_ADDSUBSIDY_ADD_SUBSIDY">添加补助准备</a></li>
 									</ul></li>
 								<li><a href="javascript:;" tvalue="ROLE_GENERATESUBSIDY">生成补助</a>
 									<ul>
-										<li><a href="javascript:;" tvalue="ROLE_GENERATESUBSIDY_EDIT_SUBSIDYFARE">修改补助金额</a></li>
-										<li><a href="javascript:;" tvalue="ROLE_GENERATESUBSIDY_DEL">删除选中人员</a></li>
-										<li><a href="javascript:;" tvalue="ROLE_GENERATESUBSIDY_GENERATE">生成补助</a></li>
+										<li><a href="javascript:;"
+											tvalue="ROLE_GENERATESUBSIDY_EDIT_SUBSIDYFARE">修改补助金额</a></li>
+										<li><a href="javascript:;"
+											tvalue="ROLE_GENERATESUBSIDY_DEL">删除选中人员</a></li>
+										<li><a href="javascript:;"
+											tvalue="ROLE_GENERATESUBSIDY_GENERATE">生成补助</a></li>
 									</ul></li>
 							</ul></li>
 					</ul></li>
