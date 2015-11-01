@@ -118,11 +118,10 @@
 	<div id="layout">
 		<div id="header">
 			<div class="headerNav">
-				<a class="logo" href="#">标志</a>
-
+				<a class="logo" href="#" style="width: 210px;">标志</a>
+				<div style="margin: 30px 0 0;float: left;color: #15428B;font-size: 11px;font-weight: bold;">欢迎您：${sessionScope.sysUser.loginName}</div>
 			</div>
 		</div>
-
 		<div id="leftside">
 			<div id="sidebar_s">
 				<div class="collapse">
@@ -134,9 +133,9 @@
 			<div id="sidebar">
 				<div class="toggleCollapse">
 					<h2>主菜单</h2>
+					<a style="padding: 7px 0 0 90px;float: left;color: #15428B;font-size: 11px;font-weight: bold;" href="/loginout.do">登出</a>
 					<div>收缩</div>
 				</div>
-
 				<div class="accordion" fillSpace="sidebar">
 					<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_SYSTEMMANAGER">
 						<div class="accordionHeader">
@@ -151,6 +150,9 @@
 								</security:authorize>
 								<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_DEVICEMANAGER">
 								<li><a href="/systemManager/deviceManager/index.do" target="navTab">设备管理</a></li>
+								</security:authorize>
+								<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_SYSUSER">
+									<li><a href="/systemManager/sysUser/index.do" target="navTab">用户管理</a></li>
 								</security:authorize>
 								<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_USERROLES">
 									<li><a href="/systemManager/userRoles/index.do" target="navTab">授权管理</a></li>

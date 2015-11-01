@@ -2,7 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <script type="text/javascript">
 	function authUserClick(tr) {
 		$('#authUserForm input:first').val(tr.attr('operId'));
@@ -90,6 +90,7 @@
 		</tbody>
 	</table>
 </div>
+<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_USERROLES_USER_SAVE">
 <div class="form">
 	<form id="authUserForm" method="post" action="${base }/saveUser.do"
 		class="pageForm required-validate">
@@ -103,3 +104,4 @@
 		</div>
 	</form>
 </div>
+</security:authorize>

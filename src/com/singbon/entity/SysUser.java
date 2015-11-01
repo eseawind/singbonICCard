@@ -1,7 +1,6 @@
 package com.singbon.entity;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * 管理人员(公司管理员，公司出纳员)
@@ -13,28 +12,28 @@ public class SysUser implements Serializable {
 
 	private static final long serialVersionUID = -4349415810057681133L;
 
-	String[] statusDescList = { "未发卡", "正常", "挂失" };
 	private Integer operId;
 	private Integer companyId;
-	private String operName;
-	private String superAdmin;
 	private String loginName;
 	private String loginPwd;
-	private Integer userType;
-	private Integer enabled;
-	private Integer deptId;
-	private String deptDesc;
+	private Integer loginType;
+	private Integer deviceId;
 	private Integer status;
-	@SuppressWarnings("unused")
-	private String statusDesc;
-	private Date invalidDate;
 
-	public String getSuperAdmin() {
-		return superAdmin;
+	public Integer getOperId() {
+		return operId;
 	}
 
-	public void setSuperAdmin(String superAdmin) {
-		this.superAdmin = superAdmin;
+	public void setOperId(Integer operId) {
+		this.operId = operId;
+	}
+
+	public Integer getCompanyId() {
+		return companyId;
+	}
+
+	public void setCompanyId(Integer companyId) {
+		this.companyId = companyId;
 	}
 
 	public String getLoginName() {
@@ -53,28 +52,20 @@ public class SysUser implements Serializable {
 		this.loginPwd = loginPwd;
 	}
 
-	public Integer getUserType() {
-		return userType;
+	public Integer getLoginType() {
+		return loginType;
 	}
 
-	public void setUserType(Integer userType) {
-		this.userType = userType;
+	public void setLoginType(Integer loginType) {
+		this.loginType = loginType;
 	}
 
-	public Integer getEnabled() {
-		return enabled;
+	public Integer getDeviceId() {
+		return deviceId;
 	}
 
-	public void setEnabled(Integer enabled) {
-		this.enabled = enabled;
-	}
-
-	public Integer getDeptId() {
-		return deptId;
-	}
-
-	public void setDeptId(Integer deptId) {
-		this.deptId = deptId;
+	public void setDeviceId(Integer deviceId) {
+		this.deviceId = deviceId;
 	}
 
 	public Integer getStatus() {
@@ -83,62 +74,6 @@ public class SysUser implements Serializable {
 
 	public void setStatus(Integer status) {
 		this.status = status;
-	}
-
-	public String getStatusDesc() {
-		return this.statusDescList[status];
-	}
-
-	public void setStatusDesc(String statusDesc) {
-		this.statusDesc = statusDesc;
-	}
-
-	public Date getInvalidDate() {
-		return invalidDate;
-	}
-
-	public void setInvalidDate(Date invalidDate) {
-		this.invalidDate = invalidDate;
-	}
-
-	public String[] getStatusDescList() {
-		return statusDescList;
-	}
-
-	public void setStatusDescList(String[] statusDescList) {
-		this.statusDescList = statusDescList;
-	}
-
-	public String getDeptDesc() {
-		return deptDesc;
-	}
-
-	public void setDeptDesc(String deptDesc) {
-		this.deptDesc = deptDesc;
-	}
-
-	public String getOperName() {
-		return operName;
-	}
-
-	public void setOperName(String operName) {
-		this.operName = operName;
-	}
-
-	public Integer getOperId() {
-		return operId;
-	}
-
-	public void setOperId(Integer operId) {
-		this.operId = operId;
-	}
-
-	public Integer getCompanyId() {
-		return companyId;
-	}
-
-	public void setCompanyId(Integer companyId) {
-		this.companyId = companyId;
 	}
 
 }

@@ -3,7 +3,7 @@
 	pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <script type="text/javascript">
 	$(function() {
 		$('#authGroupForm .add').click(
@@ -129,5 +129,22 @@
 				</ul>
 			</div>
 		</div>
+		<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_USERROLES_GROUP_ADD,ROLE_USERROLES_GROUP_EDIT,ROLE_USERROLES_GROUP_DEL">
+		<div class="formBar">
+			<div class="panelBar" style="border-style: none;">
+				<ul class="toolBar">
+					<security:authorize ifAnyGranted="ROLE_USERROLES_GROUP_ADD,ROLE_ADMIN">
+						<li><a class="add" href="javascript:;"><span>添加</span></a></li>
+					</security:authorize>
+					<security:authorize ifAnyGranted="ROLE_USERROLES_GROUP_EDIT,ROLE_ADMIN">
+						<li><a class="edit" href="javascript:;"><span>修改</span></a></li>
+					</security:authorize>
+					<security:authorize ifAnyGranted="ROLE_USERROLES_GROUP_DEL,ROLE_ADMIN">
+						<li><a class="delete" href="javascript:;"><span>删除</span></a></li>
+					</security:authorize>
+				</ul>
+			</div>
+		</div>
+		</security:authorize>
 	</form>
 </div>

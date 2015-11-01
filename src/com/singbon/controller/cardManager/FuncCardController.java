@@ -18,11 +18,9 @@ import com.singbon.device.CardReaderCommandCode;
 import com.singbon.device.TerminalManager;
 import com.singbon.entity.Company;
 import com.singbon.entity.Device;
-import com.singbon.entity.SysUser;
 import com.singbon.service.CompanyService;
 import com.singbon.service.SysUserService;
-import com.singbon.service.mainCard.SpecialCardService;
-import com.singbon.util.StringUtil;
+import com.singbon.service.mainCard.FuncCardService;
 
 /**
  * 功能卡制作控制类
@@ -32,12 +30,12 @@ import com.singbon.util.StringUtil;
  */
 @Controller
 @RequestMapping(value = "/cardManager/specialCard")
-public class SpecialCardController extends BaseController {
+public class FuncCardController extends BaseController {
 
 	@Autowired
 	public SysUserService sysUserService;
 	@Autowired
-	public SpecialCardService specialCardService;
+	public FuncCardService funcCardService;
 	@Autowired
 	public CompanyService companyService;
 
@@ -51,46 +49,13 @@ public class SpecialCardController extends BaseController {
 	 */
 	@RequestMapping(value = "/index.do")
 	public String index(HttpServletRequest request, Model model) {
-		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
-		Company company = (Company) request.getSession().getAttribute("company");
-		Device device = (Device) request.getSession().getAttribute("device");
-		model.addAttribute("sysUser", sysUser);
-		model.addAttribute("company", company);
-		model.addAttribute("device", device);
+//		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
+//		Company company = (Company) request.getSession().getAttribute("company");
+//		Device device = (Device) request.getSession().getAttribute("device");
 
-		if (device != null) {
-			model.addAttribute("sn", device.getSn());
-			// 读卡机状态
-			if (TerminalManager.SNToSocketChannelList.containsKey(device.getSn())) {
-				model.addAttribute("cardStatus", 1);
-			} else {
-				model.addAttribute("cardStatus", 0);
-			}
-		} else {
-			model.addAttribute("cardStatus", 0);
-		}
 		String url = request.getRequestURI();
 		model.addAttribute("base", url.replace("/index.do", ""));
 		return url.replace(".do", "");
-	}
-
-	/**
-	 * 出纳员列表
-	 * 
-	 * @param request
-	 * @param model
-	 * @param module
-	 * @return
-	 */
-	@RequestMapping(value = "/cashierList.do")
-	public String cashierList(HttpServletRequest request, Model model) {
-		Company company = (Company) request.getSession().getAttribute("company");
-
-		List<SysUser> list = this.sysUserService.selectCashierList(company.getId());
-		model.addAttribute("list", list);
-		String url = request.getRequestURI();
-		model.addAttribute("base", url.replace("/index.jsp", ""));
-		return StringUtil.requestPath(request, "cashierList");
 	}
 
 	// /**

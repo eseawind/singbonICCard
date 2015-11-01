@@ -78,7 +78,6 @@ public interface AuthorizationDAO {
 	 * 
 	 * @return
 	 */
-	@SuppressWarnings("rawtypes")
 	public List<String> selectRolesByOperId(@Param("operId") Integer operId);
 
 }

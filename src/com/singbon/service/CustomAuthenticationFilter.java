@@ -28,10 +28,13 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.util.Assert;
 
+import com.singbon.dao.CompanyDAO;
+import com.singbon.dao.SysUserDAO;
+import com.singbon.dao.systemManager.DeviceDAO;
 import com.singbon.entity.Company;
 import com.singbon.entity.Device;
 import com.singbon.entity.SysUser;
-import com.singbon.service.systemManager.DeviceService;
+import com.singbon.util.DesUtil;
 
 /**
  * Processes an authentication form submission. Called
@@ -51,14 +54,14 @@ import com.singbon.service.systemManager.DeviceService;
  * @author Luke Taylor
  * @since 3.0
  */
-public class CustomAuthenticationFilter extends AbstractAuthenticationProcessingFilter{
+public class CustomAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
 	@Autowired
-	public SysUserService sysUserService;
+	public SysUserDAO sysUserDAO;
 	@Autowired
-	public CompanyService companyService;
+	public CompanyDAO companyDAO;
 	@Autowired
-	public DeviceService deviceService;
+	public DeviceDAO deviceDAO;
 	// ~ Static fields/initializers
 	// =====================================================================================
 
@@ -114,20 +117,27 @@ public class CustomAuthenticationFilter extends AbstractAuthenticationProcessing
 			companyName = "";
 		}
 
-		username = username.trim();
-		password = password.trim();
+		try {
+			username = DesUtil.encrypt(username.trim());
+			password = DesUtil.encrypt(password.trim());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		companyName = companyName.trim();
 
 		// 获取登录信息
-		SysUser user = this.sysUserService.login(companyName, username, password);
+		SysUser user = this.sysUserDAO.login(companyName, username, password);
+		username = DesUtil.decrypt(username);
+		password = DesUtil.decrypt(password);
 		if (user == null) {
-			username = 0 + USERNAME_LOGINID_SPLIT + username;
+			username = 0 + USERNAME_LOGINID_SPLIT + username + USERNAME_LOGINID_SPLIT + password;
 		} else {
-			Company company = (Company) this.companyService.selectById(user.getCompanyId());
+			Company company = (Company) this.companyDAO.selectById(user.getCompanyId());
 			request.getSession().setAttribute("company", company);
+			user.setLoginName(username);
 			request.getSession().setAttribute("sysUser", user);
-			username = user.getOperId() + USERNAME_LOGINID_SPLIT + username + USERNAME_LOGINID_SPLIT + password + USERNAME_LOGINID_SPLIT + user.getEnabled();
-			Device device = this.deviceService.selectByOperId(user.getOperId());
+			username = user.getOperId() + USERNAME_LOGINID_SPLIT + username + USERNAME_LOGINID_SPLIT + password;
+			Device device = (Device) this.deviceDAO.selectById(user.getDeviceId());
 			request.getSession().setAttribute("device", device);
 		}
 

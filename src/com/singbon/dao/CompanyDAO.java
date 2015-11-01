@@ -2,6 +2,8 @@ package com.singbon.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.singbon.entity.Company;
 
 /**
@@ -26,6 +28,13 @@ public interface CompanyDAO extends BaseDAO {
 	 * @return
 	 */
 	public List<Company> selectAllList();
+
+	/**
+	 * 插入初始数据
+	 * 
+	 * @return
+	 */
+	public void insertInit(@Param("companyId") Integer companyId);
 
 	/**
 	 * 更新补助版本号

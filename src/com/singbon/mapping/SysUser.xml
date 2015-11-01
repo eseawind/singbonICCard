@@ -5,37 +5,24 @@
 	</resultMap>
 	<parameterMap type="com.singbon.entity.SysUser" id="sysUser2" />
 	<cache eviction="FIFO" size="2000" readOnly="true"/>
-	<select id="selectByOperId" resultMap="sysUser">
-		select * from sysuser where operId=#{operId}
-	</select>
+<!-- 	添加系统用户 -->
+	<insert id="insert" parameterMap="sysUser2">
+		insert into sysUser (companyId,loginName,loginPwd,deviceId)
+		values (#{companyId},#{loginName},#{loginPwd},#{deviceId})
+	</insert>
+	<update id="update" parameterMap="sysUser2">
+		update sysUser set loginName=#{loginName},loginPwd=#{loginPwd},deviceId=#{deviceId}
+		where operId=#{operId}
+	</update>
+	<delete id="delete" parameterType="int">
+		delete from sysUser where operId=#{operId}		
+	</delete>
+<!-- 	登录 -->
 	<select id="login" resultMap="sysUser" useCache="false">
 		select u.* from sysuser u,company c where u.companyId=c.id and u.loginName =#{loginName} and u.loginPwd=#{loginPwd} and c.companyName =#{companyName}
 	</select>
-	<select id="selectByLoginInfo" resultMap="sysUser">
-		select * from sysuser where loginName =#{loginName} and loginPwd =#{loginPwd}
+<!-- 	列表 -->
+	<select id="selectListByCompanyId" resultType="java.util.Map" useCache="false">
+		select operId,loginName,loginPwd,deviceId,ifnull(deviceName,'无') deviceName from sysUser u left join device d on u.deviceId=d.id where u.companyId=#{companyId}
 	</select>
-	<select id="selectListByCompanyId" resultMap="sysUser">
-		select * from sysuser where companyId =#{companyId}
-	</select>
-	<select id="selectCashierList" resultMap="sysUser">
-		select * from sysuser where userType=2 and companyId =#{companyId}
-	</select>
-	<select id="selectMaxCardNO" resultType="java.lang.Integer" useCache="false">
-		select ifnull(max(cardNO),0)+1 cardNO from sysUser where companyId=#{companyId}
-	</select>
-	<select id="selectCountByCardSN" resultType="java.lang.Integer">
-		select count(operId) from sysUser where companyId=#{companyId} and cardSN=#{cardSN}
-	</select>
-	<update id="makeSpecailCard" parameterMap="sysUser2">
-		update sysUser set cardNO=#{cardNO},cardSN=#{cardSN},status=1
-		where operId=#{operId}
-	</update>
-	<update id="changeStatus">
-		update sysUser set status=#{status}
-		where operId=#{operId}
-	</update>
-	<update id="changeCashierInvalidDate">
-		update sysUser set invalidDate=#{invalidDate}
-		where operId=#{operId}
-	</update>
 </mapper>

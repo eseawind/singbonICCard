@@ -135,14 +135,8 @@
 		<form id='loginForm' action="<c:url value='disuserlogin.htm' />" method='POST'>
 			<table>
 				<tr>
-					<td>&nbsp;</td>
-					<td>
-						<div id="error" class="error">公司名称、用户名或密码错误</div>
-<!-- 						<div id="noDevice" class="error">该用户没有绑定读卡机</div> -->
-<!-- 						<div id="offline" class="error">读卡机不在线</div> -->
-<!-- 						<div id="errInfo" class="error">卡信息和用户信息不匹配</div> -->
-<!-- 						<input type="hidden" name="cardNO"/> -->
-<!-- 						<input type="hidden" name="cardSN"/> -->
+					<td colspan="2">
+						<div id="error" class="error">公司名称、用户名或密码错误或者没有分配权限</div>
 					</td>
 				</tr>
 				<tr>
@@ -152,11 +146,11 @@
 				</tr>
 				<tr>
 					<td>用户名:</td>
-					<td><input type='text' name='username' value='1'/><span>用户名不能为空</span></td>
+					<td><input type='text' name='username' value='admin'/><span>用户名不能为空</span></td>
 				</tr>
 				<tr>
 					<td>密码:</td>
-					<td><input type='password' name='password' value="1"/><span>密码不能为空</span></td>
+					<td><input type='password' name='password' value="0"/><span>密码不能为空</span></td>
 				</tr>
 				<tr>
 					<td></td>
