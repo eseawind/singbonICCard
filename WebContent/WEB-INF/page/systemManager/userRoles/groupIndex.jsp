@@ -155,7 +155,7 @@
 					</ul></li>
 				<li><a href="javascript:;" tvalue="ROLE_CARDMANAGER">制卡中心</a>
 					<ul>
-						<li><a href="javascript:;" tvalue="ROLE_MAINDCARD">用户卡管理</a></li>
+						<li><a href="javascript:;" tvalue="ROLE_MAINCARD">用户卡管理</a></li>
 						<li><a href="javascript:;" tvalue="ROLE_FUNCCARD">功能卡制作</a></li>
 						<li><a href="javascript:;" tvalue="ROLE_CARDREADER">读卡机参数下载</a></li>
 					</ul></li>

@@ -19,27 +19,7 @@
 		authentication-manager-ref="customUserAuthManager" name="customUserSecurity"
 		entry-point-ref="authenticationEntryPoint">
 
-
-		<!--一级模块 系统管理 begin -->
-		<!-- 二级模块 系统设置 begin -->
-		<security:intercept-url pattern="/systemManager/systemSetting/systemParameter/**"
-			access="ROLE_ADMIN,ROLE_SYSTEMPARAMETER" />
-		<security:intercept-url pattern="/systemManager/systemSetting/batch/**"
-			access="ROLE_ADMIN,ROLE_BATCH" />
-		<security:intercept-url pattern="/systemManager/systemSetting/userDept/**"
-			access="ROLE_ADMIN,ROLE_USERDEPT" />
-		<security:intercept-url pattern="/systemManager/systemSetting/discount/**"
-			access="ROLE_ADMIN,ROLE_DISCOUNT" />
-		<security:intercept-url pattern="/systemManager/systemSetting/**"
-			access="ROLE_ADMIN,ROLE_SYSTEMSETTING" />
-		<!-- 二级模块 系统设置 end -->
-
-		<security:intercept-url pattern="/systemManager/**"
-			access="ROLE_ADMIN,ROLE_SYSTEMMANAGER" />
-		<!--一级模块 系统管理 end -->
-
-		<security:intercept-url pattern="/index.jsp"
-			access="IS_AUTHENTICATED_ANONYMOUSLY" />
+<!-- 		<security:intercept-url pattern="/**" access="IS_AUTHENTICATED_ANONYMOUSLY" /> -->
 		<!-- 配置自定义的Filter，并且将其放在FORM_LOGIN_FILTER节点，就会替换掉原来的FORM_LOGIN_FILTER节点 -->
 		<security:custom-filter ref="loginProcessFilter"
 			position="FORM_LOGIN_FILTER" />
@@ -55,7 +35,7 @@
 		<property name="companyName" value="companyName" />
 		<property name="usernameParameter" value="username" />
 		<property name="passwordParameter" value="password" />
-		<property name="filterProcessesUrl" value="/disuserlogin.htm" />
+		<property name="filterProcessesUrl" value="/userlogin.do" />
 		<property name="authenticationManager" ref="customUserAuthManager" />
 		<property name="authenticationSuccessHandler" ref="successHandler" />
 		<property name="authenticationFailureHandler" ref="failureHandler" />

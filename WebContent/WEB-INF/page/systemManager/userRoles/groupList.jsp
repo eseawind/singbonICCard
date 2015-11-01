@@ -18,8 +18,9 @@
 					validateCallback($(this).parents('form'), function(e) {
 						if (e == 1) {
 							refreshAuthGroupList();
+							alertMsg.correct('添加成功！');
 						} else {
-	
+							alertMsg.error('添加失败！');
 						}
 					}, null);
 			});
@@ -34,8 +35,9 @@
 					validateCallback($(this).parents('form'), function(e) {
 						if (e == 1) {
 							refreshAuthGroupList();
+							alertMsg.correct('修改成功！');
 						} else {
-
+							alertMsg.error('修改失败！');
 						}
 					}, null);
 				});

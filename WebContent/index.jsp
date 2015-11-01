@@ -21,17 +21,17 @@
 			$('#login-box input[name=companyName]').val(companyName);
 		}
 		$('#login-box #loginButton').click(function(){
-			var valErr=false;
-			$('#login-box input:not(:hidden)').each(function(){
-				var val=$(this).val().trim();
-				if(val==''){
-					valErr=true;
-					$(this).next().show();
-				}
-			});
-			if(valErr){
-				return;
-			}
+// 			var valErr=false;
+// 			$('#login-box input:not(:hidden)').each(function(){
+// 				var val=$(this).val().trim();
+// 				if(val==''){
+// 					valErr=true;
+// 					$(this).next().show();
+// 				}
+// 			});
+// 			if(valErr){
+// 				return;
+// 			}
 			//var loginType=$('#login-box :radio[checked]').val();
 // 			if(loginType==1){
 			$('#loginForm').submit();
@@ -132,7 +132,7 @@
 	<img src="/img/loginBg.png" width="100%" style="margin-top: 220px;"/>
 	<div id="login-box">
 		<div id="loginComet"></div>
-		<form id='loginForm' action="<c:url value='disuserlogin.htm' />" method='POST'>
+		<form id='loginForm' action="/userlogin.do" method='POST'>
 			<table>
 				<tr>
 					<td colspan="2">

@@ -28,7 +28,7 @@ public class SecurityFilter implements Filter {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
 		String url = req.getRequestURI();
-		if (url.equals("/") || url.startsWith("/index.jsp") || url.contains("dwz.frag.xml") || url.startsWith("/disuserlogin.htm") || url.startsWith("/js/") || url.startsWith("/img/")
+		if (url.equals("/") || url.startsWith("/index.jsp") || url.contains("dwz.frag.xml") || url.startsWith("/userlogin.do") || url.startsWith("/js/") || url.startsWith("/img/")
 				|| url.startsWith("/themes/") || url.equals("/favicon.ico") || url.equals("/singbon/backgroud/system/admin/login.do") || url.equals("/singbon/backgroud/system/admin/loginin.do")) {
 			chain.doFilter(request, response);
 		} else {
