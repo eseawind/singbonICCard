@@ -46,9 +46,8 @@ public class PosExecSubsidyRequest implements Runnable {
 			Map m = list.get(0);
 			if (StringUtils.isEmpty(m.get("subsidyVersion")) || StringUtils.isEmpty(m.get("subsidyFare")))
 				return;
-			int subsidyVersion = StringUtil.objToInt(m.get("subsidyVersion"));
 			int subsidyFare = (int) (StringUtil.objToFloat(m.get("subsidyFare")) * 100);
-			sendBufStr = "0601" + sendBufStr + StringUtil.hexLeftPad(subsidyVersion, 4) + StringUtil.hexLeftPad(subsidyFare, 8);
+			sendBufStr = "0601" + sendBufStr + StringUtil.hexLeftPad(subsidyFare, 8);
 		}
 		sendBufStr += "0000";
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);

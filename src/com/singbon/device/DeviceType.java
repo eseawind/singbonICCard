@@ -28,7 +28,7 @@ public class DeviceType {
 	public static String WaterControl = "0303";
 	
 	/**
-	 * 获取设备类型
+	 * 获取设备类型帧
 	 * @param device
 	 * @return
 	 */

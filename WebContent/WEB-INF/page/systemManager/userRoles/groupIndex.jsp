@@ -1,6 +1,5 @@
 <!-- 授权分组 -->
-<%@ page language="java" contentType="text/html; charset=utf-8"
-	pageEncoding="utf-8"%>
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <script type="text/javascript">
@@ -11,8 +10,7 @@
 </style>
 
 <div>
-	<div
-		style="float: left; display: block; overflow: auto; width: 240px; border: solid 1px #CCC; line-height: 21px; background: #fff">
+	<div style="float: left; display: block; overflow: auto; width: 240px; border: solid 1px #CCC; line-height: 21px; background: #fff">
 		<div id="authTree" layoutH="60">
 			<ul class="tree treeCheck treeFolder expand">
 				<li><a href="javascript:;" tvalue="ROLE_SYSTEMMANAGER">系统管理</a>
@@ -55,34 +53,25 @@
 									</ul></li>
 								<li><a href="javascript:;" tvalue="ROLE_DISCOUNT">优惠方案</a>
 									<ul>
-										<li><a href="javascript:;" tvalue="ROLE_ORDERTIME_SAVE">保存</a></li>
+										<li><a href="javascript:;" tvalue="ROLE_DISCOUNT_SAVE">保存</a></li>
 									</ul></li>
 								<li><a href="javascript:;" tvalue="ROLE_CONSUMEPARAM">消费参数</a>
 									<ul>
-										<li><a href="javascript:;"
-											tvalue="ROLE_CONSUMEPARAM_SAVE">保存</a></li>
+										<li><a href="javascript:;" tvalue="ROLE_CONSUMEPARAM_SAVE">保存</a></li>
 									</ul></li>
 								<li><a href="javascript:;" tvalue="ROLE_POSPARAMGROUP">消费机参数组</a>
 									<ul>
-										<li><a href="javascript:;"
-											tvalue="ROLE_POSPARAMGROUP_ADD">添加</a></li>
-										<li><a href="javascript:;"
-											tvalue="ROLE_POSPARAMGROUP_EDIT">修改</a></li>
-										<li><a href="javascript:;"
-											tvalue="ROLE_POSPARAMGROUP_DEL">删除</a></li>
-										<li><a href="javascript:;"
-											tvalue="ROLE_POSPARAMGROUP_SAVE">保存</a></li>
+										<li><a href="javascript:;" tvalue="ROLE_POSPARAMGROUP_ADD">添加</a></li>
+										<li><a href="javascript:;" tvalue="ROLE_POSPARAMGROUP_EDIT">修改</a></li>
+										<li><a href="javascript:;" tvalue="ROLE_POSPARAMGROUP_DEL">删除</a></li>
+										<li><a href="javascript:;" tvalue="ROLE_POSPARAMGROUP_SAVE">保存</a></li>
 									</ul></li>
 								<li><a href="javascript:;" tvalue="ROLE_WATERRATEGROUP">一控一水控参数组</a>
 									<ul>
-										<li><a href="javascript:;"
-											tvalue="ROLE_WATERRATEGROUP_ADD">添加</a></li>
-										<li><a href="javascript:;"
-											tvalue="ROLE_WATERRATEGROUP_EDIT">修改</a></li>
-										<li><a href="javascript:;"
-											tvalue="ROLE_WATERRATEGROUP_DEL">删除</a></li>
-										<li><a href="javascript:;"
-											tvalue="ROLE_WATERRATEGROUP_SAVE">保存</a></li>
+										<li><a href="javascript:;" tvalue="ROLE_WATERRATEGROUP_ADD">添加</a></li>
+										<li><a href="javascript:;" tvalue="ROLE_WATERRATEGROUP_EDIT">修改</a></li>
+										<li><a href="javascript:;" tvalue="ROLE_WATERRATEGROUP_DEL">删除</a></li>
+										<li><a href="javascript:;" tvalue="ROLE_WATERRATEGROUP_SAVE">保存</a></li>
 									</ul></li>
 								<li><a href="javascript:;" tvalue="ROLE_CARDPARAM">制卡参数</a>
 									<ul>
@@ -94,24 +83,33 @@
 									</ul></li>
 								<li><a href="javascript:;" tvalue="ROLE_ENTRANCEGUARD">门禁参数</a>
 									<ul>
-										<li><a href="javascript:;"
-											tvalue="ROLE_ENTRANCEGUARD_SAVE">保存</a></li>
+										<li><a href="javascript:;" tvalue="ROLE_ENTRANCEGUARD_SAVE">保存</a></li>
 									</ul></li>
 							</ul></li>
 						<li><a href="javascript:;" tvalue="ROLE_DEVICEMANAGER">设备管理</a>
 							<ul>
-								<li><a href="javascript:;" tvalue="ROLE_SYSTEMPARAM">系统参数</a>
+								<li><a href="javascript:;" tvalue="ROLE_DEVICEMANAGER_POS">消费机</a>
 									<ul>
-										<li><a href="javascript:;" tvalue="ROLE_SYSTEMPARAM_SAVE">保存</a></li>
+										<li><a href="javascript:;" tvalue="ROLE_DEVICEMANAGER_GROUP">设备分组</a>
+											<ul>
+												<li><a href="javascript:;" tvalue="ROLE_DEVICEMANAGER_GROUP_ADD">添加</a></li>
+												<li><a href="javascript:;" tvalue="ROLE_DEVICEMANAGER_GROUP_EDIT">修改</a></li>
+												<li><a href="javascript:;" tvalue="ROLE_DEVICEMANAGER_GROUP_DEL">删除</a></li>
+											</ul></li>
+										<li><a href="javascript:;" tvalue="ROLE_DEVICEMANAGER_POS">设备</a>
+											<ul>
+												<li><a href="javascript:;" tvalue="ROLE_DEVICEMANAGER_POS_ADD">添加</a></li>
+												<li><a href="javascript:;" tvalue="ROLE_DEVICEMANAGER_POS_EDIT">修改</a></li>
+												<li><a href="javascript:;" tvalue="ROLE_DEVICEMANAGER_POS_DEL">删除</a></li>
+											</ul></li>
+									</ul></li>
+								<li><a href="javascript:;" tvalue="ROLE_DEVICEMANAGER_CARDREADER">读卡机</a>
+									<ul>
+										<li><a href="javascript:;" tvalue="ROLE_DEVICEMANAGER_CARDREADER_ADD">添加</a></li>
+										<li><a href="javascript:;" tvalue="ROLE_DEVICEMANAGER_CARDREADER_EDIT">修改</a></li>
+										<li><a href="javascript:;" tvalue="ROLE_DEVICEMANAGER_CARDREADER_DEL">删除</a></li>
 									</ul></li>
 							</ul></li>
-						<!-- 						<li><a href="javascript:;" tvalue="ROLE_USERROLES">授权管理</a> -->
-						<!-- 							<ul> -->
-						<!-- 								<li><a href="javascript:;" tvalue="ROLE_SYSTEMPARAM">系统参数</a> -->
-						<!-- 									<ul> -->
-						<!-- 										<li><a href="javascript:;" tvalue="ROLE_SYSTEMPARAM_SAVE">保存</a></li> -->
-						<!-- 									</ul></li> -->
-						<!-- 							</ul></li> -->
 						<li><a href="javascript:;" tvalue="ROLE_SYSUSER">用户管理</a>
 							<ul>
 								<li><a href="javascript:;" tvalue="ROLE_SYSUSER_ADD">添加</a></li>
@@ -135,21 +133,15 @@
 							<ul>
 								<li><a href="javascript:;" tvalue="ROLE_ADDSUBSIDY">添加补助</a>
 									<ul>
-										<li><a href="javascript:;"
-											tvalue="ROLE_ADDSUBSIDY_ADD_SUBSIDYFARE">添加补助金额</a></li>
-										<li><a href="javascript:;"
-											tvalue="ROLE_ADDSUBSIDY_AUTO_SUBSIDYFARE">自动生成补助金额</a></li>
-										<li><a href="javascript:;"
-											tvalue="ROLE_ADDSUBSIDY_ADD_SUBSIDY">添加补助准备</a></li>
+										<li><a href="javascript:;" tvalue="ROLE_ADDSUBSIDY_ADD_SUBSIDYFARE">添加补助金额</a></li>
+										<li><a href="javascript:;" tvalue="ROLE_ADDSUBSIDY_AUTO_SUBSIDYFARE">自动生成补助金额</a></li>
+										<li><a href="javascript:;" tvalue="ROLE_ADDSUBSIDY_ADD_SUBSIDY">添加补助准备</a></li>
 									</ul></li>
 								<li><a href="javascript:;" tvalue="ROLE_GENERATESUBSIDY">生成补助</a>
 									<ul>
-										<li><a href="javascript:;"
-											tvalue="ROLE_GENERATESUBSIDY_EDIT_SUBSIDYFARE">修改补助金额</a></li>
-										<li><a href="javascript:;"
-											tvalue="ROLE_GENERATESUBSIDY_DEL">删除选中人员</a></li>
-										<li><a href="javascript:;"
-											tvalue="ROLE_GENERATESUBSIDY_GENERATE">生成补助</a></li>
+										<li><a href="javascript:;" tvalue="ROLE_GENERATESUBSIDY_EDIT_SUBSIDYFARE">修改补助金额</a></li>
+										<li><a href="javascript:;" tvalue="ROLE_GENERATESUBSIDY_DEL">删除选中人员</a></li>
+										<li><a href="javascript:;" tvalue="ROLE_GENERATESUBSIDY_GENERATE">生成补助</a></li>
 									</ul></li>
 							</ul></li>
 					</ul></li>
@@ -159,8 +151,7 @@
 						<li><a href="javascript:;" tvalue="ROLE_FUNCCARD">功能卡制作</a></li>
 						<li><a href="javascript:;" tvalue="ROLE_CARDREADER">读卡机参数下载</a></li>
 					</ul></li>
-				<li><a href="javascript:;" tvalue="ROLE_ACCOUNTCENTER">结算中心</a>
-				</li>
+				<li><a href="javascript:;" tvalue="ROLE_ACCOUNTCENTER">结算中心</a></li>
 				<li><a href="javascript:;" tvalue="ROLE_MONITOR">监控平台</a></li>
 			</ul>
 		</div>

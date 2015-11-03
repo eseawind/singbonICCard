@@ -57,7 +57,7 @@ public interface BaseDAO {
 	/**
 	 * 根据公司id查询
 	 * 
-	 * @param companyId
+	 * @param id
 	 * @return
 	 */
 	public List<?> selectListByCompanyId(Integer companyId);

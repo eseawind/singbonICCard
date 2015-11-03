@@ -43,11 +43,11 @@ public class SysUserController {
 	 * @param request
 	 * @param model
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value = "/index.do")
 	public String index(HttpServletRequest request, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
-		List<Device> deviceList = this.deviceService.selectCardReaderListByCompanyId(company.getId());
+		List<Device> deviceList = this.deviceService.selectDeviceListByCompanyId(company.getId(), 1, 1);
 		List<Map> userList = (List<Map>) this.sysUserService.selectListByCompanyId(company.getId());
 		model.addAttribute("deviceList", deviceList);
 		model.addAttribute("userList", userList);
