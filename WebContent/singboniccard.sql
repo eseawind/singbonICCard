@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50528
 File Encoding         : 65001
 
-Date: 2015-11-03 11:01:34
+Date: 2015-11-03 11:49:19
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -424,9 +424,6 @@ INSERT INTO `device` VALUES ('47', '1', '1', '1', '点餐机47', '47', '2', '1',
 INSERT INTO `device` VALUES ('48', '1', '1', '1', '点餐机48', '48', '2', '1', '336D05936F2711E5AA1500E04C828A8D');
 INSERT INTO `device` VALUES ('49', '1', '1', '1', '点餐机49', '49', '2', '1', '3398045A6F2711E5AA1500E04C828A8D');
 INSERT INTO `device` VALUES ('50', '1', '1', '1', '点餐机50', '50', '2', '1', '33D76A4D6F2711E5AA1500E04C828A8D');
-INSERT INTO `device` VALUES ('68', '1', null, null, '读卡机2', '6', null, '0', '1F8209336F2711E5AA1500E04C828A8D');
-INSERT INTO `device` VALUES ('70', '1', null, null, '读卡机2', '2', null, '0', '4159A96E838E4DF5BDECD4E2D8E940F2');
-INSERT INTO `device` VALUES ('71', '1', null, null, '读卡机2', '2', '8', '0', '4159A96E838E4DF5BDECD4E2D8E940F2');
 
 -- ----------------------------
 -- Table structure for `devicegroup`
@@ -886,11 +883,12 @@ CREATE TABLE `user` (
   `subsidyVersion` int(11) DEFAULT '0',
   `subsidyInvalidDate` date DEFAULT NULL,
   PRIMARY KEY (`userId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
+INSERT INTO `user` VALUES ('1', '1', '1', '001', '001', '001', '123456789012345678', null, '', null, '0', '0', '0', '0', '1', '2015-11-02', null, '2015-11-30', null, '8888', '8888', null, null, null, '0', null, '0', null, '0', '0', '0', null);
 
 -- ----------------------------
 -- Table structure for `userdept`
