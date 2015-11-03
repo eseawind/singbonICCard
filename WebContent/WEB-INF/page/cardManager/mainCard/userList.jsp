@@ -278,7 +278,7 @@
 		</thead>
 		<tbody class="userList">
 			<c:forEach var="user" items="${list}" varStatus="status">
-				<tr>
+				<tr userId="${user.userId }" status="${user.status}">
 					<td>${status.index+1}</td>
 					<td>${user.userNO}</td>
 					<td>${user.username}</td>

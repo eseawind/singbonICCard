@@ -93,17 +93,17 @@
 						</dd>
 					</dl>
 				</div>
-				<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_WATERRATE_ADD,ROLE_WATERRATE_EDIT,ROLE_WATERRATE_DEL">
+				<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_WATERRATEGROUP_ADD,ROLE_WATERRATEGROUP_EDIT,ROLE_WATERRATEGROUP_DEL">
 				<div class="formBar">
 					<div class="panelBar" style="border-style: none;">
 						<ul class="toolBar">
-							<security:authorize ifAnyGranted="ROLE_WATERRATE_ADD,ROLE_ADMIN">
+							<security:authorize ifAnyGranted="ROLE_WATERRATEGROUP_ADD,ROLE_ADMIN">
 								<li><a class="add" href="javascript:;"><span>添加</span></a></li>
 							</security:authorize>
-							<security:authorize ifAnyGranted="ROLE_WATERRATE_EDIT,ROLE_ADMIN">
+							<security:authorize ifAnyGranted="ROLE_WATERRATEGROUP_EDIT,ROLE_ADMIN">
 								<li><a class="edit" href="javascript:;"><span>修改</span></a></li>
 							</security:authorize>
-							<security:authorize ifAnyGranted="ROLE_WATERRATE_DEL,ROLE_ADMIN">
+							<security:authorize ifAnyGranted="ROLE_WATERRATEGROUP_DEL,ROLE_ADMIN">
 								<li><a class="delete" href="javascript:;"><span>删除</span></a></li>
 							</security:authorize>
 						</ul>

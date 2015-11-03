@@ -91,8 +91,8 @@
 			$('#userDeptForm input').eq(0).val(selectedUserDeptId);
 			$('#userDeptForm input').eq(2).val(a.html());
 			var select = $('#userDeptForm select');
-			select.prev().val(a.attr('batchId')).html(
-							$('option[value=' + a.attr('batchId') + ']', select).html());
+			var batchId=a.attr('batchId');
+			select.prev().attr('value',batchId).html($('option[value=' + batchId + ']', select).html());
 		}
 		refreshUserDeptList();
 	};

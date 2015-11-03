@@ -28,7 +28,7 @@ public class CardReaderCommandExec {
 	public static void execCommand(SelectionKey selectionKey, byte[] b) {
 		if (b == null)
 			return;
-		String sn = StringUtil.getHexStrFromBytes(0, 15, b);
+		String sn = StringUtil.getHexStrFromBytes(0, 15, b).toUpperCase();
 		// 帧
 		byte[] frameByte = Arrays.copyOfRange(b, 30, 34);
 		// 命令码

@@ -14,13 +14,15 @@ public class Device implements Serializable {
 
 	private Integer id;
 	private Integer companyId;
-	private Integer operId;
 	private Integer groupId;
 	private Integer posParamGroupId;
 	private String deviceName;
 	private Integer deviceNum;
 	private Integer deviceType;
 	private Integer enable;
+	/**
+	 * 监控用
+	 */
 	private Integer isOnline;
 	private String sn;
 
@@ -38,14 +40,6 @@ public class Device implements Serializable {
 
 	public void setCompanyId(Integer companyId) {
 		this.companyId = companyId;
-	}
-
-	public Integer getOperId() {
-		return operId;
-	}
-
-	public void setOperId(Integer operId) {
-		this.operId = operId;
 	}
 
 	public Integer getGroupId() {

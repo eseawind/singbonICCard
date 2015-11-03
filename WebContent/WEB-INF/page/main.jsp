@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=utf-8"
-	pageEncoding="utf-8"%>
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -7,12 +6,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>${sessionScope.company.companyName}——IC卡管理系统</title>
-<link href="themes/default/style.css" rel="stylesheet" type="text/css"
-	media="screen" />
-<link href="themes/css/core.css" rel="stylesheet" type="text/css"
-	media="screen" />
-<link href="themes/css/print.css" rel="stylesheet" type="text/css"
-	media="print" />
+<link href="themes/default/style.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="themes/css/core.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="themes/css/print.css" rel="stylesheet" type="text/css" media="print" />
 <!-- <link href="themes/css/contextMenu.css" rel="stylesheet" type="text/css" /> -->
 <!-- <link href="uploadify/css/uploadify.css" rel="stylesheet" -->
 <!-- 	type="text/css" media="screen" /> -->
@@ -84,9 +80,11 @@
 <script src="js/dwz.regional.zh.js" type="text/javascript"></script>
 <script type="text/javascript">
 	$(function() {
-// 		alert('${sessionScope.company.companyName}');
-		$.cookie('companyName','${sessionScope.company.companyName}',{expires:7});
-		
+		// 		alert('${sessionScope.company.companyName}');
+		$.cookie('companyName', '${sessionScope.company.companyName}', {
+			expires : 7
+		});
+
 		DWZ.init('dwz.frag.xml', {
 			loginUrl : 'login_dialog.html',
 			loginTitle : '登录', // 弹出登录对话框
@@ -119,7 +117,7 @@
 		<div id="header">
 			<div class="headerNav">
 				<a class="logo" href="#" style="width: 210px;">标志</a>
-				<div style="margin: 30px 0 0;float: left;color: #15428B;font-size: 11px;font-weight: bold;">欢迎您：${sessionScope.sysUser.loginName}</div>
+				<div style="margin: 30px 0 0; float: left; color: #15428B; font-size: 11px; font-weight: bold;">欢迎您：${sessionScope.sysUser.loginName}</div>
 			</div>
 		</div>
 		<div id="leftside">
@@ -133,7 +131,7 @@
 			<div id="sidebar">
 				<div class="toggleCollapse">
 					<h2>主菜单</h2>
-					<a style="padding: 7px 0 0 90px;float: left;color: #15428B;font-size: 11px;font-weight: bold;" href="/loginout.do">登出</a>
+					<a style="padding: 7px 0 0 90px; float: left; color: #15428B; font-size: 11px; font-weight: bold;" href="/loginout.do">登出</a>
 					<div>收缩</div>
 				</div>
 				<div class="accordion" fillSpace="sidebar">
@@ -149,7 +147,7 @@
 									<li><a href="/systemManager/systemSetting/index.do" target="navTab">系统设置</a></li>
 								</security:authorize>
 								<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_DEVICEMANAGER">
-								<li><a href="/systemManager/deviceManager/index.do" target="navTab">设备管理</a></li>
+									<li><a href="/systemManager/deviceManager/index.do" target="navTab">设备管理</a></li>
 								</security:authorize>
 								<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_SYSUSER">
 									<li><a href="/systemManager/sysUser/index.do" target="navTab">用户管理</a></li>
@@ -164,59 +162,59 @@
 						</div>
 					</security:authorize>
 					<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_CARDMANAGER">
-					<div class="accordionHeader">
-						<h2>
-							<span>Folder</span>制卡中心
-						</h2>
-					</div>
-					<div class="accordionContent">
-						<ul class="tree">
-							<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MAINCARD">
-							<li><a href="/cardManager/mainCard/index.do" target="navTab">用户卡管理</a></li>
-							</security:authorize>
-							<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_FUNCCARD">
-							<li><a url="/cardManager/specialCard/index.do" target="navTab">功能卡制作</a></li>
-							</security:authorize>
-							<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_CARDREADER">
-							<li><a url="/cardManager/cardReader/index.do" target="navTab">读卡机参数下载</a></li>
-							</security:authorize>
-						</ul>
-					</div>
+						<div class="accordionHeader">
+							<h2>
+								<span>Folder</span>制卡中心
+							</h2>
+						</div>
+						<div class="accordionContent">
+							<ul class="tree">
+								<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MAINCARD">
+									<li><a href="/cardManager/mainCard/index.do" target="navTab">用户卡管理</a></li>
+								</security:authorize>
+								<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_FUNCCARD">
+									<li><a url="/cardManager/specialCard/index.do" target="navTab">功能卡制作</a></li>
+								</security:authorize>
+								<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_CARDREADER">
+									<li><a url="/cardManager/cardReader/index.do" target="navTab">读卡机参数下载</a></li>
+								</security:authorize>
+							</ul>
+						</div>
 					</security:authorize>
 					<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_ACCOUNTCENTER">
-					<div class="accordionHeader">
-						<h2>
-							<span>Folder</span>结算中心
-						</h2>
-					</div>
-					<div class="accordionContent">
-						<ul class="tree">
-							<li><a href="/balanceCenter/userInfo/index.do" target="navTab">用户信息查询</a></li>
-							<li><a href="/balanceCenter/consume/index.do" target="navTab">消费记录查询</a></li>
-							<li><a href="/balanceCenter/personRecord/index.do" target="navTab">个人记录查询</a></li>
-							<li><a href="/balanceCenter/personStat/index.do" target="navTab">个人统计查询</a></li>
-							<li><a href="/balanceCenter/subsidyRecord/index.do" target="navTab">补助记录查询</a></li>
-							<li><a href="/balanceCenter/deptStat/index.do" target="navTab">部门营业统计</a></li>
-							<li><a href="/balanceCenter/deviceStat/index.do" target="navTab">终端营业统计</a></li>
-							<li><a href="/balanceCenter/deptMeal/index.do" target="navTab">部门就餐统计</a></li>
-							<li><a href="/balanceCenter/cardOp/index.do" target="navTab">卡操作统计</a></li>
-							<li><a href="/balanceCenter/balance/index.do" target="navTab">结算汇总</a></li>
-							<li><a href="/balanceCenter" target="navTab">出纳汇总</a></li>
-							<li><a href="/balanceCenter" target="navTab">平衡汇总</a></li>
-							<li><a href="/balanceCenter" target="navTab">订餐查询</a></li>
-							<li><a href="/balanceCenter" target="navTab">结算</a></li>
-							<li><a href="/balanceCenter" target="navTab">终端营业分析</a></li>
-							<li><a href="/balanceCenter" target="navTab">部门营业分析</a></li>
-						</ul>
-					</div>
+						<div class="accordionHeader">
+							<h2>
+								<span>Folder</span>结算中心
+							</h2>
+						</div>
+						<div class="accordionContent">
+							<ul class="tree">
+								<li><a href="/balanceCenter/userInfo/index.do" target="navTab">用户信息查询</a></li>
+								<li><a href="/balanceCenter/consume/index.do" target="navTab">消费记录查询</a></li>
+								<li><a href="/balanceCenter/personRecord/index.do" target="navTab">个人记录查询</a></li>
+								<li><a href="/balanceCenter/personStat/index.do" target="navTab">个人统计查询</a></li>
+								<li><a href="/balanceCenter/subsidyRecord/index.do" target="navTab">补助记录查询</a></li>
+								<li><a href="/balanceCenter/deptStat/index.do" target="navTab">部门营业统计</a></li>
+								<li><a href="/balanceCenter/deviceStat/index.do" target="navTab">终端营业统计</a></li>
+								<li><a href="/balanceCenter/deptMeal/index.do" target="navTab">部门就餐统计</a></li>
+								<li><a href="/balanceCenter/cardOp/index.do" target="navTab">卡操作统计</a></li>
+								<li><a href="/balanceCenter/balance/index.do" target="navTab">结算汇总</a></li>
+								<li><a href="/balanceCenter" target="navTab">出纳汇总</a></li>
+								<li><a href="/balanceCenter" target="navTab">平衡汇总</a></li>
+								<li><a href="/balanceCenter" target="navTab">订餐查询</a></li>
+								<li><a href="/balanceCenter" target="navTab">结算</a></li>
+								<li><a href="/balanceCenter" target="navTab">终端营业分析</a></li>
+								<li><a href="/balanceCenter" target="navTab">部门营业分析</a></li>
+							</ul>
+						</div>
 					</security:authorize>
 					<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MONITOR">
-					<div class="accordionHeader">
-						<h2>
-<!-- 							<span>Folder</span><a onclick="javascript:window.open ('/monitor/index.do','监控平台','width=1024,height=500,top=80,left=80,toolbar=no, menubar=no, scrollbars=no, resizable=no');">监控平台</a> -->
-							<span>Folder</span><a onclick="javascript:window.open ('/monitor/index.do','监控平台','width=2024,height=1000,top=80,left=80,toolbar=no, menubar=no, scrollbars=no, resizable=no');">监控平台</a>
-						</h2>
-					</div>
+						<div class="accordionHeader">
+							<h2>
+								<!-- 							<span>Folder</span><a onclick="javascript:window.open ('/monitor/index.do','监控平台','width=1024,height=500,top=80,left=80,toolbar=no, menubar=no, scrollbars=no, resizable=no');">监控平台</a> -->
+								<span>Folder</span><a onclick="javascript:window.open ('/monitor/index.do','监控平台','width=2024,height=1000,top=80,left=80,toolbar=no, menubar=no, scrollbars=no, resizable=no');">监控平台</a>
+							</h2>
+						</div>
 					</security:authorize>
 				</div>
 			</div>
@@ -227,15 +225,13 @@
 					<div class="tabsPageHeaderContent">
 						<!-- 显示左右控制时添加 class="tabsPageHeaderMargin" -->
 						<ul class="navTab-tab">
-							<li tabid="main" class="main"><a href="javascript:;"><span><span
-										class="home_icon">欢迎首页</span></span></a></li>
+							<li tabid="main" class="main"><a href="javascript:;"><span><span class="home_icon">欢迎首页</span></span></a></li>
 						</ul>
 					</div>
 				</div>
 				<div class="navTab-panel tabsPageContent layoutBox">
 					<div class="page unitBox">
-						<div class="pageFormContent" layoutH="80"
-							style="margin-right: 230px"></div>
+						<div class="pageFormContent" layoutH="80" style="margin-right: 230px"></div>
 					</div>
 				</div>
 			</div>

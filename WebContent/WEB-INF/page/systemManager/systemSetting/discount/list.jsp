@@ -10,8 +10,8 @@
 		$('#discountForm input').eq(1).val(tds.eq(2).find('div').html());
 		var select = $('#discountForm select');
 		var rate = tds.eq(1).find('div').html();
-		select.prev().val(rate).html(
-				$('option[value=' + rate + ']', select).html());
+		select.val(rate);
+		select.prev().attr('value',rate).html($('option[value=' + rate + ']', select).html());
 		var giveCash = tds.eq(3).find('div').html();
 		$('#discountForm input[name=giveCash]').val(giveCash);
 	}

@@ -19,7 +19,7 @@ public class PosExecCommandDispatch {
 	public static void execCommand(InetSocketAddress inetSocketAddress, byte[] b) {
 		if (b == null)
 			return;
-		String sn = StringUtil.getHexStrFromBytes(0, 15, b);
+		String sn = StringUtil.getHexStrFromBytes(0, 15, b).toUpperCase();
 		// 设置sn与inetSocketAddress对照关系
 		TerminalManager.SNToInetSocketAddressList.put(sn, inetSocketAddress);
 		// 命令码

@@ -444,7 +444,7 @@
 			</dl>
 		</fieldset>
 	</div>
-	<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_WATERRATE_SAVE">
+	<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_WATERRATEGROUP_SAVE">
 	<div class="formBar">
 		<div class="panelBar" style="border-style: none;">
 			<ul class="toolBar">

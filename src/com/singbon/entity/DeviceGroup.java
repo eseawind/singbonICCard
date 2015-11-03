@@ -15,7 +15,6 @@ public class DeviceGroup implements Serializable {
 	private Integer id;
 	private Integer companyId;
 	private String groupName;
-	private Integer operId;
 
 	public Integer getId() {
 		return id;
@@ -39,14 +38,6 @@ public class DeviceGroup implements Serializable {
 
 	public void setGroupName(String groupName) {
 		this.groupName = groupName;
-	}
-
-	public Integer getOperId() {
-		return operId;
-	}
-
-	public void setOperId(Integer operId) {
-		this.operId = operId;
 	}
 
 }

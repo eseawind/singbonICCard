@@ -21,7 +21,6 @@ import com.singbon.entity.Device;
 import com.singbon.entity.DeviceGroup;
 import com.singbon.entity.SysUser;
 import com.singbon.service.monitor.MonitorService;
-import com.singbon.service.systemManager.DeviceGroupService;
 import com.singbon.service.systemManager.DeviceService;
 
 /**
@@ -34,8 +33,6 @@ import com.singbon.service.systemManager.DeviceService;
 @RequestMapping(value = "/monitor/")
 public class MonitorController extends BaseController {
 
-	@Autowired
-	public DeviceGroupService deviceGroupService;
 	@Autowired
 	public DeviceService deviceService;
 	@Autowired
@@ -56,10 +53,9 @@ public class MonitorController extends BaseController {
 		model.addAttribute("sysUser", sysUser);
 		model.addAttribute("company", company);
 
-		@SuppressWarnings("unchecked")
-		List<DeviceGroup> deviceGroupList = (List<DeviceGroup>) this.deviceGroupService.selectListByCompanyId(company.getId());
+		List<DeviceGroup> deviceGroupList = (List<DeviceGroup>) this.deviceService.selectGroupListByCompanyId(company.getId());
 		model.addAttribute("deviceGroupList", deviceGroupList);
-		List<Device> deviceList = this.deviceService.selectPosList(company.getId(), 1);
+		List<Device> deviceList = this.deviceService.selectDeviceListByCompanyId(company.getId(), 0, 1);
 		for (Device d : deviceList) {
 			if (TerminalManager.SNToInetSocketAddressList.containsKey(d.getSn())) {
 				d.setIsOnline(1);

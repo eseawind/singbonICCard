@@ -4,8 +4,8 @@
 /com/
 /config.properties
 /log4j.properties
-/spring-custom-security.xml
 /org/
+/spring-custom-security.xml
 /spring-mvc.xml
 /spring-mybatis.xml
 /spring.xml

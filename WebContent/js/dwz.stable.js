@@ -98,6 +98,12 @@
 						companyClick($(this));
 					}else if(target=="sysUser"){
 						sysUserClick($(this));
+					}else if(target=="posGroup"){
+						posGroupClick($(this));
+					}else if(target=="posList"){
+						posListClick($(this));
+					}else if(target=="cardReader"){
+						cardReaderClick($(this));
 					}
 					$trs.filter(".selected").removeClass("selected");
 					$tr.addClass("selected");
