@@ -266,7 +266,6 @@ public class DeviceController {
 		}
 	}
 
-	
 	/**
 	 * 读卡机列表
 	 * 

@@ -267,6 +267,8 @@
 	<table class="table" width="99%" layoutH="125">
 		<thead>
 			<tr>
+				<th width="10"><input type="checkbox" group="userIds"
+					class="checkboxCtrl"></th>
 				<th width="80">序号</th>
 				<th width="100">编号</th>
 				<th width="100">姓名</th>
@@ -278,7 +280,8 @@
 		</thead>
 		<tbody class="userList">
 			<c:forEach var="user" items="${list}" varStatus="status">
-				<tr userId="${user.userId }" status="${user.status}">
+				<tr userId="${user.userId }" status="${user.status }" cardNO="${user.cardNO}">
+					<td><input name="userIds" value="${user.userId }" status="${user.status}" type="checkbox"></td>
 					<td>${status.index+1}</td>
 					<td>${user.userNO}</td>
 					<td>${user.username}</td>
