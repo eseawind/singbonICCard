@@ -98,7 +98,7 @@
 				var deviceNum=$('#posForm input[name=deviceNum]').val().trim();
 				var deviceCount=$('#posList tr[target][id!='+selectDeviceId+'][deviceNum='+deviceNum+']').length;
 				if(deviceCount>0){
-					alertMsg.warn('该机器号已存在！');
+					alertMsg.warn('该机器号已存在2！');
 					return;
 				}
 				var sn=$('#posForm input[name=sn]').val().trim();
@@ -132,7 +132,8 @@
 			var deviceName=$('#posForm input[name=deviceName]').val();
 			alertMsg.confirm('确定要删除'+deviceName+'吗？', {
 				okCall : function() {
-					$.post('${base }/deleteDevice.do?id=' + selectDeviceId,function(e) {
+					var sn=$('#posForm input[name=sn]').val();
+					$.post('${base }/deleteDevice.do?id=' + selectDeviceId+'&sn='+sn,function(e) {
 						if (e == 1) {
 							refreshPosList();
 							$('#posForm').clearForm();

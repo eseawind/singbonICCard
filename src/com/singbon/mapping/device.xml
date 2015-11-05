@@ -59,6 +59,6 @@
 	</select>
 <!-- 	系统启动加载用 -->
 	<select id="selectAllList" resultMap="device" useCache="false">
-		select * from device where enable=1
+		select * from device
 	</select>
 </mapper>

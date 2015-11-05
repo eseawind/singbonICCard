@@ -50,7 +50,7 @@ public class SystemListener implements ServletContextListener {
 			if (d.getDeviceType() == 8) {
 				TerminalManager.registChannel("c" + d.getSn());
 			} else {
-				TerminalManager.SNToDevicelList.put(d.getSn(), d);
+				TerminalManager.SNToDeviceList.put(d.getSn(), d);
 			}
 		}
 

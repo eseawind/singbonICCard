@@ -403,8 +403,8 @@
 			<dl class="firstRow">
 				<dt>补助清零：</dt>
 				<dd>
-					<input name="subsidyReset" type="radio" <c:if test="${w.subsidyReset==1}">checked</c:if> value="1"/>启用
-					<input name="subsidyReset" type="radio" <c:if test="${w.subsidyReset==0}">checked</c:if> value="0"/>禁用
+					<input name="subsidyReset" type="radio" <c:if test="${w.subsidyReset==0}">checked</c:if> value="0"/>启用
+					<input name="subsidyReset" type="radio" <c:if test="${w.subsidyReset==1}">checked</c:if> value="1"/>禁用
 				</dd>
 			</dl>
 			<dl class="firstRow">

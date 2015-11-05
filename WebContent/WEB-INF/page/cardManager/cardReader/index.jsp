@@ -37,14 +37,12 @@
 	});
 	
 	function init() {
-		alert('${sn}');
 		JS.Engine.stop();
 		JS.Engine.start('/conn');
 		JS.Engine.on({
 			'c${sn}' : function(e) {//侦听一个channel
 				var e2 = eval('(' + e + ')');
 				heartTime=new Date();
-				alert();
 				//读卡器状态
 				if (e2.f1 == 2 && e2.r == 1) {
 					$('.dialogHeader_c h1').html(title + '——读卡机状态：在线');

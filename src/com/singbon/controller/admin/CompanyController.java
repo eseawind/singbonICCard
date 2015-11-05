@@ -103,13 +103,13 @@ public class CompanyController {
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/list.do")
 	public String userList(@ModelAttribute Pagination pagination, String nameStr, HttpServletRequest request, Model model) {
-		String[] columns = { "id", "companyName", "serialNumber", "authNumber", "baseSection","invalidDate" };
+		String[] columns = { "id", "companyName", "serialNumber", "authNumber", "baseSection", "invalidDate" };
 		String fromSql = "company";
 		String whereSql = "1=1 ";
 		if (!StringUtils.isEmpty(nameStr)) {
 			whereSql += String.format(" and companyName like '%%%s%%'", nameStr);
 		}
-		List<Map> list = this.commonService.selectByPage(columns, fromSql, whereSql, pagination);
+		List<Map> list = this.commonService.selectByPage(columns, null, fromSql, whereSql, pagination);
 		int totalCount = Integer.valueOf(list.get(0).get("id").toString());
 		list.remove(0);
 

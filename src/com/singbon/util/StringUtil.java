@@ -381,27 +381,31 @@ public class StringUtil {
 	public static Float objToFloat(Object obj) {
 		return Float.valueOf(obj.toString());
 	}
+	
+	/**
+	 * Object转String
+	 * @param obj
+	 * @return
+	 */
+	public static String getString(Object obj) {
+		if (obj != null) {
+			return obj.toString();
+		} else {
+			return "";
+		}
+	}
 
 	public static void main(String[] args) {
 		// 密码 01010101010101010101010101010101 00 00 00 01 0000 00 00 00 00 02
 		// 02 00 11 04 03 00 00 00 00 43 74 61 61 88 88 01 B889
-		// 消费机初始化01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 00 00 00 01 00 00 00 00 00 00 02 02 00 0A 19 19 00 00 00 00 46 1b
-		byte[] b = StringUtil.strTobytes("01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 00 00 00 01 00 00 00 00 00 00 02 02 00 19 06 01 00 00 00 00 00 00 00 30 00 00 00 07 01 00 02 00 00 02 58 3d d2".replaceAll(" ", ""));
+		// 消费机初始化01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 00 00 00 01 00
+		// 00 00 00 00 00 02 02 00 0A 19 19 00 00 00 00 46 1b
+		byte[] b = StringUtil.strTobytes(
+				"01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 00 00 00 01 00 00 00 00 00 00 02 02 00 28 04 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 0A 03 E8 03 E7 00 00 F0 00 00 00 00 03 FF FF 03 00 00 30 11  88 8E"
+						.replaceAll(" ", ""));
 		CRC16.generate(b);
 		StringUtil.print(Integer.toHexString(b[b.length - 2]).replace("ffffff", "") + " ");
-		StringUtil.println(Integer.toHexString(b[b.length - 1]).replace("ffffff", ""));	
-		try {
-			DesUtil.desInit("ycsty");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-try {
-	System.out.println(DesUtil.encrypt("0"));
-} catch (Exception e) {
-	// TODO Auto-generated catch block
-	e.printStackTrace();
-}
+		StringUtil.println(Integer.toHexString(b[b.length - 1]).replace("ffffff", ""));
 	}
 
 	public static void print(Object obj) {

@@ -24,10 +24,9 @@ public class PosExecCommandDispatch {
 		TerminalManager.SNToInetSocketAddressList.put(sn, inetSocketAddress);
 		// 命令码
 		int commandCode = StringUtil.byteToInt(b[36]) * 256 + StringUtil.byteToInt(b[37]);
-		int recNO = 0;
 		Map map = new HashMap();
 		map.put("'sn'", sn);
-		Device device = TerminalManager.SNToDevicelList.get(sn);
+		Device device = TerminalManager.SNToDeviceList.get(sn);
 		// 终端设备状态
 		if (b[30] == PosFrame.Status && b[31] == PosSubFrameStatus.SysStatus) {
 			map.put("'type'", "status");
@@ -44,10 +43,10 @@ public class PosExecCommandDispatch {
 			}
 			// 普通记录
 		} else if (b[30] == 1 && b[31] == 1) {
-			map.put("'type'", "consumeRecord");
 			// 帐号 4,卡号 4,卡序号1,卡总额 4, 卡余额
 			// 4,管理费额4,补助余额4,操作金额4,卡操作次数2,补助操作计数2,补助操作额4,RecNo
-			recNO = PosExecConsumeRecord.consumeRecord(device, map, b);
+			PosExecConsumeRecord record = new PosExecConsumeRecord(device, b, inetSocketAddress);
+			record.run();
 			// 补助记录
 		} else if (b[30] == 1 && b[31] == 9) {
 			map.put("'type'", "consumeRecord");
@@ -57,9 +56,9 @@ public class PosExecCommandDispatch {
 			// 菜单消费 202 0xca,菜单订餐 203 0xcb
 			int recType = b[92] & 0xff;
 			if (recType == 0xca) {
-				recNO = PosExecConsumeRecord.consumeRecord(device, map, b);
+				// PosExecConsumeRecord.consumeRecord(device, map, b);
 			} else if (recType == 0xcb) {
-				recNO = PosExecCookbookRecord.cookbookRecord(device, map, b);
+				PosExecCookbookRecord.cookbookRecord(device, map, b);
 			}
 			// 补助请求
 		} else if (b[30] == 4 && b[31] == 1) {
@@ -71,19 +70,8 @@ public class PosExecCommandDispatch {
 			return;
 		}
 
-		// 回复记录号
-		if (recNO > 0) {
-			try {
-				String buf = StringUtil.getHexStrFromBytes(0, 27, b) + "000d0101" + StringUtil.strLeftPad("", 8) + StringUtil.hexLeftPad(recNO, 4) + "000000";
-				b = StringUtil.strTobytes(buf);
-				TerminalManager.sendToPos(inetSocketAddress, b);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-
 		// 向监控平台发送命令
-		if (map.size() > 0) {
+		if (map.size() > 1) {
 			TerminalManager.sendToMonitor(map, device.getCompanyId());
 		}
 	}

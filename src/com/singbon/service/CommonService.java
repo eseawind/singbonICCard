@@ -32,26 +32,31 @@ public class CommonService extends BaseService {
 	}
 
 	@SuppressWarnings("rawtypes")
-	public List<Map> selectByPage(String[] columns, String fromSql, String whereSql, Pagination pagination) {
+	public List<Map> selectByPage(String[] countColumns, String[] dataColumns, String fromSql, String whereSql, Pagination pagination) {
 		String selectCountSql = "";
-		String selectSql = "";
+		String selectDataSql = "";
+		if(dataColumns==null){
+			dataColumns=countColumns;
+		}
 		int i = 0;
-		for (String col : columns) {
-			selectSql += col + ",";
+		for (String col : countColumns) {
 			int dotIndex = col.indexOf(".");
 			if (dotIndex != -1) {
 				col = col.substring(dotIndex + 1);
 			}
 			if (i == 0) {
 				selectCountSql += "count(*) " + col + ",";
-			}else{
-				selectCountSql += "null " + col + ",";				
+			} else {
+				selectCountSql += "null " + col + ",";
 			}
 			i++;
 		}
+		for (String col : countColumns) {
+			selectDataSql += col + ",";
+		}
 		selectCountSql = selectCountSql.substring(0, selectCountSql.length() - 1);
-		selectSql = selectSql.substring(0, selectSql.length() - 1);
-		String fullSql = String.format("select %s from %s where %s union (select %s from %s where %s limit %s,%s)", selectCountSql, fromSql, whereSql, selectSql, fromSql, whereSql,
+		selectDataSql = selectDataSql.substring(0, selectDataSql.length() - 1);
+		String fullSql = String.format("select %s from %s where %s union (select %s from %s where %s limit %s,%s)", selectCountSql, fromSql, whereSql, selectDataSql, fromSql, whereSql,
 				pagination.getOffset(), pagination.getNumPerPage());
 		return this.getBaseDAO().selectBySql(fullSql);
 	}

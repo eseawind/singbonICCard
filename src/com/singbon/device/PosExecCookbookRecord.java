@@ -23,14 +23,14 @@ public class PosExecCookbookRecord {
 		record.setUserId(StringUtil.hexToInt(baseIndex + 6, baseIndex + 9, b));
 		record.setCardNO(StringUtil.hexToInt(baseIndex + 10, baseIndex + 13, b));
 		record.setCardSeq(StringUtil.hexToInt(baseIndex + 14, baseIndex + 14, b));
-		record.setDeviceNum(device.getDeviceNum());
+		record.setDeviceName(device.getDeviceName());
 
-		record.setCardSumFare(StringUtil.hexToInt(baseIndex + 15, baseIndex + 18, b));
-		record.setCardOddFare(StringUtil.hexToInt(baseIndex + 19, baseIndex + 22, b));
+		record.setSumFare(StringUtil.hexToInt(baseIndex + 15, baseIndex + 18, b));
+		record.setOddFare(StringUtil.hexToInt(baseIndex + 19, baseIndex + 22, b));
 		record.setDiscountFare(StringUtil.hexToInt(baseIndex + 23, baseIndex + 26, b));
 		record.setSubsidyOddFare(StringUtil.hexToInt(baseIndex + 27, baseIndex + 30, b));
-		record.setCardOpFare(StringUtil.hexToInt(baseIndex + 31, baseIndex + 34, b));
-		record.setCardOpCount(StringUtil.hexToInt(baseIndex + 35, baseIndex + 36, b));
+		record.setOpFare(StringUtil.hexToInt(baseIndex + 31, baseIndex + 34, b));
+		record.setOpCount(StringUtil.hexToInt(baseIndex + 35, baseIndex + 36, b));
 		record.setSubsidyOpCount(StringUtil.hexToInt(baseIndex + 37, baseIndex + 38, b));
 		record.setSubsidyOpFare(StringUtil.hexToInt(baseIndex + 39, baseIndex + 42, b));
 		Calendar c = Calendar.getInstance();
@@ -40,7 +40,8 @@ public class PosExecCookbookRecord {
 		c.set(Calendar.HOUR_OF_DAY, StringUtil.byteToInt(b[46]));
 		c.set(Calendar.MINUTE, StringUtil.byteToInt(b[47]));
 		c.set(Calendar.SECOND, StringUtil.byteToInt(b[48]));
-		record.setOpTime(c.getTime());
+		c.add(Calendar.MONTH, -1);
+		record.setOpTime(StringUtil.dateFormat(c.getTime(), "yyyy-MM-dd HH:mm:ss"));
 		int recordNO = StringUtil.hexToInt(baseIndex + 49, baseIndex + 50, b);
 		record.setRecordNO(recordNO);
 		record.setMealId(0);
