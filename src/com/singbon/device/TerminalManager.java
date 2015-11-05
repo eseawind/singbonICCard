@@ -53,7 +53,7 @@ public class TerminalManager {
 	/**
 	 * SN序列号到设备映射列表
 	 */
-	public static Map<String, Device> SNToDevicelList = new HashMap<String, Device>();
+	public static Map<String, Device> SNToDeviceList = new HashMap<String, Device>();
 
 	/**
 	 * SN序列号到套接字通道映射列表

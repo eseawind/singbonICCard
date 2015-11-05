@@ -171,7 +171,7 @@ public class DeviceController {
 	 * @param model
 	 */
 	@RequestMapping(value = "/deleteDevice.do")
-	public void deleteDevice(Integer id, HttpServletRequest request, HttpServletResponse response, Model model) {
+	public void deleteDevice(Integer id, String sn, HttpServletRequest request, HttpServletResponse response, Model model) {
 		PrintWriter p = null;
 		try {
 			p = response.getWriter();
@@ -179,7 +179,7 @@ public class DeviceController {
 			if (count > 0) {
 				p.print(2);
 			} else {
-				this.deviceService.deleteDevice(id);
+				this.deviceService.deleteDevice(id, sn);
 				p.print(1);
 			}
 		} catch (Exception e) {
@@ -257,7 +257,7 @@ public class DeviceController {
 			if (count > 0) {
 				p.print(2);
 			} else {
-				this.deviceService.deleteDevice(id);
+				this.deviceService.deleteDevice(id, null);
 				p.print(1);
 			}
 		} catch (Exception e) {

@@ -53,8 +53,8 @@
 			<dt>是否启用补助清零：</dt>
 			<dd>
 				<input type="hidden" name="id" value="${posParamGroup.id}"/>
-				<input name="subsidyReset" type="radio" <c:if test="${posParamGroup.subsidyReset==1}">checked</c:if> value="1"/>启用
-				<input name="subsidyReset" type="radio" <c:if test="${posParamGroup.subsidyReset==0}">checked</c:if> value="0"/>禁用
+				<input name="subsidyReset" type="radio" <c:if test="${posParamGroup.subsidyReset==0}">checked</c:if> value="0"/>启用
+				<input name="subsidyReset" type="radio" <c:if test="${posParamGroup.subsidyReset==1}">checked</c:if> value="1"/>禁用
 			</dd>
 		</dl>
 		<dl style="margin: 10px 0;">

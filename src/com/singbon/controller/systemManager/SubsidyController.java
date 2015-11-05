@@ -88,7 +88,7 @@ public class SubsidyController extends BaseController {
 		String fromSql = "user u";
 		String whereSql = getWhereSql(nameStr, deptIds, cardTypeId, cardIdentity, sex, company);
 
-		List<Map> userList = this.commonService.selectByPage(columns, fromSql, whereSql, pagination);
+		List<Map> userList = this.commonService.selectByPage(columns, null, fromSql, whereSql, pagination);
 		int totalCount = StringUtil.objToInt(userList.get(0).get("userId"));
 		userList.remove(0);
 
@@ -284,7 +284,7 @@ public class SubsidyController extends BaseController {
 		String fromSql = "user u,subsidy s ";
 		String whereSql = getWhereSql(nameStr, deptIds, cardTypeId, cardIdentity, sex, company);
 		whereSql = " u.userId=s.userId and " + whereSql;
-		List<Map> userList = this.commonService.selectByPage(columns, fromSql, whereSql, pagination);
+		List<Map> userList = this.commonService.selectByPage(columns, null, fromSql, whereSql, pagination);
 		int totalCount = StringUtil.objToInt(userList.get(0).get("id"));
 		userList.remove(0);
 

@@ -92,8 +92,8 @@ public class UserInfoController extends BaseController {
 			}
 		}
 
-		List<Map> userList = this.commonService.selectByPage(columns, fromSql, whereSql, pagination);
-		int totalCount = Integer.valueOf(userList.get(0).get("count").toString());
+		List<Map> userList = this.commonService.selectByPage(columns, null, fromSql, whereSql, pagination);
+		int totalCount = Integer.valueOf(userList.get(0).get("userId").toString());
 		userList.remove(0);
 
 		for (Map m : userList) {

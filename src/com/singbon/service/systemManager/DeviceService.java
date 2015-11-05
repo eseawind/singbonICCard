@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.singbon.dao.BaseDAO;
 import com.singbon.dao.systemManager.DeviceDAO;
+import com.singbon.device.TerminalManager;
 import com.singbon.entity.Device;
 import com.singbon.entity.DeviceGroup;
 import com.singbon.service.BaseService;
@@ -88,6 +89,7 @@ public class DeviceService extends BaseService {
 	 */
 	public void insertDevice(Device device) {
 		this.deviceDAO.insertDevice(device);
+		TerminalManager.SNToDeviceList.put(device.getSn(), device);
 	}
 
 	/**
@@ -98,6 +100,7 @@ public class DeviceService extends BaseService {
 	 */
 	public void updateDevice(Device device) {
 		this.deviceDAO.updateDevice(device);
+		TerminalManager.SNToDeviceList.put(device.getSn(), device);
 	}
 
 	/**
@@ -106,8 +109,11 @@ public class DeviceService extends BaseService {
 	 * @param deviceGroup
 	 * @return
 	 */
-	public void deleteDevice(Integer id) {
+	public void deleteDevice(Integer id, String sn) {
 		this.deviceDAO.deleteDevice(id);
+		if (sn != null) {
+			TerminalManager.SNToDeviceList.remove(sn);
+		}
 	}
 
 	/**

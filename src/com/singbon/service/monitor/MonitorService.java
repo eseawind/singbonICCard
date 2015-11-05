@@ -836,7 +836,8 @@ public class MonitorService implements Runnable {
 			// 全部菜肴清单
 		} else if ("allCookbook".equals(cmd)) {
 			for (SendCommand sc : sendCommandList) {
-				if (sc.getSubFrame() == PosSubFrameCookbook.Update || sc.getSubFrame() == PosSubFrameCookbook.Append || sc.getSubFrame() == PosSubFrameCookbook.GetLastNum) {
+				if (sc.getFrame() == PosFrame.Cookbook
+						&& (sc.getSubFrame() == PosSubFrameCookbook.Update || sc.getSubFrame() == PosSubFrameCookbook.Append || sc.getSubFrame() == PosSubFrameCookbook.GetLastNum)) {
 					Map map = new HashMap();
 					map.put("type", "log");
 					map.put("time", StringUtil.dateFormat(new Date(), "yyyyMMdd HH:mm:ss"));

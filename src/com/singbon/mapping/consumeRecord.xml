@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.singbon.dao.ConsumeRecordDAO">
+	<resultMap id="consumeRecord" type="com.singbon.entity.ConsumeRecord">
+	</resultMap>
+	<parameterMap type="com.singbon.entity.ConsumeRecord" id="consumeRecord2" />
+	
+	<select id="insert" parameterMap="consumeRecord2" statementType="CALLABLE">
+        {CALL insertConsumeRecord(
+        	#{companyId,mode=IN,jdbcType=INTEGER},
+        	#{userId,mode=IN,jdbcType=INTEGER},
+        	#{cardNO,mode=IN,jdbcType=INTEGER},
+        	#{cardSeq,mode=IN,jdbcType=INTEGER},
+        	#{deviceId,mode=IN,jdbcType=INTEGER},
+        	#{sumFare,mode=IN,jdbcType=INTEGER},
+        	#{oddFare,mode=IN,jdbcType=INTEGER},
+        	#{subsidyOddFare,mode=IN,jdbcType=INTEGER},
+        	#{discountFare,mode=IN,jdbcType=INTEGER},
+        	#{opFare,mode=IN,jdbcType=INTEGER},
+        	#{subsidyOpFare,mode=IN,jdbcType=INTEGER},
+        	#{mealId,mode=IN,jdbcType=INTEGER},
+        	#{opTime,mode=IN,jdbcType=VARCHAR},
+        	#{opCount,mode=IN,jdbcType=INTEGER},
+        	#{subsidyOpCount,mode=IN,jdbcType=INTEGER},
+        	#{recordNO,mode=IN,jdbcType=INTEGER},
+        	#{consumeType,mode=IN,jdbcType=INTEGER},
+        	#{cookbookCode,mode=IN,jdbcType=INTEGER},
+        	#{cookbookNum,mode=IN,jdbcType=INTEGER},
+        	#{result, mode=OUT, jdbcType=INTEGER},
+        	#{userNO, mode=OUT, jdbcType=VARCHAR},
+        	#{username, mode=OUT, jdbcType=VARCHAR},
+        	#{cookbookName, mode=OUT, jdbcType=VARCHAR}
+        )}
+    </select>
+</mapper>

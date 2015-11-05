@@ -137,7 +137,7 @@ public class MonitorController extends BaseController {
 						commandIndex = sendCommand.getCommandCode() + 1;
 					}
 				}
-				Device device = TerminalManager.SNToDevicelList.get(sn2);
+				Device device = TerminalManager.SNToDeviceList.get(sn2);
 				this.monitorService.addCommand(company, device, cmd, cookbookCode, commandIndex, sendCommandList);
 			}
 		}

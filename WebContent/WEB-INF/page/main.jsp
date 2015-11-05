@@ -189,8 +189,8 @@
 						</div>
 						<div class="accordionContent">
 							<ul class="tree">
-								<li><a href="/balanceCenter/userInfo/index.do" target="navTab">用户信息查询</a></li>
-								<li><a href="/balanceCenter/consume/index.do" target="navTab">消费记录查询</a></li>
+<!-- 								<li><a href="/balanceCenter/userInfo/index.do" target="navTab">用户信息查询</a></li> -->
+								<li><a href="/balanceCenter/consumeRecord/index.do" target="navTab">消费记录查询</a></li>
 								<li><a href="/balanceCenter/personRecord/index.do" target="navTab">个人记录查询</a></li>
 								<li><a href="/balanceCenter/personStat/index.do" target="navTab">个人统计查询</a></li>
 								<li><a href="/balanceCenter/subsidyRecord/index.do" target="navTab">补助记录查询</a></li>

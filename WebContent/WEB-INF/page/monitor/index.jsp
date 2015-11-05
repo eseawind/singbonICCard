@@ -195,22 +195,22 @@
 				}else if(e2.type=='consumeRecord'){
 					$("#deviceList .device[id="+sn+"] img").attr('alt','在线').attr('src','/img/online.png');
 					if(consumeRecordIndex>=maxRow){
-						consumeRecordIndex=0;
+						consumeRecordIndex=1;
 						$('#consumeRecord tbody tr td div').empty();
 					}
 					var tr=$("#consumeRecord tbody tr[index="+consumeRecordIndex+"]");					
 					$('td[index] div',tr).html(consumeRecordIndex);
-					$('td[deviceNum] div',tr).html(e2.consumeRecord.deviceNum);
+					$('td[deviceName] div',tr).html(e2.consumeRecord.deviceName);
 					$('td[userNO] div',tr).html(e2.consumeRecord.userNO);
 					$('td[cardNO] div',tr).html(e2.consumeRecord.cardNO);
 					$('td[username] div',tr).html(e2.consumeRecord.username);
-					$('td[cardOddFare] div',tr).html(e2.consumeRecord.cardOddFare/100);
+					$('td[oddFare] div',tr).html(e2.consumeRecord.oddFare/100);
 					$('td[subsidyOddFare] div',tr).html(e2.consumeRecord.subsidyOddFare/100);
 					$('td[discountFare] div',tr).html(e2.consumeRecord.discountFare/100);
-					$('td[oppFare] div',tr).html((e2.consumeRecord.cardOpFare+e2.consumeRecord.subsidyOpFare)/100);
+					$('td[opFare] div',tr).html((e2.consumeRecord.opFare+e2.consumeRecord.subsidyOpFare)/100);
 					$('td[mealName] div',tr).html(e2.consumeRecord.mealName);
-					$('td[opTimeDes] div',tr).html(e2.consumeRecord.opTimeDes);
-					$('td[cardOpCount] div',tr).html(e2.consumeRecord.cardOpCount);
+					$('td[opTime] div',tr).html(e2.consumeRecord.opTime);
+					$('td[opCount] div',tr).html(e2.consumeRecord.opCount);
 					$('td[subsidyOpCount] div',tr).html(e2.consumeRecord.subsidyOpCount);
 					$('td[recordNO] div',tr).html(e2.consumeRecord.recordNO);
 					$('td[consumeTypeDes] div',tr).html(e2.consumeRecord.consumeTypeDes);
@@ -223,7 +223,7 @@
 				}else if(e2.type=='cookbookRecord'){
 					$("#deviceList .device[id="+sn+"] img").attr('alt','在线').attr('src','/img/online.png');
 					if(cookbookRecordIndex>=maxRow){
-						cookbookRecordIndex=0;
+						cookbookRecordIndex=1;
 						$('#cookbookRecord tbody tr td div').empty();
 					}
 					var tr=$("#cookbookRecord tbody tr[index="+consumeRecordIndex+"]");					
@@ -350,7 +350,7 @@
 				if($(t).hasClass('log')){
 					logIndex=0;
 				}else if($(t).hasClass('consumeRecord')){
-					consumeRecordIndex=0;
+					consumeRecordIndex=1;
 				}
 				$('tr td div', t).empty();
 			}
@@ -544,7 +544,7 @@
 														<thead>
 															<tr>
 																<th width="40">序号</th>
-																<th width="100">终端编号</th>
+																<th width="100">终端名称</th>
 																<th width="100">用户编号</th>
 																<th width="100">卡号</th>
 																<th width="100">姓名</th>
@@ -567,17 +567,17 @@
 															<c:forEach begin="1" end="100" step="1" var="i">
 																<tr index="${i}">
 																	<td index></td>
-																	<td deviceNum></td>
+																	<td deviceName></td>
 																	<td userNO></td>
 																	<td cardNO></td>
 																	<td username></td>
-																	<td cardOddFare></td>
+																	<td oddFare></td>
 																	<td subsidyOddFare></td>
 																	<td discountFare></td>
-																	<td oppFare></td>
+																	<td opFare></td>
 																	<td mealName></td>
-																	<td opTimeDes></td>
-																	<td cardOpCount></td>
+																	<td opTime></td>
+																	<td opCount></td>
 																	<td subsidyOpCount></td>
 																	<td recordNO></td>
 																	<td consumeTypeDes></td>

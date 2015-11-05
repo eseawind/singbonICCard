@@ -129,7 +129,7 @@ public class MainCardController extends BaseController {
 			whereSql += String.format(" and deptId = %s", deptId);
 		}
 
-		List<Map> userList = this.commonService.selectByPage(columns, fromSql, whereSql, pagination);
+		List<Map> userList = this.commonService.selectByPage(columns, null, fromSql, whereSql, pagination);
 		int totalCount = Integer.valueOf(userList.get(0).get("userId").toString());
 		userList.remove(0);
 
@@ -301,7 +301,7 @@ public class MainCardController extends BaseController {
 		Company company = (Company) request.getSession().getAttribute("company");
 		Device device = (Device) request.getSession().getAttribute("device");
 		String sn = device.getSn();
-		int section = companyService.getSection(company.getId());
+		int section = company.getBaseSection();
 		PrintWriter p = null;
 		int allOpCash = (cardAllInfo.getOpCash() + cardAllInfo.getGiveCash()) * 100;
 		int cardOpCounter = allOpCash > 0 ? 1 : 0;
@@ -441,7 +441,7 @@ public class MainCardController extends BaseController {
 	public void singleCardInit(String userNO, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
 		Device device = (Device) request.getSession().getAttribute("device");
-		int section = company.getSerialNumber();
+		int section = company.getBaseSection();
 		PrintWriter p = null;
 		try {
 			p = response.getWriter();
@@ -611,7 +611,7 @@ public class MainCardController extends BaseController {
 		Company company = (Company) request.getSession().getAttribute("company");
 		Device device = (Device) request.getSession().getAttribute("device");
 		String sn = device.getSn();
-		int section = companyService.getSection(company.getId());
+		int section = company.getBaseSection();
 		PrintWriter p = null;
 		try {
 			p = response.getWriter();
@@ -806,7 +806,7 @@ public class MainCardController extends BaseController {
 		Company company = (Company) request.getSession().getAttribute("company");
 		Device device = (Device) request.getSession().getAttribute("device");
 		String sn = device.getSn();
-		int section = companyService.getSection(company.getId());
+		int section = company.getBaseSection();
 		PrintWriter p = null;
 		try {
 			p = response.getWriter();

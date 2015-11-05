@@ -35,10 +35,6 @@ public class CompanyService extends BaseService {
 		return this.companyDAO.selectAllList();
 	}
 
-	public int getSection(Integer companyId) {
-		return 1;
-	}
-
 	/**
 	 * 添加单位
 	 * 

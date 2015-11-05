@@ -1,11 +1,4 @@
 /Test.java
-/.gitignore
-/applicationContext-security.xml
 /com/
-/config.properties
-/log4j.properties
-/org/
-/spring-custom-security.xml
-/spring-mvc.xml
-/spring-mybatis.xml
-/spring.xml
+/MainActivity$gettemp.class
+/MainActivity.class

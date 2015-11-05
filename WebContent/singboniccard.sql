@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50528
 File Encoding         : 65001
 
-Date: 2015-11-03 11:49:19
+Date: 2015-11-05 08:02:18
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -30,7 +30,7 @@ CREATE TABLE `authgroup` (
 -- ----------------------------
 -- Records of authgroup
 -- ----------------------------
-INSERT INTO `authgroup` VALUES ('1', '1', '管理员', '', 'ROLE_SYSTEMMANAGER,ROLE_SYSTEMSETTING,ROLE_SYSTEMPARAM,ROLE_SYSTEMPARAM_SAVE,ROLE_BATCH,ROLE_BATCH_ADD,ROLE_BATCH_EDIT,ROLE_BATCH_DEL,ROLE_USERDEPT,ROLE_USERDEPT_ADD,ROLE_USERDEPT_EDIT,ROLE_USERDEPT_DEL,ROLE_DEPT,ROLE_DEPT_ADD,ROLE_DEPT_EDIT,ROLE_DEPT_DEL,ROLE_MEAL,ROLE_MEAL_SAVE,ROLE_COOKBOOK,ROLE_COOKBOOK_SAVE,ROLE_ORDERTIME,ROLE_ORDERTIME_SAVE,ROLE_DISCOUNT,ROLE_DISCOUNT_SAVE,ROLE_CONSUMEPARAM,ROLE_CONSUMEPARAM_SAVE,ROLE_POSPARAMGROUP,ROLE_POSPARAMGROUP_ADD,ROLE_POSPARAMGROUP_EDIT,ROLE_POSPARAMGROUP_DEL,ROLE_POSPARAMGROUP_SAVE,ROLE_WATERRATEGROUP,ROLE_WATERRATEGROUP_ADD,ROLE_WATERRATEGROUP_EDIT,ROLE_WATERRATEGROUP_DEL,ROLE_WATERRATEGROUP_SAVE,ROLE_CARDPARAM,ROLE_CARDPARAM_SAVE,ROLE_CARDPARAM,ROLE_CARDPARAM_SAVE,ROLE_ENTRANCEGUARD,ROLE_ENTRANCEGUARD_SAVE,ROLE_DEVICEMANAGER,ROLE_DEVICEMANAGER_POS,ROLE_DEVICEMANAGER_GROUP,ROLE_DEVICEMANAGER_GROUP_ADD,ROLE_DEVICEMANAGER_GROUP_EDIT,ROLE_DEVICEMANAGER_GROUP_DEL,ROLE_DEVICEMANAGER_POS,ROLE_DEVICEMANAGER_POS_ADD,ROLE_DEVICEMANAGER_POS_EDIT,ROLE_DEVICEMANAGER_POS_DEL,ROLE_DEVICEMANAGER_CARDREADER,ROLE_DEVICEMANAGER_CARDREADER_ADD,ROLE_DEVICEMANAGER_CARDREADER_EDIT,ROLE_DEVICEMANAGER_CARDREADER_DEL,ROLE_SYSUSER,ROLE_SYSUSER_ADD,ROLE_SYSUSER_EDIT,ROLE_SYSUSER_DEL,ROLE_USERROLES,ROLE_USERROLES_GROUP,ROLE_SYSUSER_ADD,ROLE_SYSUSER_EDIT,ROLE_SYSUSER_DEL,ROLE_USERROLES_USER,ROLE_USERROLES_USER_SAVE,ROLE_SUBSIDY,ROLE_ADDSUBSIDY,ROLE_ADDSUBSIDY_ADD_SUBSIDYFARE,ROLE_ADDSUBSIDY_AUTO_SUBSIDYFARE,ROLE_ADDSUBSIDY_ADD_SUBSIDY,ROLE_GENERATESUBSIDY,ROLE_GENERATESUBSIDY_EDIT_SUBSIDYFARE,ROLE_GENERATESUBSIDY_DEL,ROLE_GENERATESUBSIDY_GENERATE,');
+INSERT INTO `authgroup` VALUES ('1', '1', '管理员', '', 'ROLE_SYSTEMMANAGER,ROLE_SYSTEMSETTING,ROLE_SYSTEMPARAM,ROLE_SYSTEMPARAM_SAVE,ROLE_BATCH,ROLE_BATCH_ADD,ROLE_BATCH_EDIT,ROLE_BATCH_DEL,ROLE_USERDEPT,ROLE_USERDEPT_ADD,ROLE_USERDEPT_EDIT,ROLE_USERDEPT_DEL,ROLE_DEPT,ROLE_DEPT_ADD,ROLE_DEPT_EDIT,ROLE_DEPT_DEL,ROLE_MEAL,ROLE_MEAL_SAVE,ROLE_COOKBOOK,ROLE_COOKBOOK_SAVE,ROLE_ORDERTIME,ROLE_ORDERTIME_SAVE,ROLE_DISCOUNT,ROLE_DISCOUNT_SAVE,ROLE_CONSUMEPARAM,ROLE_CONSUMEPARAM_SAVE,ROLE_POSPARAMGROUP,ROLE_POSPARAMGROUP_ADD,ROLE_POSPARAMGROUP_EDIT,ROLE_POSPARAMGROUP_DEL,ROLE_POSPARAMGROUP_SAVE,ROLE_WATERRATEGROUP,ROLE_WATERRATEGROUP_ADD,ROLE_WATERRATEGROUP_EDIT,ROLE_WATERRATEGROUP_DEL,ROLE_WATERRATEGROUP_SAVE,ROLE_CARDPARAM,ROLE_CARDPARAM_SAVE,ROLE_CARDPARAM,ROLE_CARDPARAM_SAVE,ROLE_ENTRANCEGUARD,ROLE_ENTRANCEGUARD_SAVE,ROLE_DEVICEMANAGER,ROLE_DEVICEMANAGER_POS,ROLE_DEVICEMANAGER_GROUP,ROLE_DEVICEMANAGER_GROUP_ADD,ROLE_DEVICEMANAGER_GROUP_EDIT,ROLE_DEVICEMANAGER_GROUP_DEL,ROLE_DEVICEMANAGER_POS,ROLE_DEVICEMANAGER_POS_ADD,ROLE_DEVICEMANAGER_POS_EDIT,ROLE_DEVICEMANAGER_POS_DEL,ROLE_DEVICEMANAGER_CARDREADER,ROLE_DEVICEMANAGER_CARDREADER_ADD,ROLE_DEVICEMANAGER_CARDREADER_EDIT,ROLE_DEVICEMANAGER_CARDREADER_DEL,ROLE_SYSUSER,ROLE_SYSUSER_ADD,ROLE_SYSUSER_EDIT,ROLE_SYSUSER_DEL,ROLE_USERROLES,ROLE_USERROLES_GROUP,ROLE_SYSUSER_ADD,ROLE_SYSUSER_EDIT,ROLE_SYSUSER_DEL,ROLE_USERROLES_USER,ROLE_USERROLES_USER_SAVE,ROLE_SUBSIDY,ROLE_ADDSUBSIDY,ROLE_ADDSUBSIDY_ADD_SUBSIDYFARE,ROLE_ADDSUBSIDY_AUTO_SUBSIDYFARE,ROLE_ADDSUBSIDY_ADD_SUBSIDY,ROLE_GENERATESUBSIDY,ROLE_GENERATESUBSIDY_EDIT_SUBSIDYFARE,ROLE_GENERATESUBSIDY_DEL,ROLE_GENERATESUBSIDY_GENERATE,ROLE_MONITOR,');
 INSERT INTO `authgroup` VALUES ('2', '1', '出纳员', '', 'ROLE_CARDMANAGER,ROLE_MAINCARD,ROLE_FUNCCARD,ROLE_CARDREADER,ROLE_ACCOUNTCENTER,ROLE_MONITOR,');
 
 -- ----------------------------
@@ -160,21 +160,7 @@ CREATE TABLE `company` (
 -- ----------------------------
 -- Records of company
 -- ----------------------------
-INSERT INTO `company` VALUES ('1', '郑州兴邦科技有限公司', '12345678', '0371', '1', '5', '5', '5', '6', '0', '2015-10-31', '');
-
--- ----------------------------
--- Table structure for `consume`
--- ----------------------------
-DROP TABLE IF EXISTS `consume`;
-CREATE TABLE `consume` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `companyId` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of consume
--- ----------------------------
+INSERT INTO `company` VALUES ('1', '郑州兴邦科技有限公司', '12345678', '0371', '1', '5', '5', '5', '7', '0', '2015-11-30', '');
 
 -- ----------------------------
 -- Table structure for `consumeparam`
@@ -184,11 +170,11 @@ CREATE TABLE `consumeparam` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `companyId` int(11) DEFAULT NULL,
   `cardMinFare` int(11) DEFAULT NULL,
-  `cardMinFareCardTypes` varchar(16) DEFAULT NULL,
+  `cardMinFareCardTypes` varchar(50) DEFAULT NULL,
   `dayLimitFare` int(11) DEFAULT NULL,
-  `dayLimitFareCardTypes` varchar(16) DEFAULT NULL,
+  `dayLimitFareCardTypes` varchar(50) DEFAULT NULL,
   `timeLimitFare` int(11) DEFAULT NULL,
-  `timeLimitFareCardTypes` varchar(16) DEFAULT NULL,
+  `timeLimitFareCardTypes` varchar(50) DEFAULT NULL,
   `userPwd` varchar(5) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
@@ -196,7 +182,7 @@ CREATE TABLE `consumeparam` (
 -- ----------------------------
 -- Records of consumeparam
 -- ----------------------------
-INSERT INTO `consumeparam` VALUES ('1', '1', '10', ',11,14,,', '100', ',11,,', '12', ',4,14,,', '88888');
+INSERT INTO `consumeparam` VALUES ('1', '1', '10', ',1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,,', '100', ',1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,,', '12', ',1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,,', '88888');
 
 -- ----------------------------
 -- Table structure for `consumeparambase`
@@ -205,11 +191,11 @@ DROP TABLE IF EXISTS `consumeparambase`;
 CREATE TABLE `consumeparambase` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `cardMinFare` int(11) DEFAULT NULL,
-  `cardMinFareCardTypes` varchar(16) DEFAULT NULL,
+  `cardMinFareCardTypes` varchar(50) DEFAULT NULL,
   `dayLimitFare` int(11) DEFAULT NULL,
-  `dayLimitFareCardTypes` varchar(16) DEFAULT NULL,
+  `dayLimitFareCardTypes` varchar(50) DEFAULT NULL,
   `timeLimitFare` int(11) DEFAULT NULL,
-  `timeLimitFareCardTypes` varchar(16) DEFAULT NULL,
+  `timeLimitFareCardTypes` varchar(50) DEFAULT NULL,
   `userPwd` varchar(5) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
@@ -218,6 +204,74 @@ CREATE TABLE `consumeparambase` (
 -- Records of consumeparambase
 -- ----------------------------
 INSERT INTO `consumeparambase` VALUES ('1', '0', ',,', '0', ',,', '0', ',,', '88888');
+
+-- ----------------------------
+-- Table structure for `consumerecord`
+-- ----------------------------
+DROP TABLE IF EXISTS `consumerecord`;
+CREATE TABLE `consumerecord` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `companyId` int(11) DEFAULT NULL,
+  `userId` int(11) DEFAULT NULL,
+  `cardNO` int(11) DEFAULT NULL,
+  `cardSeq` int(11) DEFAULT NULL,
+  `deviceId` int(11) DEFAULT NULL,
+  `sumFare` int(11) DEFAULT NULL,
+  `oddFare` int(11) DEFAULT NULL,
+  `subsidyOddFare` int(11) DEFAULT NULL,
+  `discountFare` int(11) DEFAULT NULL,
+  `opFare` int(11) DEFAULT NULL,
+  `subsidyOpFare` int(11) DEFAULT NULL,
+  `mealId` int(11) DEFAULT NULL,
+  `opTime` datetime DEFAULT NULL,
+  `collectTime` datetime DEFAULT NULL,
+  `opCount` int(11) DEFAULT NULL,
+  `subsidyOpCount` int(11) DEFAULT NULL,
+  `recordNO` int(11) DEFAULT NULL,
+  `consumeType` int(11) DEFAULT NULL,
+  `cookbookCode` int(11) DEFAULT NULL,
+  `cookbookNum` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `userId` (`userId`,`cardNO`,`recordNO`)
+) ENGINE=InnoDB AUTO_INCREMENT=97 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of consumerecord
+-- ----------------------------
+INSERT INTO `consumerecord` VALUES ('55', '1', '9', '1', '1', '2', '100000', '99800', '0', '0', '100', '0', '0', '2015-11-05 04:35:54', '2015-11-05 04:35:54', '3', '0', '3', '1', null, null);
+INSERT INTO `consumerecord` VALUES ('59', '1', '9', '1', '1', '2', '100000', '99700', '0', '0', '100', '0', '0', '2015-11-05 04:39:29', '2015-11-05 04:39:29', '4', '0', '4', '1', null, null);
+INSERT INTO `consumerecord` VALUES ('60', '1', '9', '1', '1', '2', '100000', '99500', '0', '0', '200', '0', '0', '2015-11-05 04:39:34', '2015-11-05 04:39:34', '5', '0', '5', '1', null, null);
+INSERT INTO `consumerecord` VALUES ('61', '1', '9', '1', '1', '2', '100000', '99400', '0', '0', '100', '0', '0', '2015-11-05 04:39:39', '2015-11-05 04:39:39', '6', '0', '6', '1', null, null);
+INSERT INTO `consumerecord` VALUES ('62', '1', '9', '1', '1', '2', '100000', '99300', '0', '0', '100', '0', '0', '2015-11-05 04:39:44', '2015-11-05 04:39:44', '7', '0', '7', '1', null, null);
+INSERT INTO `consumerecord` VALUES ('63', '1', '9', '1', '1', '2', '100000', '99200', '0', '0', '100', '0', '0', '2015-11-05 04:40:09', '2015-11-05 04:40:09', '8', '0', '8', '1', null, null);
+INSERT INTO `consumerecord` VALUES ('64', '1', '9', '1', '1', '2', '100000', '99100', '0', '0', '100', '0', '0', '2015-11-05 04:40:34', '2015-11-05 04:40:34', '9', '0', '9', '1', null, null);
+INSERT INTO `consumerecord` VALUES ('65', '1', '9', '1', '1', '2', '100000', '99000', '0', '0', '100', '0', '0', '2015-11-05 04:40:49', '2015-11-05 04:40:49', '10', '0', '10', '1', null, null);
+INSERT INTO `consumerecord` VALUES ('66', '1', '9', '1', '1', '2', '100000', '98900', '0', '0', '100', '0', '0', '2015-11-05 04:42:39', '2015-11-05 04:42:39', '11', '0', '11', '1', null, null);
+INSERT INTO `consumerecord` VALUES ('67', '1', '9', '1', '1', '2', '100000', '98800', '0', '0', '100', '0', '0', '2015-11-05 04:43:19', '2015-11-05 04:43:19', '12', '0', '12', '1', null, null);
+INSERT INTO `consumerecord` VALUES ('68', '1', '9', '1', '1', '2', '100000', '98700', '0', '0', '100', '0', '0', '2015-11-05 04:46:20', '2015-11-05 04:46:20', '13', '0', '13', '1', null, null);
+INSERT INTO `consumerecord` VALUES ('69', '1', '9', '1', '1', '2', '100000', '98500', '0', '0', '200', '0', '0', '2015-11-05 04:47:50', '2015-11-05 04:47:50', '14', '0', '14', '1', null, null);
+INSERT INTO `consumerecord` VALUES ('70', '1', '10', '2', '1', '2', '100000', '99900', '0', '0', '100', '0', '0', '2015-11-05 04:48:20', '2015-11-05 04:48:20', '2', '0', '15', '1', null, null);
+INSERT INTO `consumerecord` VALUES ('71', '1', '9', '1', '1', '2', '100000', '98400', '0', '0', '100', '0', '0', '2015-11-05 04:48:30', '2015-11-05 04:48:30', '15', '0', '16', '1', null, null);
+INSERT INTO `consumerecord` VALUES ('72', '1', '9', '1', '1', '2', '100000', '98390', '0', '0', '10', '0', '0', '2015-11-05 04:49:00', '2015-11-05 04:49:00', '16', '0', '17', '1', null, null);
+INSERT INTO `consumerecord` VALUES ('73', '1', '9', '1', '1', '2', '100000', '98380', '0', '0', '10', '0', '0', '2015-11-05 04:49:10', '2015-11-05 04:49:10', '17', '0', '18', '1', null, null);
+INSERT INTO `consumerecord` VALUES ('74', '1', '9', '1', '1', '2', '100000', '98280', '0', '0', '100', '0', '0', '2015-11-05 04:50:15', '2015-11-05 04:50:15', '18', '0', '19', '1', null, null);
+INSERT INTO `consumerecord` VALUES ('75', '1', '9', '1', '1', '2', '100000', '98260', '0', '0', '20', '0', '0', '2015-11-05 04:50:26', '2015-11-05 04:50:26', '19', '0', '20', '1', null, null);
+INSERT INTO `consumerecord` VALUES ('76', '1', '9', '1', '1', '2', '100000', '98259', '0', '0', '1', '0', '0', '2015-11-05 04:50:40', '2015-11-05 04:50:40', '20', '0', '21', '1', null, null);
+INSERT INTO `consumerecord` VALUES ('77', '1', '9', '1', '1', '2', '100000', '98257', '0', '0', '2', '0', '0', '2015-11-05 04:50:50', '2015-11-05 04:50:50', '21', '0', '22', '1', null, null);
+INSERT INTO `consumerecord` VALUES ('78', '1', '9', '1', '1', '2', '100000', '98157', '0', '0', '100', '0', '0', '2015-11-05 04:53:05', '2015-11-05 04:53:05', '22', '0', '23', '1', null, null);
+INSERT INTO `consumerecord` VALUES ('79', '1', '9', '1', '1', '2', '100000', '98057', '0', '0', '100', '0', '0', '2015-11-05 04:53:15', '2015-11-05 04:53:15', '23', '0', '24', '1', null, null);
+INSERT INTO `consumerecord` VALUES ('80', '1', '9', '1', '1', '2', '100000', '97957', '0', '0', '100', '0', '0', '2015-11-05 04:54:31', '2015-11-05 04:54:31', '24', '0', '25', '1', null, null);
+INSERT INTO `consumerecord` VALUES ('81', '1', '9', '1', '1', '2', '100000', '97956', '0', '0', '1', '0', '0', '2015-11-05 04:56:01', '2015-11-05 04:56:01', '25', '0', '26', '1', null, null);
+INSERT INTO `consumerecord` VALUES ('82', '1', '9', '1', '1', '2', '100000', '97856', '0', '0', '100', '0', '0', '2015-11-05 04:56:16', '2015-11-05 04:56:16', '26', '0', '27', '1', null, null);
+INSERT INTO `consumerecord` VALUES ('83', '1', '9', '1', '1', '2', '100000', '97756', '0', '0', '100', '0', '0', '2015-11-05 04:58:21', '2015-11-05 04:58:21', '27', '0', '28', '1', null, null);
+INSERT INTO `consumerecord` VALUES ('84', '1', '9', '1', '1', '2', '100000', '97656', '0', '0', '100', '0', '0', '2015-11-05 04:59:36', '2015-11-05 04:59:36', '28', '0', '29', '1', null, null);
+INSERT INTO `consumerecord` VALUES ('85', '1', '9', '1', '1', '2', '100000', '97556', '0', '0', '100', '0', '0', '2015-11-05 05:01:21', '2015-11-05 05:01:21', '29', '0', '30', '1', null, null);
+INSERT INTO `consumerecord` VALUES ('86', '1', '9', '1', '1', '2', '100000', '97456', '0', '0', '100', '0', '0', '2015-11-05 05:04:02', '2015-11-05 05:04:02', '30', '0', '31', '1', null, null);
+INSERT INTO `consumerecord` VALUES ('87', '1', '9', '1', '1', '2', '100000', '97356', '0', '0', '100', '0', '0', '2015-11-05 05:05:42', '2015-11-05 05:05:42', '31', '0', '32', '1', null, null);
+INSERT INTO `consumerecord` VALUES ('88', '1', '9', '1', '1', '2', '100000', '97256', '0', '0', '100', '0', '0', '2015-11-05 05:06:02', '2015-11-05 05:06:02', '32', '0', '33', '1', null, null);
+INSERT INTO `consumerecord` VALUES ('89', '1', '9', '1', '1', '2', '100000', '95156', '0', '0', '2100', '0', '0', '2015-11-05 05:06:07', '2015-11-05 05:06:07', '33', '0', '34', '1', null, null);
+INSERT INTO `consumerecord` VALUES ('92', '1', '10', '2', '1', '2', '100000', '99699', '0', '0', '1', '0', '18', '2015-11-05 06:46:37', '2015-11-05 06:46:34', '5', '0', '37', '1', null, null);
+INSERT INTO `consumerecord` VALUES ('93', '1', '10', '2', '1', '2', '100000', '99599', '0', '0', '100', '0', '18', '2015-11-05 07:44:44', '2015-11-05 07:45:43', '6', '0', '38', '1', null, null);
 
 -- ----------------------------
 -- Table structure for `cookbook`
@@ -370,16 +424,16 @@ CREATE TABLE `device` (
   `enable` int(11) DEFAULT NULL,
   `sn` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=72 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of device
 -- ----------------------------
 INSERT INTO `device` VALUES ('1', '1', '1', null, '读卡机', '12345678', '8', '0', '4159A96E838E4DF5BDECD4E2D8E940F1');
-INSERT INTO `device` VALUES ('2', '1', '1', '3', '点餐机1', '1', '2', '1', '01010101010101010101010101010101');
+INSERT INTO `device` VALUES ('2', '1', '1', '1', '点餐机1', '1', '2', '1', '01010101010101010101010101010101');
 INSERT INTO `device` VALUES ('3', '1', '1', '1', '点餐机2', '2', '2', '1', '02020202020202020202020202020202');
-INSERT INTO `device` VALUES ('4', '1', '1', '1', '水控10', '1', '3', '1', '03030303030303030303030303030303');
-INSERT INTO `device` VALUES ('5', '1', '1', '1', '水控2', '2', '3', '1', '04040404040404040404040404040404');
+INSERT INTO `device` VALUES ('4', '1', '1', '1', '水控10', '3', '3', '1', '03030303030303030303030303030303');
+INSERT INTO `device` VALUES ('5', '1', '1', '1', '水控2', '4', '3', '1', '04040404040404040404040404040404');
 INSERT INTO `device` VALUES ('7', '1', '1', '1', '点餐机7', '7', '2', '1', '22625A386F2711E5AA1500E04C828A8D');
 INSERT INTO `device` VALUES ('8', '1', '1', '1', '点餐机8', '8', '2', '1', '229D3EB46F2711E5AA1500E04C828A8D');
 INSERT INTO `device` VALUES ('9', '1', '1', '1', '点餐机9', '9', '2', '1', '22C376E36F2711E5AA1500E04C828A8D');
@@ -434,7 +488,7 @@ CREATE TABLE `devicegroup` (
   `companyId` int(11) DEFAULT NULL,
   `groupName` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of devicegroup
@@ -765,8 +819,8 @@ CREATE TABLE `posparamgroup` (
 -- ----------------------------
 -- Records of posparamgroup
 -- ----------------------------
-INSERT INTO `posparamgroup` VALUES ('1', '1', '消费机参数组1', '1', '0', '1', '1', '1', '1', '1', '3');
-INSERT INTO `posparamgroup` VALUES ('3', '1', '消费机参数组2', '1', '0', '1', '1', '1', '1', '1', '3');
+INSERT INTO `posparamgroup` VALUES ('1', '1', '消费机参数组1', '1', '1', '1', '1', '1', '1', '1', '3');
+INSERT INTO `posparamgroup` VALUES ('3', '1', '消费机参数组2', '0', '0', '1', '1', '1', '1', '1', '3');
 
 -- ----------------------------
 -- Table structure for `posparamgroupbase`
@@ -819,7 +873,7 @@ CREATE TABLE `subsidy` (
   `invalidDate` varchar(50) DEFAULT NULL,
   `status` int(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of subsidy
@@ -883,12 +937,16 @@ CREATE TABLE `user` (
   `subsidyVersion` int(11) DEFAULT '0',
   `subsidyInvalidDate` date DEFAULT NULL,
   PRIMARY KEY (`userId`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('1', '1', '1', '001', '001', '001', '123456789012345678', null, '', null, '0', '0', '0', '0', '1', '2015-11-02', null, '2015-11-30', null, '8888', '8888', null, null, null, '0', null, '0', null, '0', '0', '0', null);
+INSERT INTO `user` VALUES ('9', '1', '1', '001', '001', '001', '123456789012345678', '1', '7025f025', '1', '241', '0', '0', '0', '1', '2015-11-02', null, '2015-11-30', '2015-11-05', '8888', '8888', '100000', '100000', null, '0', '1', '0', null, '0', '0', '0', null);
+INSERT INTO `user` VALUES ('10', '1', '1', '002', '002', '002', '123456789012345678', '2', '90d24626', '1', '241', '0', '0', '0', '1', '2015-11-02', null, '2015-11-30', '2015-11-05', '8888', '8888', '100000', '100000', null, '0', '1', '0', null, '0', '0', '0', null);
+INSERT INTO `user` VALUES ('11', '1', '1', '003', '003', '003', '123456789012345678', '3', 'a48a2a41', '1', '241', '0', '0', '0', '1', '2015-11-02', null, '2015-11-30', '2015-11-05', '8888', '8888', '100000', '100000', null, '0', '1', '0', null, '0', '0', '0', null);
+INSERT INTO `user` VALUES ('12', '1', '1', '004', '004', '004', '123456789012345678', '4', 'd4841941', '1', '241', '0', '0', '0', '1', '2015-11-02', null, '2015-11-30', '2015-11-05', '8888', '8888', '100000', '100000', null, '0', '1', '0', null, '0', '0', '0', null);
+INSERT INTO `user` VALUES ('13', '1', '1', '005', '005', '005', '123456789012345678', '5', '0c4d582f', '1', '241', '0', '0', '0', '1', '2015-11-02', null, '2015-11-30', '2015-11-05', '8888', '8888', '100000', '100000', null, '0', '1', '0', null, '0', '0', '0', null);
 
 -- ----------------------------
 -- Table structure for `userdept`
@@ -965,8 +1023,8 @@ CREATE TABLE `waterrategroup` (
 -- ----------------------------
 -- Records of waterrategroup
 -- ----------------------------
-INSERT INTO `waterrategroup` VALUES ('3', '1', '111', '97', '0', '1', '2', '0', '0', '100', '0', '0', ',,', '0', '0', '100', '00:00', '00:00', ',,', '0', '0', '100', '00:00', '00:00', ',,', '0', '0', '100', '00:00', '00:00', ',,', '0', '0', '0', '8888', '3', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1');
-INSERT INTO `waterrategroup` VALUES ('4', '1', '1112', '97', '0', '1', '2', '0', '0', '100', '0', '0', null, '0', '0', '100', '00:00', '00:00', '', '0', '0', '100', '00:00', '00:00', null, '0', '0', '100', '00:00', '00:00', null, '0', '0', '0', '8888', '3', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1');
+INSERT INTO `waterrategroup` VALUES ('3', '1', '111', '97', '0', '1', '2', '0', '0', '100', '1', '0', ',,', '0', '0', '100', '00:00', '00:00', ',,', '0', '0', '100', '00:00', '00:00', ',,', '0', '0', '100', '00:00', '00:00', ',,', '0', '0', '0', '8888', '3', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1');
+INSERT INTO `waterrategroup` VALUES ('4', '1', '1112', '97', '0', '1', '2', '0', '0', '100', '1', '0', ',,', '0', '0', '100', '00:00', '00:00', ',,', '0', '0', '100', '00:00', '00:00', ',,', '0', '0', '100', '00:00', '00:00', ',,', '0', '0', '0', '8888', '3', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1');
 
 -- ----------------------------
 -- Table structure for `waterrategroupbase`
@@ -1056,6 +1114,46 @@ delete from authgroup where companyId not in (select id from company);
 delete from authgroupuser where operId not in (select operId from sysUser);
 delete from subsidy where companyId not in (select id from company) or userId not in (select userId from `user`);
 
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for `insertConsumeRecord`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `insertConsumeRecord`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertConsumeRecord`(IN `ccompanyId` int,IN `cuserId` int,IN `ccardNO` int,IN `ccardSeq` int,IN `cdeviceId` int,IN `csumFare` int,IN `coddFare` int,IN `csubsidyOddFare` int,IN `cdiscountFare` int,IN `copFare` int,IN `csubsidyOpFare` int,IN `cmealId` int,IN `copTime` datetime,IN `copCount` int,IN `csubsidyOpCount` int,IN `crecordNO` int,IN `cconsumeType` int,IN `ccookbookCode` int,IN `ccookbookNum` int,OUT `cresult` int,OUT `cuserNO` varchar(50),OUT `cusername` varchar(50),OUT `ccookbookName` varchar(50))
+BEGIN
+					/*#companyId,mode=IN,jdbcType=INTEGER},
+        	#{userId,mode=IN,jdbcType=INTEGER},
+        	#{cardSeq,mode=IN,jdbcType=INTEGER},
+        	#{devcieId,mode=IN,jdbcType=INTEGER},
+        	#{sumFare,mode=IN,jdbcType=INTEGER},
+        	#{oddFare,mode=IN,jdbcType=INTEGER},
+        	#{subsidyOddFare,mode=IN,jdbcType=INTEGER},
+        	#{discountFare,mode=IN,jdbcType=INTEGER},
+        	#{opFare,mode=IN,jdbcType=INTEGER},
+        	#{subsidyOpFare,mode=IN,jdbcType=INTEGER},
+        	#{opTime,mode=IN,jdbcType=java.util.Date},
+        	#{opCount,mode=IN,jdbcType=INTEGER},
+        	#{subsidyOpCount,mode=IN,jdbcType=INTEGER},
+        	#{recordNO,mode=IN,jdbcType=INTEGER},
+        	#{recordType,mode=IN,jdbcType=INTEGER},
+        	#{cookbookCode,mode=IN,jdbcType=INTEGER},
+        	#{cookbookNum,mode=IN,jdbcType=INTEGER},
+        	#{result, mode=OUT, jdbcType=INTEGER}
+        	#{userNO, mode=OUT, jdbcType=INTEGER}#Routine body goes here...*/	 
+		DECLARE EXIT HANDLER FOR SQLEXCEPTION set cresult=0;
+		set cresult=1;
+		insert into consumerecord (companyId,userId,cardNO,cardSeq,deviceId,sumFare,oddFare,subsidyOddFare,discountFare,opFare,subsidyOpFare,mealId,opTime,collectTime,opCount,subsidyOpCount,recordNO,consumeType,cookbookCode,cookbookNum)
+		values (ccompanyId,cuserId,ccardNO,ccardSeq,cdeviceId,csumFare,coddFare,csubsidyOddFare,cdiscountFare,copFare,csubsidyOpFare,cmealId,copTime,NOW(),copCount,csubsidyOpCount,crecordNO,cconsumeType,ccookbookCode,ccookbookNum);
+		select userNO,username into cuserNO,cusername from user where userId=cuserId;
+
+		if ccookbookCode is not null
+		then
+			select cookbookName into ccookbookName from cookbook where companyId=ccompanyId and cookbookCode=ccookbookCode;
+		end if;
 END
 ;;
 DELIMITER ;

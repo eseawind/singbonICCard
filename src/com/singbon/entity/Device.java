@@ -20,6 +20,7 @@ public class Device implements Serializable {
 	private Integer deviceNum;
 	private Integer deviceType;
 	private Integer enable;
+	private Integer lastRecordNO = 0;
 	/**
 	 * 监控用
 	 */
@@ -104,6 +105,14 @@ public class Device implements Serializable {
 
 	public void setPosParamGroupId(Integer posParamGroupId) {
 		this.posParamGroupId = posParamGroupId;
+	}
+
+	public Integer getLastRecordNO() {
+		return lastRecordNO;
+	}
+
+	public void setLastRecordNO(Integer lastRecordNO) {
+		this.lastRecordNO = lastRecordNO;
 	}
 
 }
