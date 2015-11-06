@@ -14,7 +14,7 @@ public class Device implements Serializable {
 
 	private Integer id;
 	private Integer companyId;
-	private Integer groupId;
+	private Integer deptId;
 	private Integer posParamGroupId;
 	private String deviceName;
 	private Integer deviceNum;
@@ -41,14 +41,6 @@ public class Device implements Serializable {
 
 	public void setCompanyId(Integer companyId) {
 		this.companyId = companyId;
-	}
-
-	public Integer getGroupId() {
-		return groupId;
-	}
-
-	public void setGroupId(Integer groupId) {
-		this.groupId = groupId;
 	}
 
 	public String getDeviceName() {
@@ -113,6 +105,14 @@ public class Device implements Serializable {
 
 	public void setLastRecordNO(Integer lastRecordNO) {
 		this.lastRecordNO = lastRecordNO;
+	}
+
+	public Integer getDeptId() {
+		return deptId;
+	}
+
+	public void setDeptId(Integer deptId) {
+		this.deptId = deptId;
 	}
 
 }

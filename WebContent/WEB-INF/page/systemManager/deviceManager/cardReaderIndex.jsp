@@ -82,7 +82,7 @@
 			var deviceName=$('#cardReaderForm input[name=deviceName]').val();
 			alertMsg.confirm('确定要删除'+deviceName+'吗？', {
 				okCall : function() {
-					$.post('${base }/deleteDevice.do?id=' + selectCardReaderId,function(e) {
+					$.post('${base }/deleteCardReader.do?id=' + selectCardReaderId,function(e) {
 						if (e == 1) {
 							refreshcardReaderList();
 							$('#cardReaderForm').clearForm();
@@ -114,7 +114,7 @@
 </script>
 <link href="themes/css/custom.css" rel="stylesheet" type="text/css" />
 <style type="text/css">
-	.cardReaderForm input {
+	.cardReaderForm input, .form input {
 		width: 230px;
 	}
 	.cardReaderForm dd span.error {
@@ -128,7 +128,7 @@
 		<jsp:include page="${base}/cardReaderList.do"/>
 	</div>
 	<div class="form cardReaderForm">
-		<form id="cardReaderForm" method="post" action="${base }/addEditDevice.do" class="pageForm required-validate">
+		<form id="cardReaderForm" method="post" action="${base }/addEdit.do" class="pageForm required-validate">
 			<div class="pageFormContent">
 				<dl style="width: 420px;">
 					<dt>机器号：</dt>

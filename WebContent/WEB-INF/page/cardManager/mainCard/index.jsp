@@ -15,8 +15,8 @@
 	};
 	function refreshUserList() {
 		$('#userList').loadUrl('${base}/list.do?pageNum=1&numPerPage=50&deptId=' + selectedDeptId, {}, function(){
-					$('#userList').find('[layoutH]').layoutH();
-				});
+			$('#userList').find('[layoutH]').layoutH();
+		});
 	}
 </script>
 

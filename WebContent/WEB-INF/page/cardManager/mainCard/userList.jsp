@@ -211,8 +211,8 @@
 	}
 	$(function() {
 		$(function() {
-			$('.search').click(function() {
-				divSearch($('#pagerForm'), 'userList');
+			$('#userList .search').click(function() {
+				divSearch($('#userList #pagerForm'), 'userList');
 			});
 		});
 	});
@@ -240,16 +240,17 @@
 </div>
 <div class="pageHeader" style="border: 1px #B8D0D6 solid">
 	<form action="${base}/list.do" id="pagerForm">
-		<input type="hidden" name="pageNum" value="${pageNum}" /> <input
-			type="hidden" name="numPerPage" value="${numPerPage}" /> <input
-			type="hidden" name="totalCount" value="${totalCount}" />
+		<input type="hidden" name="pageNum" value="${pageNum}" /> 
+		<input type="hidden" name="numPerPage" value="${numPerPage}" />
+		<input type="hidden" name="totalCount" value="${totalCount}" />
 		<div class="searchBar">
 			<table border="0">
 				<tr align="right">
 					<td>用户信息：</td>
-					<td><input type="text" name="nameStr" size="10"
-						value="${nameStr }" /> <input type="hidden" name="deptId"
-						value="${deptId}" /></td>
+					<td>
+						<input type="text" name="nameStr" size="10" value="${nameStr }" />
+						<input type="hidden" name="deptId" value="${deptId}" />
+					</td>
 					<td style="padding-left: 10px;">
 						<div class="buttonActive">
 							<div class="buttonContent">
@@ -267,8 +268,7 @@
 	<table class="table" width="99%" layoutH="125">
 		<thead>
 			<tr>
-				<th width="10"><input type="checkbox" group="userIds"
-					class="checkboxCtrl"></th>
+				<th width="10"><input type="checkbox" group="userIds" class="checkboxCtrl"></th>
 				<th width="80">序号</th>
 				<th width="100">编号</th>
 				<th width="100">姓名</th>

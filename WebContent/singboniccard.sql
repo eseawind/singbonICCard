@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50528
 File Encoding         : 65001
 
-Date: 2015-11-05 08:02:18
+Date: 2015-11-06 11:06:35
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -233,7 +233,7 @@ CREATE TABLE `consumerecord` (
   `cookbookNum` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `userId` (`userId`,`cardNO`,`recordNO`)
-) ENGINE=InnoDB AUTO_INCREMENT=97 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=94 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of consumerecord
@@ -402,12 +402,14 @@ CREATE TABLE `dept` (
   `companyId` int(11) DEFAULT NULL,
   `parentId` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of dept
 -- ----------------------------
 INSERT INTO `dept` VALUES ('1', '部门1', '1', '0');
+INSERT INTO `dept` VALUES ('2', '部门2', '1', '0');
+INSERT INTO `dept` VALUES ('3', '部门11', '1', '1');
 
 -- ----------------------------
 -- Table structure for `device`
@@ -416,7 +418,7 @@ DROP TABLE IF EXISTS `device`;
 CREATE TABLE `device` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `companyId` int(11) DEFAULT NULL,
-  `groupId` int(11) DEFAULT NULL,
+  `deptId` int(11) DEFAULT NULL,
   `posParamGroupId` int(11) DEFAULT NULL,
   `deviceName` varchar(255) DEFAULT NULL,
   `deviceNum` int(11) DEFAULT NULL,
@@ -424,7 +426,7 @@ CREATE TABLE `device` (
   `enable` int(11) DEFAULT NULL,
   `sn` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of device
@@ -438,7 +440,7 @@ INSERT INTO `device` VALUES ('7', '1', '1', '1', '点餐机7', '7', '2', '1', '2
 INSERT INTO `device` VALUES ('8', '1', '1', '1', '点餐机8', '8', '2', '1', '229D3EB46F2711E5AA1500E04C828A8D');
 INSERT INTO `device` VALUES ('9', '1', '1', '1', '点餐机9', '9', '2', '1', '22C376E36F2711E5AA1500E04C828A8D');
 INSERT INTO `device` VALUES ('10', '1', '1', '1', '点餐机10', '10', '2', '1', '22E689476F2711E5AA1500E04C828A8D');
-INSERT INTO `device` VALUES ('11', '1', '1', '1', '点餐机11', '11', '2', '1', '23080C2D6F2711E5AA1500E04C828A8D');
+INSERT INTO `device` VALUES ('11', '1', '1', '3', '点餐机11', '11', '3', '0', '23080C2D6F2711E5AA1500E04C828A8D');
 INSERT INTO `device` VALUES ('12', '1', '1', '1', '点餐机12', '12', '2', '1', '232C507C6F2711E5AA1500E04C828A8D');
 INSERT INTO `device` VALUES ('13', '1', '1', '1', '点餐机13', '13', '2', '1', '234CB6FF6F2711E5AA1500E04C828A8D');
 INSERT INTO `device` VALUES ('14', '1', '1', '1', '点餐机14', '14', '2', '1', '239293FC6F2711E5AA1500E04C828A81');
@@ -472,29 +474,13 @@ INSERT INTO `device` VALUES ('41', '1', '1', '1', '点餐机41', '41', '2', '1',
 INSERT INTO `device` VALUES ('42', '1', '1', '1', '点餐机42', '42', '2', '1', '327FB7E36F2711E5AA1500E04C828A8D');
 INSERT INTO `device` VALUES ('43', '1', '1', '1', '点餐机43', '43', '2', '1', '32B0ED556F2711E5AA1500E04C828A8D');
 INSERT INTO `device` VALUES ('44', '1', '1', '1', '点餐机44', '44', '2', '1', '32D783426F2711E5AA1500E04C828A8D');
-INSERT INTO `device` VALUES ('45', '1', '1', '1', '点餐机45', '45', '2', '1', '32FDD8216F2711E5AA1500E04C828A8D');
+INSERT INTO `device` VALUES ('45', '1', '1', '1', '点餐机45', '4005', '2', '1', '32FDD8216F2711E5AA1500E04C828A8D');
 INSERT INTO `device` VALUES ('46', '1', '1', '1', '点餐机46', '46', '2', '1', '332239BD6F2711E5AA1500E04C828A8D');
 INSERT INTO `device` VALUES ('47', '1', '1', '1', '点餐机47', '47', '2', '1', '3349D7A76F2711E5AA1500E04C828A8D');
 INSERT INTO `device` VALUES ('48', '1', '1', '1', '点餐机48', '48', '2', '1', '336D05936F2711E5AA1500E04C828A8D');
 INSERT INTO `device` VALUES ('49', '1', '1', '1', '点餐机49', '49', '2', '1', '3398045A6F2711E5AA1500E04C828A8D');
 INSERT INTO `device` VALUES ('50', '1', '1', '1', '点餐机50', '50', '2', '1', '33D76A4D6F2711E5AA1500E04C828A8D');
-
--- ----------------------------
--- Table structure for `devicegroup`
--- ----------------------------
-DROP TABLE IF EXISTS `devicegroup`;
-CREATE TABLE `devicegroup` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `companyId` int(11) DEFAULT NULL,
-  `groupName` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of devicegroup
--- ----------------------------
-INSERT INTO `devicegroup` VALUES ('1', '1', '东校区');
-INSERT INTO `devicegroup` VALUES ('4', '1', '西校区');
+INSERT INTO `device` VALUES ('52', '1', '3', '1', '水控10', '30000', '3', '1', '03030303030303030303030303030300');
 
 -- ----------------------------
 -- Table structure for `discount`
@@ -873,7 +859,7 @@ CREATE TABLE `subsidy` (
   `invalidDate` varchar(50) DEFAULT NULL,
   `status` int(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of subsidy
@@ -959,12 +945,24 @@ CREATE TABLE `userdept` (
   `parentId` int(11) DEFAULT NULL,
   `batchId` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of userdept
 -- ----------------------------
 INSERT INTO `userdept` VALUES ('1', '部门1', '1', '0', '1');
+INSERT INTO `userdept` VALUES ('2', '部门2', '1', '0', '1');
+INSERT INTO `userdept` VALUES ('3', '部门3', '1', '0', '1');
+INSERT INTO `userdept` VALUES ('4', '部门11', '1', '1', '1');
+INSERT INTO `userdept` VALUES ('5', '部门12', '1', '1', '1');
+INSERT INTO `userdept` VALUES ('6', '部门13', '1', '1', '1');
+INSERT INTO `userdept` VALUES ('7', '部门111', '1', '4', '1');
+INSERT INTO `userdept` VALUES ('8', '部门112', '1', '4', '1');
+INSERT INTO `userdept` VALUES ('9', '部门1121', '1', '8', '1');
+INSERT INTO `userdept` VALUES ('10', '部门31', '1', '3', '1');
+INSERT INTO `userdept` VALUES ('11', '部门311', '1', '10', '1');
+INSERT INTO `userdept` VALUES ('12', '部门312', '1', '10', '1');
+INSERT INTO `userdept` VALUES ('13', '部门3111', '1', '11', '1');
 
 -- ----------------------------
 -- Table structure for `waterrategroup`
@@ -1168,6 +1166,35 @@ BEGIN
 	insert into authgroup(companyId,groupName,roles) select cId,groupName,roles from authgroupbase;
 	insert into sysUser (companyId,loginName,loginPwd) values(cId,'c66fc61212bbc6ed','a9e28c83699391f8');
 	insert into authgroupuser(operId,groupId) select (select operId from sysUser where companyId=cId),(select id from authgroup where companyId=cId and groupName='管理员');
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Function structure for `getSubIds`
+-- ----------------------------
+DROP FUNCTION IF EXISTS `getSubIds`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` FUNCTION `getSubIds`(pId INT,tType INT) RETURNS varchar(4000) CHARSET utf8
+BEGIN
+
+declare tempIds varchar(4000);
+declare tempSubIds varchar(4000);
+
+set tempIds = '';
+set tempSubIds = cast(pId as char);
+
+while tempSubIds is not null do
+	set tempIds = concat(tempIds,',',tempSubIds);
+	if tType=0
+	then
+		select group_concat(id) into tempSubIds from userDept where find_in_set(parentId,tempSubIds)>0;
+	else
+		select group_concat(id) into tempSubIds from dept where find_in_set(parentId,tempSubIds)>0;
+	end if;
+end while;
+return tempIds;
+
 END
 ;;
 DELIMITER ;

@@ -18,7 +18,6 @@ import com.singbon.device.SendCommand;
 import com.singbon.device.TerminalManager;
 import com.singbon.entity.Company;
 import com.singbon.entity.Device;
-import com.singbon.entity.DeviceGroup;
 import com.singbon.entity.SysUser;
 import com.singbon.service.monitor.MonitorService;
 import com.singbon.service.systemManager.DeviceService;
@@ -53,8 +52,8 @@ public class MonitorController extends BaseController {
 		model.addAttribute("sysUser", sysUser);
 		model.addAttribute("company", company);
 
-		List<DeviceGroup> deviceGroupList = (List<DeviceGroup>) this.deviceService.selectGroupListByCompanyId(company.getId());
-		model.addAttribute("deviceGroupList", deviceGroupList);
+//		List<DeviceGroup> deviceGroupList = (List<DeviceGroup>) this.deviceService.selectGroupListByCompanyId(company.getId());
+//		model.addAttribute("deviceGroupList", deviceGroupList);
 		List<Device> deviceList = this.deviceService.selectDeviceListByCompanyId(company.getId(), 0, 1);
 		for (Device d : deviceList) {
 			if (TerminalManager.SNToInetSocketAddressList.containsKey(d.getSn())) {
@@ -117,10 +116,10 @@ public class MonitorController extends BaseController {
 			snList.add(sn);
 			// 对整个组
 		} else if (groupId != null) {
-			List<Device> deviceList = this.deviceService.selectPosListByGroupId(groupId, 1);
-			for (Device d : deviceList) {
-				snList.add(d.getSn());
-			}
+//			List<Device> deviceList = this.deviceService.selectPosListByGroupId(groupId, 1);
+//			for (Device d : deviceList) {
+//				snList.add(d.getSn());
+//			}
 		}
 
 		for (String sn2 : snList) {

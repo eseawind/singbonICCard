@@ -1,6 +1,7 @@
 package com.singbon.service.systemManager;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,7 +10,6 @@ import com.singbon.dao.BaseDAO;
 import com.singbon.dao.systemManager.DeviceDAO;
 import com.singbon.device.TerminalManager;
 import com.singbon.entity.Device;
-import com.singbon.entity.DeviceGroup;
 import com.singbon.service.BaseService;
 
 /**
@@ -30,77 +30,14 @@ public class DeviceService extends BaseService {
 	}
 
 	/**
-	 * 添加分组
-	 * 
-	 * @param deviceGroup
-	 * @return
-	 */
-	public void insertGroup(DeviceGroup deviceGroup) {
-		this.deviceDAO.insertGroup(deviceGroup);
-	}
-
-	/**
-	 * 修改分组
-	 * 
-	 * @param deviceGroup
-	 * @return
-	 */
-	public void updateGroup(DeviceGroup deviceGroup) {
-		this.deviceDAO.updateGroup(deviceGroup);
-	}
-
-	/**
-	 * 删除分组
-	 * 
-	 * @param deviceGroup
-	 * @return
-	 */
-	public void deleteGroup(Integer id) {
-		this.deviceDAO.deleteGroup(id);
-	}
-
-	/**
-	 * 分组被引用数量
+	 * 添加消费机验证
 	 * 
 	 * @param groupId
 	 * @return
 	 */
-	public Integer selectDeviceCountByGroupId(Integer groupId) {
-		return this.deviceDAO.selectDeviceCountByGroupId(groupId);
-	}
-
-	/**
-	 * 分组列表
-	 * 
-	 * @param groupId
-	 * @param onlyEnable
-	 *            1只包含启用，0全部
-	 * @return
-	 */
-	public List<DeviceGroup> selectGroupListByCompanyId(Integer id) {
-		return this.deviceDAO.selectGroupListByCompanyId(id);
-	}
-
-	/**
-	 * 添加设备
-	 * 
-	 * @param deviceGroup
-	 * @return
-	 */
-	public void insertDevice(Device device) {
-		this.deviceDAO.insertDevice(device);
-		TerminalManager.SNToDeviceList.put(device.getSn(), device);
-	}
-
-	/**
-	 * 修改设备
-	 * 
-	 * @param deviceGroup
-	 * @return
-	 */
-	public void updateDevice(Device device) {
-		this.deviceDAO.updateDevice(device);
-		TerminalManager.SNToDeviceList.put(device.getSn(), device);
+	@SuppressWarnings("rawtypes")
+	public Map selectCountByInfo(Device device) {
+		return this.deviceDAO.selectCountByInfo(device);
 	}
 
 	/**
@@ -108,9 +45,10 @@ public class DeviceService extends BaseService {
 	 * 
 	 * @param deviceGroup
 	 * @return
+	 * @throws Exception
 	 */
-	public void deleteDevice(Integer id, String sn) {
-		this.deviceDAO.deleteDevice(id);
+	public void deleteDevice(Integer id, String sn) throws Exception {
+		this.deviceDAO.delete(id);
 		if (sn != null) {
 			TerminalManager.SNToDeviceList.remove(sn);
 		}
@@ -124,18 +62,6 @@ public class DeviceService extends BaseService {
 	 */
 	public Integer selectSysUserCountByDeviceId(Integer deviceId) {
 		return this.deviceDAO.selectSysUserCountByDeviceId(deviceId);
-	}
-
-	/**
-	 * 根据分组查询消费机列表
-	 * 
-	 * @param groupId
-	 * @param onlyEnable
-	 *            1只包含启用，0全部
-	 * @return
-	 */
-	public List<Device> selectPosListByGroupId(Integer groupId, Integer onlyEnable) {
-		return this.deviceDAO.selectPosListByGroupId(groupId, onlyEnable);
 	}
 
 	/**

@@ -1,12 +1,12 @@
 package com.singbon.dao.systemManager;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
 import com.singbon.dao.BaseDAO;
 import com.singbon.entity.Device;
-import com.singbon.entity.DeviceGroup;
 
 /**
  * 终端设备dao层
@@ -17,70 +17,13 @@ import com.singbon.entity.DeviceGroup;
 public interface DeviceDAO extends BaseDAO {
 
 	/**
-	 * 添加分组
-	 * 
-	 * @param deviceGroup
-	 * @return
-	 */
-	public void insertGroup(DeviceGroup deviceGroup);
-
-	/**
-	 * 修改分组
-	 * 
-	 * @param deviceGroup
-	 * @return
-	 */
-	public void updateGroup(DeviceGroup deviceGroup);
-
-	/**
-	 * 删除分组
-	 * 
-	 * @param deviceGroup
-	 * @return
-	 */
-	public void deleteGroup(@Param("id") Integer id);
-
-	/**
-	 * 分组列表
-	 * 
-	 * @param groupId
-	 * @param onlyEnable
-	 *            1只包含启用，0全部
-	 * @return
-	 */
-	public List<DeviceGroup> selectGroupListByCompanyId(@Param("companyId") Integer id);
-
-	/**
-	 * 分组被引用数量
+	 * 添加消费机验证
 	 * 
 	 * @param groupId
 	 * @return
 	 */
-	public Integer selectDeviceCountByGroupId(@Param("groupId") Integer groupId);
-
-	/**
-	 * 添加设备
-	 * 
-	 * @param deviceGroup
-	 * @return
-	 */
-	public void insertDevice(Device device);
-
-	/**
-	 * 修改设备
-	 * 
-	 * @param deviceGroup
-	 * @return
-	 */
-	public void updateDevice(Device device);
-
-	/**
-	 * 删除设备
-	 * 
-	 * @param deviceGroup
-	 * @return
-	 */
-	public void deleteDevice(@Param("id") Integer id);
+	@SuppressWarnings("rawtypes")
+	public Map selectCountByInfo(Device device);
 
 	/**
 	 * 读卡机被引用数量
@@ -89,16 +32,6 @@ public interface DeviceDAO extends BaseDAO {
 	 * @return
 	 */
 	public Integer selectSysUserCountByDeviceId(@Param("deviceId") Integer deviceId);
-
-	/**
-	 * 根据分组查询消费机列表
-	 * 
-	 * @param groupId
-	 * @param onlyEnable
-	 *            1只包含启用，0全部
-	 * @return
-	 */
-	public List<Device> selectPosListByGroupId(@Param("groupId") Integer groupId, @Param("onlyEnable") Integer onlyEnable);
 
 	/**
 	 * 设备列表

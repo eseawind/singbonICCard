@@ -57,6 +57,8 @@
 							selectUserDept($(this));
 						}else if(module=="dept"){
 							selectDept($(this));
+						}else if(module=="deviceDept"){
+							selectDeviceDept($(this));
 						}
 						$("div." + op.selected, $this).removeClass(op.selected);
 						var parent = $(this).parent().addClass(op.selected);

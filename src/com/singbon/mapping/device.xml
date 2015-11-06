@@ -4,46 +4,35 @@
 	<resultMap id="device" type="com.singbon.entity.Device">
 	</resultMap>
 	<parameterMap type="com.singbon.entity.Device" id="device2" />
-	<resultMap id="deviceGroup" type="com.singbon.entity.DeviceGroup">
-	</resultMap>
-	<parameterMap type="com.singbon.entity.DeviceGroup" id="deviceGroup2" />
 	<cache eviction="FIFO" size="2000" readOnly="true"/>
-	
-	<insert id="insertGroup" parameterMap="deviceGroup2">
-		insert into deviceGroup (companyId,groupName) values (#{companyId},#{groupName})
+
+	<insert id="insert" parameterMap="device2">
+		insert into device (companyId,deptId,posParamGroupId,deviceName,deviceNum,deviceType,enable,sn)
+		values (#{companyId},#{deptId},#{posParamGroupId},#{deviceName},#{deviceNum},#{deviceType},#{enable},#{sn})
 	</insert>
-	<update id="updateGroup" parameterMap="deviceGroup2">
-		update deviceGroup set groupName=#{groupName}where id=#{id}
-	</update>
-	<delete id="deleteGroup">
-		delete from deviceGroup where id=#{id}
-	</delete>
-	<select id="selectGroupListByCompanyId" resultMap="deviceGroup" useCache="false">
-		select * from deviceGroup where companyId=#{companyId}
-	</select>
-	<select id="selectDeviceCountByGroupId" resultType="java.lang.Integer" useCache="false">
-		select count(*) from device where groupId=#{groupId}
-	</select>
-	
-	<insert id="insertDevice" parameterMap="device2">
-		insert into device (companyId,groupId,posParamGroupId,deviceName,deviceNum,deviceType,enable,sn)
-		values (#{companyId},#{groupId},#{posParamGroupId},#{deviceName},#{deviceNum},#{deviceType},#{enable},#{sn})
-	</insert>
-	<update id="updateDevice" parameterMap="device2">
+	<update id="update" parameterMap="device2">
 		update device set posParamGroupId=#{posParamGroupId},deviceName=#{deviceName},deviceNum=#{deviceNum},deviceType=#{deviceType},enable=#{enable},sn=#{sn}
 		where id=#{id}
 	</update>
-	<delete id="deleteDevice">
+	<delete id="delete">
 		delete from device where id=#{id}
 	</delete>
 	<select id="selectById" resultMap="device">
 		select * from device where id=#{id}
 	</select>
-	<select id="selectPosListByGroupId" resultMap="device" useCache="false">
-		select * from device where groupId=#{groupId} and deviceType!=8
-		<if test="onlyEnable == 1">
-			 and enable=1
-		</if>
+<!-- 	添加修改机器验证 -->
+	<select id="selectCountByInfo" resultType="java.util.Map" parameterMap="device2" useCache="false">
+		select 
+			(select count(*) from device where deviceNum=#{deviceNum}
+			<if test="id!=null">
+			     and id!=#{id}
+			</if>
+			) numCount,
+			(select count(*) from device where sn=#{sn}
+			<if test="id!=null">
+			     and id!=#{id}
+			</if>
+			) snCount
 	</select>
 	<select id="selectDeviceListByCompanyId" resultMap="device" useCache="false">
 		select * from device where companyId=#{companyId}		
@@ -56,6 +45,10 @@
 		<if test="onlyEnable == 1">
 			 and enable=1
 		</if>
+	</select>
+<!-- 	查询读卡机被引用数量 -->
+	<select id="selectSysUserCountByDeviceId" resultType="java.lang.Integer" useCache="false">
+		select count(*) count from sysUser where deviceId=#{deviceId}		
 	</select>
 <!-- 	系统启动加载用 -->
 	<select id="selectAllList" resultMap="device" useCache="false">
