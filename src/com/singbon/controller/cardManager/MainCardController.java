@@ -186,7 +186,7 @@ public class MainCardController extends BaseController {
 		request.getSession().removeAttribute("companyId");
 		Company company = (Company) request.getSession().getAttribute("company");
 		Device device = (Device) request.getSession().getAttribute("device");
-		String sn = device.getSn();
+
 		List<CardFunc> cardFuncList = new ArrayList<CardFunc>();
 		List<CardIdentity> cardIdentityList = new ArrayList<CardIdentity>();
 		CardFunc m1 = new CardFunc();
@@ -239,16 +239,16 @@ public class MainCardController extends BaseController {
 			User user = (User) this.mainCardService.selectById(userId);
 			model.addAttribute("user", user);
 		}
-		if (device != null) {
-			model.addAttribute("sn", sn);
-			// 读卡机状态
-			if (TerminalManager.SNToSocketChannelList.containsKey(sn)) {
-				model.addAttribute("cardStatus", 1);
-			} else {
-				model.addAttribute("cardStatus", 0);
+		if (editType == 2 || editType == 3) {
+			if(device != null){
+				String sn = device.getSn();
+				// 读卡机状态
+				if (TerminalManager.SNToSocketChannelList.containsKey(sn)) {
+					model.addAttribute("cardStatus", 1);
+				} else {
+					model.addAttribute("cardStatus", 0);
+				}				
 			}
-		} else {
-			model.addAttribute("cardStatus", 0);
 		}
 		if (editType == 4) {
 			List list = this.mainCardService.selectNoCardByDeptId(deptId);

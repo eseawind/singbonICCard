@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>${sessionScope.company.companyName}——IC卡管理系统</title>
+<title>${company.companyName}——IC卡管理系统</title>
 <link href="themes/default/style.css" rel="stylesheet" type="text/css" media="screen" />
 <link href="themes/css/core.css" rel="stylesheet" type="text/css" media="screen" />
 <link href="themes/css/print.css" rel="stylesheet" type="text/css" media="print" />
@@ -80,8 +80,8 @@
 <script src="js/dwz.regional.zh.js" type="text/javascript"></script>
 <script type="text/javascript">
 	$(function() {
-		// 		alert('${sessionScope.company.companyName}');
-		$.cookie('companyName', '${sessionScope.company.companyName}', {
+		// 		alert('${company.companyName}');
+		$.cookie('companyName', '${company.companyName}', {
 			expires : 7
 		});
 
@@ -117,7 +117,7 @@
 		<div id="header">
 			<div class="headerNav">
 				<a class="logo" href="#" style="width: 210px;">标志</a>
-				<div style="margin: 30px 0 0; float: left; color: #15428B; font-size: 11px; font-weight: bold;">欢迎您：${sessionScope.sysUser.loginName}</div>
+				<div style="margin: 30px 0 0; float: left; color: #15428B; font-size: 11px; font-weight: bold;">欢迎您：${sysUser.loginName}</div>
 			</div>
 		</div>
 		<div id="leftside">

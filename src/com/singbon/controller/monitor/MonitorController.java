@@ -17,10 +17,12 @@ import com.singbon.controller.BaseController;
 import com.singbon.device.SendCommand;
 import com.singbon.device.TerminalManager;
 import com.singbon.entity.Company;
+import com.singbon.entity.Dept;
 import com.singbon.entity.Device;
 import com.singbon.entity.SysUser;
 import com.singbon.service.monitor.MonitorService;
 import com.singbon.service.systemManager.DeviceService;
+import com.singbon.service.systemManager.systemSetting.DeptService;
 
 /**
  * 监控平台控制类
@@ -36,6 +38,8 @@ public class MonitorController extends BaseController {
 	public DeviceService deviceService;
 	@Autowired
 	public MonitorService monitorService;
+	@Autowired
+	public DeptService deptService;
 
 	/**
 	 * 首页
@@ -45,6 +49,7 @@ public class MonitorController extends BaseController {
 	 * @param module
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/index.do")
 	public String index(HttpServletRequest request, HttpServletResponse response, Model model) {
 		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
@@ -52,8 +57,7 @@ public class MonitorController extends BaseController {
 		model.addAttribute("sysUser", sysUser);
 		model.addAttribute("company", company);
 
-//		List<DeviceGroup> deviceGroupList = (List<DeviceGroup>) this.deviceService.selectGroupListByCompanyId(company.getId());
-//		model.addAttribute("deviceGroupList", deviceGroupList);
+		List<Dept> deptList = (List<Dept>) this.deptService.selectListByCompanyId(company.getId());
 		List<Device> deviceList = this.deviceService.selectDeviceListByCompanyId(company.getId(), 0, 1);
 		for (Device d : deviceList) {
 			if (TerminalManager.SNToInetSocketAddressList.containsKey(d.getSn())) {
@@ -62,6 +66,7 @@ public class MonitorController extends BaseController {
 				d.setIsOnline(0);
 			}
 		}
+		model.addAttribute("deptList", deptList);
 		model.addAttribute("deviceList", deviceList);
 
 		String url = request.getRequestURI();
@@ -116,10 +121,11 @@ public class MonitorController extends BaseController {
 			snList.add(sn);
 			// 对整个组
 		} else if (groupId != null) {
-//			List<Device> deviceList = this.deviceService.selectPosListByGroupId(groupId, 1);
-//			for (Device d : deviceList) {
-//				snList.add(d.getSn());
-//			}
+			// List<Device> deviceList =
+			// this.deviceService.selectPosListByGroupId(groupId, 1);
+			// for (Device d : deviceList) {
+			// snList.add(d.getSn());
+			// }
 		}
 
 		for (String sn2 : snList) {

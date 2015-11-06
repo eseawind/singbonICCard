@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+
 <script src="/js/comet4j.js" type="text/javascript"></script>
 <script type="text/javascript">
 
@@ -106,7 +107,7 @@
 		JS.Engine.stop();
 		JS.Engine.start('/conn');
 		JS.Engine.on({
-			'c${sn}' : function(e) {//侦听一个channel
+			'c${device.sn}' : function(e) {//侦听一个channel
 				var e2 = eval('(' + e + ')');
 				heartTime=new Date();
 				//存在物理卡号

@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <script type="text/javascript">
 	// 0信息录入，1修改，2单个发卡，3信息发卡
 	var cardOptions = {
@@ -219,23 +219,57 @@
 </script>
 <div class="contextMenu" id="menu" style="display: none;">
 	<ul>
-		<li id="info">信息录入</li>
-		<li id="edit">信息修改</li>
-		<li id="dept">部门调整</li>
-		<li class="divide" />
-		<li id="single">单个发卡</li>
-		<li id="infoCard">信息发卡</li>
-		<li id="batch">批量发卡</li>
-		<li class="divide" />
-		<li id="readCard">读卡</li>
-		<li id="loss">挂失</li>
-		<li id="unloss">解挂</li>
-		<li id="remakeCard">补卡</li>
-		<li id="changeCard">换卡</li>
-		<li id="offWithCard">有卡注销</li>
-		<li id="offNoCard">无卡注销</li>
-		<li id="charge">存、取款</li>
-		<li id="delete">删除选中未发卡人员</li>
+		<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MAINCARD_INFO">
+			<li id="info">信息录入</li>
+		</security:authorize>
+		<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MAINCARD_EDIT">
+			<li id="edit">信息修改</li>
+		</security:authorize>
+		<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MAINCARD_DEPT">
+			<li id="dept">部门调整</li>
+		</security:authorize>
+		<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MAINCARD_INFO,ROLE_MAINCARD_EDIT,ROLE_MAINCARD_DEPT">
+			<li class="divide" />
+		</security:authorize>
+		<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MAINCARD_SINGLE">
+			<li id="single">单个发卡</li>
+		</security:authorize>
+		<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MAINCARD_INFOCARD">
+			<li id="infoCard">信息发卡</li>
+		</security:authorize>
+		<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MAINCARD_BATCH">
+			<li id="batch">批量发卡</li>
+		</security:authorize>
+		<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MAINCARD_SINGLE,ROLE_MAINCARD_INFOCARD,ROLE_MAINCARD_BATCH">
+			<li class="divide" />
+		</security:authorize>
+		<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MAINCARD_READCARD">
+			<li id="readCard">读卡</li>
+		</security:authorize>
+		<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MAINCARD_LOSS">
+			<li id="loss">挂失</li>
+		</security:authorize>
+		<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MAINCARD_UNLOSS">
+			<li id="unloss">解挂</li>
+		</security:authorize>
+		<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MAINCARD_REMAKECARD">
+			<li id="remakeCard">补卡</li>
+		</security:authorize>
+		<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MAINCARD_CHANGECARD">
+			<li id="changeCard">换卡</li>
+		</security:authorize>
+		<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MAINCARD_OFFWITHCARD">
+			<li id="offWithCard">有卡注销</li>
+		</security:authorize>
+		<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MAINCARD_OFFNOCARD">
+			<li id="offNoCard">无卡注销</li>
+		</security:authorize>
+		<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MAINCARD_CHARGE">
+			<li id="charge">存、取款</li>
+		</security:authorize>
+		<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MAINCARD_DELETE">
+			<li id="delete">删除选中未发卡人员</li>
+		</security:authorize>
 	</ul>
 </div>
 <div class="pageHeader" style="border: 1px #B8D0D6 solid">

@@ -7,12 +7,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>兴邦IC卡管理系统</title>
-<link href="/themes/default/style.css" rel="stylesheet" type="text/css"
-	media="screen" />
-<link href="/themes/css/core.css" rel="stylesheet" type="text/css"
-	media="screen" />
-<!-- <link href="/themes/css/print.css" rel="stylesheet" type="text/css" -->
-<!-- 	media="print" /> -->
+<link href="/themes/default/style.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="/themes/css/core.css" rel="stylesheet" type="text/css" media="screen" />
+<!-- <link href="/themes/css/print.css" rel="stylesheet" type="text/css" media="print" /> -->
 <!-- <link href="/themes/css/contextMenu.css" rel="stylesheet" type="text/css" /> -->
 <!-- <link href="uploadify/css/uploadify.css" rel="stylesheet" -->
 <!-- 	type="text/css" media="screen" /> -->
@@ -118,6 +115,25 @@
 		heart();
 		
 		$('#deviceList img').contextMenu('menu',monitorOps);
+		
+		var deptTree=$('.deptTree');
+		var list = $('#deptTreeLi li');
+		if(list.length!=0){
+			$('li', deptTree).append("<ul class='expand'></ul>");
+		}
+		list.each(function() {
+			var $this = $(this);
+			var parentId = $this.attr('parentId');		
+			if (parentId == '0') {
+				$('.expand', deptTree).append($this);
+			} else {
+				var $li = $('li[deptId="' + parentId + '"]', deptTree);
+				if ($('>ul', $li).size() == 0) {
+					$('<ul></ul>', deptTree).appendTo($li);
+				}
+				$('>ul', $li).append($(this));
+			}
+		});
 	});
 	
 	var map = new Map();
@@ -178,7 +194,7 @@
 		JS.Engine.stop();
 		JS.Engine.start('/conn');
 		JS.Engine.on({
-			'Co${sessionScope.company.id}' : function(e) {//侦听一个channel
+			'Co${company.id}' : function(e) {//侦听一个channel
 				var e2 = eval('(' + e + ')');
 				var sn=e2.sn;
 				map.put(sn,new Date());
@@ -287,12 +303,12 @@
 		},0,true);
 	}
 	
-	function showDevice(groupId){
-		if(groupId==0){
+	function showDevice(deptId){
+		if(deptId==0){
 			$('#deviceList .device').show();
 		}else{
 			$('#deviceList .device').hide();
-			$("#deviceList .device[groupId="+groupId+"]").show();
+			$("#deviceList .device[deptId="+deptId+"]").show();
 		}
 	}
 	
@@ -465,22 +481,33 @@
 						<div class="tabs">
 							<div class="tabsContent" style="border: none;">
 								<div>
-									<!-- 设备分组 -->
+									<!-- 营业部门-->
+									<div id="deptTreeLi">
+										<c:forEach items="${deptList }" var="d">
+											<li deptId="${d.id }" parentId="${d.parentId }">
+												<a onclick="showDevice(${d.id });">${d.deptName }</a>
+											</li>
+										</c:forEach>
+									</div>
 									<div layoutH="10"
 										style="float: left; display: block; overflow: auto; width: 170px; border: solid 1px #CCC; line-height: 21px; background: #fff;">
-										<ul class="tree deviceGroupTree">
-											<li groupId="0"><a onclick="showDevice(0);">终端分组列表</a>
-												<ul>
-												<c:forEach items="${deviceGroupList }" var="g">
-													<li><a onclick="showDevice(${g.id });">${g.groupName }</a></li>
-												</c:forEach>
-												</ul></li>
+										<ul class="tree expand deptTree">
+											<li deptId="0"><a onclick="showDevice(0);">营业部门列表</a>
+											</li>
 										</ul>
+<!-- 										<ul class="tree deviceGroupTree"> -->
+<!-- 											<li deptId="0"><a onclick="showDevice(0);">营业部门列表</a> -->
+<!-- 												<ul> -->
+<%-- 												<c:forEach items="${deviceGroupList }" var="g"> --%>
+<%-- 													<li><a onclick="showDevice(${g.id });">${g.groupName }</a></li> --%>
+<%-- 												</c:forEach> --%>
+<!-- 												</ul></li> -->
+<!-- 										</ul> -->
 									</div>
 									<!-- 设备显示区域 -->
 									<div id="deviceList" class="unitBox" style="margin-left: 175px;height:240px;border: solid 1px #CCC; background: #fff;overflow: auto;padding: 5px 0 0 5px;">
 										<c:forEach items="${deviceList }" var="d">
-											<div class="device" id="${d.sn}" groupId="${d.groupId }">
+											<div class="device" id="${d.sn}" deptId="${d.deptId }">
 												<c:if test="${d.isOnline==1}">
 													<img alt="在线" src="/img/online.png" />
 												</c:if>
@@ -524,7 +551,7 @@
 														</thead>
 														<tbody>
 															<c:forEach items="${deviceList }" var="d">
-																<tr class="deviceStatus" id="${d.sn}" groupId="${d.groupId }">
+																<tr class="deviceStatus" id="${d.sn}" deptId="${d.deptId }">
 																	<td>${d.deviceName }</td>
 																	<td>${d.deviceNum }</td>
 																	<td id="status${d.sn}" recordNum></td>

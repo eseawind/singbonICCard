@@ -90,18 +90,9 @@
 							<ul>
 								<li><a href="javascript:;" tvalue="ROLE_DEVICEMANAGER_POS">消费机</a>
 									<ul>
-										<li><a href="javascript:;" tvalue="ROLE_DEVICEMANAGER_GROUP">设备分组</a>
-											<ul>
-												<li><a href="javascript:;" tvalue="ROLE_DEVICEMANAGER_GROUP_ADD">添加</a></li>
-												<li><a href="javascript:;" tvalue="ROLE_DEVICEMANAGER_GROUP_EDIT">修改</a></li>
-												<li><a href="javascript:;" tvalue="ROLE_DEVICEMANAGER_GROUP_DEL">删除</a></li>
-											</ul></li>
-										<li><a href="javascript:;" tvalue="ROLE_DEVICEMANAGER_POS">设备</a>
-											<ul>
-												<li><a href="javascript:;" tvalue="ROLE_DEVICEMANAGER_POS_ADD">添加</a></li>
-												<li><a href="javascript:;" tvalue="ROLE_DEVICEMANAGER_POS_EDIT">修改</a></li>
-												<li><a href="javascript:;" tvalue="ROLE_DEVICEMANAGER_POS_DEL">删除</a></li>
-											</ul></li>
+										<li><a href="javascript:;" tvalue="ROLE_DEVICEMANAGER_POS_ADD">添加</a></li>
+										<li><a href="javascript:;" tvalue="ROLE_DEVICEMANAGER_POS_EDIT">修改</a></li>
+										<li><a href="javascript:;" tvalue="ROLE_DEVICEMANAGER_POS_DEL">删除</a></li>
 									</ul></li>
 								<li><a href="javascript:;" tvalue="ROLE_DEVICEMANAGER_CARDREADER">读卡机</a>
 									<ul>
@@ -147,7 +138,24 @@
 					</ul></li>
 				<li><a href="javascript:;" tvalue="ROLE_CARDMANAGER">制卡中心</a>
 					<ul>
-						<li><a href="javascript:;" tvalue="ROLE_MAINCARD">用户卡管理</a></li>
+						<li><a href="javascript:;" tvalue="ROLE_MAINCARD">用户卡管理</a>
+							<ul>
+								<li><a href="javascript:;" tvalue="ROLE_MAINCARD_INFO">信息录入</a></li>
+								<li><a href="javascript:;" tvalue="ROLE_MAINCARD_EDIT">信息修改</a></li>
+								<li><a href="javascript:;" tvalue="ROLE_MAINCARD_DEPT">部门调整</a></li>
+								<li><a href="javascript:;" tvalue="ROLE_MAINCARD_SINGLE">单个发卡</a></li>
+								<li><a href="javascript:;" tvalue="ROLE_MAINCARD_INFOCARD">信息发卡</a></li>
+								<li><a href="javascript:;" tvalue="ROLE_MAINCARD_BATCH">批量发卡</a></li>
+								<li><a href="javascript:;" tvalue="ROLE_MAINCARD_READCARD">读卡</a></li>
+								<li><a href="javascript:;" tvalue="ROLE_MAINCARD_LOSS">挂失</a></li>
+								<li><a href="javascript:;" tvalue="ROLE_MAINCARD_UNLOSS">解挂</a></li>
+								<li><a href="javascript:;" tvalue="ROLE_MAINCARD_REMAKECARD">补卡</a></li>
+								<li><a href="javascript:;" tvalue="ROLE_MAINCARD_CHANGECARD">换卡</a></li>
+								<li><a href="javascript:;" tvalue="ROLE_MAINCARD_OFFWITHCARD">有卡注销</a></li>
+								<li><a href="javascript:;" tvalue="ROLE_MAINCARD_OFFNOCARD">无卡注销</a></li>
+								<li><a href="javascript:;" tvalue="ROLE_MAINCARD_CHARGE">存取款</a></li>
+								<li><a href="javascript:;" tvalue="ROLE_MAINCARD_DELETE">删除未发卡人员</a></li>
+							</ul></li>
 						<li><a href="javascript:;" tvalue="ROLE_FUNCCARD">功能卡制作</a></li>
 						<li><a href="javascript:;" tvalue="ROLE_CARDREADER">读卡机参数下载</a></li>
 					</ul></li>
