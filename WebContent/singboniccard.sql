@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50528
 File Encoding         : 65001
 
-Date: 2015-11-06 11:50:00
+Date: 2015-11-10 00:06:49
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -85,7 +85,7 @@ CREATE TABLE `batch` (
 -- ----------------------------
 -- Records of batch
 -- ----------------------------
-INSERT INTO `batch` VALUES ('1', '批次1', '2015-11-02 00:00:00', '2015-11-30 00:00:00', null, '1', '0');
+INSERT INTO `batch` VALUES ('1', '批次1', '2015-11-02 00:00:00', '2016-11-30 00:00:00', null, '1', '1');
 
 -- ----------------------------
 -- Table structure for `cardloss`
@@ -151,7 +151,6 @@ CREATE TABLE `company` (
   `uploadInterval` int(11) DEFAULT NULL,
   `uploadErrTime` int(11) DEFAULT NULL,
   `subsidyVersion` int(11) DEFAULT NULL,
-  `enableSubsidyReset` int(11) DEFAULT NULL,
   `subsidyInvalidDate` varchar(50) DEFAULT NULL,
   `invalidDate` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -160,7 +159,7 @@ CREATE TABLE `company` (
 -- ----------------------------
 -- Records of company
 -- ----------------------------
-INSERT INTO `company` VALUES ('1', '郑州兴邦科技有限公司', '12345678', '0371', '1', '5', '5', '5', '7', '0', '2015-11-30', '');
+INSERT INTO `company` VALUES ('1', '郑州兴邦科技有限公司', '12345678', '0371', '1', '5', '5', '5', '2', '2015-09-10', '');
 
 -- ----------------------------
 -- Table structure for `consumeparam`
@@ -233,45 +232,16 @@ CREATE TABLE `consumerecord` (
   `cookbookNum` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `userId` (`userId`,`cardNO`,`recordNO`)
-) ENGINE=InnoDB AUTO_INCREMENT=94 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=76 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of consumerecord
 -- ----------------------------
-INSERT INTO `consumerecord` VALUES ('55', '1', '9', '1', '1', '2', '100000', '99800', '0', '0', '100', '0', '0', '2015-11-05 04:35:54', '2015-11-05 04:35:54', '3', '0', '3', '1', null, null);
-INSERT INTO `consumerecord` VALUES ('59', '1', '9', '1', '1', '2', '100000', '99700', '0', '0', '100', '0', '0', '2015-11-05 04:39:29', '2015-11-05 04:39:29', '4', '0', '4', '1', null, null);
-INSERT INTO `consumerecord` VALUES ('60', '1', '9', '1', '1', '2', '100000', '99500', '0', '0', '200', '0', '0', '2015-11-05 04:39:34', '2015-11-05 04:39:34', '5', '0', '5', '1', null, null);
-INSERT INTO `consumerecord` VALUES ('61', '1', '9', '1', '1', '2', '100000', '99400', '0', '0', '100', '0', '0', '2015-11-05 04:39:39', '2015-11-05 04:39:39', '6', '0', '6', '1', null, null);
-INSERT INTO `consumerecord` VALUES ('62', '1', '9', '1', '1', '2', '100000', '99300', '0', '0', '100', '0', '0', '2015-11-05 04:39:44', '2015-11-05 04:39:44', '7', '0', '7', '1', null, null);
-INSERT INTO `consumerecord` VALUES ('63', '1', '9', '1', '1', '2', '100000', '99200', '0', '0', '100', '0', '0', '2015-11-05 04:40:09', '2015-11-05 04:40:09', '8', '0', '8', '1', null, null);
-INSERT INTO `consumerecord` VALUES ('64', '1', '9', '1', '1', '2', '100000', '99100', '0', '0', '100', '0', '0', '2015-11-05 04:40:34', '2015-11-05 04:40:34', '9', '0', '9', '1', null, null);
-INSERT INTO `consumerecord` VALUES ('65', '1', '9', '1', '1', '2', '100000', '99000', '0', '0', '100', '0', '0', '2015-11-05 04:40:49', '2015-11-05 04:40:49', '10', '0', '10', '1', null, null);
-INSERT INTO `consumerecord` VALUES ('66', '1', '9', '1', '1', '2', '100000', '98900', '0', '0', '100', '0', '0', '2015-11-05 04:42:39', '2015-11-05 04:42:39', '11', '0', '11', '1', null, null);
-INSERT INTO `consumerecord` VALUES ('67', '1', '9', '1', '1', '2', '100000', '98800', '0', '0', '100', '0', '0', '2015-11-05 04:43:19', '2015-11-05 04:43:19', '12', '0', '12', '1', null, null);
-INSERT INTO `consumerecord` VALUES ('68', '1', '9', '1', '1', '2', '100000', '98700', '0', '0', '100', '0', '0', '2015-11-05 04:46:20', '2015-11-05 04:46:20', '13', '0', '13', '1', null, null);
-INSERT INTO `consumerecord` VALUES ('69', '1', '9', '1', '1', '2', '100000', '98500', '0', '0', '200', '0', '0', '2015-11-05 04:47:50', '2015-11-05 04:47:50', '14', '0', '14', '1', null, null);
-INSERT INTO `consumerecord` VALUES ('70', '1', '10', '2', '1', '2', '100000', '99900', '0', '0', '100', '0', '0', '2015-11-05 04:48:20', '2015-11-05 04:48:20', '2', '0', '15', '1', null, null);
-INSERT INTO `consumerecord` VALUES ('71', '1', '9', '1', '1', '2', '100000', '98400', '0', '0', '100', '0', '0', '2015-11-05 04:48:30', '2015-11-05 04:48:30', '15', '0', '16', '1', null, null);
-INSERT INTO `consumerecord` VALUES ('72', '1', '9', '1', '1', '2', '100000', '98390', '0', '0', '10', '0', '0', '2015-11-05 04:49:00', '2015-11-05 04:49:00', '16', '0', '17', '1', null, null);
-INSERT INTO `consumerecord` VALUES ('73', '1', '9', '1', '1', '2', '100000', '98380', '0', '0', '10', '0', '0', '2015-11-05 04:49:10', '2015-11-05 04:49:10', '17', '0', '18', '1', null, null);
-INSERT INTO `consumerecord` VALUES ('74', '1', '9', '1', '1', '2', '100000', '98280', '0', '0', '100', '0', '0', '2015-11-05 04:50:15', '2015-11-05 04:50:15', '18', '0', '19', '1', null, null);
-INSERT INTO `consumerecord` VALUES ('75', '1', '9', '1', '1', '2', '100000', '98260', '0', '0', '20', '0', '0', '2015-11-05 04:50:26', '2015-11-05 04:50:26', '19', '0', '20', '1', null, null);
-INSERT INTO `consumerecord` VALUES ('76', '1', '9', '1', '1', '2', '100000', '98259', '0', '0', '1', '0', '0', '2015-11-05 04:50:40', '2015-11-05 04:50:40', '20', '0', '21', '1', null, null);
-INSERT INTO `consumerecord` VALUES ('77', '1', '9', '1', '1', '2', '100000', '98257', '0', '0', '2', '0', '0', '2015-11-05 04:50:50', '2015-11-05 04:50:50', '21', '0', '22', '1', null, null);
-INSERT INTO `consumerecord` VALUES ('78', '1', '9', '1', '1', '2', '100000', '98157', '0', '0', '100', '0', '0', '2015-11-05 04:53:05', '2015-11-05 04:53:05', '22', '0', '23', '1', null, null);
-INSERT INTO `consumerecord` VALUES ('79', '1', '9', '1', '1', '2', '100000', '98057', '0', '0', '100', '0', '0', '2015-11-05 04:53:15', '2015-11-05 04:53:15', '23', '0', '24', '1', null, null);
-INSERT INTO `consumerecord` VALUES ('80', '1', '9', '1', '1', '2', '100000', '97957', '0', '0', '100', '0', '0', '2015-11-05 04:54:31', '2015-11-05 04:54:31', '24', '0', '25', '1', null, null);
-INSERT INTO `consumerecord` VALUES ('81', '1', '9', '1', '1', '2', '100000', '97956', '0', '0', '1', '0', '0', '2015-11-05 04:56:01', '2015-11-05 04:56:01', '25', '0', '26', '1', null, null);
-INSERT INTO `consumerecord` VALUES ('82', '1', '9', '1', '1', '2', '100000', '97856', '0', '0', '100', '0', '0', '2015-11-05 04:56:16', '2015-11-05 04:56:16', '26', '0', '27', '1', null, null);
-INSERT INTO `consumerecord` VALUES ('83', '1', '9', '1', '1', '2', '100000', '97756', '0', '0', '100', '0', '0', '2015-11-05 04:58:21', '2015-11-05 04:58:21', '27', '0', '28', '1', null, null);
-INSERT INTO `consumerecord` VALUES ('84', '1', '9', '1', '1', '2', '100000', '97656', '0', '0', '100', '0', '0', '2015-11-05 04:59:36', '2015-11-05 04:59:36', '28', '0', '29', '1', null, null);
-INSERT INTO `consumerecord` VALUES ('85', '1', '9', '1', '1', '2', '100000', '97556', '0', '0', '100', '0', '0', '2015-11-05 05:01:21', '2015-11-05 05:01:21', '29', '0', '30', '1', null, null);
-INSERT INTO `consumerecord` VALUES ('86', '1', '9', '1', '1', '2', '100000', '97456', '0', '0', '100', '0', '0', '2015-11-05 05:04:02', '2015-11-05 05:04:02', '30', '0', '31', '1', null, null);
-INSERT INTO `consumerecord` VALUES ('87', '1', '9', '1', '1', '2', '100000', '97356', '0', '0', '100', '0', '0', '2015-11-05 05:05:42', '2015-11-05 05:05:42', '31', '0', '32', '1', null, null);
-INSERT INTO `consumerecord` VALUES ('88', '1', '9', '1', '1', '2', '100000', '97256', '0', '0', '100', '0', '0', '2015-11-05 05:06:02', '2015-11-05 05:06:02', '32', '0', '33', '1', null, null);
-INSERT INTO `consumerecord` VALUES ('89', '1', '9', '1', '1', '2', '100000', '95156', '0', '0', '2100', '0', '0', '2015-11-05 05:06:07', '2015-11-05 05:06:07', '33', '0', '34', '1', null, null);
-INSERT INTO `consumerecord` VALUES ('92', '1', '10', '2', '1', '2', '100000', '99699', '0', '0', '1', '0', '18', '2015-11-05 06:46:37', '2015-11-05 06:46:34', '5', '0', '37', '1', null, null);
-INSERT INTO `consumerecord` VALUES ('93', '1', '10', '2', '1', '2', '100000', '99599', '0', '0', '100', '0', '18', '2015-11-05 07:44:44', '2015-11-05 07:45:43', '6', '0', '38', '1', null, null);
+INSERT INTO `consumerecord` VALUES ('63', '1', '15', '2', '1', '2', '50001', '20000', '10001', '0', '0', '10001', '23', '2015-11-09 22:45:04', '2015-11-09 22:51:19', '1', '4', '6', '9', null, null);
+INSERT INTO `consumerecord` VALUES ('72', '1', '15', '2', '1', '2', '50001', '20000', '0', '0', '0', '10001', '23', '2015-11-09 22:54:55', '2015-11-09 22:54:59', '1', '5', '7', '39', null, null);
+INSERT INTO `consumerecord` VALUES ('73', '1', '15', '2', '1', '2', '50001', '19990', '0', '0', '10', '0', '23', '2015-11-09 22:54:55', '2015-11-09 22:55:02', '2', '5', '8', '1', null, null);
+INSERT INTO `consumerecord` VALUES ('74', '1', '14', '1', '1', '2', '131000', '99900', '31000', '0', '0', '11000', '23', '2015-11-09 22:55:30', '2015-11-09 22:55:32', '2', '2', '9', '9', null, null);
+INSERT INTO `consumerecord` VALUES ('75', '1', '14', '1', '1', '2', '131000', '99900', '0', '0', '0', '31000', '23', '2015-11-09 22:56:00', '2015-11-09 22:56:02', '2', '3', '10', '39', null, null);
 
 -- ----------------------------
 -- Table structure for `cookbook`
@@ -426,7 +396,7 @@ CREATE TABLE `device` (
   `enable` int(11) DEFAULT NULL,
   `sn` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of device
@@ -805,7 +775,7 @@ CREATE TABLE `posparamgroup` (
 -- ----------------------------
 -- Records of posparamgroup
 -- ----------------------------
-INSERT INTO `posparamgroup` VALUES ('1', '1', '消费机参数组1', '1', '1', '1', '1', '1', '1', '1', '3');
+INSERT INTO `posparamgroup` VALUES ('1', '1', '消费机参数组1', '0', '0', '1', '1', '1', '1', '1', '3');
 INSERT INTO `posparamgroup` VALUES ('3', '1', '消费机参数组2', '0', '0', '1', '1', '1', '1', '1', '3');
 
 -- ----------------------------
@@ -844,7 +814,7 @@ CREATE TABLE `singbon` (
 -- ----------------------------
 -- Records of singbon
 -- ----------------------------
-INSERT INTO `singbon` VALUES ('1', 'c66fc61212bbc6ed', 'c66fc61212bbc6ed');
+INSERT INTO `singbon` VALUES ('1', 'c66fc61212bbc6ed', 'a9e28c83699391f8');
 
 -- ----------------------------
 -- Table structure for `subsidy`
@@ -859,11 +829,13 @@ CREATE TABLE `subsidy` (
   `invalidDate` varchar(50) DEFAULT NULL,
   `status` int(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of subsidy
 -- ----------------------------
+INSERT INTO `subsidy` VALUES ('1', '14', '1', '110', '2', '2015-09-10', '2');
+INSERT INTO `subsidy` VALUES ('2', '15', '1', '100.01', '2', '2015-09-10', '2');
 
 -- ----------------------------
 -- Table structure for `sysuser`
@@ -923,16 +895,13 @@ CREATE TABLE `user` (
   `subsidyVersion` int(11) DEFAULT '0',
   `subsidyInvalidDate` date DEFAULT NULL,
   PRIMARY KEY (`userId`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('9', '1', '1', '001', '001', '001', '123456789012345678', '1', '7025f025', '1', '241', '0', '0', '0', '1', '2015-11-02', null, '2015-11-30', '2015-11-05', '8888', '8888', '100000', '100000', null, '0', '1', '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('10', '1', '1', '002', '002', '002', '123456789012345678', '2', '90d24626', '1', '241', '0', '0', '0', '1', '2015-11-02', null, '2015-11-30', '2015-11-05', '8888', '8888', '100000', '100000', null, '0', '1', '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('11', '1', '1', '003', '003', '003', '123456789012345678', '3', 'a48a2a41', '1', '241', '0', '0', '0', '1', '2015-11-02', null, '2015-11-30', '2015-11-05', '8888', '8888', '100000', '100000', null, '0', '1', '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('12', '1', '1', '004', '004', '004', '123456789012345678', '4', 'd4841941', '1', '241', '0', '0', '0', '1', '2015-11-02', null, '2015-11-30', '2015-11-05', '8888', '8888', '100000', '100000', null, '0', '1', '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('13', '1', '1', '005', '005', '005', '123456789012345678', '5', '0c4d582f', '1', '241', '0', '0', '0', '1', '2015-11-02', null, '2015-11-30', '2015-11-05', '8888', '8888', '100000', '100000', null, '0', '1', '0', null, '0', '0', '0', null);
+INSERT INTO `user` VALUES ('14', '1', '9', '001', '001', '001', '123456789012345678', '1', '7025f025', '1', '241', '0', '0', '0', '1', '2015-11-02', null, '2016-11-30', '2015-11-09', '8888', '8888', '100000', '100000', null, '0', '1', '0', null, '0', '0', '0', null);
+INSERT INTO `user` VALUES ('15', '1', '7', '002', '002', '002', '123456789012345678', '2', 'a48a2a41', '1', '241', '0', '0', '0', '1', '2015-11-02', null, '2016-11-30', '2015-11-09', '8888', '8888', '20000', '20000', null, '0', '1', '0', null, '0', '0', '0', null);
 
 -- ----------------------------
 -- Table structure for `userdept`
@@ -1121,37 +1090,26 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `insertConsumeRecord`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `insertConsumeRecord`(IN `ccompanyId` int,IN `cuserId` int,IN `ccardNO` int,IN `ccardSeq` int,IN `cdeviceId` int,IN `csumFare` int,IN `coddFare` int,IN `csubsidyOddFare` int,IN `cdiscountFare` int,IN `copFare` int,IN `csubsidyOpFare` int,IN `cmealId` int,IN `copTime` datetime,IN `copCount` int,IN `csubsidyOpCount` int,IN `crecordNO` int,IN `cconsumeType` int,IN `ccookbookCode` int,IN `ccookbookNum` int,OUT `cresult` int,OUT `cuserNO` varchar(50),OUT `cusername` varchar(50),OUT `ccookbookName` varchar(50))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertConsumeRecord`(IN `tcompanyId` int,IN `tuserId` int,IN `tcardNO` int,IN `tcardSeq` int,IN `tdeviceId` int,IN `tsumFare` int,IN `toddFare` int,IN `tsubsidyOddFare` int,IN `tdiscountFare` int,IN `topFare` int,IN `tsubsidyOpFare` int,IN `tmealId` int,IN `topTime` datetime,IN `topCount` int,IN `tsubsidyOpCount` int,IN `trecordNO` int,IN `tconsumeType` int,IN `tcookbookCode` int,IN `tcookbookNum` int,OUT `tresult` int,OUT `tuserNO` varchar(50),OUT `tusername` varchar(50),OUT `tcookbookName` varchar(50))
 BEGIN
-					/*#companyId,mode=IN,jdbcType=INTEGER},
-        	#{userId,mode=IN,jdbcType=INTEGER},
-        	#{cardSeq,mode=IN,jdbcType=INTEGER},
-        	#{devcieId,mode=IN,jdbcType=INTEGER},
-        	#{sumFare,mode=IN,jdbcType=INTEGER},
-        	#{oddFare,mode=IN,jdbcType=INTEGER},
-        	#{subsidyOddFare,mode=IN,jdbcType=INTEGER},
-        	#{discountFare,mode=IN,jdbcType=INTEGER},
-        	#{opFare,mode=IN,jdbcType=INTEGER},
-        	#{subsidyOpFare,mode=IN,jdbcType=INTEGER},
-        	#{opTime,mode=IN,jdbcType=java.util.Date},
-        	#{opCount,mode=IN,jdbcType=INTEGER},
-        	#{subsidyOpCount,mode=IN,jdbcType=INTEGER},
-        	#{recordNO,mode=IN,jdbcType=INTEGER},
-        	#{recordType,mode=IN,jdbcType=INTEGER},
-        	#{cookbookCode,mode=IN,jdbcType=INTEGER},
-        	#{cookbookNum,mode=IN,jdbcType=INTEGER},
-        	#{result, mode=OUT, jdbcType=INTEGER}
-        	#{userNO, mode=OUT, jdbcType=INTEGER}#Routine body goes here...*/	 
-		DECLARE EXIT HANDLER FOR SQLEXCEPTION set cresult=0;
-		set cresult=1;
+		DECLARE EXIT HANDLER FOR SQLEXCEPTION set tresult=0;
+		set tresult=1;
 		insert into consumerecord (companyId,userId,cardNO,cardSeq,deviceId,sumFare,oddFare,subsidyOddFare,discountFare,opFare,subsidyOpFare,mealId,opTime,collectTime,opCount,subsidyOpCount,recordNO,consumeType,cookbookCode,cookbookNum)
-		values (ccompanyId,cuserId,ccardNO,ccardSeq,cdeviceId,csumFare,coddFare,csubsidyOddFare,cdiscountFare,copFare,csubsidyOpFare,cmealId,copTime,NOW(),copCount,csubsidyOpCount,crecordNO,cconsumeType,ccookbookCode,ccookbookNum);
-		select userNO,username into cuserNO,cusername from user where userId=cuserId;
+		values (tcompanyId,tuserId,tcardNO,tcardSeq,tdeviceId,tsumFare,toddFare,tsubsidyOddFare,tdiscountFare,topFare,tsubsidyOpFare,tmealId,topTime,NOW(),topCount,tsubsidyOpCount,trecordNO,tconsumeType,tcookbookCode,tcookbookNum);
+		select userNO,username into tuserNO,tusername from user where userId=tuserId;
 
-		if ccookbookCode is not null
+		#补助设为已领取
+		if tconsumeType = 9 or tconsumeType = 109
 		then
-			select cookbookName into ccookbookName from cookbook where companyId=ccompanyId and cookbookCode=ccookbookCode;
+			update subsidy set status=2 where companyId=tcompanyId and userId=tuserId and status=1;
 		end if;
+
+		#查询菜单名称
+		if tcookbookCode is not null
+		then
+			select cookbookName into tcookbookName from cookbook where companyId=tcompanyId and cookbookCode=tcookbookCode;
+		end if;
+		
 END
 ;;
 DELIMITER ;

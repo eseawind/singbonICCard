@@ -43,7 +43,7 @@
 						<input type="text" name="deptName" value="${deptName}" size="10" readonly="readonly"/>
 					</td>
 					<td>
-						<a class="btnLook" width="300" maxable="false" resizable="false" title="选择部门" href="${base}/treeList.do" lookupgroup="district"></a>					
+						<a class="btnLook" width="300" maxable="false" resizable="false" title="选择部门" href="/selectUserDeptTree.do" lookupgroup="district"></a>					
 					</td>
 					<td width="50">终端：</td>
 					<td>
@@ -51,7 +51,7 @@
 						<input type="text" name="deviceName" value="${deviceName}" size="10" readonly="readonly"/>
 					</td>
 					<td>
-						<a class="btnLook" width="500" maxable="false" resizable="false" title="选择终端" href="${base}/deviceIndex.do" lookupgroup="district"></a>					
+						<a class="btnLook" width="800" height="500" maxable="false" resizable="false" title="选择终端" href="/selectPosIndex.do" lookupgroup="district"></a>					
 					</td>
 					<td width="60">卡种类：</td>
 					<td align="left">

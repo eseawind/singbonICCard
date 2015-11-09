@@ -206,22 +206,6 @@ public class SubsidyController extends BaseController {
 		}
 	}
 
-	/**
-	 * 人员部门树列表
-	 * 
-	 * @param userDept
-	 * @param request
-	 * @param model
-	 */
-	@SuppressWarnings("unchecked")
-	@RequestMapping(value = "/treeList.do")
-	public String treeList(HttpServletRequest request, Model model) {
-		Company company = (Company) request.getSession().getAttribute("company");
-		List<UserDept> list = (List<UserDept>) this.userDeptService.selectListByCompanyId(company.getId());
-		model.addAttribute("list", list);
-		return StringUtil.requestPath(request, "userDeptTreeList");
-	}
-
 	private String getWhereSql(String nameStr, String deptIds, Integer cardTypeId, Integer cardIdentity, Integer sex, Company company) {
 		String whereSql = "u.companyId=" + company.getId();
 		if (!StringUtils.isEmpty(nameStr)) {

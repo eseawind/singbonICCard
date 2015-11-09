@@ -142,7 +142,7 @@ public class DeviceController {
 	}
 
 	/**
-	 * 设备列表
+	 * 消费机列表
 	 * 
 	 * @param batch
 	 * @param request

@@ -567,26 +567,26 @@
 												<!-- 消费设备状态 end-->
 												<!-- 消费记录监控 -->
 												<div id="consumeRecord">
-													<table class="table" width="99%" layoutH="300" rel="jbsxBox" target="consumeRecord">
+													<table class="table" width="100%" layoutH="300" rel="jbsxBox" target="consumeRecord">
 														<thead>
 															<tr>
 																<th width="40">序号</th>
 																<th width="100">终端名称</th>
-																<th width="100">用户编号</th>
-																<th width="100">卡号</th>
+																<th width="80">用户编号</th>
+																<th width="80">卡号</th>
 																<th width="100">姓名</th>
 																<th width="100">钱包余额</th>
 																<th width="100">补助余额</th>
-																<th width="100">管理费</th>
+																<th width="80">管理费</th>
 																<th width="100">操作额</th>
 																<th width="100">餐别名称</th>
 																<th width="200">操作时间</th>
-																<th width="100">卡计数</th>
-																<th width="100">补助卡计数</th>
-																<th width="100">记录序号</th>
-																<th width="100">记录类型</th>
+																<th width="80">卡计数</th>
+																<th width="90">补助卡计数</th>
+																<th width="80">记录序号</th>
+																<th width="120">记录类型</th>
 																<th width="100">菜肴名称</th>
-																<th width="100">菜肴份数</th>
+																<th width="80">菜肴份数</th>
 															</tr>
 														</thead>
 														<tbody>

@@ -19,10 +19,8 @@ import com.singbon.device.ConsumeType;
 import com.singbon.entity.Company;
 import com.singbon.entity.Device;
 import com.singbon.entity.Pagination;
-import com.singbon.entity.UserDept;
 import com.singbon.service.CommonService;
 import com.singbon.service.systemManager.DeviceService;
-import com.singbon.service.systemManager.systemSetting.UserDeptService;
 import com.singbon.util.ExportUtil;
 import com.singbon.util.StringUtil;
 
@@ -36,8 +34,6 @@ import com.singbon.util.StringUtil;
 @RequestMapping(value = "/balanceCenter/consumeRecord")
 public class ConsumeRecordController extends BaseController {
 
-	@Autowired
-	public UserDeptService userDeptService;
 	@Autowired
 	public CommonService commonService;
 	@Autowired
@@ -54,30 +50,13 @@ public class ConsumeRecordController extends BaseController {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value = "/list.do")
 	public String list(@ModelAttribute Pagination pagination, Integer export, Integer exportType, String nameStr, Integer deptId, String deptName, Integer cardTypeId, Integer deviceId,
-			Integer consumeType, Integer dateType, String beginDate, String endDate, String includeOff, HttpServletRequest request, HttpServletResponse response, Model model) {
+			String deviceName, Integer consumeType, Integer dateType, String beginDate, String endDate, String includeOff, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
 
 		if (exportType != null && 1 == exportType) {
 			pagination.setPageNum(1);
 			pagination.setNumPerPage(pagination.getTotalCount());
 		}
-
-		// 终端名称
-		// 用户编号
-		// 卡号
-		// 姓名
-		// 钱包余额
-		// 补助余额
-		// 管理费
-		// 操作额
-		// 餐别名称
-		// 操作时间
-		// 卡计数
-		// 补助卡计数
-		// 记录序号
-		// 记录类型
-		// 菜肴名称
-		// 菜肴份数
 
 		String[] columns = { "d.deviceName", "u.userNO", "c.cardNO", "u.username", "c.oddFare", "c.subsidyOddFare", "c.discountFare", "c.opFare", "c.subsidyOpFare", "m.mealName", "c.opTime",
 				"c.opCount", "c.subsidyOpCount", "c.recordNO", "c.consumeType", "cb.cookbookName", "c.cookbookNum" };
@@ -87,7 +66,7 @@ public class ConsumeRecordController extends BaseController {
 			whereSql += String.format(" and (userNO like '%%%s%%' or username like '%%%s%%' or shortName like '%%%s%%')", nameStr, nameStr, nameStr);
 		}
 		if (!StringUtils.isEmpty(deptId)) {
-			whereSql += String.format(" and deptId = %s", deptId);
+			whereSql += String.format(" and u.deptId = %s", deptId);
 		}
 		if (!StringUtils.isEmpty(cardTypeId) && cardTypeId != -1) {
 			whereSql += String.format(" and cardTypeId = %s", cardTypeId);
@@ -165,6 +144,7 @@ public class ConsumeRecordController extends BaseController {
 		model.addAttribute("deptName", deptName);
 		model.addAttribute("cardTypeId", cardTypeId);
 		model.addAttribute("deviceId", deviceId);
+		model.addAttribute("deviceName", deviceName);
 		model.addAttribute("consumeType", consumeType);
 		model.addAttribute("dateType", dateType);
 		model.addAttribute("beginDate", beginDate);
@@ -176,21 +156,5 @@ public class ConsumeRecordController extends BaseController {
 
 		model.addAttribute("base", StringUtil.requestBase(request));
 		return StringUtil.requestPath(request, "list");
-	}
-
-	/**
-	 * 人员部门树列表
-	 * 
-	 * @param userDept
-	 * @param request
-	 * @param model
-	 */
-	@SuppressWarnings("unchecked")
-	@RequestMapping(value = "/treeList.do")
-	public String treeList(HttpServletRequest request, Model model) {
-		Company company = (Company) request.getSession().getAttribute("company");
-		List<UserDept> list = (List<UserDept>) this.userDeptService.selectListByCompanyId(company.getId());
-		model.addAttribute("list", list);
-		return StringUtil.requestPath(request, "userDeptTreeList");
 	}
 }

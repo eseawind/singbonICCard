@@ -77,7 +77,6 @@ public interface BaseDAO {
 	 * @param id
 	 * @return
 	 */
-	@SuppressWarnings("rawtypes")
 	public Integer updateSql(@Param("sql") String sql);
 
 }
