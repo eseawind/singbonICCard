@@ -38,18 +38,12 @@ public class PosExecSubsidyRequest implements Runnable {
 		// 补助帐号（4 字节）+补助卡号（4 字节）+卡种类（1 字节参数
 		// 卡或者消费卡）+补助版本号（2 字节）+补助金额（4 字节）
 		String sendBufStr = "00000000" + StringUtil.hexLeftPad(userId, 8) + StringUtil.hexLeftPad(cardNO, 8) + StringUtil.hexLeftPad(cardTypeId, 2);
-		// 卡不存在挂失
-		if (list == null || list.size() == 0) {
-			sendBufStr = "0602" + sendBufStr;
-			// 下发补助信息
-		} else {
-			Map m = list.get(0);
-			if (StringUtils.isEmpty(m.get("subsidyVersion")) || StringUtils.isEmpty(m.get("subsidyFare")))
-				return;
-			int subsidyFare = (int) (StringUtil.objToFloat(m.get("subsidyFare")) * 100);
-			sendBufStr = "0601" + sendBufStr + StringUtil.hexLeftPad(subsidyFare, 8);
-		}
-		sendBufStr += "0000";
+		Map m = list.get(0);
+		if (StringUtils.isEmpty(m.get("subsidyVersion")) || StringUtils.isEmpty(m.get("subsidyFare")))
+			return;
+
+		int subsidyFare = (int) (StringUtil.objToFloat(m.get("subsidyFare")) * 100);
+		sendBufStr = "0601" + sendBufStr + StringUtil.hexLeftPad(subsidyFare, 8) + "0000";
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
 		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + CommandDevice.NoSubDeviceNum + DeviceType.Main + DeviceType.getDeviceTypeFrame(device) + bufLen + sendBufStr;
 		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);

@@ -107,7 +107,6 @@
 				}); // themeBase 相对于index页面的主题base路径
 			}
 		});
-
 	});
 </script>
 </head>
@@ -116,7 +115,7 @@
 		<div id="header">
 			<div class="headerNav">
 				<a class="logo" href="#" style="width: 210px;">标志</a>
-				<div style="margin: 30px 0 0; float: left; color: #15428B; font-size: 11px; font-weight: bold;">欢迎您：${sysUser.loginName}</div>
+				<div style="margin: 30px 0 0; float: left; color: #15428B; font-size: 11px; font-weight: bold;">欢迎您：${sessionScope.sysUser.loginName}</div>
 			</div>
 		</div>
 		<div id="leftside">

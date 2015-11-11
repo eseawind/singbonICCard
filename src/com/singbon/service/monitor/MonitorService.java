@@ -177,25 +177,43 @@ public class MonitorService implements Runnable {
 			PosParamGroup pos = command.getPosParamGroup();
 			if (pos == null)
 				return;
-			sendBufStr += "00000000000000" + StringUtil.hexLeftPad(p.getCardMinFare(), 2) + StringUtil.hexLeftPad(p.getDayLimitFare(), 4) + StringUtil.hexLeftPad(p.getTimeLimitFare(), 4) + "00"
-					+ StringUtil.hexLeftPad(pos.getSubsidyReset(), 2) + StringUtil.hexLeftPad(pos.getSubsidyFirst(), 2) + "00000000" + StringUtil.hexLeftPad(pos.getBound(), 2)
+			sendBufStr += "00000000000000" + StringUtil.hexLeftPad(p.getCardMinFare(), 2) + StringUtil.hexLeftPad(p.getDayLimitFare() * 100, 4) + StringUtil.hexLeftPad(p.getTimeLimitFare() * 100, 4)
+					+ "00" + StringUtil.hexLeftPad(pos.getSubsidyReset(), 2) + StringUtil.hexLeftPad(pos.getSubsidyFirst(), 2) + "00000000" + StringUtil.hexLeftPad(pos.getBound(), 2)
 					+ getCardTypesHexStr(p.getCardMinFareCardTypes()) + getCardTypesHexStr(p.getDayLimitFareCardTypes()) + getCardTypesHexStr(p.getTimeLimitFareCardTypes())
 					+ StringUtil.binaryHexStr("" + pos.getEnableMeal() + pos.getEnableDiscount() + pos.getEnableDayLimitFare() + pos.getEnableTimeLimitFare() + pos.getEnableCardMinFare()) + "0000";
 		} else {
 			WaterRateGroup w = command.getWaterRateGroup();
 			if (w == null)
 				return;
-			sendBufStr += StringUtil
-					.binaryHexStr(w.getStopWaterType() + w.getSubsidyFirst() + w.getGoWaterType() + w.getRate1Status() + w.getEnableMeal() + w.getSubsidyReset() + w.getRate1NextDayReset() + "")
-					+ StringUtil.hexLeftPad(w.getRate1Fare(), 4) + getWaterDeduceCycle(w, w.getRate1Cycle(), w.getRate1Water()) + "00" + StringUtil.hexLeftPad(p.getCardMinFare(), 2) + "00"
-					+ StringUtil.hexLeftPad(w.getPwd(), 4) + StringUtil.hexLeftPad(w.getConsumeType(), 2) + StringUtil.hexLeftPad(w.getRate5Fare(), 4)
-					+ getWaterDeduceCycle(w, w.getRate5Cycle(), w.getRate5Water()) + StringUtil.hexLeftPad(w.getBound(), 2) + "0000" + StringUtil.hexLeftPad(p.getDayLimitFare(), 4)
-					+ getCardTypesHexStr(w.getRate1CardTypes()) + StringUtil.hexLeftPad(p.getTimeLimitFare(), 4) + getCardTypesHexStr(p.getCardMinFareCardTypes())
-					+ getCardTypesHexStr(p.getDayLimitFareCardTypes()) + getCardTypesHexStr(p.getTimeLimitFareCardTypes())
+			sendBufStr += StringUtil.binaryHexStr(w.getStopWaterType() + w.getSubsidyFirst() + w.getGoWaterType() + w.getRate1Status() + w.getEnableMeal() + w.getSubsidyReset()
+					+ w.getRate1NextDayReset() + "")
+					+ StringUtil.hexLeftPad(w.getRate1Fare(), 4)
+					+ getWaterDeduceCycle(w, w.getRate1Cycle(), w.getRate1Water())
+					+ "00"
+					+ StringUtil.hexLeftPad(p.getCardMinFare(), 2)
+					+ "00"
+					+ StringUtil.hexLeftPad(w.getPwd(), 4)
+					+ StringUtil.hexLeftPad(w.getConsumeType(), 2)
+					+ StringUtil.hexLeftPad(w.getRate5Fare(), 4)
+					+ getWaterDeduceCycle(w, w.getRate5Cycle(), w.getRate5Water())
+					+ StringUtil.hexLeftPad(w.getBound(), 2)
+					+ "0000"
+					+ StringUtil.hexLeftPad(p.getDayLimitFare(), 4)
+					+ getCardTypesHexStr(w.getRate1CardTypes())
+					+ StringUtil.hexLeftPad(p.getTimeLimitFare(), 4)
+					+ getCardTypesHexStr(p.getCardMinFareCardTypes())
+					+ getCardTypesHexStr(p.getDayLimitFareCardTypes())
+					+ getCardTypesHexStr(p.getTimeLimitFareCardTypes())
 					+ StringUtil.binaryHexStr("" + w.getEnableMeal() + w.getEnableDiscount() + w.getEnableDayLimitFare() + w.getEnableTimeLimitFare() + w.getEnableCardMinFare())
-					+ getWaterRateTime(w.getRate2BeginTime(), w.getRate2EndTime()) + StringUtil.hexLeftPad(w.getRate2Fare(), 4) + getWaterDeduceCycle(w, w.getRate2Cycle(), w.getRate2Water())
-					+ getCardTypesHexStr(w.getRate2CardTypes()) + getWaterRateTime(w.getRate3BeginTime(), w.getRate3EndTime()) + StringUtil.hexLeftPad(w.getRate3Fare(), 4)
-					+ getWaterDeduceCycle(w, w.getRate3Cycle(), w.getRate3Water()) + getCardTypesHexStr(w.getRate3CardTypes()) + getWaterRateTime(w.getRate4BeginTime(), w.getRate4EndTime())
+					+ getWaterRateTime(w.getRate2BeginTime(), w.getRate2EndTime())
+					+ StringUtil.hexLeftPad(w.getRate2Fare(), 4)
+					+ getWaterDeduceCycle(w, w.getRate2Cycle(), w.getRate2Water())
+					+ getCardTypesHexStr(w.getRate2CardTypes())
+					+ getWaterRateTime(w.getRate3BeginTime(), w.getRate3EndTime())
+					+ StringUtil.hexLeftPad(w.getRate3Fare(), 4)
+					+ getWaterDeduceCycle(w, w.getRate3Cycle(), w.getRate3Water())
+					+ getCardTypesHexStr(w.getRate3CardTypes())
+					+ getWaterRateTime(w.getRate4BeginTime(), w.getRate4EndTime())
 					+ StringUtil.hexLeftPad(w.getRate4Fare(), 4) + getWaterDeduceCycle(w, w.getRate4Cycle(), w.getRate4Water()) + getCardTypesHexStr(w.getRate4CardTypes()) + "0064000a000201" + "0000";
 		}
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
@@ -248,7 +266,14 @@ public class MonitorService implements Runnable {
 	 */
 	private String getCardTypesHexStr(String str) {
 		String result = "";
-		for (int i = 0; i < 16; i++) {
+		for (int i = 15; i >= 8; i--) {
+			if (str.indexOf("," + i + ",") == -1) {
+				result += "0";
+			} else {
+				result += "1";
+			}
+		}
+		for (int i = 7; i >= 0; i--) {
 			if (str.indexOf("," + i + ",") == -1) {
 				result += "0";
 			} else {

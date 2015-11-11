@@ -20,13 +20,16 @@ public class PosExecCommandDispatch {
 		if (b == null)
 			return;
 		String sn = StringUtil.getHexStrFromBytes(0, 15, b).toUpperCase();
+		if (!TerminalManager.SNToDeviceList.containsKey(sn))
+			return;
+		Device device = TerminalManager.SNToDeviceList.get(sn);
 		// 设置sn与inetSocketAddress对照关系
 		TerminalManager.SNToInetSocketAddressList.put(sn, inetSocketAddress);
 		// 命令码
 		int commandCode = StringUtil.byteToInt(b[36]) * 256 + StringUtil.byteToInt(b[37]);
 		Map map = new HashMap();
 		map.put("'sn'", sn);
-		Device device = TerminalManager.SNToDeviceList.get(sn);
+
 		// 终端设备状态
 		if (b[30] == PosFrame.Status && b[31] == PosSubFrameStatus.SysStatus) {
 			map.put("'type'", "status");

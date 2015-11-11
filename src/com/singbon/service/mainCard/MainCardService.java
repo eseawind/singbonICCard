@@ -158,8 +158,8 @@ public class MainCardService extends BaseService {
 		String tmCheck1 = "00"; // 异或校验，以后补充 1
 
 		String tmCardDeposit = StringUtil.hexLeftPad(cardAllInfo.getCardDeposit(), 2);// 1
-		String tmLimitDayFare = StringUtil.hexLeftPad(cardAllInfo.getLimitDayFare(), 2);// 1
-		String tmLimitTimesFare = StringUtil.hexLeftPad(cardAllInfo.getLimitTimesFare(), 4);// 2
+		String tmLimitTimesFare = StringUtil.hexLeftPad(cardAllInfo.getLimitTimesFare(), 2);// 2
+		String tmLimitDayFare = StringUtil.hexLeftPad(cardAllInfo.getLimitDayFare(), 4);// 1
 		String tmCardSeq = "01";// 1
 		if (commandCode != CardReaderCommandCode.SingleCard && commandCode != CardReaderCommandCode.InfoCard) {
 			tmCardSeq = StringUtil.hexLeftPad(user.getCardSeq(), 2);// 1
@@ -170,7 +170,7 @@ public class MainCardService extends BaseService {
 		String tmStandby = "06"; // 备用字段//1
 		String tmCheck2 = "00"; // 异或校验//1
 
-		String baseData = tmUserId + tmCardNo + tmConsumePwd + tmInvalidDate + tmCardMark + tmCardBatch + tmCheck1 + tmCardDeposit + tmLimitDayFare + tmLimitTimesFare + tmCardSeq + tmCardType
+		String baseData = tmUserId + tmCardNo + tmConsumePwd + tmInvalidDate + tmCardMark + tmCardBatch + tmCheck1 + tmCardDeposit + tmLimitTimesFare + tmLimitDayFare + tmCardSeq + tmCardType
 				+ tmDeptId + tmTotalFare + tmStandby + tmCheck2;
 		String baseInfoSection = StringUtil.hexLeftPad(section, 2);
 		String baseBlock0 = baseInfoSection + "0000" + baseData.substring(0, 32);
