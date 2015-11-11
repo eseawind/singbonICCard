@@ -108,6 +108,21 @@
 			}
 		});
 	});
+	
+	function editPwd(){
+		var specialOptions = {
+				width : 300,
+				height : 200,
+				max : false,
+				mask : true,
+				mixable : false,
+				minable : false,
+				resizable : true,
+				drawable : true,
+				fresh : false
+		};
+		$.pdialog.open('../editPwd.do', 'dialog', '修改密码', specialOptions);
+	}
 </script>
 </head>
 <body scroll="no">
@@ -129,7 +144,8 @@
 			<div id="sidebar">
 				<div class="toggleCollapse">
 					<h2>主菜单</h2>
-					<a style="padding: 7px 0 0 90px;float: left;color: #15428B;font-size: 11px;font-weight: bold;" href="/singbon/backgroud/system/admin/loginout.do">登出</a>
+					<a style="padding: 7px 0 0 20px;float: left;color: #15428B;font-size: 11px;font-weight: bold;" href="javascript:;" onclick="editPwd();" title="修改密码"><span>修改密码</span></a>
+					<a style="padding: 7px 0 0 20px;float: left;color: #15428B;font-size: 11px;font-weight: bold;" href="/singbon/backgroud/system/admin/loginout.do">登出</a>
 					<div>收缩</div>
 				</div>
 

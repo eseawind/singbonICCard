@@ -80,8 +80,7 @@
 <script src="js/dwz.regional.zh.js" type="text/javascript"></script>
 <script type="text/javascript">
 	$(function() {
-		// 		alert('${company.companyName}');
-		$.cookie('companyName', '${company.companyName}', {
+		$.cookie('companyName', '${sessionScope.company.companyName}', {
 			expires : 7
 		});
 

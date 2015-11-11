@@ -71,4 +71,13 @@ public interface BaseDAO {
 	@SuppressWarnings("rawtypes")
 	public List<Map> selectBySql(@Param("sql") String sql);
 
+	/**
+	 * 自定义sql更新
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	public Integer updateSql(@Param("sql") String sql);
+
 }

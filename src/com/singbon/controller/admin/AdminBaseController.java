@@ -28,7 +28,7 @@ import com.singbon.util.StringUtil;
  */
 @Controller
 @RequestMapping(value = "/singbon/backgroud/system/admin")
-public class LoginController {
+public class AdminBaseController {
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
@@ -79,10 +79,10 @@ public class LoginController {
 		PrintWriter p = null;
 		try {
 			p = response.getWriter();
-			String sql = String.format("select count(*) from singbon where loginName='%s' and loginPwd='%s'", DesUtil.encrypt(loginName), DesUtil.encrypt(loginPwd));
+			String sql = String.format("select count(*) count from singbon where loginName='%s' and loginPwd='%s'", DesUtil.encrypt(loginName), DesUtil.encrypt(loginPwd));
 			List<Map> list = JdbcUtil.baseDAO.selectBySql(sql);
-			if (list != null && list.size() == 1) {
-				request.getSession().setAttribute("adminLogin", 1);
+			if (StringUtil.objToInt(list.get(0).get("count")) == 1) {
+				request.getSession().setAttribute("adminLogin", DesUtil.encrypt(loginPwd));
 				p.print(1);
 			} else {
 				p.print(0);
@@ -106,5 +106,47 @@ public class LoginController {
 		request.getSession().removeAttribute("adminLogin");
 		model.addAttribute("base", StringUtil.requestBase(request));
 		return "admin/login";
+	}
+
+	/***
+	 * 编辑密码首页
+	 * 
+	 * @param user
+	 * @param request
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/editPwd.do")
+	public String editPwd(HttpServletRequest request, HttpServletResponse response, Model model) {
+		model.addAttribute("base", StringUtil.requestBase(request));
+		return "admin/setting/editPwd";
+	}
+
+	/***
+	 * 保存密码
+	 * 
+	 * @param user
+	 * @param request
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/savePwd.do")
+	public void savePwd(String oldPwd, String newPwd, HttpServletRequest request, HttpServletResponse response, Model model) {
+		PrintWriter p = null;
+		try {
+			p = response.getWriter();
+			String pwd = request.getSession().getAttribute("adminLogin").toString();
+			if (!DesUtil.encrypt(oldPwd).equals(pwd)) {
+				p.print(2);
+				return;
+			}
+			String sql = String.format("update singbon set loginPwd='%s'", DesUtil.encrypt(newPwd));
+			JdbcUtil.baseDAO.updateSql(sql);
+			request.getSession().setAttribute("adminLogin", DesUtil.encrypt(newPwd));
+			p.print(1);
+		} catch (Exception e) {
+			p.print(0);
+			e.printStackTrace();
+		}
 	}
 }

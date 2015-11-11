@@ -1,11 +1,15 @@
 package com.singbon.device;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 消费类型
  * 
  * @author 郝威
  * 
  */
+@SuppressWarnings("unchecked")
 public class ConsumeType {
 	// 餐费支出
 	// 水控消费支出
@@ -38,10 +42,35 @@ public class ConsumeType {
 	// 解挂
 	// 补卡
 	// 注销
+	@SuppressWarnings("rawtypes")
+	static Map map = new HashMap<>();
 
+	static {
+		map.put(1, "消费机普通消费");
+		map.put(2, "消费机补助消费");
+		map.put(3, "消费机混合消费");
+		map.put(9, "消费机补助领取");
+		map.put(39, "消费机补助清零");
+
+		map.put(101, "水控普通消费");
+		map.put(102, "水控补助消费");
+		map.put(103, "水控混合消费");
+		map.put(105, "水控大钱包找零");
+		map.put(106, "水控补助找零");
+		map.put(107, "水控混合找零");
+		map.put(109, "水控补助领取");
+		map.put(139, "水控补助清零");
+	}
+
+	/**
+	 * 记录类型
+	 * 
+	 * @param consumeType
+	 * @return
+	 */
 	public static String getTypeDes(int consumeType) {
-		if (consumeType == 1) {
-			return "普通消费";
+		if (map.containsKey(consumeType)) {
+			return (String) map.get(consumeType);
 		}
 		return null;
 	}

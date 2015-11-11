@@ -41,15 +41,12 @@ public class PosExecCommandDispatch {
 			if (commandCode == 1) {
 				PosExecReplyCommand.execReplyCommand(device, commandCode, b, map, true);
 			}
-			// 普通记录
-		} else if (b[30] == 1 && b[31] == 1) {
+			// 记录帧 1普通消费、2补助消费、9领取补助记录
+		} else if (b[30] == 1 && (b[31] == 1 || b[31] == 2 || b[31] == 9 || b[31] == 39)) {
 			// 帐号 4,卡号 4,卡序号1,卡总额 4, 卡余额
 			// 4,管理费额4,补助余额4,操作金额4,卡操作次数2,补助操作计数2,补助操作额4,RecNo
 			PosExecConsumeRecord record = new PosExecConsumeRecord(device, b, inetSocketAddress);
 			record.run();
-			// 补助记录
-		} else if (b[30] == 1 && b[31] == 9) {
-			map.put("'type'", "consumeRecord");
 			// 订餐取餐记录
 		} else if (b[30] == 8 && b[31] == 1) {
 			map.put("'type'", "cookbookRecord");

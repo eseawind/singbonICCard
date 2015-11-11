@@ -100,13 +100,13 @@
 				<input type="text" name="uploadErrTime" value="${company.uploadErrTime}" maxlength="20" class="digits required" />
 			</dd>
 		</dl>
-		<dl style="margin: 10px 0;">
-			<dt>是否启用补助宏冲：</dt>
-			<dd>
-				<input style="width: 16px;" name="enableSubsidyReset" type="radio" <c:if test="${company.enableSubsidyReset==0}">checked</c:if> value="0"/>启用
-				<input style="width: 16px;" name="enableSubsidyReset" type="radio" <c:if test="${company.enableSubsidyReset==1}">checked</c:if> value="1"/>不启用
-			</dd>
-		</dl>
+<!-- 		<dl style="margin: 10px 0;"> -->
+<!-- 			<dt>是否启用补助宏冲：</dt> -->
+<!-- 			<dd> -->
+<%-- 				<input style="width: 16px;" name="enableSubsidyReset" type="radio" <c:if test="${company.enableSubsidyReset==0}">checked</c:if> value="0"/>启用 --%>
+<%-- 				<input style="width: 16px;" name="enableSubsidyReset" type="radio" <c:if test="${company.enableSubsidyReset==1}">checked</c:if> value="1"/>不启用 --%>
+<!-- 			</dd> -->
+<!-- 		</dl> -->
 		<dl style="margin: 10px 0;">
 			<dt>最新补助宏冲日期：</dt>
 			<dd>

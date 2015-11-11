@@ -79,8 +79,8 @@ public class ConsumeRecordController extends BaseController {
 		// 菜肴名称
 		// 菜肴份数
 
-		String[] columns = { "d.deviceName", "u.userNO", "c.cardNO", "u.username", "c.oddFare", "c.subsidyOddFare", "c.discountFare", "c.opFare", "m.mealName", "c.opTime", "c.opCount",
-				"c.subsidyOpCount", "c.recordNO", "c.consumeType", "cb.cookbookName", "c.cookbookNum" };
+		String[] columns = { "d.deviceName", "u.userNO", "c.cardNO", "u.username", "c.oddFare", "c.subsidyOddFare", "c.discountFare", "c.opFare", "c.subsidyOpFare", "m.mealName", "c.opTime",
+				"c.opCount", "c.subsidyOpCount", "c.recordNO", "c.consumeType", "cb.cookbookName", "c.cookbookNum" };
 		String fromSql = "consumeRecord c left join user u on c.userId=u.userId left join device d on c.deviceId=d.id left join meal m on c.mealId=m.id left join cookbook cb on c.cookbookCode=cb.cookbookCode";
 		String whereSql = "u.companyId=" + company.getId();
 		if (!StringUtils.isEmpty(nameStr)) {
@@ -113,19 +113,17 @@ public class ConsumeRecordController extends BaseController {
 		if (StringUtils.isEmpty(includeOff)) {
 			whereSql += " and u.status != 244";
 		}
-		
-		
+
 		List<Map> list = this.commonService.selectByPage(columns, null, fromSql, whereSql, pagination);
 		int totalCount = Integer.valueOf(list.get(0).get("deviceName").toString());
 		list.remove(0);
 
 		for (Map m : list) {
 			m.put("consumeType", ConsumeType.getTypeDes(Integer.valueOf(m.get("consumeType").toString())));
-			// "oddFare", "subsidyOddFare", "discountFare", "opFare"
 			m.put("oddFare", Float.valueOf(m.get("oddFare").toString()) / 100);
 			m.put("subsidyOddFare", Float.valueOf(m.get("subsidyOddFare").toString()) / 100);
 			m.put("discountFare", Float.valueOf(m.get("discountFare").toString()) / 100);
-			m.put("opFare", Float.valueOf(m.get("opFare").toString()) / 100);
+			m.put("opFare", (Float.valueOf(m.get("opFare").toString()) + Float.valueOf(m.get("subsidyOpFare").toString())) / 100);
 		}
 
 		if (export != null && 1 == export) {

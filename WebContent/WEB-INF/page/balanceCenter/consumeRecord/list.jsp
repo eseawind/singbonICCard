@@ -45,6 +45,14 @@
 					<td>
 						<a class="btnLook" width="300" maxable="false" resizable="false" title="选择部门" href="${base}/treeList.do" lookupgroup="district"></a>					
 					</td>
+					<td width="50">终端：</td>
+					<td>
+						<input type="hidden" name="deviceId" value="${deviceId}"/>
+						<input type="text" name="deviceName" value="${deviceName}" size="10" readonly="readonly"/>
+					</td>
+					<td>
+						<a class="btnLook" width="500" maxable="false" resizable="false" title="选择终端" href="${base}/deviceIndex.do" lookupgroup="district"></a>					
+					</td>
 					<td width="60">卡种类：</td>
 					<td align="left">
 						<select class="combox" outerw="45" innerw="65" name="cardTypeId">
@@ -54,22 +62,6 @@
 							</c:forEach>
 						</select>
 					</td>
-					<td width="40">终端：</td>
-					<td align="left">
-						<select class="combox" outerw="70" innerw="90" name="deviceId">
-							<option value="-1" width="90">全部</option>
-							<c:forEach items="${deviceList }" var="d">
-								<option value="${d.id }" <c:if test="${deviceId==d.id}">selected</c:if>>${d.deviceName }</option>
-							</c:forEach>
-						</select>
-					</td>
-					<td width="60">消费类型：</td>
-					<td align="left">
-						<select class="combox" outerw="60" innerw="80" name="consumeType">
-							<option value="-1" width="80">全部</option>
-							<option value="1" width="80" <c:if test="${consumeType==1}">selected</c:if>>普通消费</option>
-						</select>
-					</td>					
 					<td width="70">消费日期：</td>
 					<td width="80" align="left">
 						<select class="combox" outerw="50" innerw="70" name="dateType">
@@ -79,13 +71,11 @@
 						</select>
 					</td>
 					<td align="left">
-						<input type="text" name="beginDate" value="${beginDate}" readonly="readonly"
-						class="date" size="10"/><a class="inputDateButton" href="javascript:;">选择</a>
+						<input type="text" name="beginDate" value="${beginDate}" readonly="readonly" datefmt="yyyy-MM-dd HH:mm:ss" class="date" size="18"/><a class="inputDateButton" href="javascript:;">选择</a>
 					</td>
 					<td align="left">
 						&nbsp;- 
-						<input type="text" name="endDate" value="${endDate}" readonly="readonly"
-						class="date" size="10"/><a class="inputDateButton" href="javascript:;">选择</a>
+						<input type="text" name="endDate" value="${endDate}" readonly="readonly" class="date" datefmt="yyyy-MM-dd HH:mm:ss"  size="18"/><a class="inputDateButton" href="javascript:;">选择</a>
 					</td>
 					<td align="left">
 						<input type="checkbox" name="includeOff" <c:if test="${includeOff=='on'}">checked</c:if> />
@@ -93,7 +83,27 @@
 					</td>
 				</tr>
 				<tr>
-					<td colspan="3">
+					<td width="60">消费类型：</td>
+					<td align="left" colspan="2">
+						<select class="combox" outerw="80" innerw="100" name="consumeType">
+							<option value="-1" width="100">全部</option>
+							<option value="1" width="100" <c:if test="${consumeType==1}">selected</c:if>>消费机普通消费</option>
+							<option value="2" width="100" <c:if test="${consumeType==2}">selected</c:if>>消费机补助消费</option>
+							<option value="3" width="100" <c:if test="${consumeType==3}">selected</c:if>>消费机混合消费</option>
+							<option value="9" width="100" <c:if test="${consumeType==9}">selected</c:if>>消费机补助领取</option>
+							<option value="39" width="100" <c:if test="${consumeType==39}">selected</c:if>>消费机补助清零</option>
+							
+							<option value="101" width="100" <c:if test="${consumeType==101}">selected</c:if>>水控普通消费</option>
+							<option value="102" width="100" <c:if test="${consumeType==102}">selected</c:if>>水控补助消费</option>
+							<option value="103" width="100" <c:if test="${consumeType==103}">selected</c:if>>水控混合消费</option>
+							<option value="105" width="100" <c:if test="${consumeType==105}">selected</c:if>>水控大钱包找零</option>
+							<option value="106" width="100" <c:if test="${consumeType==106}">selected</c:if>>水控补助找零</option>
+							<option value="107" width="100" <c:if test="${consumeType==107}">selected</c:if>>水控混合找零</option>
+							<option value="109" width="100" <c:if test="${consumeType==109}">selected</c:if>>水控补助领取</option>
+							<option value="139" width="100" <c:if test="${consumeType==139}">selected</c:if>>水控补助清零</option>
+						</select>
+					</td>		
+					<td colspan="12">
 						<div class="buttonActive">
 							<div class="buttonContent">
 								<button type="button" class="search">&nbsp;&nbsp;查询&nbsp;&nbsp;</button>
@@ -134,7 +144,7 @@
 				<th width="100">卡计数</th>
 				<th width="100">补助卡计数</th>
 				<th width="100">记录序号</th>
-				<th width="100">记录类型</th>
+				<th width="170">记录类型</th>
 				<th width="100">菜肴名称</th>
 				<th width="100">菜肴份数</th>
 			</tr>

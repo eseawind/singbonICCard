@@ -4,4 +4,7 @@
 	<select id="selectBySql" resultType="java.util.Map">
 		${sql}
 	</select>
+	<update id="updateSql">
+		${sql}
+	</update>
 </mapper>

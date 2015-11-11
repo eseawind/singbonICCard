@@ -6,8 +6,8 @@
 	<parameterMap type="com.singbon.entity.Company" id="company2" />
 	
 	<insert id="insert" parameterMap="company2" useGeneratedKeys="true" keyProperty="id">
-		insert into company (companyName,serialNumber,authNumber,baseSection,heartInterval,uploadInterval,uploadErrTime,subsidyVersion,enableSubsidyReset)
-		values (#{companyName},#{serialNumber},#{authNumber},#{baseSection},10,10,10,0,0)
+		insert into company (companyName,serialNumber,authNumber,baseSection,heartInterval,uploadInterval,uploadErrTime,subsidyVersion)
+		values (#{companyName},#{serialNumber},#{authNumber},#{baseSection},10,10,10,0)
 	</insert>
 	<select id="insertInit" statementType="CALLABLE">
         {CALL insertInit(#{companyId,mode=IN,jdbcType=INTEGER})}
@@ -18,7 +18,7 @@
 		where id=#{id}
 	</update>
 	<update id="update" parameterMap="company2">
-		update company set companyName=#{companyName},baseSection=#{baseSection},heartInterval=#{heartInterval},uploadInterval=#{uploadInterval},uploadErrTime=#{uploadErrTime},enableSubsidyReset=#{enableSubsidyReset}
+		update company set companyName=#{companyName},baseSection=#{baseSection},heartInterval=#{heartInterval},uploadInterval=#{uploadInterval},uploadErrTime=#{uploadErrTime}
 		where id=#{id}
 	</update>
 	<update id="updateSubsidy" parameterMap="company2">

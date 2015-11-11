@@ -20,7 +20,6 @@ public class Company implements Serializable {
 	private Integer uploadInterval;
 	private Integer uploadErrTime;
 	private Integer subsidyVersion;
-	private Integer enableSubsidyReset;
 	private String subsidyInvalidDate;
 	private String invalidDate;
 
@@ -94,14 +93,6 @@ public class Company implements Serializable {
 
 	public void setSubsidyVersion(Integer subsidyVersion) {
 		this.subsidyVersion = subsidyVersion;
-	}
-
-	public Integer getEnableSubsidyReset() {
-		return enableSubsidyReset;
-	}
-
-	public void setEnableSubsidyReset(Integer enableSubsidyReset) {
-		this.enableSubsidyReset = enableSubsidyReset;
 	}
 
 	public String getSubsidyInvalidDate() {
