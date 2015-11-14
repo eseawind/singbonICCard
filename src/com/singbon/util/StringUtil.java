@@ -381,9 +381,10 @@ public class StringUtil {
 	public static Float objToFloat(Object obj) {
 		return Float.valueOf(obj.toString());
 	}
-	
+
 	/**
 	 * Object转String
+	 * 
 	 * @param obj
 	 * @return
 	 */
@@ -400,8 +401,8 @@ public class StringUtil {
 		// 02 00 11 04 03 00 00 00 00 43 74 61 61 88 88 01 B889
 		// 消费机初始化01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 00 00 00 01 00
 		// 00 00 00 00 00 02 02 00 0A 19 19 00 00 00 00 46 1b
-		byte[] b = StringUtil.strTobytes(
-				"01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 00 00 00 01 00 00 00 00 00 00 02 02 00 28 04 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 0A 03 E8 03 E7 00 00 F0 00 00 00 00 03 FF FF 03 00 00 30 11  88 8E"
+		byte[] b = StringUtil
+				.strTobytes("01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 00 00 00 01 00 00 00 00 00 00 02 02 00 28 04 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 0A 03 E8 03 E7 00 00 F0 00 00 00 00 03 FF FF 03 00 00 30 11  88 8E"
 						.replaceAll(" ", ""));
 		CRC16.generate(b);
 		StringUtil.print(Integer.toHexString(b[b.length - 2]).replace("ffffff", "") + " ");

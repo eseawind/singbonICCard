@@ -73,7 +73,7 @@ public class MonitorController extends BaseController {
 		model.addAttribute("base", url.replace("/index.do", ""));
 
 		// 关闭老线程
-		Thread oldThread = TerminalManager.CompanyToMonitorThreadList.get(company.getId());
+		Thread oldThread = TerminalManager.CompanyIdToMonitorThreadList.get(company.getId());
 		if (oldThread != null && oldThread.isAlive()) {
 			oldThread.interrupt();
 		}
@@ -83,7 +83,7 @@ public class MonitorController extends BaseController {
 		monitorService.setDeviceList(deviceList);
 		Thread thread = new Thread(monitorService);
 		thread.setName("Co" + company.getId());
-		TerminalManager.CompanyToMonitorThreadList.put(company.getId(), thread);
+		TerminalManager.CompanyIdToMonitorThreadList.put(company.getId(), thread);
 		thread.start();
 
 		request.getSession().setAttribute("companyId", company.getId().toString());

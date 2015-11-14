@@ -39,7 +39,7 @@ public class CometServer{
 				// 停止监控线程
 				String companyId = connection.getCompanyId();
 				if (companyId != null) {
-					Thread oldThread = TerminalManager.CompanyToMonitorThreadList.get(Integer.valueOf(companyId));
+					Thread oldThread = TerminalManager.CompanyIdToMonitorThreadList.get(Integer.valueOf(companyId));
 					if (oldThread != null && oldThread.isAlive()) {
 						oldThread.interrupt();
 					}

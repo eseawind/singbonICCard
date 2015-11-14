@@ -23,6 +23,7 @@ public class PosExecCommandDispatch {
 		if (!TerminalManager.SNToDeviceList.containsKey(sn))
 			return;
 		Device device = TerminalManager.SNToDeviceList.get(sn);
+		
 		// 设置sn与inetSocketAddress对照关系
 		TerminalManager.SNToInetSocketAddressList.put(sn, inetSocketAddress);
 		// 命令码
@@ -44,6 +45,7 @@ public class PosExecCommandDispatch {
 			if (commandCode == 1) {
 				PosExecReplyCommand.execReplyCommand(device, commandCode, b, map, true);
 			}
+			Integer lastBlackCardNO = TerminalManager.CompanyIdToLastBlackCardNOList.get(device.getCompanyId());
 			// 记录帧 1普通消费、2补助消费、9领取补助记录
 		} else if (b[30] == 1 && (b[31] == 1 || b[31] == 2 || b[31] == 9 || b[31] == 39)) {
 			// 帐号 4,卡号 4,卡序号1,卡总额 4, 卡余额

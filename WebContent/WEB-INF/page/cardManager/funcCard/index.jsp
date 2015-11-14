@@ -129,14 +129,14 @@
 				else if (e2.f1 == 1) {
 					if (e2.r == 1) {
 						heartTime=new Date();
-						$('#specialStatus').html('读卡机状态：在线');
+						$('#funcStatus').html('读卡机状态：在线');
 						isOnline=true;
 						if(!isHeart){
 							heart();
 							isHeart=true;
 						}
 					} else {
-						$('#specialStatus').html('读卡机状态：离线');
+						$('#funcStatus').html('读卡机状态：离线');
 						isOnline=false;
 						isHeart=false;
 						$('body').stopTime();
@@ -299,154 +299,13 @@
 	<div class="tabsHeader">
 		<div class="tabsHeaderContent">
 			<ul>
-				<li><a><span>出纳卡</span></a></li>
 				<li><a><span>水控参数卡</span></a></li>
 				<li><a><span>一控多水控参数卡</span></a></li>
 			</ul>
 		</div>
 	</div>
 	<div class="tabsContent" style="padding: 0;" layoutH="30">
-		<!-- tab出纳卡 -->
-		<div>
-			<div id="cashierList">
-				<jsp:include page="${base }/cashierList.do"/>
-			</div>
-			<div class="tabs" currentIndex="0" eventType="click" style="margin: 3px;">
-				<div class="tabsHeader">
-					<div class="tabsHeaderContent">
-						<ul>
-							<li><a><span>制卡</span></a></li>
-							<li><a><span>挂失</span></a></li>
-							<li><a><span>解挂</span></a></li>
-							<li><a><span>补卡</span></a></li>
-							<li><a><span>修改有效期</span></a></li>
-						</ul>
-					</div>
-				</div>
-				<div id="cashierCard" class="tabsContent" style="padding: 0;height: 70px;">
-					<!-- 制出纳卡 -->
-					<div class="cashierTabsContent">
-						<form id="makeCashierForm" method="post" action="${base }/makeCashierCard.do" class="pageForm required-validate">
-						<div class="pageFormContent">
-							<dl>
-								<dt>失效期：</dt>
-								<dd>
-									<input name="operId" type="hidden" />
-									<input name="cardSN" type="hidden" /> 
-									<input name="editType" type="hidden" value="0"/> 
-									<input type="text" name="invalidDate" maxlength="20" class="required" readonly="readonly" pattern="yyyy-MM-dd"/>
-								</dd>
-							</dl>
-							<dl>
-								<ul>
-									<li><div class="buttonActive">
-											<div class="buttonContent makeCashierCard">
-												<button type="button">制卡</button>
-											</div>
-										</div></li>
-								</ul>
-							</dl>
-						</div>
-						</form>
-					</div>
-					<!-- 挂失 -->
-					<div class="cashierTabsContent">
-						<form id="lossForm" method="post" action="${base }/loss.do" class="pageForm required-validate">
-						<div class="pageFormContent" >
-							<dl>
-								<dt style="width: 80px;">挂失类型：</dt>
-								<dt style="width: 240px;">
-									<input name="operId" type="hidden" /> 
-									<input name="cardSN" type="hidden" /> 
-									<input name="cardInfoStr" type="hidden" /> 
-									<label style="width: 240px;"><input type="radio" name="lossType" checked="checked" value="0" />遗失或损坏  <input type="radio" name="lossType" value="1" />有卡挂失</label> 
-								</dt>
-							</dl>
-							<dl>
-								<ul>
-									<li><div class="buttonActive">
-											<div class="buttonContent loss">
-												<button type="button">挂失</button>
-											</div>
-										</div></li>
-								</ul>
-							</dl>
-						</div>
-						</form>
-					</div>
-					<!-- 解挂 -->
-					<div class="cashierTabsContent">
-						<form id="unLossForm" method="post" action="${base }/unLoss.do" class="pageForm required-validate">
-						<input name="operId" type="hidden" /> 
-						<input name="cardSN" type="hidden" /> 
-						<input name="cardInfoStr" type="hidden" /> 
-						<div class="pageFormContent" >
-							<dl>
-								<ul>
-									<li><div class="buttonActive">
-											<div class="buttonContent unLoss">
-												<button type="button">解挂</button>
-											</div>
-										</div></li>
-								</ul>
-							</dl>
-						</div>
-						</form>
-					</div>
-					<!-- 补卡 -->
-					<div class="cashierTabsContent">
-						<form id="remakeCashierCardForm" method="post" action="${base }/makeCashierCard.do" class="pageForm required-validate">
-						<input name="operId" type="hidden" /> 
-						<input name="cardSN" type="hidden" /> 
-						<input name="editType" type="hidden" value="1"/> 
-						<div class="pageFormContent" >
-							<dl>
-								<ul>
-									<li><div class="buttonActive">
-											<div class="buttonContent remakeCashierCard">
-												<button type="button">补卡</button>
-											</div>
-										</div></li>
-								</ul>
-							</dl>
-						</div>
-						</form>
-					</div>
-					<!-- 注册有效期 -->
-					<div>
-						<form id="invalidDateForm" method="post" action="${base }/doInvalidDate.do" class="pageForm required-validate">
-						<div class="pageFormContent" >
-							<dl>
-								<dt>失效期：</dt>
-								<dd>
-									<input name="operId" type="hidden" /> 
-									<input name="cardSN" type="hidden" /> 
-									<input name="cardInfoStr" type="hidden" /> 
-									<input type="text" name="invalidDate" maxlength="20" class="date required" pattern="yyyy-MM-dd"/>
-								</dd>
-							</dl>
-							<dl>
-								<ul>
-									<li><div class="buttonActive">
-											<div class="buttonContent readCashierCard"  style="margin-right: 5px;">
-												<button type="button">读卡</button>
-											</div>
-										</div></li>
-									<li><div class="buttonActive">
-											<div class="buttonContent invalidDate">
-												<button type="button">修改</button>
-											</div>
-										</div></li>
-								</ul>
-							</dl>
-						</div>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-		
+		<div>1</div>
 		<div>2</div>
-		<div>3</div>
 	</div>
 </div>

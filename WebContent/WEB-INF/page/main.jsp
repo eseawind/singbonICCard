@@ -171,7 +171,7 @@
 									<li><a href="/cardManager/mainCard/index.do" target="navTab">用户卡管理</a></li>
 								</security:authorize>
 								<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_FUNCCARD">
-									<li><a url="/cardManager/specialCard/index.do" target="navTab">功能卡制作</a></li>
+									<li><a url="/cardManager/funcCard/index.do" target="navTab">功能卡制作</a></li>
 								</security:authorize>
 								<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_CARDREADER">
 									<li><a url="/cardManager/cardReader/index.do" target="navTab">读卡机参数下载</a></li>

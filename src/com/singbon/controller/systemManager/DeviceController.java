@@ -22,10 +22,12 @@ import com.singbon.entity.Device;
 import com.singbon.entity.Pagination;
 import com.singbon.entity.PosParamGroup;
 import com.singbon.entity.SysUser;
+import com.singbon.entity.WaterRateGroup;
 import com.singbon.service.CommonService;
 import com.singbon.service.systemManager.DeviceService;
 import com.singbon.service.systemManager.systemSetting.DeptService;
 import com.singbon.service.systemManager.systemSetting.PosParamGroupService;
+import com.singbon.service.systemManager.systemSetting.WaterRateGroupService;
 import com.singbon.util.StringUtil;
 
 /**
@@ -43,11 +45,14 @@ public class DeviceController {
 	@Autowired
 	public PosParamGroupService posParamGroupService;
 	@Autowired
+	public WaterRateGroupService waterRateGroupService;
+	@Autowired
 	public DeptService deptService;
 	@Autowired
 	public CommonService commonService;
 
 	List<PosParamGroup> posParamGroupList = null;
+	List<WaterRateGroup> waterRateGroupList = null;
 
 	/**
 	 * 消费机首页
@@ -65,9 +70,11 @@ public class DeviceController {
 		model.addAttribute("sysUser", sysUser);
 		model.addAttribute("company", company);
 		posParamGroupList = (List<PosParamGroup>) this.posParamGroupService.selectListByCompanyId(company.getId());
+		waterRateGroupList = (List<WaterRateGroup>) this.waterRateGroupService.selectListByCompanyId(company.getId());
 		List<Dept> deptList = (List<Dept>) this.deptService.selectListByCompanyId(company.getId());
 		model.addAttribute("deptList", deptList);
 		model.addAttribute("posParamGroupList", posParamGroupList);
+		model.addAttribute("waterRateGroupList", waterRateGroupList);
 		model.addAttribute("base", "/systemManager/deviceManager");
 		return "/systemManager/deviceManager/posIndex";
 	}

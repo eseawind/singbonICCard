@@ -68,7 +68,7 @@ public class SystemListener implements ServletContextListener {
 				if (c.getId() == m.getCompanyId()) {
 					list.add(m);
 				}
-				TerminalManager.CompanyToMealList.put(c.getId(), list);
+				TerminalManager.CompanyIdToMealList.put(c.getId(), list);
 			}
 		}
 

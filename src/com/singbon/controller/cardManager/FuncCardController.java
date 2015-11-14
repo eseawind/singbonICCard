@@ -29,7 +29,7 @@ import com.singbon.service.mainCard.FuncCardService;
  * 
  */
 @Controller
-@RequestMapping(value = "/cardManager/specialCard")
+@RequestMapping(value = "/cardManager/funcCard")
 public class FuncCardController extends BaseController {
 
 	@Autowired
@@ -49,10 +49,6 @@ public class FuncCardController extends BaseController {
 	 */
 	@RequestMapping(value = "/index.do")
 	public String index(HttpServletRequest request, Model model) {
-//		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
-//		Company company = (Company) request.getSession().getAttribute("company");
-//		Device device = (Device) request.getSession().getAttribute("device");
-
 		String url = request.getRequestURI();
 		model.addAttribute("base", url.replace("/index.do", ""));
 		return url.replace(".do", "");
@@ -87,7 +83,7 @@ public class FuncCardController extends BaseController {
 	// TerminalManager.SNToSocketChannelList.get(sn);
 	// if (socketChannel != null) {
 	// try {
-	// int cardNO = this.specialCardService.selectMaxCardNO(company.getId());
+	// int cardNO = this.funcCardService.selectMaxCardNO(company.getId());
 	// byte commandCode = CardReaderCommandCode.MakeCashierCard;
 	// if (editType == 1) {
 	// commandCode = CardReaderCommandCode.RemakeCashierCard;
@@ -97,7 +93,7 @@ public class FuncCardController extends BaseController {
 	// }
 	// user.setCardNO(cardNO);
 	// user.setStatus(1);
-	// this.specialCardService.makeCashierCard(company.getId(), device,
+	// this.funcCardService.makeCashierCard(company.getId(), device,
 	// socketChannel, user, commandCode, section);
 	// } catch (Exception e) {
 	// e.printStackTrace();
@@ -127,7 +123,7 @@ public class FuncCardController extends BaseController {
 	// }
 	// if (lossType == 0) {
 	// try {
-	// this.specialCardService.changeStatus(sysUser.getOperId(), 2);
+	// this.funcCardService.changeStatus(sysUser.getOperId(), 2);
 	// p.print(1);
 	// } catch (Exception e) {
 	// p.print(0);
@@ -138,7 +134,7 @@ public class FuncCardController extends BaseController {
 	// TerminalManager.SNToSocketChannelList.get(device.getSn());
 	// if (socketChannel != null) {
 	// try {
-	// this.specialCardService.loss(sysUser, socketChannel, device,
+	// this.funcCardService.loss(sysUser, socketChannel, device,
 	// cardInfoStr);
 	// } catch (Exception e) {
 	// e.printStackTrace();
@@ -164,7 +160,7 @@ public class FuncCardController extends BaseController {
 	// TerminalManager.SNToSocketChannelList.get(device.getSn());
 	// if (socketChannel != null) {
 	// try {
-	// this.specialCardService.unloss(sysUser, socketChannel, device,
+	// this.funcCardService.unloss(sysUser, socketChannel, device,
 	// cardInfoStr);
 	// } catch (Exception e) {
 	// e.printStackTrace();
@@ -190,7 +186,7 @@ public class FuncCardController extends BaseController {
 	// TerminalManager.SNToSocketChannelList.get(device.getSn());
 	// if (socketChannel != null) {
 	// try {
-	// this.specialCardService.doInvalidDate(sysUser, cardInfoStr,
+	// this.funcCardService.doInvalidDate(sysUser, cardInfoStr,
 	// socketChannel, device);
 	// } catch (Exception e) {
 	// e.printStackTrace();
@@ -208,7 +204,7 @@ public class FuncCardController extends BaseController {
 	// */
 	// @SuppressWarnings({ "unchecked", "rawtypes" })
 	// private int getCardSNCount(int companyId, String cardSN, String sn) {
-	// int cardSNCount = this.specialCardService.selectCountByCardSN(companyId,
+	// int cardSNCount = this.funcCardService.selectCountByCardSN(companyId,
 	// cardSN);
 	// if (cardSNCount > 0) {
 	// Map map = new HashMap();

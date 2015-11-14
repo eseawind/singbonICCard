@@ -73,7 +73,7 @@ public class PosExecConsumeRecord implements Runnable {
 		record.setConsumeType(consumeType);
 		record.setConsumeTypeDes(ConsumeType.getTypeDes(consumeType));
 
-		List<Meal> mealList = TerminalManager.CompanyToMealList.get(device.getCompanyId());
+		List<Meal> mealList = TerminalManager.CompanyIdToMealList.get(device.getCompanyId());
 		int mealId = 0;
 		String opTime = StringUtil.dateFormat(c.getTime(), "HH:mm:ss");
 		for (Meal m : mealList) {

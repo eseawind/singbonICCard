@@ -191,8 +191,8 @@ function initUI(_box){
 			var $this = $(this);
 			var url=$this.attr('url');
 			if(url!=null){
-				if(url.indexOf('specialCard/index.do')!=-1){
-					var specialOptions = {
+				if(url.indexOf('funcCard/index.do')!=-1){
+					var funcOptions = {
 							width : 900,
 							height : 550,
 							max : false,
@@ -203,9 +203,9 @@ function initUI(_box){
 							drawable : true,
 							fresh : false
 					};
-					$.pdialog.open(url, 'dialog', '功能卡制作', specialOptions);
+					$.pdialog.open(url, 'dialog', '功能卡制作', funcOptions);
 				}else if(url.indexOf('cardReader/index.do')!=-1){
-					var specialOptions = {
+					var funcOptions = {
 							width : 300,
 							height : 200,
 							max : false,
@@ -216,7 +216,7 @@ function initUI(_box){
 							drawable : true,
 							fresh : false
 					};
-					$.pdialog.open(url, 'dialog', '参数下载', specialOptions);					
+					$.pdialog.open(url, 'dialog', '参数下载', funcOptions);					
 				}
 				return;
 			}

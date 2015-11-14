@@ -68,7 +68,7 @@ public class TerminalManager {
 	/**
 	 * 公司ID到采集监控多线程映射列表
 	 */
-	public static Map<Integer, Thread> CompanyToMonitorThreadList = new HashMap<Integer, Thread>();
+	public static Map<Integer, Thread> CompanyIdToMonitorThreadList = new HashMap<Integer, Thread>();
 
 	/**
 	 * SN序列号到发送命令映射列表
@@ -76,9 +76,14 @@ public class TerminalManager {
 	public static Map<String, ArrayList<SendCommand>> SNToSendCommandList = new HashMap<String, ArrayList<SendCommand>>();
 
 	/**
-	 * 公司ID到参别限次映射列表(消费记录、监控用)
+	 * 公司ID到餐别限次映射列表(消费记录、监控用)
 	 */
-	public static Map<Integer, List<Meal>> CompanyToMealList = new HashMap<Integer, List<Meal>>();
+	public static Map<Integer, List<Meal>> CompanyIdToMealList = new HashMap<Integer, List<Meal>>();
+	
+	/**
+	 * 公司ID到最后一个增量黑名单映射列表(自动下载黑名单用)
+	 */
+	public static Map<Integer, Integer> CompanyIdToLastBlackCardNOList = new HashMap<Integer, Integer>();
 
 	// ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// //////////////////////////////监控用
