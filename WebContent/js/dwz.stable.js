@@ -78,8 +78,6 @@
 						authUserClick($(this));
 					}else if(target=="batchCard"){
 						batchCardClick($(this));
-					}else if(target=="cashierCard"){
-						cashierCardClick($(this));
 					}else if(target=="meal"){
 						mealClick($(this));
 					}else if(target=="waterRateGroup"){

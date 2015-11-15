@@ -60,12 +60,6 @@
 			</dd>
 		</dl>
 		<dl style="margin: 10px 0;">
-			<dt>卡押金：</dt>
-			<dd>
-				<input type="text" name="cardDeposit" value="${cardParam.cardDeposit}" maxlength="20" class="digits required" />
-			</dd>
-		</dl>
-		<dl style="margin: 10px 0;">
 			<dt>预付金额：</dt>
 			<dd>
 				<input type="text" name="prepayFare" value="${cardParam.prepayFare}" maxlength="20" class="digits required" />

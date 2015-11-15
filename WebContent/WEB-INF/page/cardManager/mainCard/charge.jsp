@@ -27,7 +27,7 @@
 		init();
 		
 		$('#userinfo .ok').click(function() {
-			getAllOddCash();
+			getAllOddFare();
 			validateCallback($(this).parents('form'), function(e) {
 			}, null);
 		});
@@ -46,11 +46,13 @@
 				oddFare=0;
 			}
 			if($('#userinfo input[name=chargeType]:checked').val()==0){
-				$('#userinfo input[name=opCash2]').val(0);
-				$('#userinfo input[name=allOddCash]').val(oddFare);
+				$('#userinfo input[name=opFare2]').val(0);
+				$('#userinfo input[name=allOddFare]').val(oddFare);
+				$('#userinfo input[name=giveFare]').attr("disabled",false);
 			}else{
-				$('#userinfo input[name=opCash2]').val(oddFare);
-				$('#userinfo input[name=allOddCash]').val(0);				
+				$('#userinfo input[name=opFare2]').val(oddFare);
+				$('#userinfo input[name=allOddFare]').val(0);				
+				$('#userinfo input[name=giveFare]').attr("disabled",true);
 			}
 		});
 	});
@@ -129,7 +131,7 @@
 		$('body').everyTime('10s','getCardReaderStatus', function() {
 			var d=new Date();
 			var t=(d.getTime()-heartTime.getTime())/1000;
-			if(t>=15){
+			if(t>=12){
 				$.post('${base }/command.do?comm=closeSocketChannel');
 				$('.dialogHeader_c h1').html(title + '——读卡机状态：离线');
 				isOnline=false;
@@ -150,26 +152,36 @@
 		alertMsg.warn(msg);		
 	}
 	
-	function getAllOddCash(){
+	function getAllOddFare(){
 		var oddFare=$('#userinfo input[name=oddFare2]').val();
-		var opCash=$('#userinfo input[name=opCash2]').val();
-		if(opCash==''){
-			opCash=0;
+		var opFareInput=$('#userinfo input[name=opFare2]');
+		var giveFareInput=$('#userinfo input[name=giveFare]');
+		
+		var opFare=0;
+		var giveFare=0;
+		if(oddFare==''){
+			oddFare=0;
+		}
+		if(opFareInput.val()!=''){
+			opFare=opFareInput.val();
+		}
+		if(giveFareInput.val()!=''){
+			giveFare=giveFareInput.val();
 		}
 		var chargeType=$('#userinfo input[name=chargeType]:checked').val();
 		if(chargeType==0){
-			var allOddCash=parseFloat(oddFare)+parseFloat(opCash);
-			if(allOddCash>167772.15){
-				alertMsg.warn('总操作余额不能大于167772.15！');		
+			var allOddFare=parseFloat(oddFare)+parseFloat(opFare)+parseFloat(giveFare);
+			if(allOddFare>167772.15){
+				alertMsg.warn('总操作余额不能大于167772.15！');
 			}else{
-				$('#userinfo input[name=allOddCash]').val(allOddCash);
+				$('#userinfo input[name=allOddFare]').val(allOddFare);
 			}
 		}else{
-			var allOddCash=oddFare-opCash;
-			if(allOddCash<0){
+			var allOddFare=oddFare-opFare;
+			if(allOddFare<0){
 				alertMsg.warn('操作额不能大于余额！');		
 			}else{
-				$('#userinfo input[name=allOddCash]').val(allOddCash);
+				$('#userinfo input[name=allOddFare]').val(allOddFare);
 			}
 		}
 	}
@@ -233,13 +245,19 @@
 			<dl style="width: 500px;">
 				<dt>操作金额：</dt>
 				<dd>
-					<input class="number required" name="opCash2" type="text" value="0" onkeyup="getAllOddCash();"/>
+					<input class="number required" name="opFare2" type="text" value="0" onkeyup="getAllOddFare();"/>
+				</dd>
+			</dl>
+			<dl style="width: 500px;">
+				<dt>赠送金额：</dt>
+				<dd>
+					<input class="number required" name="giveFare" type="text" value="0" onkeyup="getAllOddFare();"/>
 				</dd>
 			</dl>
 			<dl style="width: 500px;">
 				<dt>总操作余额：</dt>
 				<dd>
-					<input name="allOddCash" type="text" value="0" readonly="readonly"/>
+					<input name="allOddFare" type="text" value="0" readonly="readonly"/>
 				</dd>
 			</dl>
 		</fieldset>

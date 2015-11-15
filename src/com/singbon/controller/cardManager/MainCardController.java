@@ -30,9 +30,9 @@ import com.singbon.entity.Batch;
 import com.singbon.entity.CardAllInfo;
 import com.singbon.entity.CardFunc;
 import com.singbon.entity.CardIdentity;
+import com.singbon.entity.CardParam;
 import com.singbon.entity.Company;
 import com.singbon.entity.Device;
-import com.singbon.entity.Discount;
 import com.singbon.entity.Pagination;
 import com.singbon.entity.SysUser;
 import com.singbon.entity.User;
@@ -41,7 +41,7 @@ import com.singbon.service.CommonService;
 import com.singbon.service.CompanyService;
 import com.singbon.service.mainCard.MainCardService;
 import com.singbon.service.systemManager.systemSetting.BatchService;
-import com.singbon.service.systemManager.systemSetting.DiscountService;
+import com.singbon.service.systemManager.systemSetting.CardParamService;
 import com.singbon.service.systemManager.systemSetting.UserDeptService;
 import com.singbon.util.StringUtil;
 
@@ -62,11 +62,11 @@ public class MainCardController extends BaseController {
 	@Autowired
 	public BatchService batchService;
 	@Autowired
-	public DiscountService discountService;
-	@Autowired
 	public CompanyService companyService;
 	@Autowired
 	public CommonService commonService;
+	@Autowired
+	public CardParamService cardParamService;
 
 	/**
 	 * 首页
@@ -180,7 +180,7 @@ public class MainCardController extends BaseController {
 	 * @param model
 	 * @return
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({ "rawtypes" })
 	@RequestMapping(value = "/userInfo.do", method = RequestMethod.GET)
 	public String userInfo(Integer userId, Integer deptId, Integer batchId, Integer editType, HttpServletRequest request, Model model) {
 		request.getSession().removeAttribute("companyId");
@@ -225,12 +225,14 @@ public class MainCardController extends BaseController {
 		cardIdentityList.add(m7);
 		cardIdentityList.add(m8);
 
-		List<Discount> discountList = (List<Discount>) discountService.selectListByCompanyId(company.getId());
+		CardParam cardParam = (CardParam) this.cardParamService.selectByCompanyId(company.getId());
 		Batch batch = (Batch) batchService.selectById(batchId);
-		model.addAttribute("discountList", discountList);
+
+		model.addAttribute("cardFuncList", cardFuncList);
 		model.addAttribute("cardFuncList", cardFuncList);
 		model.addAttribute("cardIdentityList", cardIdentityList);
 
+		model.addAttribute("cardParam", cardParam);
 		model.addAttribute("batch", batch);
 		model.addAttribute("base", StringUtil.requestBase(request));
 		model.addAttribute("deptId", deptId);
@@ -240,14 +242,14 @@ public class MainCardController extends BaseController {
 			model.addAttribute("user", user);
 		}
 		if (editType == 2 || editType == 3) {
-			if(device != null){
+			if (device != null) {
 				String sn = device.getSn();
 				// 读卡机状态
 				if (TerminalManager.SNToSocketChannelList.containsKey(sn)) {
 					model.addAttribute("cardStatus", 1);
 				} else {
 					model.addAttribute("cardStatus", 0);
-				}				
+				}
 			}
 		}
 		if (editType == 4) {
@@ -303,7 +305,7 @@ public class MainCardController extends BaseController {
 		String sn = device.getSn();
 		int section = company.getBaseSection();
 		PrintWriter p = null;
-		int allOpCash = (cardAllInfo.getOpCash() + cardAllInfo.getGiveCash()) * 100;
+		int allOpCash = (cardAllInfo.getPreOpFare() + cardAllInfo.getGiveFare() - cardAllInfo.getCardCost()) * 100;
 		int cardOpCounter = allOpCash > 0 ? 1 : 0;
 		// 单个发卡
 		if (editType == 2) {

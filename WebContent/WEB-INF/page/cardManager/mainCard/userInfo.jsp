@@ -55,6 +55,8 @@
 		$('#userinfo .singleCard').click(function() {
 			if(isOnline){
 				if($('#userinfo').valid()){
+					if(!getAllFare())
+						return;
 					$.post('${base }/singleCardInit.do?userNO='+$('#userinfo input[name=userNO]').val(),function(e){
 						if(e==2){
 							alertMsg.warn('该用户编号已存在请更改！');					
@@ -82,6 +84,8 @@
 	function infoCard(){
 		if(isOnline){
 			if($('#userinfo').valid()){
+				if(!getAllFare())
+					return;
 				$.post('${base }/command.do?comm=infoCardInit');
 			}
 		}else{
@@ -209,6 +213,35 @@
 			alertMsg.warn('该用户已发卡！');		
 		}
 	}
+	
+	function getAllFare(){
+		var preOpFareInput=$('#userinfo input[name=preOpFare]');
+		var giveFareInput=$('#userinfo input[name=giveFare]');
+		var allFareInput=$('#userinfo #allFare');
+		
+		var preOpFare=0;
+		var giveFare=0;
+		var cardCost=$('#userinfo input[name=cardCost]').val();
+		var allFare=0;
+		
+		if(preOpFareInput.val()==''){
+// 			preOpFareInput.val(0);
+		}else{
+			preOpFare=preOpFareInput.val();
+		}
+		if(giveFareInput.val()==''){
+// 			giveFareInput.val(0);
+		}else{
+			giveFare=giveFareInput.val();
+		}
+		allFare=parseFloat(preOpFare)+parseFloat(giveFare)-parseFloat(cardCost);
+		allFareInput.val(allFare);
+		if(allFare>167772.15){
+			alertMsg.warn('实际金额不能大于167772.15！');
+			return false;
+		}
+		return true;
+	}
 </script>
 
 <style type="text/css">
@@ -310,8 +343,7 @@
 				<dd>
 					<select class="combox" name="cardTypeId" class="required" outerw="105" innerw="122">
 						<c:forEach items="${discountList }" var="d">
-							<option value="${d.discountType }" cash=${d.giveCash }
-								<c:if test="${d.discountType==user.cardTypeId}">selected="selected"</c:if>>${d.discountType}类卡</option>
+							<option value="${d.discountType }" <c:if test="${d.discountType==user.cardTypeId}">selected="selected"</c:if>>${d.discountType}类卡</option>
 						</c:forEach>
 					</select>
 				</dd>
@@ -339,15 +371,21 @@
 				</dd>
 			</dl>
 			<dl>
-				<dt>预发金额：</dt>
+				<dt>实际金额：</dt>
 				<dd>
-					<input class="number" name="opCash" type="text" value="0" />
+					<input id="allFare" type="text" value="0" readonly="readonly"/>
 				</dd>
 			</dl>
 			<dl>
 				<dt>赠送金额：</dt>
 				<dd>
-					<input class="number" name="giveCash" type="text" value="${discountList[0].giveCash }" />
+					<input class="number" name="giveFare" type="text" value="0" onkeyup="getAllFare();"/>
+				</dd>
+			</dl>
+			<dl>
+				<dt>预发金额：</dt>
+				<dd>
+					<input class="number" name="preOpFare" type="text" value="${cardParam.prepayFare}" onkeyup="getAllFare();"/>
 				</dd>
 			</dl>
 		</fieldset>
@@ -361,22 +399,9 @@
 				</dd>
 			</dl>
 			<dl>
-				<dt>身份密码：</dt>
-				<dd>
-					<input name="identityPwd" type="text" class="digits"
-						value="${user.identityPwd==null?8888:user.identityPwd }" />
-				</dd>
-			</dl>
-			<dl>
 				<dt>开户卡成本：</dt>
 				<dd>
-					<input name="cardCost" type="text" class="number" value="0" />
-				</dd>
-			</dl>
-			<dl>
-				<dt>卡押金：</dt>
-				<dd>
-					<input name="cardDeposit" type="text" class="number" value="0" />
+					<input name="cardCost" type="text" class="number" value="${cardParam.cardCost}" readonly="readonly"/>
 				</dd>
 			</dl>
 			<dl>

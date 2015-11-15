@@ -17,7 +17,7 @@ public class User implements Serializable {
 	private Integer userId;
 	// 所属公司
 	private Integer companyId;
-	// 部门编码
+	// 所属部门
 	private Integer deptId;
 	// 用户姓名
 	private String username;
@@ -52,8 +52,6 @@ public class User implements Serializable {
 	private Date endDate;
 	// 消费密码
 	private String consumePwd;
-	// 身份密码
-	private String identityPwd;
 	// 失效期(YYYY-MM-DD)
 	private Date invalidDate;
 	// 制卡日期
@@ -246,14 +244,6 @@ public class User implements Serializable {
 
 	public void setConsumePwd(String consumePwd) {
 		this.consumePwd = consumePwd;
-	}
-
-	public String getIdentityPwd() {
-		return identityPwd;
-	}
-
-	public void setIdentityPwd(String identityPwd) {
-		this.identityPwd = identityPwd;
 	}
 
 	public Date getInvalidDate() {

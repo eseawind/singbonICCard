@@ -3,6 +3,8 @@ package com.singbon.device;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,21 +45,46 @@ public class CardReaderCommandExec {
 		}
 
 		Map map = new HashMap();
-		// 获取机器号序列号
+		// 心跳包
 		if (frameByte[0] == 0x03 && frameByte[1] == 0x08) {
 			byte frame = CardReaderResultCommandCode.HeartStatus;
 			TerminalManager.UuidToSNList.put(selectionKey.attachment().toString(), sn);
+			SocketChannel socketChannel = (SocketChannel) selectionKey.channel();
 			TerminalManager.SNToSocketChannelList.put(sn, (SocketChannel) selectionKey.channel());
 			map.put("'f1'", frame);
 			map.put("'r'", 1);
-			// 下载读卡机参数
-		} else if (frameByte[1] == 0x04) {
+
+			// 相差半分钟校时
+			Calendar c1 = Calendar.getInstance();
+			c1.set(StringUtil.objToInt("20" + StringUtil.getHexStrFromBytes(36, 36, b)), StringUtil.objToInt(StringUtil.getHexStrFromBytes(37, 37, b)),
+					StringUtil.objToInt(StringUtil.getHexStrFromBytes(38, 38, b)), StringUtil.objToInt(StringUtil.getHexStrFromBytes(39, 39, b)),
+					StringUtil.objToInt(StringUtil.getHexStrFromBytes(40, 40, b)), StringUtil.objToInt(StringUtil.getHexStrFromBytes(41, 41, b)));
+			c1.add(Calendar.MONTH, -1);
+			Calendar c2 = Calendar.getInstance();
+			c2.setTime(new Date());
+
+			if (Math.abs(c1.getTimeInMillis() - c2.getTimeInMillis()) > 30000) {
+				String sendBufStr = CardReaderFrame.SysTime + "00000001" + StringUtil.timeToHexStr() + "0000";
+				String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
+				sendBufStr = StringUtil.getHexStrFromBytes(0, 19, b) + CommandDevice.NoSubDeviceNum + DeviceType.Main + DeviceType.CardReader + bufLen + sendBufStr;
+				byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
+				try {
+					TerminalManager.sendToCardReader(socketChannel, sendBuf);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			// 下载读卡机参数，命令码为0是手动下载为1是自动校时不做页面处理
+		} else if ((frameByte[1] == 0x04 || frameByte[1] == 0x07) && commandCode == 0) {
 			// 单位名称
 			if (frameByte[2] == 0x08) {
 				map.put("'f1'", CardReaderResultCommandCode.CompanyName);
-			//密码
+				// 密码
 			} else if (frameByte[2] == 0x03) {
 				map.put("'f1'", CardReaderResultCommandCode.CardReaderPwd);
+				// 校时
+			} else if (frameByte[2] == 0x01) {
+				map.put("'f1'", CardReaderResultCommandCode.SysTime);
 			}
 			// //////////////////////////////////////////////////////////////////////////////
 			// /////////////////////////////////////////////写卡回复

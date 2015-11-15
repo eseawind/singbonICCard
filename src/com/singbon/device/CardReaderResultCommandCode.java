@@ -24,6 +24,10 @@ public class CardReaderResultCommandCode {
 	 * 下载读卡机密码 0x73
 	 */
 	public static byte CardReaderPwd = 0x73;
+	/**
+	 * 系统校时 0x74
+	 */
+	public static byte SysTime = 0x74;
 
 	/**
 	 * 心跳状态 0x02

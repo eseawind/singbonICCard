@@ -30,8 +30,7 @@ public class CardReaderController extends BaseController {
 
 	@Autowired
 	public CardReaderService cardReaderService;
-	
-	
+
 	/**
 	 * 首页
 	 * 
@@ -101,6 +100,17 @@ public class CardReaderController extends BaseController {
 			if (socketChannel != null) {
 				try {
 					cardReaderService.sysPwd(company, socketChannel, device);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		// 下载系统时间
+		else if ("sysTime".equals(comm)) {
+			SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
+			if (socketChannel != null) {
+				try {
+					cardReaderService.sysTime(company, socketChannel, device);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

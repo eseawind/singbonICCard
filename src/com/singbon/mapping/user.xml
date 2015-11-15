@@ -6,13 +6,13 @@
 	<parameterMap type="com.singbon.entity.User" id="user2" />
 	<insert id="insert" parameterMap="user2" useGeneratedKeys="true" keyProperty="userId">
 		insert into user
-		(companyId,deptId,username,shortName,userNO,sex,cardID,cardNO,cardSN,cardSeq,cardTypeId,cardFunc,cardIdentity,status,beginDate,invalidDate,cardMakeDate,consumePwd,identityPwd,totalFare,oddFare,opCount)
+		(companyId,deptId,username,shortName,userNO,sex,cardID,cardNO,cardSN,cardSeq,cardTypeId,cardFunc,cardIdentity,status,beginDate,invalidDate,cardMakeDate,consumePwd,totalFare,oddFare,opCount)
 		values
-		(#{companyId},#{deptId},#{username},#{shortName},#{userNO},#{sex},#{cardID},#{cardNO},#{cardSN},#{cardSeq},#{cardTypeId},#{cardFunc},#{cardIdentity},#{status},#{beginDate},#{invalidDate},#{cardMakeDate},#{consumePwd},#{identityPwd},#{totalFare},#{oddFare},#{opCount})
+		(#{companyId},#{deptId},#{username},#{shortName},#{userNO},#{sex},#{cardID},#{cardNO},#{cardSN},#{cardSeq},#{cardTypeId},#{cardFunc},#{cardIdentity},#{status},#{beginDate},#{invalidDate},#{cardMakeDate},#{consumePwd},#{totalFare},#{oddFare},#{opCount})
 	</insert>
 	<update id="update" parameterMap="user2">
 		update user set
-		username=#{username},shortName=#{shortName},userNO=#{userNO},sex=#{sex},cardID=#{cardID},cardTypeId=#{cardTypeId},cardFunc=#{cardFunc},cardIdentity=#{cardIdentity},endDate=#{endDate},consumePwd=#{consumePwd},identityPwd=#{identityPwd}
+		username=#{username},shortName=#{shortName},userNO=#{userNO},sex=#{sex},cardID=#{cardID},cardTypeId=#{cardTypeId},cardFunc=#{cardFunc},cardIdentity=#{cardIdentity},endDate=#{endDate},consumePwd=#{consumePwd}
 		where userId=#{userId}
 	</update>
 	<update id="infoCard" parameterMap="user2">

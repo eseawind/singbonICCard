@@ -20,10 +20,10 @@ public class CardAllInfo implements Serializable {
 	private Integer limitDayFare;
 	// 次消费限额
 	private Integer limitTimesFare;
-	// 操作额
-	private Integer opCash;
+	// 预发金额
+	private Integer preOpFare;
 	// 赠送金额
-	private Integer giveCash;
+	private Integer giveFare;
 	// 限次时间段定义
 	private Integer[] LimitPeriods;
 	// 补助限次时间段定义
@@ -69,14 +69,6 @@ public class CardAllInfo implements Serializable {
 		this.limitTimesFare = limitTimesFare;
 	}
 
-	public Integer getOpCash() {
-		return opCash;
-	}
-
-	public void setOpCash(Integer opCash) {
-		this.opCash = opCash;
-	}
-
 	public Integer[] getLimitPeriods() {
 		return LimitPeriods;
 	}
@@ -85,20 +77,28 @@ public class CardAllInfo implements Serializable {
 		LimitPeriods = limitPeriods;
 	}
 
-	public Integer getGiveCash() {
-		return giveCash;
-	}
-
-	public void setGiveCash(Integer giveCash) {
-		this.giveCash = giveCash;
-	}
-
 	public Integer[] getSubsidyLimitPeriods() {
 		return SubsidyLimitPeriods;
 	}
 
 	public void setSubsidyLimitPeriods(Integer[] subsidyLimitPeriods) {
 		SubsidyLimitPeriods = subsidyLimitPeriods;
+	}
+
+	public Integer getPreOpFare() {
+		return preOpFare;
+	}
+
+	public void setPreOpFare(Integer preOpFare) {
+		this.preOpFare = preOpFare;
+	}
+
+	public Integer getGiveFare() {
+		return giveFare;
+	}
+
+	public void setGiveFare(Integer giveFare) {
+		this.giveFare = giveFare;
 	}
 
 }

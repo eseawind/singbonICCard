@@ -50,4 +50,20 @@ public class CardReaderService {
 		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
 		TerminalManager.sendToCardReader(socketChannel, sendBuf);
 	}
+
+	/**
+	 * 校时
+	 * 
+	 * @param company
+	 * @param socketChannel
+	 * @param device
+	 * @throws Exception
+	 */
+	public void sysTime(Company company, SocketChannel socketChannel, Device device) throws Exception {
+		String sendBufStr = CardReaderFrame.SysTime + "00000000" + StringUtil.timeToHexStr() + "0000";
+		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
+		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + CommandDevice.NoSubDeviceNum + DeviceType.Main + DeviceType.CardReader + bufLen + sendBufStr;
+		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
+		TerminalManager.sendToCardReader(socketChannel, sendBuf);
+	}
 }

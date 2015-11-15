@@ -62,6 +62,14 @@
 				//下载密码
 				}else if(e2.f1==115){
 					$('#cardReader #item2 img').show();
+					if(isOnline){
+						$.post('${base}/command.do?comm=sysTime');
+					}else{
+						alertMsg.warn('读卡机当前处于离线状态下载中断！');
+					}
+				//系统校时
+				}else if(e2.f1==116){
+					$('#cardReader #item3 img').show();
 					alertMsg.correct('下载完成！');
 				}
 			}
@@ -103,8 +111,9 @@
 </style>
 <div id="cardReader">
 	<div id="result" layoutH="35" style="width: 190px;">
-		<div id="item1" style="margin-top: 35px;">1、单位名称<img src="/img/ok.png"></div>
+		<div id="item1" style="margin-top: 25px;">1、单位名称<img src="/img/ok.png"></div>
 		<div id="item2">2、读卡机密码<img src="/img/ok.png"></div>
+		<div id="item3">3、校验时间<img src="/img/ok.png"></div>
 	</div>
 	<div class="formBar">
 		<ul>

@@ -27,6 +27,10 @@ public class CardReaderFrame {
 	 */
 	public static String CardReaderPwd = "0403";
 	/**
+	 * 下载系统时间 0701
+	 */
+	public static String SysTime = "0701";
+	/**
 	 * 不验证物理卡号00
 	 */
 	public static String NoValidateCardSN = "00";
