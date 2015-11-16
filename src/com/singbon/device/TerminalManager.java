@@ -79,7 +79,7 @@ public class TerminalManager {
 	 * 公司ID到餐别限次映射列表(消费记录、监控用)
 	 */
 	public static Map<Integer, List<Meal>> CompanyIdToMealList = new HashMap<Integer, List<Meal>>();
-	
+
 	/**
 	 * 公司ID到最后一个增量黑名单映射列表(自动下载黑名单用)
 	 */

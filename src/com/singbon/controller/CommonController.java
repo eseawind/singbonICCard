@@ -18,9 +18,12 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.singbon.device.TerminalManager;
 import com.singbon.entity.Company;
 import com.singbon.entity.Dept;
+import com.singbon.entity.Device;
 import com.singbon.entity.Pagination;
 import com.singbon.entity.SysUser;
 import com.singbon.entity.UserDept;
@@ -190,5 +193,23 @@ public class CommonController {
 		model.addAttribute("includeSub", includeSub);
 
 		return "common/selectPos/list";
+	}
+
+	/**
+	 * 关闭连接
+	 * 
+	 * @param model
+	 * @return
+	 * @throws IOException
+	 */
+	@RequestMapping(value = "/closeSocketChannel.do", method = RequestMethod.POST)
+	public void closeSocketChannel(HttpServletRequest request, Model model) {
+		Device device = (Device) request.getSession().getAttribute("device");
+		String sn = device.getSn();
+		try {
+			TerminalManager.closeSocketChannel(sn);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

@@ -348,8 +348,11 @@
 			'sysInit' : function(t, target) {
 				executeCmd(t,'sysInit');
 			},
-			'batchBlack' : function(t, target) {
-				executeCmd(t,'batchBlack');
+			'batchUpdate' : function(t, target) {
+				executeCmd(t,'batchUpdate');
+			},
+			'blackUpdate' : function(t, target) {
+				executeCmd(t,'blackUpdate');
 			}
 		},
 		onShowMenu : function(e, menu) {
@@ -452,9 +455,8 @@
 			<li id="grantSubsidy">补助授权</li>
 			<li id="disableSubsidy">补助回收</li>
 			<li class="divide" />
-			<li id="batchBlack">批次名单</li>
-			<li id="allAppend">全量名单</li>
-			<li id="incAppend">增量名单</li>
+			<li id="batchUpdate">批次更新</li>
+			<li id="blackUpdate">黑名单更新名单</li>
 			<li class="divide" />
 			<li id="allCookbook">全部菜肴清单</li>
 			<li id="appendCookbook">追加菜肴清单</li>

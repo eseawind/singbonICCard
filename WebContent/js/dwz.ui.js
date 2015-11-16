@@ -193,8 +193,8 @@ function initUI(_box){
 			if(url!=null){
 				if(url.indexOf('funcCard/index.do')!=-1){
 					var funcOptions = {
-							width : 900,
-							height : 550,
+							width : 300,
+							height : 200,
 							max : false,
 							mask : true,
 							mixable : false,

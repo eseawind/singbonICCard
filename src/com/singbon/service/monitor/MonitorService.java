@@ -31,7 +31,6 @@ import com.singbon.device.PosSubFrameSys04;
 import com.singbon.device.PosSubFrameSys07;
 import com.singbon.device.SendCommand;
 import com.singbon.device.TerminalManager;
-import com.singbon.entity.Batch;
 import com.singbon.entity.Company;
 import com.singbon.entity.ConsumeParam;
 import com.singbon.entity.Cookbook;
@@ -185,40 +184,23 @@ public class MonitorService implements Runnable {
 			WaterRateGroup w = command.getWaterRateGroup();
 			if (w == null)
 				return;
-			sendBufStr += StringUtil.binaryHexStr("" + w.getStopWaterType() + w.getSubsidyFirst() + w.getGoWaterType() + w.getRate1Status() + "0" + w.getSubsidyReset() + w.getRate1NextDayReset()
-					+ "0")
-					+ StringUtil.hexLeftPad(w.getRate1Fare(), 4)
-					+ getWaterDeduceCycle(w, w.getRate1Cycle(), w.getRate1Water())
-					+ "00"
-					+ StringUtil.hexLeftPad(p.getCardMinFare(), 2)
-					+ "00"
-					+ StringUtil.hexLeftPad(w.getPwd(), 4)
-					+ StringUtil.hexLeftPad(w.getConsumeType(), 2)
-					+ StringUtil.hexLeftPad(w.getRate5Fare(), 4)
-					+ getWaterDeduceCycle(w, w.getRate5Cycle(), w.getRate5Water())
-					+ StringUtil.hexLeftPad(w.getBound(), 2)
-					+ "0000"
-					+ StringUtil.hexLeftPad(p.getDayLimitFare(), 4)
-					+ getWaterCardTypesHexStr(w.getRate1CardTypes())
-					+ StringUtil.hexLeftPad(p.getTimeLimitFare(), 4)
-					+ getPosCardTypesHexStr(p.getCardMinFareCardTypes())
-					+ getPosCardTypesHexStr(p.getDayLimitFareCardTypes())
-					+ getPosCardTypesHexStr(p.getTimeLimitFareCardTypes())
+			sendBufStr += StringUtil
+					.binaryHexStr("" + w.getStopWaterType() + w.getSubsidyFirst() + w.getGoWaterType() + w.getRate1Status() + "0" + w.getSubsidyReset() + w.getRate1NextDayReset() + "0")
+					+ StringUtil.hexLeftPad(w.getRate1Fare(), 4) + getWaterDeduceCycle(w, w.getRate1Cycle(), w.getRate1Water()) + "00" + StringUtil.hexLeftPad(p.getCardMinFare(), 2) + "00"
+					+ StringUtil.hexLeftPad(w.getPwd(), 4) + StringUtil.hexLeftPad(w.getConsumeType(), 2) + StringUtil.hexLeftPad(w.getRate5Fare(), 4)
+					+ getWaterDeduceCycle(w, w.getRate5Cycle(), w.getRate5Water()) + StringUtil.hexLeftPad(w.getBound(), 2) + "0000" + StringUtil.hexLeftPad(p.getDayLimitFare(), 4)
+					+ getWaterCardTypesHexStr(w.getRate1CardTypes()) + StringUtil.hexLeftPad(p.getTimeLimitFare(), 4) + getPosCardTypesHexStr(p.getCardMinFareCardTypes())
+					+ getPosCardTypesHexStr(p.getDayLimitFareCardTypes()) + getPosCardTypesHexStr(p.getTimeLimitFareCardTypes())
 					+ StringUtil.binaryHexStr("" + w.getEnableMeal() + w.getEnableDiscount() + w.getEnableDayLimitFare() + w.getEnableTimeLimitFare() + w.getEnableCardMinFare())
-					+ getWaterRateTime(w.getRate2BeginTime(), w.getRate2EndTime())
-					+ StringUtil.hexLeftPad(w.getRate2Fare(), 4)
-					+ getWaterDeduceCycle(w, w.getRate2Cycle(), w.getRate2Water())
-					+ getWaterCardTypesHexStr(w.getRate2CardTypes())
-					+ getWaterRateTime(w.getRate3BeginTime(), w.getRate3EndTime())
-					+ StringUtil.hexLeftPad(w.getRate3Fare(), 4)
-					+ getWaterDeduceCycle(w, w.getRate3Cycle(), w.getRate3Water())
-					+ getWaterCardTypesHexStr(w.getRate3CardTypes())
-					+ getWaterRateTime(w.getRate4BeginTime(), w.getRate4EndTime())
-					+ StringUtil.hexLeftPad(w.getRate4Fare(), 4) + getWaterDeduceCycle(w, w.getRate4Cycle(), w.getRate4Water()) + getWaterCardTypesHexStr(w.getRate4CardTypes()) + "0064000a000201" + "0000";
+					+ getWaterRateTime(w.getRate2BeginTime(), w.getRate2EndTime()) + StringUtil.hexLeftPad(w.getRate2Fare(), 4) + getWaterDeduceCycle(w, w.getRate2Cycle(), w.getRate2Water())
+					+ getWaterCardTypesHexStr(w.getRate2CardTypes()) + getWaterRateTime(w.getRate3BeginTime(), w.getRate3EndTime()) + StringUtil.hexLeftPad(w.getRate3Fare(), 4)
+					+ getWaterDeduceCycle(w, w.getRate3Cycle(), w.getRate3Water()) + getWaterCardTypesHexStr(w.getRate3CardTypes()) + getWaterRateTime(w.getRate4BeginTime(), w.getRate4EndTime())
+					+ StringUtil.hexLeftPad(w.getRate4Fare(), 4) + getWaterDeduceCycle(w, w.getRate4Cycle(), w.getRate4Water()) + getWaterCardTypesHexStr(w.getRate4CardTypes()) + "0064000a000201"
+					+ "0000";
 		}
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
 		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + CommandDevice.NoSubDeviceNum + DeviceType.Main + DeviceType.getDeviceTypeFrame(device) + bufLen + sendBufStr;
-		
+
 		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
 
 		TerminalManager.sendToPos(inetSocketAddress, sendBuf);
@@ -283,7 +265,7 @@ public class MonitorService implements Runnable {
 		}
 		return StringUtil.strLeftPadWithChar(StringUtil.binaryHexStr(result), 4, "0");
 	}
-	
+
 	/**
 	 * 水控授权16个卡类型转hex字符串2字节
 	 * 
@@ -969,35 +951,20 @@ public class MonitorService implements Runnable {
 			sendCommand.setCookbook(cookbook);
 			sendCommand.setCommandCode(commandIndex++);
 			sendCommandList.add(sendCommand);
-			// 批次名单
-		} else if ("batchBlack".equals(cmd)) {
+			// 批次更新
+		} else if ("batchUpdate".equals(cmd)) {
 			SendCommand sendCommand = new SendCommand();
 			sendCommand.setFrame(PosFrame.Black);
 			sendCommand.setSubFrame(PosSubFrameBlack.BatchUpdate);
 			sendCommand.setCommandCode(commandIndex++);
 			sendCommandList.add(sendCommand);
-
-			List<Batch> list = this.batchDAO.selectBlackList(company.getId());
-			int count = list.size() / 20;
-			count += list.size() % 20 == 0 ? 0 : 1;
-			int j = 0;
-			for (int i = 0; i < count; i++) {
-				String batchIds = "";
-				String batchNames = "";
-				for (; j < (i + 1) * 20 && j < list.size(); j++) {
-					batchIds += StringUtil.hexLeftPad(list.get(j).getId(), 4);
-					batchNames += list.get(j).getBatchName() + ",";
-				}
-				batchNames = batchNames.substring(0, batchNames.length() - 1);
-				SendCommand sendCommand2 = new SendCommand();
-				sendCommand2.setFrame(PosFrame.Black);
-				sendCommand2.setSubFrame(PosSubFrameBlack.BatchAppend);
-				sendCommand2.setCommandCode(commandIndex++);
-				sendCommand2.setBatchIds(batchIds);
-				sendCommand2.setBatchNames(batchNames);
-				sendCommandList.add(sendCommand2);
-			}
-
+			// 黑名单更新
+		} else if ("blackUpdate".equals(cmd)) {
+			SendCommand sendCommand = new SendCommand();
+			sendCommand.setFrame(PosFrame.Black);
+			sendCommand.setSubFrame(PosSubFrameBlack.AllAppend);
+			sendCommand.setCommandCode(commandIndex++);
+			sendCommandList.add(sendCommand);
 			// 初始化
 		} else if ("sysInit".equals(cmd)) {
 			SendCommand sendCommand = new SendCommand();

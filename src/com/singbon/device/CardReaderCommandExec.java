@@ -125,37 +125,6 @@ public class CardReaderCommandExec {
 				map.put("'f1'", CardReaderResultCommandCode.ReadCardDone);
 				map.put("'r'", cardStatus);
 			}
-			// 制出纳卡完成
-			else if (commandCode == CardReaderCommandCode.MakeCashierCard) {
-				map.put("'f1'", CardReaderResultCommandCode.MakeCashierCardDone);
-				map.put("'r'", cardStatus);
-				map.put("'newCardSN'", cardSN);
-			}
-			// 挂失出纳卡完成
-			else if (commandCode == CardReaderCommandCode.LossCashierCard) {
-				map.put("'f1'", CardReaderResultCommandCode.LossCashierCardDone);
-				map.put("'r'", cardStatus);
-			}
-			// 解挂出纳卡完成
-			else if (commandCode == CardReaderCommandCode.UnLossCashierCard) {
-				map.put("'f1'", CardReaderResultCommandCode.UnLossCashierCardDone);
-				map.put("'r'", cardStatus);
-			}
-			// 解挂出纳卡完成
-			else if (commandCode == CardReaderCommandCode.UnLossCashierCard) {
-				map.put("'f1'", CardReaderResultCommandCode.UnLossCashierCardDone);
-				map.put("'r'", cardStatus);
-			}
-			// 补办出纳卡完成
-			else if (commandCode == CardReaderCommandCode.RemakeCashierCard) {
-				map.put("'f1'", CardReaderResultCommandCode.RemakeCashierCardDone);
-				map.put("'r'", cardStatus);
-			}
-			// 修改出纳卡有效期完成
-			else if (commandCode == CardReaderCommandCode.InvalidDateCashierCard) {
-				map.put("'f1'", CardReaderResultCommandCode.InvalidDateCashierCardDone);
-				map.put("'r'", cardStatus);
-			}
 			// 存取款完成
 			else if (commandCode == CardReaderCommandCode.Charge) {
 				map.put("'f1'", CardReaderResultCommandCode.ChargeDone);
@@ -308,45 +277,6 @@ public class CardReaderCommandExec {
 					map.put("subsidyVersion", DesUtil.decrypt(DeviceCommunicateStr.Unknow));
 				}
 			}
-			// 制出纳卡命令
-			else if (commandCode == CardReaderCommandCode.MakeCashierCard) {
-				map.put("'f1'", CardReaderResultCommandCode.MakeCashierCardCmd);
-				map.put("'r'", cardStatus);
-				map.put("'cardSN'", cardSN);
-			}
-			// 挂失出纳卡命令
-			else if (commandCode == CardReaderCommandCode.LossCashierCard) {
-				map.put("'f1'", CardReaderResultCommandCode.LossCashierCardCmd);
-				map.put("'r'", cardStatus);
-				map.put("'operId'", Integer.parseInt(getCashierOperId(b), 16));
-				map.put("'cardSN'", cardSN);
-				map.put("'cardInfoStr'", StringUtil.getHexStrFromBytes(baseLen, b.length - 1, b));
-			}
-			// 解挂出纳卡命令
-			else if (commandCode == CardReaderCommandCode.UnLossCashierCard) {
-				map.put("'f1'", CardReaderResultCommandCode.UnLossCashierCardCmd);
-				map.put("'r'", cardStatus);
-				map.put("'operId'", Integer.parseInt(getCashierOperId(b), 16));
-				map.put("'cardSN'", cardSN);
-				map.put("'cardInfoStr'", StringUtil.getHexStrFromBytes(baseLen, b.length - 1, b));
-			}
-			// 补办出纳卡命令
-			else if (commandCode == CardReaderCommandCode.RemakeCashierCard) {
-				map.put("'f1'", CardReaderResultCommandCode.RemakeCashierCardCmd);
-				map.put("'r'", cardStatus);
-				map.put("'cardSN'", cardSN);
-			}
-			// 读取出纳卡命令
-			else if (commandCode == CardReaderCommandCode.ReadCashierCard) {
-				map.put("'f1'", CardReaderResultCommandCode.ReadCashierCardCmd);
-				map.put("'r'", cardStatus);
-
-				map.put("'operId'", Integer.parseInt(getCashierOperId(b), 16));
-				String date = StringUtil.dateFromHexStr(StringUtil.getHexStrFromBytes(baseLen + 3 + 19 + 10, baseLen + 3 + 19 + 11, b));
-				map.put("'date'", date);
-				map.put("'cardSN'", cardSN);
-				map.put("'cardInfoStr'", StringUtil.getHexStrFromBytes(baseLen, b.length - 1, b));
-			}
 			// 读取卡余额命令
 			else if (commandCode == CardReaderCommandCode.ReadCardOddFare) {
 				map.put("'f1'", CardReaderResultCommandCode.ReadCardOddFareCmd);
@@ -380,22 +310,5 @@ public class CardReaderCommandExec {
 		if (map.size() > 0) {
 			TerminalManager.sendToCardManager(map, sn);
 		}
-	}
-
-	private static String getCashierOperId(byte[] b) {
-		String operId = "";
-		String hex = Integer.toHexString(b[40] & 0x0F);
-		operId += hex;
-		hex = Integer.toHexString(b[43] & 0xFF);
-		if (hex.length() == 1) {
-			hex = '0' + hex;
-		}
-		operId += hex;
-		hex = Integer.toHexString(b[44] & 0xFF);
-		if (hex.length() == 1) {
-			hex = '0' + hex;
-		}
-		operId += hex;
-		return operId;
 	}
 }

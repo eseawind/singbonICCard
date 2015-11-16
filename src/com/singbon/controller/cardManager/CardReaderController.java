@@ -76,15 +76,9 @@ public class CardReaderController extends BaseController {
 		Company company = (Company) request.getSession().getAttribute("company");
 		Device device = (Device) request.getSession().getAttribute("device");
 		String sn = device.getSn();
-		if ("closeSocketChannel".equals(comm)) {
-			try {
-				TerminalManager.closeSocketChannel(sn);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+
 		// 下载单位名称
-		else if ("name".equals(comm)) {
+		if ("name".equals(comm)) {
 			SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
 			if (socketChannel != null) {
 				try {

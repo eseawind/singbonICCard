@@ -1,7 +1,5 @@
 package com.singbon.dao.systemManager.systemSetting;
 
-import java.util.List;
-
 import org.apache.ibatis.annotations.Param;
 
 import com.singbon.dao.BaseDAO;
@@ -28,11 +26,4 @@ public interface BatchDAO extends BaseDAO {
 	 * @return
 	 */
 	public void black(@Param("id") Integer id);
-	
-	/**
-	 * 查询挂失批次列表
-	 * 
-	 * @return
-	 */
-	public List<Batch> selectBlackList(@Param("companyId") Integer companyId);
 }

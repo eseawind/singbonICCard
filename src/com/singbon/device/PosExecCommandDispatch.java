@@ -23,7 +23,7 @@ public class PosExecCommandDispatch {
 		if (!TerminalManager.SNToDeviceList.containsKey(sn))
 			return;
 		Device device = TerminalManager.SNToDeviceList.get(sn);
-		
+
 		// 设置sn与inetSocketAddress对照关系
 		TerminalManager.SNToInetSocketAddressList.put(sn, inetSocketAddress);
 		// 命令码
@@ -31,21 +31,25 @@ public class PosExecCommandDispatch {
 		Map map = new HashMap();
 		map.put("'sn'", sn);
 
-		// 终端设备状态
+		// 心跳包
 		if (b[30] == PosFrame.Status && b[31] == PosSubFrameStatus.SysStatus) {
 			map.put("'type'", "status");
-			map.put("recordNum", StringUtil.byteToInt(b[36]) * 256 + StringUtil.byteToInt(b[37]));
-			map.put("batchNum", StringUtil.byteToInt(b[38]) * 256 + StringUtil.byteToInt(b[39]));
-			map.put("blackNum", StringUtil.byteToInt(b[40]) * 256 + StringUtil.byteToInt(b[41]));
-			map.put("subsidyVersion", StringUtil.byteToInt(b[56]) * 256 + StringUtil.byteToInt(b[57]));
-			map.put("subsidyAuth", (b[58] >> 1) & 0x1);
+			map.put("recordCount", Integer.parseInt(StringUtil.getHexStrFromBytes(36, 37, b), 16));
+			map.put("lastBatchNum", Integer.parseInt(StringUtil.getHexStrFromBytes(38, 39, b), 16));
+			int lastBlackNum = Integer.parseInt(StringUtil.getHexStrFromBytes(40, 43, b), 16);
+			map.put("lastBlackNum", lastBlackNum);
+			map.put("subsidyAuth", (b[44] >> 1) & 0x1);
+			map.put("batchCount", Integer.parseInt(StringUtil.getHexStrFromBytes(51, 52, b), 16));
+			map.put("blackCount", Integer.parseInt(StringUtil.getHexStrFromBytes(53, 54, b), 16));
+			map.put("subsidyVersion", Integer.parseInt(StringUtil.getHexStrFromBytes(55, 56, b), 16));
 
 			// 命令码为1是主动询问返回的状态
 			commandCode = StringUtil.byteToInt(b[34]) * 256 + StringUtil.byteToInt(b[35]);
 			if (commandCode == 1) {
 				PosExecReplyCommand.execReplyCommand(device, commandCode, b, map, true);
 			}
-			Integer lastBlackCardNO = TerminalManager.CompanyIdToLastBlackCardNOList.get(device.getCompanyId());
+//			int sysLastBlackNum = TerminalManager.CompanyIdToLastBlackCardNOList.get(device.getCompanyId());
+			
 			// 记录帧 1普通消费、2补助消费、9领取补助记录
 		} else if (b[30] == 1 && (b[31] == 1 || b[31] == 2 || b[31] == 9 || b[31] == 39)) {
 			// 帐号 4,卡号 4,卡序号1,卡总额 4, 卡余额

@@ -483,73 +483,66 @@ public class MainCardController extends BaseController {
 		Device device = (Device) request.getSession().getAttribute("device");
 		String sn = device.getSn();
 		int section = company.getBaseSection();
-		if ("closeSocketChannel".equals(comm)) {
-			try {
-				TerminalManager.closeSocketChannel(sn);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		} else {
-			SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
-			if (socketChannel == null) {
-				return;
-			}
-			byte commandCode = 0;
-			List<Integer> sectionBlocks = new ArrayList<Integer>();
-			// 信息发卡初始化
-			if ("infoCardInit".equals(comm)) {
-				sectionBlocks.add(section * 10);
-				commandCode = CardReaderCommandCode.InfoCard;
-			}
-			// 解挂初始化
-			else if ("unlossInit".equals(comm)) {
-				sectionBlocks.add(section * 10);
-				commandCode = CardReaderCommandCode.Unloss;
-			}
-			// 有卡注销初始化
-			else if ("offWithCard".equals(comm)) {
-				sectionBlocks.add(section * 10);
-				commandCode = CardReaderCommandCode.OffWithCard;
-			}
-			// 补卡初始化
-			else if ("remakeCardInit".equals(comm)) {
-				sectionBlocks.add(section * 10);
-				commandCode = CardReaderCommandCode.RemakeCard;
-			}
-			// 换卡读原卡
-			else if ("readOldCardInit".equals(comm)) {
-				sectionBlocks.add(section * 10);
-				sectionBlocks.add(section * 10 + 2);
-				sectionBlocks.add((section + 1) * 10);
-				sectionBlocks.add((section + 2) * 10);
-				commandCode = CardReaderCommandCode.ReadOldCard;
-			}
-			// 换卡换新卡
-			else if ("changeNewCardInit".equals(comm)) {
-				sectionBlocks.add(section * 10);
-				commandCode = CardReaderCommandCode.ChangeNewCard;
-			}
-			// 读卡
-			else if ("readCardInit".equals(comm)) {
-				sectionBlocks.add(section * 10);
-				// sectionBlocks.add(section * 10 + 1);
-				sectionBlocks.add(section * 10 + 2);
-				sectionBlocks.add((section + 1) * 10);
-				sectionBlocks.add((section + 2) * 10);
-				commandCode = CardReaderCommandCode.ReadCard;
-			}
-			// 读取卡余额
-			else if ("readCardOddFareInit".equals(comm)) {
-				sectionBlocks.add(section * 10);
-				sectionBlocks.add(section * 10 + 2);
-				sectionBlocks.add(section * 20);
-				commandCode = CardReaderCommandCode.ReadCardOddFare;
-			}
-			try {
-				TerminalManager.getCardInfo(socketChannel, device, commandCode, sectionBlocks);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+
+		SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
+		if (socketChannel == null) {
+			return;
+		}
+		byte commandCode = 0;
+		List<Integer> sectionBlocks = new ArrayList<Integer>();
+		// 信息发卡初始化
+		if ("infoCardInit".equals(comm)) {
+			sectionBlocks.add(section * 10);
+			commandCode = CardReaderCommandCode.InfoCard;
+		}
+		// 解挂初始化
+		else if ("unlossInit".equals(comm)) {
+			sectionBlocks.add(section * 10);
+			commandCode = CardReaderCommandCode.Unloss;
+		}
+		// 有卡注销初始化
+		else if ("offWithCard".equals(comm)) {
+			sectionBlocks.add(section * 10);
+			commandCode = CardReaderCommandCode.OffWithCard;
+		}
+		// 补卡初始化
+		else if ("remakeCardInit".equals(comm)) {
+			sectionBlocks.add(section * 10);
+			commandCode = CardReaderCommandCode.RemakeCard;
+		}
+		// 换卡读原卡
+		else if ("readOldCardInit".equals(comm)) {
+			sectionBlocks.add(section * 10);
+			sectionBlocks.add(section * 10 + 2);
+			sectionBlocks.add((section + 1) * 10);
+			sectionBlocks.add((section + 2) * 10);
+			commandCode = CardReaderCommandCode.ReadOldCard;
+		}
+		// 换卡换新卡
+		else if ("changeNewCardInit".equals(comm)) {
+			sectionBlocks.add(section * 10);
+			commandCode = CardReaderCommandCode.ChangeNewCard;
+		}
+		// 读卡
+		else if ("readCardInit".equals(comm)) {
+			sectionBlocks.add(section * 10);
+			// sectionBlocks.add(section * 10 + 1);
+			sectionBlocks.add(section * 10 + 2);
+			sectionBlocks.add((section + 1) * 10);
+			sectionBlocks.add((section + 2) * 10);
+			commandCode = CardReaderCommandCode.ReadCard;
+		}
+		// 读取卡余额
+		else if ("readCardOddFareInit".equals(comm)) {
+			sectionBlocks.add(section * 10);
+			sectionBlocks.add(section * 10 + 2);
+			sectionBlocks.add(section * 20);
+			commandCode = CardReaderCommandCode.ReadCardOddFare;
+		}
+		try {
+			TerminalManager.getCardInfo(socketChannel, device, commandCode, sectionBlocks);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 

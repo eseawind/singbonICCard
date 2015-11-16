@@ -132,7 +132,7 @@
 			var d=new Date();
 			var t=(d.getTime()-heartTime.getTime())/1000;
 			if(t>=12){
-				$.post('${base }/command.do?comm=closeSocketChannel');
+				$.post('/closeSocketChannel.do');
 				$('.dialogHeader_c h1').html(title + '——读卡机状态：离线');
 				isOnline=false;
 				isHeart=false;
