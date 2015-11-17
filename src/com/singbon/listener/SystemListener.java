@@ -45,8 +45,7 @@ public class SystemListener implements ServletContextListener {
 		// 加载设备序列号到公司的映射,注册读卡机通道
 		List<Device> deviceList = deviceService.selectAllList();
 		for (Device d : deviceList) {
-//			TerminalManager.SNToCompanyList.put(d.getSn(), d.getCompanyId());
-			//读卡机
+			// 读卡机
 			if (d.getDeviceType() == 8) {
 				TerminalManager.registChannel("c" + d.getSn());
 			} else {
@@ -54,13 +53,15 @@ public class SystemListener implements ServletContextListener {
 			}
 		}
 
-		// 注册公司通道
+		// 注册公司通道、添加公司id到批次和黑名单映射监控平台用
 		List<Company> companyList = companyService.selectAllList();
 		for (Company c : companyList) {
 			TerminalManager.registChannel("Co" + c.getId());
+			TerminalManager.CompanyIdToLastBatchIdList.put(c.getId(), c.getLastBatchNum());
+			TerminalManager.CompanyIdToLastBlackNumList.put(c.getId(), c.getLastBlackNum());
 		}
 
-		// 添加公司到餐别限次映射供采集消费记录和监控平台用
+		// 添加公司id到餐别限次映射供采集消费记录和监控平台用
 		List<Meal> mealList = mealService.selectAllList();
 		for (Company c : companyList) {
 			List<Meal> list = new ArrayList<Meal>();
@@ -71,6 +72,8 @@ public class SystemListener implements ServletContextListener {
 				TerminalManager.CompanyIdToMealList.put(c.getId(), list);
 			}
 		}
+
+		TerminalManager.SystemRunning = true;
 
 		// 初始化消息推送
 		CometContext cct = CometContext.getInstance();
@@ -87,7 +90,7 @@ public class SystemListener implements ServletContextListener {
 		// 启动TCP服务监听和分发服务
 		Thread t2 = new Thread(new TCPServer());
 		t2.start();
-		
+
 		try {
 			DesUtil.desInit("ycsty");
 		} catch (Exception e1) {

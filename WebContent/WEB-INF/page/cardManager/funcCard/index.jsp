@@ -29,10 +29,21 @@
 	
 	$('#funcCard .ok').click(function() {
 		if(isOnline){
-			$('#funcCard img').hide();
-			$.post('${base}/command.do?comm=make');
+			validateCallback($('#funcForm'), function(e) {
+				if (e==1) {
+					alertMsg.correct('添加成功！');
+				}else if (e==2) {
+					alertMsg.warn('序列号不合法！');
+				}else if (e==3) {
+					alertMsg.warn('机器号已存在！');
+				}else if (e==4) {
+					alertMsg.warn('序列号已存在！');
+				} else {
+					alertMsg.warn('添加失败！');
+				}
+			}, null);
 		}else{
-			alertMsg.warn('读卡机当前处于离线状态不能下载！');
+			alertMsg.warn('读卡机当前处于离线状态不能制作功能卡！');
 		}
 	});
 	
@@ -80,18 +91,41 @@
 	}
 	.dialog .pageFormContent{
 		border-style: none;
+		height: 60px;
 	}
-	#funcCard #note div{
+	#funcCard #note{
 		color: #15428b;
 		font-size: 13px;
 		font-weight: bold;
-		margin: 0 0 15px 60px;
+		margin: 30px 0 0 60px;
+	}
+	#funcForm{
+		margin: 0 0 0 50px;
+	}
+	#funcForm .error{
+		top:27px;
+		left: 0;
+		width: 180px;
 	}
 </style>
 <div id="funcCard">
-	<div id="note" layoutH="40" style="width: 220px;">
-		<div style="margin-top: 35px;">制作一控一水控参数卡</div>
+	<div class="form" layoutH="30" style="float: left; display: block; overflow: auto; line-height: 21px;">
+		<div id="note">选择水控费率参数组</div>
+		<form id="funcForm" method="post" action="${base}/make.do" class="pageForm required-validate">
+			<div class="pageFormContent">
+				<dl>
+					<dd>
+						<select class="combox required" name="waterRateGroupId" outerw="158" innerw=175">
+							<c:forEach items="${waterRateGroupList }" var="w">
+								<option value="${w.id }">${w.groupName }</option>
+							</c:forEach>
+						</select>
+					</dd>
+				</dl>
+			</div>
+		</form>
 	</div>
+	
 	<div class="formBar">
 		<ul>
 			<li><div class="buttonActive">

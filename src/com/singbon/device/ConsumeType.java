@@ -68,7 +68,7 @@ public class ConsumeType {
 	 * @param consumeType
 	 * @return
 	 */
-	public static String getTypeDes(int consumeType) {
+	public static String getTypeDes(Integer consumeType) {
 		if (map.containsKey(consumeType)) {
 			return (String) map.get(consumeType);
 		}

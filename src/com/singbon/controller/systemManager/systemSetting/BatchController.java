@@ -83,10 +83,11 @@ public class BatchController extends BaseController {
 	 */
 	@RequestMapping(value = "/black.do")
 	public void black(Integer batchId, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Company company = (Company) request.getSession().getAttribute("company");
 		PrintWriter p = null;
 		try {
 			p = response.getWriter();
-			this.batchService.black(batchId);
+			this.batchService.black(company.getId(), batchId);
 			p.print(1);
 		} catch (Exception e) {
 			e.printStackTrace();

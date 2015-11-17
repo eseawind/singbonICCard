@@ -43,7 +43,7 @@ public class SubsidyService extends BaseService {
 	@SuppressWarnings("rawtypes")
 	public void addSubsidy(Integer companyId, List<Map> list) throws Exception {
 		for (Map m : list) {
-			Integer userId = Integer.valueOf(m.get("userId").toString());
+			Long userId = Long.valueOf(m.get("userId").toString());
 			int count = this.subsidyDAO.selectCountByUserId(userId);
 			if (count > 0)
 				continue;
@@ -76,10 +76,6 @@ public class SubsidyService extends BaseService {
 		int subsidyVersion = company.getSubsidyVersion()+1;
 		this.subsidyDAO.generateSubsidy(company.getId(), subsidyVersion, invalidDate);
 		
-		//修改系统补助版本
-		company.setSubsidyVersion(subsidyVersion);
-		company.setSubsidyInvalidDate(invalidDate);
-		this.companyDAO.updateSubsidy(company);
 		request.getSession().setAttribute("company", company);
 	}
 }

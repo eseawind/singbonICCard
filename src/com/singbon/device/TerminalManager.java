@@ -31,6 +31,11 @@ import com.singbon.util.StringUtil;
 public class TerminalManager {
 
 	/**
+	 * 系统是否启动
+	 */
+	public static boolean SystemRunning = false;
+
+	/**
 	 * 服务器推送连接引擎
 	 */
 	public static CometEngine EngineInstance = null;
@@ -39,11 +44,6 @@ public class TerminalManager {
 	 * netty
 	 */
 	public static ChannelHandlerContext ctx = null;
-
-	/**
-	 * SN到公司映射，
-	 */
-	public static Map<String, Integer> SNToCompanyList = new HashMap<String, Integer>();
 
 	/**
 	 * UUID到SN序列号映射列表
@@ -81,9 +81,14 @@ public class TerminalManager {
 	public static Map<Integer, List<Meal>> CompanyIdToMealList = new HashMap<Integer, List<Meal>>();
 
 	/**
+	 * 公司ID到最后一个批次ID映射列表(自动下载黑名单用)
+	 */
+	public static Map<Integer, Integer> CompanyIdToLastBatchIdList = new HashMap<Integer, Integer>();
+
+	/**
 	 * 公司ID到最后一个增量黑名单映射列表(自动下载黑名单用)
 	 */
-	public static Map<Integer, Integer> CompanyIdToLastBlackCardNOList = new HashMap<Integer, Integer>();
+	public static Map<Integer, Long> CompanyIdToLastBlackNumList = new HashMap<Integer, Long>();
 
 	// ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// //////////////////////////////监控用

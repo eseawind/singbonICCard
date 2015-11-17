@@ -14,7 +14,7 @@
 		update sysUser set loginName=#{loginName},loginPwd=#{loginPwd},deviceId=#{deviceId}
 		where operId=#{operId}
 	</update>
-	<delete id="delete" parameterType="int">
+	<delete id="delete" parameterType="java.lang.Integer">
 		delete from sysUser where operId=#{operId}		
 	</delete>
 <!-- 	登录 -->

@@ -158,10 +158,26 @@ public class DeviceCommunicateStr {
 	 * 执行批次追加成功：%s
 	 */
 	public static String ExecBatchAppend = "79af73a2c144a1373b246808c512015b603a7eebff106332742ac890a2218f4f";
+	/**
+	 * 发送黑名单更新命令
+	 */
+	public static String SendBlackUpdate = "d172dedea225235966054e6c7069bc0a5544985e3ffc26318e336472926a683e";
+	/**
+	 * 执行黑名单更新成功
+	 */
+	public static String ExecBlackUpdate = "cc9aacdb266b950666054e6c7069bc0a6c4855095498204ad0ae5e940207a7a9";
+	/**
+	 * 发送黑名单追加命令：%s
+	 */
+	public static String SendBlackAppend = "d172dedea22523591eb4f4a564bde57c0a585f9b5877485613b9fd16401bff8191f2e222f1af8a27";
+	/**
+	 * 执行黑名单追加成功：%s
+	 */
+	public static String ExecBlackAppend = "cc9aacdb266b95061eb4f4a564bde57c3fb6982b97acc03e9d03d249fd9718e691f2e222f1af8a27";
 
 	public static void main(String[] args) {
 		try {
-			String test = "admin";
+			String test = "发送黑名单更新命令";
 
 			DesUtil.desInit("ycsty");
 //			System.out.println("加密前的字符：" + test);

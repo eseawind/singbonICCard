@@ -4,6 +4,7 @@
 	<resultMap id="batch" type="com.singbon.entity.Batch">
 	</resultMap>
 	<parameterMap type="com.singbon.entity.Batch" id="batch2" />
+	<parameterMap type="com.singbon.entity.BatchBlack" id="batchBlack2" />
 	<cache eviction="FIFO" size="2000" readOnly="true"/>
 	<insert id="insert" parameterMap="batch2">
 		insert into batch (companyId,batchName,beginDate,endDate,invalidDate,status)
@@ -16,6 +17,9 @@
 	<update id="black">
 		update batch set status=1 where id=#{id}
 	</update>
+	<insert id="insertBatchBlack" parameterMap="batchBlack2">
+		insert into batchBlack (companyId,batchId) values (#{companyId},#{batchId})
+	</insert>
 	<select id="selectListByCompanyId" resultMap="batch">
 		select * from batch where companyId=#{companyId}
 	</select>
@@ -24,8 +28,5 @@
 	</select>
 	<select id="selectByDeptId" resultMap="batch">
 		select b.* from batch b,userDept d where b.id=d.batchId and d.id=#{deptId}
-	</select>
-	<select id="selectBlackList" resultMap="batch">
-		select * from batch where companyId=#{companyId} and status=1 order by id
 	</select>
 </mapper>

@@ -14,7 +14,7 @@ public class User implements Serializable {
 
 	// 卡基本信息
 	// 用户帐号
-	private Integer userId;
+	private Long userId;
 	// 所属公司
 	private Integer companyId;
 	// 所属部门
@@ -28,7 +28,7 @@ public class User implements Serializable {
 	// 身份证号
 	private String cardID;
 	// 逻辑卡号
-	private Integer cardNO;
+	private Long cardNO;
 	// 物理卡号
 	private String cardSN;
 	// 卡序号(第几张卡)
@@ -90,11 +90,11 @@ public class User implements Serializable {
 	// 总数量
 	private Integer totalCount;
 
-	public Integer getUserId() {
+	public Long getUserId() {
 		return userId;
 	}
 
-	public void setUserId(Integer userId) {
+	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
 
@@ -138,11 +138,11 @@ public class User implements Serializable {
 		this.userNO = userNO;
 	}
 
-	public Integer getCardNO() {
+	public Long getCardNO() {
 		return cardNO;
 	}
 
-	public void setCardNO(Integer cardNO) {
+	public void setCardNO(Long cardNO) {
 		this.cardNO = cardNO;
 	}
 

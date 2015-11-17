@@ -53,14 +53,14 @@
 	<update id="changeFare">
 		update user set totalFare=totalFare+#{opFare},oddFare=oddFare+#{opFare} where userId=#{userId}
 	</update>
-	<delete id="delete" parameterType="int">
+	<delete id="delete" parameterType="java.lang.Integer">
 		delete from user where status=0 and userId in (		
 		<foreach collection="userIds" item="item" index="index" separator=",">  
     		(#{item})
 		</foreach>
 		)
 	</delete>
-	<select id="selectById" resultMap="user">
+	<select id="selectByUserId" resultMap="user">
 		select * from user where userId=#{id}
 	</select>
 	<select id="selectByUserIdCardSN" resultMap="user">

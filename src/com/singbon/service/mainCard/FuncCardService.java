@@ -1,23 +1,14 @@
 package com.singbon.service.mainCard;
 
 import java.nio.channels.SocketChannel;
-import java.util.Calendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.singbon.dao.BaseDAO;
 import com.singbon.dao.SysUserDAO;
-import com.singbon.device.CardReaderCommandCode;
-import com.singbon.device.CardReaderFrame;
-import com.singbon.device.CommandDevice;
-import com.singbon.device.DeviceType;
-import com.singbon.device.TerminalManager;
-import com.singbon.entity.CardAllInfo;
 import com.singbon.entity.Device;
-import com.singbon.entity.User;
 import com.singbon.service.BaseService;
-import com.singbon.util.StringUtil;
 
 /**
  * 制功能卡业务层
@@ -44,7 +35,7 @@ public class FuncCardService extends BaseService {
 	 * @param section
 	 * @throws Exception
 	 */
-	public void makeCardByUserInfo(Device device, SocketChannel socketChannel, int section) throws Exception {
+	public void makeCardByUserInfo(Device device, SocketChannel socketChannel, Integer section) throws Exception {
 
 		// 基本扇区
 //		Calendar c = Calendar.getInstance();

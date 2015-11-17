@@ -37,11 +37,11 @@ public class PosExecConsumeRecord implements Runnable {
 		int frame = b[30];
 		ConsumeRecord record = new ConsumeRecord();
 		int baseIndex = 30;
-		// Integer userId = StringUtil.hexToInt(baseIndex + 6, baseIndex + 9,
+		// Long userId = StringUtil.hexToInt(baseIndex + 6, baseIndex + 9,
 		// b);
 		record.setCompanyId(device.getCompanyId());
-		record.setUserId(StringUtil.hexToInt(baseIndex + 6, baseIndex + 9, b));
-		record.setCardNO(StringUtil.hexToInt(baseIndex + 10, baseIndex + 13, b));
+		record.setUserId(Long.parseLong(StringUtil.getHexStrFromBytes(baseIndex + 6, baseIndex + 9, b), 16));
+		record.setCardNO(Long.parseLong(StringUtil.getHexStrFromBytes(baseIndex + 10, baseIndex + 13, b), 16));
 		record.setCardSeq(StringUtil.hexToInt(baseIndex + 14, baseIndex + 14, b));
 		record.setDeviceId(device.getId());
 		record.setDeviceName(device.getDeviceName());

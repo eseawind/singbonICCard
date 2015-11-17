@@ -6,8 +6,8 @@
 	<parameterMap type="com.singbon.entity.Company" id="company2" />
 	
 	<insert id="insert" parameterMap="company2" useGeneratedKeys="true" keyProperty="id">
-		insert into company (companyName,serialNumber,authNumber,baseSection,heartInterval,uploadInterval,uploadErrTime,subsidyVersion)
-		values (#{companyName},#{serialNumber},#{authNumber},#{baseSection},10,10,10,0)
+		insert into company (companyName,serialNumber,authNumber,baseSection,heartInterval,uploadInterval,uploadErrTime)
+		values (#{companyName},#{serialNumber},#{authNumber},#{baseSection},10,10,10)
 	</insert>
 	<select id="insertInit" statementType="CALLABLE">
         {CALL insertInit(#{companyId,mode=IN,jdbcType=INTEGER})}
@@ -21,16 +21,19 @@
 		update company set companyName=#{companyName},baseSection=#{baseSection},heartInterval=#{heartInterval},uploadInterval=#{uploadInterval},uploadErrTime=#{uploadErrTime}
 		where id=#{id}
 	</update>
-	<update id="updateSubsidy" parameterMap="company2">
-		update company set subsidyVersion=#{subsidyVersion},subsidyInvalidDate=#{subsidyInvalidDate} where id=#{id}
-	</update>
-	<delete id="delete" parameterType="int">
+	<delete id="delete" parameterType="java.lang.Integer">
 		delete from company where id=#{0}
 	</delete>
 	<select id="selectById" resultMap="company">
 		select * from company where id=#{id}
 	</select>
 	<select id="selectAllList" resultMap="company">
-		select * from company
+		select id,companyName,serialNumber,authNumber,baseSection,heartInterval,uploadInterval,uploadErrTime,invalidDate,subsidyVersion,subsidyInvalidDate,ifnull(lastBatchNum,0) lastBatchNum,ifnull(lastBlackNum,0) lastBlackNum 
+			from (select id,companyName,serialNumber,authNumber,baseSection,heartInterval,uploadInterval,uploadErrTime,invalidDate,
+					(select ifnull(max(subsidyVersion),0) from subsidy where companyId=c.id) subsidyVersion,
+					(select invalidDate from subsidy where companyId=c.id order by subsidyVersion desc limit 1) subsidyInvalidDate,
+					(select batchId from batchblack where companyId=c.id order by id desc limit 1) lastBatchNum,
+					(select cardNO from cardblack where companyId=c.id order by id desc limit 1) lastBlackNum 
+					from company c) t
 	</select>
 </mapper>

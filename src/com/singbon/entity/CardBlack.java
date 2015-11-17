@@ -7,7 +7,7 @@ import java.io.Serializable;
 //@author 郝威
 //
 
-public class CardLoss implements Serializable {
+public class CardBlack implements Serializable {
 
 	private static final long serialVersionUID = -4349415810057681133L;
 
@@ -15,7 +15,7 @@ public class CardLoss implements Serializable {
 	// 所属公司
 	private Integer companyId;
 	// 逻辑卡号
-	private Integer cardNO;
+	private Long cardNO;
 
 	public Integer getId() {
 		return id;
@@ -33,11 +33,11 @@ public class CardLoss implements Serializable {
 		this.companyId = companyId;
 	}
 
-	public Integer getCardNO() {
+	public Long getCardNO() {
 		return cardNO;
 	}
 
-	public void setCardNO(Integer cardNO) {
+	public void setCardNO(Long cardNO) {
 		this.cardNO = cardNO;
 	}
 }

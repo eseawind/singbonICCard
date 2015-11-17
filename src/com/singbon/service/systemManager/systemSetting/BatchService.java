@@ -1,12 +1,13 @@
 package com.singbon.service.systemManager.systemSetting;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.singbon.dao.BaseDAO;
 import com.singbon.dao.systemManager.systemSetting.BatchDAO;
+import com.singbon.device.TerminalManager;
 import com.singbon.entity.Batch;
+import com.singbon.entity.BatchBlack;
 import com.singbon.service.BaseService;
 
 /**
@@ -40,7 +41,12 @@ public class BatchService extends BaseService {
 	 * 
 	 * @return
 	 */
-	public void black(@Param("id") Integer id) {
-		this.batchDAO.black(id);
+	public void black(Integer companyId, Integer batchId) {
+		this.batchDAO.black(batchId);
+		BatchBlack batchBlack = new BatchBlack();
+		batchBlack.setCompanyId(companyId);
+		batchBlack.setBatchId(batchId);
+		this.batchDAO.insertBatchBlack(batchBlack);
+		TerminalManager.CompanyIdToLastBatchIdList.put(companyId, batchId);
 	}
 }

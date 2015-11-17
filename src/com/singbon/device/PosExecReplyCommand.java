@@ -19,7 +19,7 @@ public class PosExecReplyCommand {
 
 	// 分解命令回复
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static void execReplyCommand(Device device, int commandCode, byte[] b, Map map, boolean statusReply) {
+	public static void execReplyCommand(Device device, Integer commandCode, byte[] b, Map map, boolean statusReply) {
 		SendCommand sendCommand = null;
 		synchronized (TerminalManager.sendCommandObject) {
 			ArrayList<SendCommand> sendCommandList = TerminalManager.SNToSendCommandList.get(device.getSn());
@@ -112,6 +112,17 @@ public class PosExecReplyCommand {
 			} else if (subFrame == PosSubFrameBlack.BatchAppend) {
 				String log = String.format(DesUtil.decrypt(DeviceCommunicateStr.ExecBatchAppend), sendCommand.getBatchNames());
 				map.put("des", log);
+
+				int lastBatchId = Integer.parseInt(StringUtil.getHexStrFromBytes(b.length - 4, b.length - 3, b), 16);
+				TerminalManager.CompanyIdToLastBatchIdList.put(device.getCompanyId(), lastBatchId);
+			} else if (subFrame == PosSubFrameBlack.AllUpdate) {
+				map.put("des", DesUtil.decrypt(DeviceCommunicateStr.ExecBlackUpdate));
+			} else if (subFrame == PosSubFrameBlack.IncAppend) {
+				String log = String.format(DesUtil.decrypt(DeviceCommunicateStr.ExecBlackAppend), sendCommand.getBlackNums());
+				map.put("des", log);
+
+				long lastBlackNum = Long.parseLong(StringUtil.getHexStrFromBytes(b.length - 6, b.length - 3, b), 16);
+				TerminalManager.CompanyIdToLastBlackNumList.put(device.getCompanyId(), lastBlackNum);
 			}
 			break;
 		// 初始化

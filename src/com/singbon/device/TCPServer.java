@@ -62,6 +62,8 @@ public class TCPServer implements Runnable {
 			// 打印
 			StringUtil.println(key.attachment() + " connect successful ");
 		} else if (selectionKey.isReadable()) {
+			if (!TerminalManager.SystemRunning)
+				return;
 			// 有消息进来
 			ByteBuffer byteBuffer = ByteBuffer.allocate(273);
 			SocketChannel sc = (SocketChannel) selectionKey.channel();

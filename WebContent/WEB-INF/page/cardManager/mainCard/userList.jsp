@@ -98,10 +98,16 @@
 				$.pdialog.open(url, 'dialog', '批量发卡', batchCardOptions);
 			},
 			'readCard' : function(t, target) {
+				if (!checkDeviceSn()) {
+					return;
+				}
 				var url = '${base}/readCard.do';
 				$.pdialog.open(url, 'dialog', '读卡修正', cardOptions);
 			},
 			'loss' : function(t, target) {
+				if (!checkDeviceSn()) {
+					return;
+				}
 				if ($(t).attr('status') == 241) {
 					var url = '${base}/changeCard.do?editType=0&userId='+ $(t).attr('userId');
 					$.pdialog.open(url, 'dialog', '挂失', cardOptions);

@@ -19,9 +19,13 @@ public class Company implements Serializable {
 	private Integer heartInterval;
 	private Integer uploadInterval;
 	private Integer uploadErrTime;
+	private String invalidDate;
+	//不入库
 	private Integer subsidyVersion;
 	private String subsidyInvalidDate;
-	private String invalidDate;
+	// 自动下载黑名单用
+	private Integer lastBatchNum;
+	private Long lastBlackNum;
 
 	public Integer getId() {
 		return id;
@@ -110,4 +114,21 @@ public class Company implements Serializable {
 	public void setInvalidDate(String invalidDate) {
 		this.invalidDate = invalidDate;
 	}
+
+	public Integer getLastBatchNum() {
+		return lastBatchNum;
+	}
+
+	public void setLastBatchNum(Integer lastBatchNum) {
+		this.lastBatchNum = lastBatchNum;
+	}
+
+	public Long getLastBlackNum() {
+		return lastBlackNum;
+	}
+
+	public void setLastBlackNum(Long lastBlackNum) {
+		this.lastBlackNum = lastBlackNum;
+	}
+
 }

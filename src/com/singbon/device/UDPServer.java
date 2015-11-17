@@ -56,6 +56,9 @@ class UDPSeverHandler extends SimpleChannelInboundHandler<DatagramPacket> {
 	}
 
 	protected void messageReceived(ChannelHandlerContext ctx, DatagramPacket packet) throws Exception {
+		if (!TerminalManager.SystemRunning)
+			return;
+
 		ByteBuf buf = (ByteBuf) packet.copy().content();
 		byte[] b = new byte[buf.readableBytes()];
 		buf.readBytes(b);
@@ -65,11 +68,11 @@ class UDPSeverHandler extends SimpleChannelInboundHandler<DatagramPacket> {
 			return;
 		}
 
-//		System.out.println(new java.util.Date().toLocaleString());
-//		for (byte b2 : b) {
-//			System.out.print((b2 & 0xff) + " ");
-//		}
-//		System.out.println("");
+		// System.out.println(new java.util.Date().toLocaleString());
+		// for (byte b2 : b) {
+		// System.out.print((b2 & 0xff) + " ");
+		// }
+		// System.out.println("");
 
 		// 处理数据
 		try {

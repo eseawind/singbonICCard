@@ -13,7 +13,7 @@
 		update userDept set deptName=#{deptName},batchId=#{batchId}
 		where id=#{id}
 	</update>
-	<delete id="delete" parameterType="int">
+	<delete id="delete" parameterType="java.lang.Integer">
 		delete from userDept where id=#{0}
 	</delete>
 	<select id="selectById" resultMap="userDept">

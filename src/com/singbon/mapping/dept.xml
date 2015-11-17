@@ -13,7 +13,7 @@
 		update dept set deptName=#{deptName}
 		where id=#{id}
 	</update>
-	<delete id="delete" parameterType="int">
+	<delete id="delete" parameterType="java.lang.Integer">
 		delete from dept where id=#{0}
 	</delete>
 	<select id="selectById" resultMap="dept">

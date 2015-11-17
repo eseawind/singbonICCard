@@ -66,7 +66,7 @@ public class StringUtil {
 	 * 
 	 * @return
 	 */
-	public static String leftPad(int str, int num) {
+	public static String leftPad(Integer str, Integer num) {
 		String temp = Integer.toString(str);
 		num = num - temp.length();
 		for (int i = 0; i < num; i++) {
@@ -80,8 +80,22 @@ public class StringUtil {
 	 * 
 	 * @return
 	 */
-	public static String hexLeftPad(int str, int num) {
+	public static String hexLeftPad(int str, Integer num) {
 		String temp = Integer.toHexString(str).replace("ffffff", "");
+		num = num - temp.length();
+		for (int i = 0; i < num; i++) {
+			temp = "0" + temp;
+		}
+		return temp;
+	}
+	
+	/**
+	 * long转换成16进制字符串再左补零
+	 * 
+	 * @return
+	 */
+	public static String hexLeftPad(long str, Integer num) {
+		String temp = Long.toHexString(str).replace("ffffff", "");
 		num = num - temp.length();
 		for (int i = 0; i < num; i++) {
 			temp = "0" + temp;
@@ -94,7 +108,7 @@ public class StringUtil {
 	 * 
 	 * @return
 	 */
-	public static String hexRightPad(int str, int num) {
+	public static String hexRightPad(Integer str, Integer num) {
 		String temp = Integer.toHexString(str);
 		num = num - temp.length();
 		for (int i = 0; i < num; i++) {
@@ -108,7 +122,7 @@ public class StringUtil {
 	 * 
 	 * @return
 	 */
-	public static String strLeftPad(String str, int num) {
+	public static String strLeftPad(String str, Integer num) {
 		num = num - str.length();
 		for (int i = 0; i < num; i++) {
 			str = "0" + str;
@@ -127,7 +141,7 @@ public class StringUtil {
 	 *            被补字符
 	 * @return
 	 */
-	public static String strLeftPadWithChar(String str, int num, String c) {
+	public static String strLeftPadWithChar(String str, Integer num, String c) {
 		num = num - str.length();
 		for (int i = 0; i < num; i++) {
 			str = c + str;
@@ -140,7 +154,7 @@ public class StringUtil {
 	 * 
 	 * @return
 	 */
-	public static String strRightPad(String str, int num) {
+	public static String strRightPad(String str, Integer num) {
 		num = num - str.length();
 		for (int i = 0; i < num; i++) {
 			str += "0";
@@ -306,7 +320,7 @@ public class StringUtil {
 	 * @param b
 	 * @return
 	 */
-	public static String getHexStrFromBytes(int begin, int end, byte[] b) {
+	public static String getHexStrFromBytes(Integer begin, Integer end, byte[] b) {
 		String baseInfoStr = "";
 		for (int i = begin; i <= end; i++) {
 			String hex = Integer.toHexString(b[i] & 0xFF);
@@ -326,7 +340,7 @@ public class StringUtil {
 	 * @param b
 	 * @return
 	 */
-	public static Integer hexToInt(int begin, int end, byte[] b) {
+	public static Integer hexToInt(Integer begin, Integer end, byte[] b) {
 		return Integer.parseInt(getHexStrFromBytes(begin, end, b), 16);
 	}
 
@@ -399,10 +413,9 @@ public class StringUtil {
 	public static void main(String[] args) {
 		// 密码 01010101010101010101010101010101 00 00 00 01 0000 00 00 00 00 02
 		// 02 00 11 04 03 00 00 00 00 43 74 61 61 88 88 01 B889
-		// 消费机初始化01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 00 00 00 01 00
-		// 00 00 00 00 00 02 02 00 0A 19 19 00 00 00 00 46 1b
+		// 消费机初始化01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 00 00 00 01 00 00 00 00 00 00 02 02 00 0A 19 19 00 00 00 00 46 1b
 		byte[] b = StringUtil
-				.strTobytes("01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 00 00 00 01 00 00 00 00 00 00 02 02 00 28 04 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 0A 03 E8 03 E7 00 00 F0 00 00 00 00 03 FF FF 03 00 00 30 11  88 8E"
+				.strTobytes("01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 00 00 00 01 00 00 00 00 00 00 02 02 00 0A 05 01 00 00 00 00 C1 60"
 						.replaceAll(" ", ""));
 		CRC16.generate(b);
 		StringUtil.print(Integer.toHexString(b[b.length - 2]).replace("ffffff", "") + " ");

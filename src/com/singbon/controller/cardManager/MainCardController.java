@@ -182,7 +182,7 @@ public class MainCardController extends BaseController {
 	 */
 	@SuppressWarnings({ "rawtypes" })
 	@RequestMapping(value = "/userInfo.do", method = RequestMethod.GET)
-	public String userInfo(Integer userId, Integer deptId, Integer batchId, Integer editType, HttpServletRequest request, Model model) {
+	public String userInfo(Long userId, Integer deptId, Integer batchId, Integer editType, HttpServletRequest request, Model model) {
 		request.getSession().removeAttribute("companyId");
 		Company company = (Company) request.getSession().getAttribute("company");
 		Device device = (Device) request.getSession().getAttribute("device");
@@ -238,7 +238,7 @@ public class MainCardController extends BaseController {
 		model.addAttribute("deptId", deptId);
 		model.addAttribute("editType", editType);
 		if (userId != null) {
-			User user = (User) this.mainCardService.selectById(userId);
+			User user = this.mainCardService.selectByUserId(userId);
 			model.addAttribute("user", user);
 		}
 		if (editType == 2 || editType == 3) {
@@ -272,7 +272,7 @@ public class MainCardController extends BaseController {
 	 * @return
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private int getCardSNCount(int companyId, String cardSN, String sn) {
+	private int getCardSNCount(Integer companyId, String cardSN, String sn) {
 		int cardSNCount = this.mainCardService.selectCountByCardSN(companyId, cardSN);
 		if (cardSNCount > 0) {
 			Map map = new HashMap();
@@ -316,7 +316,7 @@ public class MainCardController extends BaseController {
 			SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
 			if (socketChannel != null) {
 				try {
-					int cardNO = this.mainCardService.selectMaxCardNO(company.getId());
+					long cardNO = this.mainCardService.selectMaxCardNO(company.getId());
 					user.setCompanyId(company.getId());
 					user.setStatus(241);
 					user.setCardSeq(1);
@@ -346,9 +346,9 @@ public class MainCardController extends BaseController {
 			SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
 			if (socketChannel != null) {
 				try {
-					User user2 = (User) this.mainCardService.selectById(user.getUserId());
+					User user2 = this.mainCardService.selectByUserId(user.getUserId());
 					user2.setCardSN(user.getCardSN());
-					int cardNO = this.mainCardService.selectMaxCardNO(company.getId());
+					long cardNO = this.mainCardService.selectMaxCardNO(company.getId());
 					user2.setCardNO(cardNO);
 					user2.setTotalFare(allOpCash);
 					user2.setOddFare(allOpCash);
@@ -381,7 +381,7 @@ public class MainCardController extends BaseController {
 					}
 					this.mainCardService.insert(user);
 				} else {
-					int userNONum = this.mainCardService.selectCountByUserNOUserId(company.getId(), user.getUserNO(), user.getUserId());
+					long userNONum = this.mainCardService.selectCountByUserNOUserId(company.getId(), user.getUserNO(), user.getUserId());
 					if (userNONum > 0) {
 						p.print(2);
 						return;
@@ -557,7 +557,7 @@ public class MainCardController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/changeCard.do")
-	public String changeCard(Integer userId, Integer editType, HttpServletRequest request, Model model) {
+	public String changeCard(Long userId, Integer editType, HttpServletRequest request, Model model) {
 		request.getSession().removeAttribute("companyId");
 		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
 		Company company = (Company) request.getSession().getAttribute("company");
@@ -568,7 +568,7 @@ public class MainCardController extends BaseController {
 
 		String url = request.getRequestURI();
 		model.addAttribute("base", url.replace("/changeCard.do", ""));
-		User user = (User) this.mainCardService.selectById(userId);
+		User user = this.mainCardService.selectByUserId(userId);
 		model.addAttribute("user", user);
 		model.addAttribute("device", device);
 		model.addAttribute("editType", editType);
@@ -601,7 +601,7 @@ public class MainCardController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/doChangeCard.do", method = RequestMethod.POST)
-	public void doChangeCard(Integer userId, Integer editType, Integer lossReason, Integer cardNO, String cardSN, String newCardSN, String cardInfoStr, HttpServletRequest request,
+	public void doChangeCard(Long userId, Integer editType, Integer lossReason, Long cardNO, String cardSN, String newCardSN, String cardInfoStr, HttpServletRequest request,
 			HttpServletResponse response, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
 		Device device = (Device) request.getSession().getAttribute("device");
@@ -662,9 +662,9 @@ public class MainCardController extends BaseController {
 			SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
 			if (socketChannel != null) {
 				try {
-					User user = (User) this.mainCardService.selectById(userId);
+					User user = this.mainCardService.selectByUserId(userId);
 					user.setCardSN(cardSN);
-					int newCardNO = this.mainCardService.selectMaxCardNO(company.getId());
+					long newCardNO = this.mainCardService.selectMaxCardNO(company.getId());
 					user.setCardNO(newCardNO);
 					user.setCardSeq(user.getCardSeq() + 1);
 
@@ -748,7 +748,7 @@ public class MainCardController extends BaseController {
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value = "/selectUserInfoByUserIdCardSN.do", method = RequestMethod.POST)
-	public void selectUserInfoByUserIdCardSN(Integer userId, String cardSN, HttpServletRequest request, HttpServletResponse response, Model model) {
+	public void selectUserInfoByUserIdCardSN(Long userId, String cardSN, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
 		PrintWriter p = null;
 		try {
@@ -822,7 +822,7 @@ public class MainCardController extends BaseController {
 			SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
 			if (socketChannel != null) {
 				try {
-					User user2 = (User) this.mainCardService.selectById(user.getUserId());
+					User user2 = this.mainCardService.selectByUserId(user.getUserId());
 
 					CardAllInfo cardAllInfo = new CardAllInfo();
 					initUserInfo(user2, cardAllInfo);
@@ -854,12 +854,12 @@ public class MainCardController extends BaseController {
 	 */
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/deptAdjust.do")
-	public String deptAdjust(Integer userId, HttpServletRequest request, Model model) {
+	public String deptAdjust(Long userId, HttpServletRequest request, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
 		List<UserDept> list = (List<UserDept>) this.userDeptService.selectListByCompanyId(company.getId());
 		model.addAttribute("list", list);
 		if (userId != -1) {
-			User user = (User) this.mainCardService.selectById(userId);
+			User user = this.mainCardService.selectByUserId(userId);
 			model.addAttribute("user", user);
 		}
 		model.addAttribute("base", StringUtil.requestBase(request));
@@ -972,7 +972,7 @@ public class MainCardController extends BaseController {
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value = "/selectOddFareByUserIdCardSN.do", method = RequestMethod.POST)
-	public void selectOddFareByUserIdCardSN(Integer userId, String cardSN, HttpServletRequest request, HttpServletResponse response, Model model) {
+	public void selectOddFareByUserIdCardSN(Long userId, String cardSN, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
 		PrintWriter p = null;
 		try {

@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.singbon.dao.BaseDAO;
-import com.singbon.dao.CardLossDAO;
+import com.singbon.dao.CardBlackDAO;
 import com.singbon.dao.UserDAO;
 import com.singbon.device.CardReaderCommandCode;
 import com.singbon.device.CardReaderFrame;
@@ -16,7 +16,7 @@ import com.singbon.device.CommandDevice;
 import com.singbon.device.DeviceType;
 import com.singbon.device.TerminalManager;
 import com.singbon.entity.CardAllInfo;
-import com.singbon.entity.CardLoss;
+import com.singbon.entity.CardBlack;
 import com.singbon.entity.Device;
 import com.singbon.entity.User;
 import com.singbon.service.BaseService;
@@ -34,13 +34,17 @@ public class MainCardService extends BaseService {
 	@Autowired
 	public UserDAO userDAO;
 	@Autowired
-	public CardLossDAO cardLossDAO;
+	public CardBlackDAO cardBlackDAO;
 
 	@Override
 	public BaseDAO getBaseDAO() {
 		return userDAO;
 	}
 
+	public User selectByUserId(Long userId) {
+		return this.userDAO.selectByUserId(userId);
+	}
+	
 	/**
 	 * 删除未发卡人员
 	 * 
@@ -56,7 +60,7 @@ public class MainCardService extends BaseService {
 	 * @param id
 	 * @return
 	 */
-	public User selectByUserIdCardSN(Integer companyId, Integer userId, String cardSN) {
+	public User selectByUserIdCardSN(Integer companyId, Long userId, String cardSN) {
 		return this.userDAO.selectByUserIdCardSN(companyId, userId, cardSN);
 	}
 
@@ -97,7 +101,7 @@ public class MainCardService extends BaseService {
 	 * @param user
 	 * @return
 	 */
-	public int selectCountByUserNOUserId(Integer companyId, String userNO, Integer userId) throws Exception {
+	public Long selectCountByUserNOUserId(Integer companyId, String userNO, Long userId) throws Exception {
 		return this.userDAO.selectCountByUserNOUserId(companyId, userNO, userId);
 	}
 
@@ -107,7 +111,7 @@ public class MainCardService extends BaseService {
 	 * @param user
 	 * @return
 	 */
-	public int selectMaxCardNO(Integer companyId) throws Exception {
+	public Long selectMaxCardNO(Integer companyId) throws Exception {
 		return this.userDAO.selectMaxCardNO(companyId);
 	}
 
@@ -133,7 +137,7 @@ public class MainCardService extends BaseService {
 	 *            开始扇区
 	 * @throws Exception
 	 */
-	public void makeCardByUserInfo(Device device, SocketChannel socketChannel, User user, CardAllInfo cardAllInfo, String cardSN, int commandCode, int section) throws Exception {
+	public void makeCardByUserInfo(Device device, SocketChannel socketChannel, User user, CardAllInfo cardAllInfo, String cardSN, int commandCode, Integer section) throws Exception {
 		if (commandCode == CardReaderCommandCode.SingleCard) {
 			this.userDAO.insert(user);
 		} else if (commandCode == CardReaderCommandCode.InfoCard) {
@@ -146,7 +150,7 @@ public class MainCardService extends BaseService {
 		Calendar c = Calendar.getInstance();
 
 		String tmUserId = StringUtil.hexLeftPad(user.getUserId(), 8);// 4 0-3
-		String tmCardNo = StringUtil.hexLeftPad(Integer.valueOf(user.getCardNO()), 8);// 4
+		String tmCardNo = StringUtil.hexLeftPad(user.getCardNO(), 8);// 4
 																						// 4-7
 		String tmConsumePwd = StringUtil.hexLeftPad(Integer.valueOf(user.getConsumePwd()), 4);// 2
 																								// 8-9
@@ -249,7 +253,7 @@ public class MainCardService extends BaseService {
 	 * @return
 	 * @throws Exception
 	 */
-	public void changeStatus(Integer userId, Integer status) throws Exception {
+	public void changeStatus(Long userId, Integer status) throws Exception {
 		this.userDAO.changeStatus(userId, status);
 	}
 
@@ -260,13 +264,14 @@ public class MainCardService extends BaseService {
 	 * @return
 	 * @throws Exception
 	 */
-	public void loss(Integer userId, Integer companyId, Integer cardNO, Integer status, Integer lossReason) throws Exception {
+	public void loss(Long userId, Integer companyId, Long cardNO, Integer status, Integer lossReason) throws Exception {
 		this.userDAO.changeStatus(userId, status);
 		if (cardNO != null && (status == 244 || 0 == lossReason)) {
-			CardLoss cardLoss = new CardLoss();
-			cardLoss.setCompanyId(companyId);
-			cardLoss.setCardNO(cardNO);
-			this.cardLossDAO.insert(cardLoss);
+			CardBlack cardBlack = new CardBlack();
+			cardBlack.setCompanyId(companyId);
+			cardBlack.setCardNO(cardNO);
+			this.cardBlackDAO.insert(cardBlack);
+			TerminalManager.CompanyIdToLastBlackNumList.put(companyId, cardNO);
 		}
 	}
 
@@ -278,7 +283,7 @@ public class MainCardService extends BaseService {
 	 * @throws Exception
 	 */
 	public void unloss(User user, SocketChannel socketChannel, Device device, String cardInfoStr) throws Exception {
-		int newCardNO = this.userDAO.selectMaxCardNO(user.getCompanyId());
+		long newCardNO = this.userDAO.selectMaxCardNO(user.getCompanyId());
 		user.setCardNO(newCardNO);
 		this.userDAO.unloss(user);
 		String commandCodeStr = "0000" + StringUtil.hexLeftPad(CardReaderCommandCode.Unloss, 4);
@@ -298,7 +303,7 @@ public class MainCardService extends BaseService {
 	 * @return
 	 * @throws Exception
 	 */
-	public void offWithCard(Integer userId, SocketChannel socketChannel, Device device, String cardSN, String cardInfoStr) throws Exception {
+	public void offWithCard(Long userId, SocketChannel socketChannel, Device device, String cardSN, String cardInfoStr) throws Exception {
 		this.userDAO.changeStatus(userId, 244);
 
 		String commandCodeStr = "0000" + StringUtil.hexLeftPad(CardReaderCommandCode.OffWithCard, 4);
@@ -321,8 +326,8 @@ public class MainCardService extends BaseService {
 	 * @return
 	 * @throws Exception
 	 */
-	public void changeNewCard(Integer companyId, Integer userId, SocketChannel socketChannel, Device device, String cardSN, String cardInfoStr) throws Exception {
-		int cardNO = this.userDAO.selectMaxCardNO(companyId);
+	public void changeNewCard(Integer companyId, Long userId, SocketChannel socketChannel, Device device, String cardSN, String cardInfoStr) throws Exception {
+		long cardNO = this.userDAO.selectMaxCardNO(companyId);
 		this.userDAO.changeNewCard(userId, cardNO, cardSN);
 
 		String cardNOStr = StringUtil.hexLeftPad(cardNO, 8);

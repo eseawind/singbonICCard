@@ -30,7 +30,7 @@ public interface UserDAO extends BaseDAO {
 	 * @param id
 	 * @return
 	 */
-	public User selectByUserId(@Param("userId") Integer userId);
+	public User selectByUserId(@Param("userId") Long userId);
 
 	/**
 	 * 根据主键和物理卡号查询人员
@@ -38,7 +38,7 @@ public interface UserDAO extends BaseDAO {
 	 * @param id
 	 * @return
 	 */
-	public User selectByUserIdCardSN(@Param("companyId") Integer companyId, @Param("userId") Integer userId, @Param("cardSN") String cardSN);
+	public User selectByUserIdCardSN(@Param("companyId") Integer companyId, @Param("userId") Long userId, @Param("cardSN") String cardSN);
 
 	/**
 	 * 根据部门查询未发卡人员
@@ -88,7 +88,7 @@ public interface UserDAO extends BaseDAO {
 	 * @param user
 	 * @return
 	 */
-	public int selectCountByCardSN(@Param("companyId") Integer companyId, @Param("cardSN") String cardSN);
+	public Integer selectCountByCardSN(@Param("companyId") Integer companyId, @Param("cardSN") String cardSN);
 
 	/**
 	 * 以用户编号查询数量
@@ -96,7 +96,7 @@ public interface UserDAO extends BaseDAO {
 	 * @param user
 	 * @return
 	 */
-	public int selectCountByUserNO(@Param("companyId") Integer companyId, @Param("userNO") String userNO) throws Exception;
+	public Integer selectCountByUserNO(@Param("companyId") Integer companyId, @Param("userNO") String userNO) throws Exception;
 
 	/**
 	 * 以用户编号用户ID查询数量
@@ -104,7 +104,7 @@ public interface UserDAO extends BaseDAO {
 	 * @param user
 	 * @return
 	 */
-	public int selectCountByUserNOUserId(@Param("companyId") Integer companyId, @Param("userNO") String userNO, @Param("userId") Integer userId) throws Exception;
+	public Long selectCountByUserNOUserId(@Param("companyId") Integer companyId, @Param("userNO") String userNO, @Param("userId") Long userId) throws Exception;
 
 	/**
 	 * 查询最大卡号+1
@@ -112,7 +112,7 @@ public interface UserDAO extends BaseDAO {
 	 * @param user
 	 * @return
 	 */
-	public int selectMaxCardNO(@Param("companyId") Integer companyId) throws Exception;
+	public Long selectMaxCardNO(@Param("companyId") Integer companyId) throws Exception;
 
 	/**
 	 * 改变卡状态
@@ -122,7 +122,7 @@ public interface UserDAO extends BaseDAO {
 	 *            2挂失、1解挂
 	 * @return
 	 */
-	public void changeStatus(@Param("userId") Integer userId, @Param("status") Integer status) throws Exception;
+	public void changeStatus(@Param("userId") Long userId, @Param("status") Integer status) throws Exception;
 
 	/**
 	 * 换新卡
@@ -131,7 +131,7 @@ public interface UserDAO extends BaseDAO {
 	 * @param cardNO
 	 * @param cardSN
 	 */
-	public void changeNewCard(@Param("userId") Integer userId, @Param("cardNO") Integer cardNO, @Param("cardSN") String cardSN) throws Exception;
+	public void changeNewCard(@Param("userId") Long userId, @Param("cardNO") Long cardNO, @Param("cardSN") String cardSN) throws Exception;
 
 	/**
 	 * 按卡修正
@@ -167,6 +167,6 @@ public interface UserDAO extends BaseDAO {
 	 * @param cardNO
 	 * @param cardSN
 	 */
-	public void changeFare(@Param("userId") Integer userId, @Param("opFare") Integer opFare) throws Exception;
+	public void changeFare(@Param("userId") Long userId, @Param("opFare") Integer opFare) throws Exception;
 
 }

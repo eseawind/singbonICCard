@@ -35,6 +35,7 @@ public class SendCommand {
 	private Company company;
 	private String batchIds;
 	private String batchNames;
+	private String blackNums;
 
 	public ConsumeParam getConsumeParam() {
 		return consumeParam;
@@ -88,7 +89,7 @@ public class SendCommand {
 		return commandCode;
 	}
 
-	public void setCommandCode(int commandCode) {
+	public void setCommandCode(Integer commandCode) {
 		this.commandCode = commandCode;
 	}
 
@@ -96,7 +97,7 @@ public class SendCommand {
 		return sendTime;
 	}
 
-	public void setSendTime(int sendTime) {
+	public void setSendTime(Integer sendTime) {
 		this.sendTime = sendTime;
 	}
 
@@ -112,7 +113,7 @@ public class SendCommand {
 		return cookbookIndex;
 	}
 
-	public void setCookbookIndex(int cookbookIndex) {
+	public void setCookbookIndex(Integer cookbookIndex) {
 		this.cookbookIndex = cookbookIndex;
 	}
 
@@ -120,7 +121,7 @@ public class SendCommand {
 		return cookbookTotal;
 	}
 
-	public void setCookbookTotal(int cookbookTotal) {
+	public void setCookbookTotal(Integer cookbookTotal) {
 		this.cookbookTotal = cookbookTotal;
 	}
 
@@ -162,6 +163,30 @@ public class SendCommand {
 
 	public void setBatchNames(String batchNames) {
 		this.batchNames = batchNames;
+	}
+
+	public String getBlackNums() {
+		return blackNums;
+	}
+
+	public void setBlackNums(String blackNums) {
+		this.blackNums = blackNums;
+	}
+
+	public void setCommandCode(int commandCode) {
+		this.commandCode = commandCode;
+	}
+
+	public void setSendTime(int sendTime) {
+		this.sendTime = sendTime;
+	}
+
+	public void setCookbookIndex(int cookbookIndex) {
+		this.cookbookIndex = cookbookIndex;
+	}
+
+	public void setCookbookTotal(int cookbookTotal) {
+		this.cookbookTotal = cookbookTotal;
 	}
 
 }

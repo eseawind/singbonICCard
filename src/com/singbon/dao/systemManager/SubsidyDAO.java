@@ -12,7 +12,7 @@ import com.singbon.dao.BaseDAO;
  */
 public interface SubsidyDAO extends BaseDAO {
 
-	public Integer selectCountByUserId(@Param("userId") Integer userId);
+	public Integer selectCountByUserId(@Param("userId") Long userId);
 
 	/**
 	 * 查询生成补助信息

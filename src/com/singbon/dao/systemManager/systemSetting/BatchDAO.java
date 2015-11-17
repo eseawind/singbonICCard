@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.singbon.dao.BaseDAO;
 import com.singbon.entity.Batch;
+import com.singbon.entity.BatchBlack;
 
 /**
  * 批次管理dao层
@@ -26,4 +27,11 @@ public interface BatchDAO extends BaseDAO {
 	 * @return
 	 */
 	public void black(@Param("id") Integer id);
+
+	/**
+	 * 添加批次黑名单
+	 * 
+	 * @return
+	 */
+	public void insertBatchBlack(BatchBlack batchBlack);
 }

@@ -20,8 +20,8 @@ public class PosExecCookbookRecord {
 	public static int cookbookRecord(Device device, Map map, byte[] b) {
 		ConsumeRecord record = new ConsumeRecord();
 		int baseIndex = 30;
-		record.setUserId(StringUtil.hexToInt(baseIndex + 6, baseIndex + 9, b));
-		record.setCardNO(StringUtil.hexToInt(baseIndex + 10, baseIndex + 13, b));
+		record.setUserId(Long.parseLong(StringUtil.getHexStrFromBytes(baseIndex + 6, baseIndex + 9, b), 16));
+		record.setCardNO(Long.parseLong(StringUtil.getHexStrFromBytes(baseIndex + 10, baseIndex + 13, b), 16));
 		record.setCardSeq(StringUtil.hexToInt(baseIndex + 14, baseIndex + 14, b));
 		record.setDeviceName(device.getDeviceName());
 

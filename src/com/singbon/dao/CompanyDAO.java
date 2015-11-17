@@ -37,13 +37,6 @@ public interface CompanyDAO extends BaseDAO {
 	public void insertInit(@Param("companyId") Integer companyId);
 
 	/**
-	 * 更新补助版本号
-	 * 
-	 * @return
-	 */
-	public void updateSubsidy(Company company);
-
-	/**
 	 * 后台更新
 	 * 
 	 * @return

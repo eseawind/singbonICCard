@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
  * 
  */
 @Repository
-public interface CardLossDAO extends BaseDAO {
+public interface CardBlackDAO extends BaseDAO {
 
 }

@@ -14,10 +14,10 @@ public class ConsumeRecord implements Serializable {
 
 	private Integer id;
 	private Integer companyId;
-	private Integer userId;
+	private Long userId;
 	private String userNO;
 	private String username;
-	private Integer cardNO;
+	private Long cardNO;
 	private Integer cardSeq;
 	private Integer deviceId;
 	private String deviceName;
@@ -57,11 +57,11 @@ public class ConsumeRecord implements Serializable {
 		this.companyId = companyId;
 	}
 
-	public Integer getUserId() {
+	public Long getUserId() {
 		return userId;
 	}
 
-	public void setUserId(Integer userId) {
+	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
 
@@ -81,11 +81,11 @@ public class ConsumeRecord implements Serializable {
 		this.username = username;
 	}
 
-	public Integer getCardNO() {
+	public Long getCardNO() {
 		return cardNO;
 	}
 
-	public void setCardNO(Integer cardNO) {
+	public void setCardNO(Long cardNO) {
 		this.cardNO = cardNO;
 	}
 
