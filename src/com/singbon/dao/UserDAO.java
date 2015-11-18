@@ -22,7 +22,7 @@ public interface UserDAO extends BaseDAO {
 	 * @param id
 	 * @return
 	 */
-	public void delete(@Param("userIds") Integer[] userIds) throws Exception;
+	public void delete(@Param("userIds") Long[] userIds) throws Exception;
 
 	/**
 	 * 根据主键查询人员
@@ -149,7 +149,7 @@ public interface UserDAO extends BaseDAO {
 	 * @param toDeptId
 	 * @throws Exception
 	 */
-	public void changeToNewDept(@Param("userIds") Integer[] userIds, @Param("toDeptId") Integer toDeptId) throws Exception;
+	public void changeToNewDept(@Param("userIds") Long[] userIds, @Param("toDeptId") Integer toDeptId) throws Exception;
 
 	/**
 	 * 调整人员从原部门到新部门

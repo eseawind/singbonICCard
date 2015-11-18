@@ -421,9 +421,9 @@ public class MainCardController extends BaseController {
 		try {
 			p = response.getWriter();
 			String[] userIds2 = checkedUserIds.split(",");
-			Integer[] userIds = new Integer[userIds2.length];
+			Long[] userIds = new Long[userIds2.length];
 			for (int i = 0; i < userIds2.length; i++) {
-				userIds[i] = Integer.parseInt(userIds2[i]);
+				userIds[i] = Long.parseLong(userIds2[i]);
 			}
 			this.mainCardService.delete(userIds);
 			p.print(1);
@@ -901,7 +901,7 @@ public class MainCardController extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/doDeptAdjust.do")
-	public void doDeptAdjust(Integer adjustType, Integer fromDeptId, Integer toDeptId, Integer selectedUserId, Integer[] userIds, HttpServletRequest request, HttpServletResponse response,
+	public void doDeptAdjust(Integer adjustType, Integer fromDeptId, Integer toDeptId, Long selectedUserId, Long[] userIds, HttpServletRequest request, HttpServletResponse response,
 			Model model) {
 		PrintWriter p = null;
 		try {
@@ -911,7 +911,7 @@ public class MainCardController extends BaseController {
 		}
 		if (adjustType == 0 || adjustType == 2) {
 			if (adjustType == 0) {
-				userIds = new Integer[1];
+				userIds = new Long[1];
 				userIds[0] = selectedUserId;
 			}
 			try {

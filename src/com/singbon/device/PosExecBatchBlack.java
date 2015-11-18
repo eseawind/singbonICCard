@@ -51,7 +51,8 @@ public class PosExecBatchBlack implements Runnable {
 						device.getCompanyId(), device.getCompanyId(), lastBatchId);
 			}
 			List<Map> list = JdbcUtil.baseDAO.selectBySql(sql);
-
+			if (list == null || list.size() == 0)
+				return;
 			synchronized (TerminalManager.sendCommandObject) {
 				ArrayList<SendCommand> sendCommandList = TerminalManager.SNToSendCommandList.get(sn);
 				String batchIds = "";

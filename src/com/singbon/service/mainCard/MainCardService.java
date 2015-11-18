@@ -50,7 +50,7 @@ public class MainCardService extends BaseService {
 	 * 
 	 * @param user
 	 */
-	public void delete(Integer[] userIds) throws Exception {
+	public void delete(Long[] userIds) throws Exception {
 		this.userDAO.delete(userIds);
 	}
 
@@ -270,6 +270,7 @@ public class MainCardService extends BaseService {
 			CardBlack cardBlack = new CardBlack();
 			cardBlack.setCompanyId(companyId);
 			cardBlack.setCardNO(cardNO);
+			cardBlack.setBlackType(0);
 			this.cardBlackDAO.insert(cardBlack);
 			TerminalManager.CompanyIdToLastBlackNumList.put(companyId, cardNO);
 		}
@@ -359,7 +360,7 @@ public class MainCardService extends BaseService {
 	 * @param toDeptId
 	 * @throws Exception
 	 */
-	public void changeToNewDept(Integer[] userIds, Integer toDeptId) throws Exception {
+	public void changeToNewDept(Long[] userIds, Integer toDeptId) throws Exception {
 		this.userDAO.changeToNewDept(userIds, toDeptId);
 	}
 

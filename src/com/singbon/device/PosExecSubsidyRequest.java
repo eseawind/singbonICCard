@@ -29,8 +29,8 @@ public class PosExecSubsidyRequest implements Runnable {
 	// 处理补助请求
 	@SuppressWarnings("rawtypes")
 	public void run() {
-		int userId = Integer.parseInt(StringUtil.getHexStrFromBytes(36, 39, b), 16);
-		int cardNO = Integer.parseInt(StringUtil.getHexStrFromBytes(40, 43, b), 16);
+		long userId = Long.parseLong(StringUtil.getHexStrFromBytes(36, 39, b), 16);
+		long cardNO = Long.parseLong(StringUtil.getHexStrFromBytes(40, 43, b), 16);
 		int cardTypeId = Integer.parseInt(StringUtil.getHexStrFromBytes(44, 44, b), 16);
 		String sql = String.format("select s.subsidyVersion,subsidyFare from user u left join subsidy s on u.userId=s.userId where u.companyId=%s and u.userId=%s", device.getCompanyId(), userId);
 		List<Map> list = JdbcUtil.baseDAO.selectBySql(sql);

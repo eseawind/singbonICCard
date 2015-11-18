@@ -118,7 +118,7 @@ public class PosExecReplyCommand {
 			} else if (subFrame == PosSubFrameBlack.AllUpdate) {
 				map.put("des", DesUtil.decrypt(DeviceCommunicateStr.ExecBlackUpdate));
 			} else if (subFrame == PosSubFrameBlack.IncAppend) {
-				String log = String.format(DesUtil.decrypt(DeviceCommunicateStr.ExecBlackAppend), sendCommand.getBlackNums());
+				String log = String.format(DesUtil.decrypt(DeviceCommunicateStr.ExecBlackAppend), sendCommand.getBlackNumsDes());
 				map.put("des", log);
 
 				long lastBlackNum = Long.parseLong(StringUtil.getHexStrFromBytes(b.length - 6, b.length - 3, b), 16);

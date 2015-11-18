@@ -70,24 +70,24 @@ public class PosExecCommandDispatch {
 			}
 
 			// 自动下载批次黑名单
-//			long sysLastBatchId = TerminalManager.CompanyIdToLastBatchIdList.get(device.getCompanyId());
-//			long sysLastBlackNum = TerminalManager.CompanyIdToLastBlackNumList.get(device.getCompanyId());
-//			if (lastBatchId != sysLastBatchId) {
-//				PosExecBatchBlack black = new PosExecBatchBlack(lastBatchId, device);
-//				black.run();
-//			}
-//
-//			// 自动下载黑名单
-//			if (lastBlackNum != sysLastBlackNum) {
-//				PosExecCardBlack black = new PosExecCardBlack(lastBlackNum, device);
-//				black.run();
-//			}
-//
-//			// 命令码为1是主动询问返回的状态
-//			commandCode = StringUtil.byteToInt(b[34]) * 256 + StringUtil.byteToInt(b[35]);
-//			if (commandCode == 1) {
-//				PosExecReplyCommand.execReplyCommand(device, commandCode, b, map, true);
-//			}
+			long sysLastBatchId = TerminalManager.CompanyIdToLastBatchIdList.get(device.getCompanyId());
+			long sysLastBlackNum = TerminalManager.CompanyIdToLastBlackNumList.get(device.getCompanyId());
+			if (lastBatchId != sysLastBatchId) {
+				PosExecBatchBlack black = new PosExecBatchBlack(lastBatchId, device);
+				black.run();
+			}
+
+			// 自动下载黑名单
+			if (lastBlackNum != sysLastBlackNum) {
+				PosExecCardBlack black = new PosExecCardBlack(lastBlackNum, device);
+				black.run();
+			}
+
+			// 命令码为1是主动询问返回的状态
+			commandCode = StringUtil.byteToInt(b[34]) * 256 + StringUtil.byteToInt(b[35]);
+			if (commandCode == 1) {
+				PosExecReplyCommand.execReplyCommand(device, commandCode, b, map, true);
+			}
 
 			// 记录帧 1普通消费、2补助消费、9领取补助记录
 		} else if (b[30] == 1 && (b[31] == 1 || b[31] == 2 || b[31] == 9 || b[31] == 39)) {

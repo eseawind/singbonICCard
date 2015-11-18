@@ -9,9 +9,9 @@ package com.singbon.device;
 public class CardReaderCommandCode {
 
 	/**
-	 * 获取出纳卡基本信息 0x70
+	 * 制功能卡 0x70
 	 */
-	public static byte CashierCardBaseInfo = 0x70;
+	public static byte MakeFuncCard = 0x70;
 	/**
 	 * 单个发卡 0x01
 	 */

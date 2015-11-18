@@ -1,14 +1,28 @@
 package com.singbon.service.mainCard;
 
 import java.nio.channels.SocketChannel;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.singbon.dao.BaseDAO;
 import com.singbon.dao.SysUserDAO;
+import com.singbon.dao.systemManager.systemSetting.ConsumeParamDAO;
+import com.singbon.dao.systemManager.systemSetting.DiscountDAO;
+import com.singbon.dao.systemManager.systemSetting.MealDAO;
+import com.singbon.device.CardReaderCommandCode;
+import com.singbon.device.CardReaderFrame;
+import com.singbon.device.CommandDevice;
+import com.singbon.device.DeviceType;
+import com.singbon.device.TerminalManager;
+import com.singbon.entity.ConsumeParam;
 import com.singbon.entity.Device;
+import com.singbon.entity.Discount;
+import com.singbon.entity.Meal;
+import com.singbon.entity.WaterRateGroup;
 import com.singbon.service.BaseService;
+import com.singbon.util.StringUtil;
 
 /**
  * 制功能卡业务层
@@ -21,6 +35,12 @@ public class FuncCardService extends BaseService {
 
 	@Autowired
 	public SysUserDAO sysUserDAO;
+	@Autowired
+	public MealDAO mealDAO;
+	@Autowired
+	public DiscountDAO discountDAO;
+	@Autowired
+	public ConsumeParamDAO consumeParamDAO;
 
 	@Override
 	public BaseDAO getBaseDAO() {
@@ -35,103 +55,119 @@ public class FuncCardService extends BaseService {
 	 * @param section
 	 * @throws Exception
 	 */
-	public void makeCardByUserInfo(Device device, SocketChannel socketChannel, Integer section) throws Exception {
+	@SuppressWarnings("unchecked")
+	public void make(WaterRateGroup w, Device device, SocketChannel socketChannel, Integer baseSection) throws Exception {
 
-		// 基本扇区
-//		Calendar c = Calendar.getInstance();
-//
-//		String tmUserId = StringUtil.hexLeftPad(user.getUserId(), 8);// 4 0-3
-//		String tmCardNo = StringUtil.hexLeftPad(Integer.valueOf(user.getCardNO()), 8);// 4
-//																						// 4-7
-//		String tmConsumePwd = StringUtil.hexLeftPad(Integer.valueOf(user.getConsumePwd()), 4);// 2
-//																								// 8-9
-//		c.setTime(user.getInvalidDate());
-//		String tmInvalidDate = StringUtil.dateToHexStr(c);// 2 10-11
-//		String tmCardMark = StringUtil.hexLeftPad(241, 2);// 1 12
-//		String tmCardBatch = StringUtil.hexLeftPad(cardAllInfo.getCardBatch(), 4);// 2
-//																					// 13-14
-//		String tmCheck1 = "00"; // 异或校验，以后补充 1
-//
-//		String tmCardDeposit = StringUtil.hexLeftPad(cardAllInfo.getCardDeposit(), 2);// 1
-//		String tmLimitTimesFare = StringUtil.hexLeftPad(cardAllInfo.getLimitTimesFare(), 2);// 2
-//		String tmLimitDayFare = StringUtil.hexLeftPad(cardAllInfo.getLimitDayFare(), 4);// 1
-//		String tmCardSeq = "01";// 1
-//		if (commandCode != CardReaderCommandCode.SingleCard && commandCode != CardReaderCommandCode.InfoCard) {
-//			tmCardSeq = StringUtil.hexLeftPad(user.getCardSeq(), 2);// 1
-//		}
-//		String tmCardType = StringUtil.hexLeftPad(user.getCardTypeId(), 2);// 1
-//		String tmDeptId = StringUtil.hexLeftPad(user.getDeptId(), 8);// 4
-//		String tmTotalFare = StringUtil.hexLeftPad(user.getTotalFare(), 8);// 4
-//		String tmStandby = "06"; // 备用字段//1
-//		String tmCheck2 = "00"; // 异或校验//1
-//
-//		String baseData = tmUserId + tmCardNo + tmConsumePwd + tmInvalidDate + tmCardMark + tmCardBatch + tmCheck1 + tmCardDeposit + tmLimitTimesFare + tmLimitDayFare + tmCardSeq + tmCardType
-//				+ tmDeptId + tmTotalFare + tmStandby + tmCheck2;
-//		String baseInfoSection = StringUtil.hexLeftPad(section, 2);
-//		String baseBlock0 = baseInfoSection + "0000" + baseData.substring(0, 32);
-//		String baseBlock1 = baseInfoSection + "0100" + StringUtil.strRightPad(StringUtil.strToGB2312(user.getUsername()), 32);
-//		String baseBlock2 = baseInfoSection + "0200" + baseData.substring(32);
-//
-//		// 大钱包
-//		String tmCardOPCount = StringUtil.hexLeftPad(user.getOpCount(), 4);// 2
-//		String tmCardOddFare = StringUtil.hexLeftPad(user.getOddFare(), 8);// 4
-//		String tmLastConsumeTime = "000000";// 3
-//		String tmDaySumFare = StringUtil.hexLeftPad(user.getDaySumFare(), 6);// 3
-//		String tmLimitPeriod1 = StringUtil.hexLeftPad(cardAllInfo.getLimitPeriods()[0], 1);
-//		String tmLimitPeriod2 = StringUtil.hexLeftPad(cardAllInfo.getLimitPeriods()[1], 1);
-//		String tmLimitPeriod3 = StringUtil.hexLeftPad(cardAllInfo.getLimitPeriods()[2], 1);
-//		String tmLimitPeriod4 = StringUtil.hexLeftPad(cardAllInfo.getLimitPeriods()[3], 1);
-//		String tmLimitPeriod5 = StringUtil.hexLeftPad(cardAllInfo.getLimitPeriods()[4], 1);
-//		String tmLimitPeriod6 = StringUtil.hexLeftPad(cardAllInfo.getLimitPeriods()[5], 1);
-//		String tmCheck = "00"; // 校验位，同或校验
-//
-//		String consumeData = tmCardOPCount + tmCardOddFare + tmLastConsumeTime + tmDaySumFare + tmLimitPeriod1 + tmLimitPeriod2 + tmLimitPeriod3 + tmLimitPeriod4 + tmLimitPeriod5 + tmLimitPeriod6
-//				+ tmCheck;
-//		String consumeSection = StringUtil.hexLeftPad(section + 1, 2);
-//		String consumeBlock0 = consumeSection + "0000" + consumeData;
-//		String zeroStr = StringUtil.strLeftPad("", 34);
-//		String consumeBlock1 = consumeSection + "01" + zeroStr;
-//		String consumeBlock2 = consumeSection + "02" + zeroStr;
-//
-//		// 补助钱包
-//		String tmSubsidyCardOPCount = StringUtil.hexLeftPad(user.getSubsidyOpCount(), 4);// 2
-//																							// 0-1
-//		String tmCardOddSubsidy = StringUtil.hexLeftPad(user.getSubsidyOddFare(), 8);// 4
-//																						// 2-5
-//		String tmLastSubsidyConsumeTime = "0000";// 2 6-7
-//		String tmSubsidyVersion = StringUtil.hexLeftPad(user.getSubsidyVersion(), 4);// 2
-//																						// 8-9
-//		c.setTime(user.getSubsidyInvalidDate());
-//		String tmSubsidyValidPeriod = StringUtil.dateToHexStr(c);// 2 10-11
-//		String tmSubsidyLimitPeriod1 = StringUtil.hexLeftPad(cardAllInfo.getSubsidyLimitPeriods()[0], 1);
-//		String tmSubsidyLimitPeriod2 = StringUtil.hexLeftPad(cardAllInfo.getSubsidyLimitPeriods()[1], 1);
-//		String tmSubsidyLimitPeriod3 = StringUtil.hexLeftPad(cardAllInfo.getSubsidyLimitPeriods()[2], 1);
-//		String tmSubsidyLimitPeriod4 = StringUtil.hexLeftPad(cardAllInfo.getSubsidyLimitPeriods()[3], 1);
-//		String tmSubsidyLimitPeriod5 = StringUtil.hexLeftPad(cardAllInfo.getSubsidyLimitPeriods()[4], 1);
-//		String tmSubsidyLimitPeriod6 = StringUtil.hexLeftPad(cardAllInfo.getSubsidyLimitPeriods()[5], 1);
-//		String tmSubsidyCheck = "00"; // 校验位，同或校验
-//
-//		String subsidyData = tmSubsidyCardOPCount + tmCardOddSubsidy + tmLastSubsidyConsumeTime + tmSubsidyVersion + tmSubsidyValidPeriod + tmSubsidyLimitPeriod1 + tmSubsidyLimitPeriod2
-//				+ tmSubsidyLimitPeriod3 + tmSubsidyLimitPeriod4 + tmSubsidyLimitPeriod5 + tmSubsidyLimitPeriod6 + tmSubsidyCheck;
-//		String subsidySection = StringUtil.hexLeftPad(section + 2, 2);
-//		String subsidyBlock0 = subsidySection + "0000" + subsidyData;
-//		String subsidyBlock1 = subsidySection + "01" + zeroStr;
-//		String subsidyBlock2 = subsidySection + "02" + zeroStr;
-//
-//		String forthSection = StringUtil.hexLeftPad(section + 3, 2);
-//		String forthBlock0 = forthSection + "00" + zeroStr;
-//		String forthBlock1 = forthSection + "01" + zeroStr;
-//		String forthBlock2 = forthSection + "02" + zeroStr;
-//
-//		// 静态ID（16字节高字节在前）+设备机器号（4字节高字节在前）+数据长度（2字节高字节在前）+cd+01+是否校验卡号标志（1字节）+物理卡号（4字节高字节在前）+读卡扇区号（1字节）+读卡块号（1字节）+读写状态字节（1字节）+块数据（16字节高字节在前）+读卡扇区号（1字节）+读卡块号（1字节）+读写状态字节（1字节）+块数据（16字节高字节在前）+...+CRC校验（字节高字节在前）
-//		String commandCodeStr = "0000" + StringUtil.hexLeftPad(commandCode, 4);
-//		String sendStr = CardReaderFrame.WriteCard + commandCodeStr + CardReaderFrame.ValidateCardSN + cardSN + baseBlock0 + baseBlock1 + baseBlock2 + consumeBlock0 + consumeBlock1 + consumeBlock2
-//				+ subsidyBlock0 + subsidyBlock1 + subsidyBlock2 + forthBlock0 + forthBlock1 + forthBlock2 + "0000";
-//		String bufLen = StringUtil.hexLeftPad(2 + sendStr.length() / 2, 4);
-//		sendStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + CommandDevice.NoSubDeviceNum + "0000" + DeviceType.CardReader + bufLen + sendStr;
-//
-//		byte[] buf = StringUtil.strTobytes(sendStr);
-//
-//		TerminalManager.sendToCardReader(socketChannel, buf);
+		// 第2扇区 时间段费率2、3、4
+		// 第0块 时间段费率2、3
+		String rate2BeginTime = StringUtil.getWaterRateTime(w.getRate2BeginTime(), w.getRate2EndTime());// 4--0-3
+		String rate2Fare = StringUtil.hexLeftPad(w.getRate2Fare(), 4);// 2--4-5
+		String rate2Cycle = StringUtil.getWaterDeduceCycle(w, w.getRate2Cycle(), w.getRate2Water());// 2--6-7
+		String rate3BeginTime = StringUtil.getWaterRateTime(w.getRate3BeginTime(), w.getRate3EndTime());// 4--8-11
+		String rate3Fare = StringUtil.hexLeftPad(w.getRate3Fare(), 4);// 2--12-13
+		String rate3Cycle = StringUtil.getWaterDeduceCycle(w, w.getRate3Cycle(), w.getRate3Water());// 2--14-15
+		String section2Block0 = rate2BeginTime + rate2Fare + rate2Cycle + rate3BeginTime + rate3Fare + rate3Cycle;
+
+		// 第1块 时间段费率2、3和2、3、4卡类型
+		String rate4BeginTime = StringUtil.getWaterRateTime(w.getRate4BeginTime(), w.getRate4EndTime());// 4--0-3
+		String rate4Fare = StringUtil.hexLeftPad(w.getRate4Fare(), 4);// 2--4-5
+		String rate4Cycle = StringUtil.getWaterDeduceCycle(w, w.getRate4Cycle(), w.getRate4Water());// 2--6-7
+		String rate2CardTypes = StringUtil.getWaterCardTypesHexStr(w.getRate2CardTypes());// 2--8-9
+		String rate3CardTypes = StringUtil.getWaterCardTypesHexStr(w.getRate3CardTypes());// 2--10-11
+		String rate4CardTypes = StringUtil.getWaterCardTypesHexStr(w.getRate4CardTypes());// 2--12-13
+		String section2Block1 = rate4BeginTime + rate4Fare + rate4Cycle + rate2CardTypes + rate3CardTypes + rate4CardTypes + "0000";
+
+		// 第2块 餐别限次后三
+		List<Meal> mealList = (List<Meal>) this.mealDAO.selectListByCompanyId(device.getCompanyId());
+		String section2Block2 = "";
+		for (int i = 3; i < mealList.size(); i++) {
+			String beginTimeHour = StringUtil.hexLeftPad(Integer.parseInt(mealList.get(i).getBeginTime().substring(0, 2)), 2);
+			String beginTimeMin = StringUtil.hexLeftPad(Integer.parseInt(mealList.get(i).getBeginTime().substring(3, 5)), 2);
+			String endTimeHour = StringUtil.hexLeftPad(Integer.parseInt(mealList.get(i).getEndTime().substring(0, 2)), 2);
+			String endTimeMin = StringUtil.hexLeftPad(Integer.parseInt(mealList.get(i).getEndTime().substring(3, 5)), 2);
+			String timeLimit = StringUtil.hexLeftPad(mealList.get(i).getTimeLimit(), 2);
+			section2Block2 += (beginTimeHour + beginTimeMin + endTimeHour + endTimeMin + timeLimit);
+		}
+		section2Block2 += "00";
+
+		// 第3扇区 餐别限次前三和优惠方案
+		// 第0块 餐别限次前三
+		String section3Block0 = "";
+		for (int i = 0; i < mealList.size() - 3; i++) {
+			String beginTimeHour = StringUtil.hexLeftPad(Integer.parseInt(mealList.get(i).getBeginTime().substring(0, 2)), 2);
+			String beginTimeMin = StringUtil.hexLeftPad(Integer.parseInt(mealList.get(i).getBeginTime().substring(3, 5)), 2);
+			String endTimeHour = StringUtil.hexLeftPad(Integer.parseInt(mealList.get(i).getEndTime().substring(0, 2)), 2);
+			String endTimeMin = StringUtil.hexLeftPad(Integer.parseInt(mealList.get(i).getEndTime().substring(3, 5)), 2);
+			String timeLimit = StringUtil.hexLeftPad(mealList.get(i).getTimeLimit(), 2);
+			section3Block0 += (beginTimeHour + beginTimeMin + endTimeHour + endTimeMin + timeLimit);
+		}
+		section3Block0 += "00";
+
+		// 第1块 优惠方案
+		String section3Block1 = "";
+		List<Discount> discountList = (List<Discount>) this.discountDAO.selectListByCompanyId(device.getCompanyId());
+		for (Discount discount : discountList) {
+			String rate = StringUtil.hexLeftPad(discount.getRate(), 2);
+			section3Block1 += rate;
+		}
+
+		// 第2块 扣费速率
+		String section3Block2 = "";
+
+		// 第4扇区
+		// 第0块
+		String goWaterType = StringUtil.hexLeftPad(w.getGoWaterType(), 2);// 1--0-0
+		String stopWaterType = StringUtil.hexLeftPad(w.getStopWaterType(), 2);// 1--1-1
+		String rate5Fare = StringUtil.hexLeftPad(w.getRate5Fare(), 4);// 2--2-3
+		String subsidyReset = StringUtil.hexLeftPad(w.getSubsidyReset(), 2);// 1--4-4
+		String subsidyFirst = StringUtil.hexLeftPad(w.getSubsidyFirst(), 2);// 1--5-5
+		String rate5Cycle = StringUtil.getWaterDeduceCycle(w, w.getRate5Cycle(), w.getRate5Water());// 2--6-7
+		String pwd = StringUtil.hexLeftPad(w.getPwd(), 4);// 2--8-9
+		String consumeType = StringUtil.hexLeftPad(w.getConsumeType(), 2);// 1--10-10
+		String deviceNum = StringUtil.hexLeftPad(w.getDeviceNum(), 2);// 4--11-14
+		String bound = StringUtil.hexLeftPad(w.getBound(), 2);// 1--15-15
+		String section4Block0 = stopWaterType + rate5Fare + subsidyReset + subsidyFirst + rate5Cycle + pwd + consumeType + deviceNum + bound;
+
+		// 第1块
+		ConsumeParam p = (ConsumeParam) this.consumeParamDAO.selectByCompanyId(device.getCompanyId());
+		String rate1Status = StringUtil.hexLeftPad(w.getRate1Status(), 2);// 1--0-0
+		String rate1Fare = StringUtil.hexLeftPad(w.getRate1Fare(), 4);// 2--1-2
+		String rate1Cycle = StringUtil.getWaterDeduceCycle(w, w.getRate1Cycle(), w.getRate1Water());// 2--3-4
+		String dayLimitFare = StringUtil.hexLeftPad(p.getDayLimitFare(), 4);// 2--5-6
+		String bit7 = "00";// 1--7-7
+		String cardMinFare = StringUtil.hexLeftPad(p.getCardMinFare(), 2);// 2--9-9
+		String rate1CardTypes = StringUtil.getWaterCardTypesHexStr(w.getRate1CardTypes());// 2--10-11
+		String section4Block1 = rate1Status + rate1Fare + rate1Cycle + dayLimitFare + bit7 + cardMinFare + rate1CardTypes + "00000000";
+
+		// 第2块
+		String subsidyInvalidDate = "0000";// 2--0-1
+		String timeLimitFare = StringUtil.hexLeftPad(p.getTimeLimitFare(), 4);// 2--2-3
+		String checktime = "00000000";// 4--4-7
+		String cardMinFareCardTypes = StringUtil.getPosCardTypesHexStr(p.getCardMinFareCardTypes());// 2--8-9
+		String timeLimitFareCardTypes = StringUtil.getPosCardTypesHexStr(p.getTimeLimitFareCardTypes());// 2--10-11
+		String dayLimitFareCardTypes = StringUtil.getPosCardTypesHexStr(p.getDayLimitFareCardTypes());// 2--12-13
+		String enableFlag = StringUtil.binaryHexStr("" + w.getEnableMeal() + w.getEnableDiscount() + w.getEnableDayLimitFare() + w.getEnableTimeLimitFare() + w.getEnableCardMinFare());// 1--14-14
+		String section4Block2 = subsidyInvalidDate + timeLimitFare + checktime + cardMinFareCardTypes + timeLimitFareCardTypes + dayLimitFareCardTypes + enableFlag + "00";
+
+		section2Block0 = StringUtil.hexLeftPad(baseSection + 2, 2) + "0000" + section2Block0;
+		section2Block1 = StringUtil.hexLeftPad(baseSection + 2, 2) + "0100" + section2Block1;
+		section2Block2 = StringUtil.hexLeftPad(baseSection + 2, 2) + "0200" + section2Block2;
+
+		section3Block0 = StringUtil.hexLeftPad(baseSection + 3, 2) + "0000" + section3Block0;
+		section3Block1 = StringUtil.hexLeftPad(baseSection + 3, 2) + "0100" + section3Block1;
+		section3Block2 = StringUtil.hexLeftPad(baseSection + 3, 2) + "0200" + section3Block2;
+
+		section4Block0 = StringUtil.hexLeftPad(baseSection + 4, 2) + "0000" + section4Block0;
+		section4Block1 = StringUtil.hexLeftPad(baseSection + 4, 2) + "0100" + section4Block1;
+		section4Block2 = StringUtil.hexLeftPad(baseSection + 4, 2) + "0200" + section4Block2;
+
+		String commandCodeStr = "0000" + StringUtil.hexLeftPad(CardReaderCommandCode.MakeFuncCard, 4);
+		String sendStr = CardReaderFrame.WriteCard + commandCodeStr + CardReaderFrame.NoValidateCardSN + CardReaderFrame.NoCardSN + section2Block0 + section2Block1 + section2Block2 + section3Block0
+				+ section3Block1 + section3Block2 + section4Block0 + section4Block1 + section4Block2 + "0000";
+		String bufLen = StringUtil.hexLeftPad(2 + sendStr.length() / 2, 4);
+		sendStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + CommandDevice.NoSubDeviceNum + "0000" + DeviceType.CardReader + bufLen + sendStr;
+		byte[] buf = StringUtil.strTobytes(sendStr);
+
+		TerminalManager.sendToCardReader(socketChannel, buf);
 	}
 }

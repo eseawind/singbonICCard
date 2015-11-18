@@ -2,7 +2,7 @@ package com.singbon.entity;
 
 import java.io.Serializable;
 
-//用户卡挂失
+// 黑名单
 //
 //@author 郝威
 //
@@ -12,10 +12,9 @@ public class CardBlack implements Serializable {
 	private static final long serialVersionUID = -4349415810057681133L;
 
 	private Integer id;
-	// 所属公司
 	private Integer companyId;
-	// 逻辑卡号
 	private Long cardNO;
+	private Integer blackType;
 
 	public Integer getId() {
 		return id;
@@ -40,4 +39,13 @@ public class CardBlack implements Serializable {
 	public void setCardNO(Long cardNO) {
 		this.cardNO = cardNO;
 	}
+
+	public Integer getBlackType() {
+		return blackType;
+	}
+
+	public void setBlackType(Integer blackType) {
+		this.blackType = blackType;
+	}
+
 }
