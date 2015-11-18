@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.singbon.device.CRC16;
 import com.singbon.entity.Company;
+import com.singbon.entity.WaterRateGroup;
 
 public class StringUtil {
 
@@ -386,6 +387,15 @@ public class StringUtil {
 	public static Integer objToInt(Object obj) {
 		return Integer.valueOf(obj.toString());
 	}
+	
+	/**
+	 * object类型long字符串转Long
+	 * 
+	 * @return
+	 */
+	public static Long objToLong(Object obj) {
+		return Long.valueOf(obj.toString());
+	}
 
 	/**
 	 * object类型float字符串转Float
@@ -410,16 +420,106 @@ public class StringUtil {
 		}
 	}
 
+	/**
+	 * 获取水控时间段hex
+	 * 
+	 * @param beginTime
+	 * @param endTime
+	 * @return
+	 */
+	public static String getWaterRateTime(String beginTime, String endTime) {
+		String hex = "";
+		String[] time = beginTime.split(":");
+		hex += StringUtil.hexLeftPad(Integer.valueOf(time[0]), 2);
+		hex += StringUtil.hexLeftPad(Integer.valueOf(time[1]), 2);
+
+		time = endTime.split(":");
+		hex += StringUtil.hexLeftPad(Integer.valueOf(time[0]), 2);
+		hex += StringUtil.hexLeftPad(Integer.valueOf(time[1]), 2);
+		return hex;
+	}
+	
+	/**
+	 * 返回扣费周期或水量
+	 * 
+	 * @param w
+	 * @param cycle
+	 * @param water
+	 * @return
+	 */
+	public static String getWaterDeduceCycle(WaterRateGroup w, Integer cycle, Integer water) {
+		if (w.getConsumeType() == 3) {
+			return StringUtil.hexLeftPad(water, 4);
+		} else {
+			return StringUtil.hexLeftPad(cycle, 4);
+		}
+	}
+	
+	/**
+	 * 水控授权16个卡类型转hex字符串2字节
+	 * 
+	 * @param str
+	 * @return
+	 */
+	public static String getWaterCardTypesHexStr(String str) {
+		String result = "";
+		for (int i = 7; i >= 0; i--) {
+			if (str.indexOf("," + i + ",") == -1) {
+				result += "0";
+			} else {
+				result += "1";
+			}
+		}
+		for (int i = 15; i >= 8; i--) {
+			if (str.indexOf("," + i + ",") == -1) {
+				result += "0";
+			} else {
+				result += "1";
+			}
+		}
+		return StringUtil.strLeftPadWithChar(StringUtil.binaryHexStr(result), 4, "0");
+	}
+	
+	/**
+	 * 消费机授权16个卡类型转hex字符串2字节
+	 * 
+	 * @param str
+	 * @return
+	 */
+	public static String getPosCardTypesHexStr(String str) {
+		String result = "";
+		for (int i = 15; i >= 8; i--) {
+			if (str.indexOf("," + i + ",") == -1) {
+				result += "0";
+			} else {
+				result += "1";
+			}
+		}
+		for (int i = 7; i >= 0; i--) {
+			if (str.indexOf("," + i + ",") == -1) {
+				result += "0";
+			} else {
+				result += "1";
+			}
+		}
+		return StringUtil.strLeftPadWithChar(StringUtil.binaryHexStr(result), 4, "0");
+	}
+	
 	public static void main(String[] args) {
 		// 密码 01010101010101010101010101010101 00 00 00 01 0000 00 00 00 00 02
 		// 02 00 11 04 03 00 00 00 00 43 74 61 61 88 88 01 B889
 		// 消费机初始化01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 00 00 00 01 00 00 00 00 00 00 02 02 00 0A 19 19 00 00 00 00 46 1b
 		byte[] b = StringUtil
-				.strTobytes("01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 00 00 00 01 00 00 00 00 00 00 02 02 00 0A 05 01 00 00 00 00 C1 60"
+				.strTobytes("01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 00 00 00 01 00 00 00 00 00 00 02 02 00 12 05 05 00 00 00 00 00 0b 00 10 00 00 00 13 92 6a"
 						.replaceAll(" ", ""));
 		CRC16.generate(b);
 		StringUtil.print(Integer.toHexString(b[b.length - 2]).replace("ffffff", "") + " ");
 		StringUtil.println(Integer.toHexString(b[b.length - 1]).replace("ffffff", ""));
+		
+		String blackNumsDes="";
+		blackNumsDes = blackNumsDes.substring(0,
+				 blackNumsDes.length() - 1);
+		
 	}
 
 	public static void print(Object obj) {

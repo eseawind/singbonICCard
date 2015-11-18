@@ -6,8 +6,8 @@
 	<parameterMap type="com.singbon.entity.WaterRateGroup" id="waterRateGroup2" />
 	<cache eviction="FIFO" size="1" readOnly="true"/>
 	<insert id="insert">
-		insert into waterRateGroup (companyId,groupName,consumeType,goWaterType,stopWaterType,waterPrecision,rate1Fare,rate1Cycle,rate1Water,rate1NextDayReset,rate1Status,rate1CardTypes,rate2Fare,rate2Cycle,rate2Water,rate2BeginTime,rate2EndTime,rate2CardTypes,rate3Fare,rate3Cycle,rate3Water,rate3BeginTime,rate3EndTime,rate3CardTypes,rate4Fare,rate4Cycle,rate4Water,rate4BeginTime,rate4EndTime,rate4CardTypes,rate5Fare,rate5Cycle,rate5Water,pwd,bound,subsidyReset,subsidyFirst,enableCheckTime,enableCardMinFare,enableTimeLimitFare,enableDayLimitFare,enableDiscount,enableMeal,updateNum,deviceNum)
-			select #{companyId},#{groupName},consumeType,goWaterType,stopWaterType,waterPrecision,rate1Fare,rate1Cycle,rate1Water,rate1NextDayReset,rate1Status,rate1CardTypes,rate2Fare,rate2Cycle,rate2Water,rate2BeginTime,rate2EndTime,rate2CardTypes,rate3Fare,rate3Cycle,rate3Water,rate3BeginTime,rate3EndTime,rate3CardTypes,rate4Fare,rate4Cycle,rate4Water,rate4BeginTime,rate4EndTime,rate4CardTypes,rate5Fare,rate5Cycle,rate5Water,pwd,bound,subsidyReset,subsidyFirst,enableCheckTime,enableCardMinFare,enableTimeLimitFare,enableDayLimitFare,enableDiscount,enableMeal,updateNum,deviceNum from waterRateGroupBase
+		insert into waterRateGroup (companyId,groupName,consumeType,goWaterType,stopWaterType,rate1Fare,rate1Cycle,rate1Water,rate1NextDayReset,rate1Status,rate1CardTypes,rate2Fare,rate2Cycle,rate2Water,rate2BeginTime,rate2EndTime,rate2CardTypes,rate3Fare,rate3Cycle,rate3Water,rate3BeginTime,rate3EndTime,rate3CardTypes,rate4Fare,rate4Cycle,rate4Water,rate4BeginTime,rate4EndTime,rate4CardTypes,rate5Fare,rate5Cycle,rate5Water,pwd,bound,subsidyReset,subsidyFirst,enableCheckTime,enableCardMinFare,enableTimeLimitFare,enableDayLimitFare,enableDiscount,enableMeal,updateNum,deviceNum,waterLimit,cycleLimit,waterPrecision,enableAutoCalcRate)
+			select #{companyId},#{groupName},consumeType,goWaterType,stopWaterType,rate1Fare,rate1Cycle,rate1Water,rate1NextDayReset,rate1Status,rate1CardTypes,rate2Fare,rate2Cycle,rate2Water,rate2BeginTime,rate2EndTime,rate2CardTypes,rate3Fare,rate3Cycle,rate3Water,rate3BeginTime,rate3EndTime,rate3CardTypes,rate4Fare,rate4Cycle,rate4Water,rate4BeginTime,rate4EndTime,rate4CardTypes,rate5Fare,rate5Cycle,rate5Water,pwd,bound,subsidyReset,subsidyFirst,enableCheckTime,enableCardMinFare,enableTimeLimitFare,enableDayLimitFare,enableDiscount,enableMeal,updateNum,deviceNum,waterLimit,cycleLimit,waterPrecision,enableAutoCalcRate from waterRateGroupBase
 	</insert>
 	<update id="update" parameterMap="waterRateGroup2">
 		update waterRateGroup set 
@@ -15,7 +15,11 @@
 			groupName=#{groupName}
 		</if>
 		<if test="groupName==null">
-			consumeType=#{consumeType},goWaterType=#{goWaterType},stopWaterType=#{stopWaterType},deviceNum=#{deviceNum},rate1Fare=#{rate1Fare},rate1Cycle=#{rate1Cycle},rate1Water=#{rate1Water},rate1NextDayReset=#{rate1NextDayReset},rate1Status=#{rate1Status},rate1CardTypes=#{rate1CardTypes},rate2Fare=#{rate2Fare},rate2Cycle=#{rate2Cycle},rate2Water=#{rate2Water},rate2BeginTime=#{rate2BeginTime},rate2EndTime=#{rate2EndTime},rate2CardTypes=#{rate2CardTypes},rate3Fare=#{rate3Fare},rate3Cycle=#{rate3Cycle},rate3Water=#{rate3Water},rate3BeginTime=#{rate3BeginTime},rate3EndTime=#{rate3EndTime},rate3CardTypes=#{rate3CardTypes},rate4Fare=#{rate4Fare},rate4Cycle=#{rate4Cycle},rate4Water=#{rate4Water},rate4BeginTime=#{rate4BeginTime},rate4EndTime=#{rate4EndTime},rate4CardTypes=#{rate4CardTypes},rate5Fare=#{rate5Fare},rate5Cycle=#{rate5Cycle},rate5Water=#{rate5Water},pwd=#{pwd},bound=#{bound},subsidyReset=#{subsidyReset},subsidyFirst=#{subsidyFirst},enableCheckTime=#{enableCheckTime},enableCardMinFare=#{enableCardMinFare},enableTimeLimitFare=#{enableTimeLimitFare},enableDayLimitFare=#{enableDayLimitFare},enableDiscount=#{enableDiscount},enableMeal=#{enableMeal},updateNum=#{updateNum},deviceNum=#{deviceNum}			
+			consumeType=#{consumeType},goWaterType=#{goWaterType},stopWaterType=#{stopWaterType},deviceNum=#{deviceNum},rate1Fare=#{rate1Fare},rate1Cycle=#{rate1Cycle},rate1Water=#{rate1Water},rate1NextDayReset=#{rate1NextDayReset},rate1Status=#{rate1Status},rate1CardTypes=#{rate1CardTypes},
+			rate2Fare=#{rate2Fare},rate2Cycle=#{rate2Cycle},rate2Water=#{rate2Water},rate2BeginTime=#{rate2BeginTime},rate2EndTime=#{rate2EndTime},rate2CardTypes=#{rate2CardTypes},rate3Fare=#{rate3Fare},rate3Cycle=#{rate3Cycle},rate3Water=#{rate3Water},rate3BeginTime=#{rate3BeginTime},rate3EndTime=#{rate3EndTime},rate3CardTypes=#{rate3CardTypes},
+			rate4Fare=#{rate4Fare},rate4Cycle=#{rate4Cycle},rate4Water=#{rate4Water},rate4BeginTime=#{rate4BeginTime},rate4EndTime=#{rate4EndTime},rate4CardTypes=#{rate4CardTypes},rate5Fare=#{rate5Fare},rate5Cycle=#{rate5Cycle},rate5Water=#{rate5Water},pwd=#{pwd},bound=#{bound},subsidyReset=#{subsidyReset},subsidyFirst=#{subsidyFirst},
+			enableCheckTime=#{enableCheckTime},enableCardMinFare=#{enableCardMinFare},enableTimeLimitFare=#{enableTimeLimitFare},enableDayLimitFare=#{enableDayLimitFare},enableDiscount=#{enableDiscount},enableMeal=#{enableMeal},updateNum=#{updateNum},deviceNum=#{deviceNum},
+			waterLimit=#{waterLimit},cycleLimit=#{cycleLimit},waterPrecision=#{waterPrecision},enableAutoCalcRate=#{enableAutoCalcRate}
 		</if>
 		where id=#{id}
 	</update>
@@ -29,6 +33,6 @@
 		select * from waterRateGroup where companyId=#{companyId}
 	</select>
 	<select id="selectCountWithPos" resultType="java.lang.Integer">
-		select count(*) count from device where deviceType=3 and groupId=#{groupId}
+		select count(*) count from device where deviceType=3 and posParamGroupId=#{groupId}
 	</select>
 </mapper>

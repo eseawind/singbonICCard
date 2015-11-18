@@ -87,8 +87,8 @@ public class MonitorService implements Runnable {
 	 * @throws Exception
 	 */
 	public void time(Device device, InetSocketAddress inetSocketAddress, Integer commandCode) throws Exception {
-		String sendBufStr = StringUtil.hexLeftPad((int)PosFrame.Sys07, 2) + StringUtil.hexLeftPad((int)PosSubFrameSys07.SysTime, 2) + "0000" + StringUtil.hexLeftPad(commandCode, 4) + StringUtil.timeToHexStr()
-				+ "0000";
+		String sendBufStr = StringUtil.hexLeftPad((int) PosFrame.Sys07, 2) + StringUtil.hexLeftPad((int) PosSubFrameSys07.SysTime, 2) + "0000" + StringUtil.hexLeftPad(commandCode, 4)
+				+ StringUtil.timeToHexStr() + "0000";
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
 		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + CommandDevice.NoSubDeviceNum + DeviceType.Main + DeviceType.getDeviceTypeFrame(device) + bufLen + sendBufStr;
 		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
@@ -178,7 +178,8 @@ public class MonitorService implements Runnable {
 				return;
 			sendBufStr += "00000000000000" + StringUtil.hexLeftPad(p.getCardMinFare(), 2) + StringUtil.hexLeftPad(p.getDayLimitFare() * 100, 4) + StringUtil.hexLeftPad(p.getTimeLimitFare() * 100, 4)
 					+ "00" + StringUtil.hexLeftPad(pos.getSubsidyReset(), 2) + StringUtil.hexLeftPad(pos.getSubsidyFirst(), 2) + "00000000" + StringUtil.hexLeftPad(pos.getBound(), 2)
-					+ getPosCardTypesHexStr(p.getCardMinFareCardTypes()) + getPosCardTypesHexStr(p.getDayLimitFareCardTypes()) + getPosCardTypesHexStr(p.getTimeLimitFareCardTypes())
+					+ StringUtil.getPosCardTypesHexStr(p.getCardMinFareCardTypes()) + StringUtil.getPosCardTypesHexStr(p.getDayLimitFareCardTypes())
+					+ StringUtil.getPosCardTypesHexStr(p.getTimeLimitFareCardTypes())
 					+ StringUtil.binaryHexStr("" + pos.getEnableMeal() + pos.getEnableDiscount() + pos.getEnableDayLimitFare() + pos.getEnableTimeLimitFare() + pos.getEnableCardMinFare()) + "0000";
 		} else {
 			WaterRateGroup w = command.getWaterRateGroup();
@@ -186,17 +187,19 @@ public class MonitorService implements Runnable {
 				return;
 			sendBufStr += StringUtil
 					.binaryHexStr("" + w.getStopWaterType() + w.getSubsidyFirst() + w.getGoWaterType() + w.getRate1Status() + "0" + w.getSubsidyReset() + w.getRate1NextDayReset() + "0")
-					+ StringUtil.hexLeftPad(w.getRate1Fare(), 4) + getWaterDeduceCycle(w, w.getRate1Cycle(), w.getRate1Water()) + "00" + StringUtil.hexLeftPad(p.getCardMinFare(), 2) + "00"
+					+ StringUtil.hexLeftPad(w.getRate1Fare(), 4) + StringUtil.getWaterDeduceCycle(w, w.getRate1Cycle(), w.getRate1Water()) + "00" + StringUtil.hexLeftPad(p.getCardMinFare(), 2) + "00"
 					+ StringUtil.hexLeftPad(w.getPwd(), 4) + StringUtil.hexLeftPad(w.getConsumeType(), 2) + StringUtil.hexLeftPad(w.getRate5Fare(), 4)
-					+ getWaterDeduceCycle(w, w.getRate5Cycle(), w.getRate5Water()) + StringUtil.hexLeftPad(w.getBound(), 2) + "0000" + StringUtil.hexLeftPad(p.getDayLimitFare(), 4)
-					+ getWaterCardTypesHexStr(w.getRate1CardTypes()) + StringUtil.hexLeftPad(p.getTimeLimitFare(), 4) + getPosCardTypesHexStr(p.getCardMinFareCardTypes())
-					+ getPosCardTypesHexStr(p.getDayLimitFareCardTypes()) + getPosCardTypesHexStr(p.getTimeLimitFareCardTypes())
+					+ StringUtil.getWaterDeduceCycle(w, w.getRate5Cycle(), w.getRate5Water()) + StringUtil.hexLeftPad(w.getBound(), 2) + "0000" + StringUtil.hexLeftPad(p.getDayLimitFare(), 4)
+					+ StringUtil.getWaterCardTypesHexStr(w.getRate1CardTypes()) + StringUtil.hexLeftPad(p.getTimeLimitFare(), 4) + StringUtil.getPosCardTypesHexStr(p.getCardMinFareCardTypes())
+					+ StringUtil.getPosCardTypesHexStr(p.getDayLimitFareCardTypes()) + StringUtil.getPosCardTypesHexStr(p.getTimeLimitFareCardTypes())
 					+ StringUtil.binaryHexStr("" + w.getEnableMeal() + w.getEnableDiscount() + w.getEnableDayLimitFare() + w.getEnableTimeLimitFare() + w.getEnableCardMinFare())
-					+ getWaterRateTime(w.getRate2BeginTime(), w.getRate2EndTime()) + StringUtil.hexLeftPad(w.getRate2Fare(), 4) + getWaterDeduceCycle(w, w.getRate2Cycle(), w.getRate2Water())
-					+ getWaterCardTypesHexStr(w.getRate2CardTypes()) + getWaterRateTime(w.getRate3BeginTime(), w.getRate3EndTime()) + StringUtil.hexLeftPad(w.getRate3Fare(), 4)
-					+ getWaterDeduceCycle(w, w.getRate3Cycle(), w.getRate3Water()) + getWaterCardTypesHexStr(w.getRate3CardTypes()) + getWaterRateTime(w.getRate4BeginTime(), w.getRate4EndTime())
-					+ StringUtil.hexLeftPad(w.getRate4Fare(), 4) + getWaterDeduceCycle(w, w.getRate4Cycle(), w.getRate4Water()) + getWaterCardTypesHexStr(w.getRate4CardTypes()) + "0064000a000201"
-					+ "0000";
+					+ StringUtil.getWaterRateTime(w.getRate2BeginTime(), w.getRate2EndTime()) + StringUtil.hexLeftPad(w.getRate2Fare(), 4)
+					+ StringUtil.getWaterDeduceCycle(w, w.getRate2Cycle(), w.getRate2Water()) + StringUtil.getWaterCardTypesHexStr(w.getRate2CardTypes())
+					+ StringUtil.getWaterRateTime(w.getRate3BeginTime(), w.getRate3EndTime()) + StringUtil.hexLeftPad(w.getRate3Fare(), 4)
+					+ StringUtil.getWaterDeduceCycle(w, w.getRate3Cycle(), w.getRate3Water()) + StringUtil.getWaterCardTypesHexStr(w.getRate3CardTypes())
+					+ StringUtil.getWaterRateTime(w.getRate4BeginTime(), w.getRate4EndTime()) + StringUtil.hexLeftPad(w.getRate4Fare(), 4)
+					+ StringUtil.getWaterDeduceCycle(w, w.getRate4Cycle(), w.getRate4Water()) + StringUtil.getWaterCardTypesHexStr(w.getRate4CardTypes()) + StringUtil.hexLeftPad(w.getWaterLimit(), 4)
+					+ StringUtil.hexLeftPad(w.getCycleLimit(), 4) + StringUtil.hexLeftPad(w.getWaterPrecision(), 4) + StringUtil.hexLeftPad(w.getEnableAutoCalcRate(), 2) + "0000";
 		}
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
 		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + CommandDevice.NoSubDeviceNum + DeviceType.Main + DeviceType.getDeviceTypeFrame(device) + bufLen + sendBufStr;
@@ -204,91 +207,6 @@ public class MonitorService implements Runnable {
 		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
 
 		TerminalManager.sendToPos(inetSocketAddress, sendBuf);
-	}
-
-	/**
-	 * 获取水控时间段hex
-	 * 
-	 * @param beginTime
-	 * @param endTime
-	 * @return
-	 */
-	private String getWaterRateTime(String beginTime, String endTime) {
-		String hex = "";
-		String[] time = beginTime.split(":");
-		hex += StringUtil.hexLeftPad(Integer.valueOf(time[0]), 2);
-		hex += StringUtil.hexLeftPad(Integer.valueOf(time[1]), 2);
-
-		time = endTime.split(":");
-		hex += StringUtil.hexLeftPad(Integer.valueOf(time[0]), 2);
-		hex += StringUtil.hexLeftPad(Integer.valueOf(time[1]), 2);
-		return hex;
-	}
-
-	/**
-	 * 返回扣费周期或水量
-	 * 
-	 * @param w
-	 * @param cycle
-	 * @param water
-	 * @return
-	 */
-	private String getWaterDeduceCycle(WaterRateGroup w, Integer cycle, Integer water) {
-		if (w.getConsumeType() == 3) {
-			return StringUtil.hexLeftPad(water, 4);
-		} else {
-			return StringUtil.hexLeftPad(cycle, 4);
-		}
-	}
-
-	/**
-	 * 消费机授权16个卡类型转hex字符串2字节
-	 * 
-	 * @param str
-	 * @return
-	 */
-	private String getPosCardTypesHexStr(String str) {
-		String result = "";
-		for (int i = 15; i >= 8; i--) {
-			if (str.indexOf("," + i + ",") == -1) {
-				result += "0";
-			} else {
-				result += "1";
-			}
-		}
-		for (int i = 7; i >= 0; i--) {
-			if (str.indexOf("," + i + ",") == -1) {
-				result += "0";
-			} else {
-				result += "1";
-			}
-		}
-		return StringUtil.strLeftPadWithChar(StringUtil.binaryHexStr(result), 4, "0");
-	}
-
-	/**
-	 * 水控授权16个卡类型转hex字符串2字节
-	 * 
-	 * @param str
-	 * @return
-	 */
-	private String getWaterCardTypesHexStr(String str) {
-		String result = "";
-		for (int i = 7; i >= 0; i--) {
-			if (str.indexOf("," + i + ",") == -1) {
-				result += "0";
-			} else {
-				result += "1";
-			}
-		}
-		for (int i = 15; i >= 8; i--) {
-			if (str.indexOf("," + i + ",") == -1) {
-				result += "0";
-			} else {
-				result += "1";
-			}
-		}
-		return StringUtil.strLeftPadWithChar(StringUtil.binaryHexStr(result), 4, "0");
 	}
 
 	/**
@@ -532,7 +450,7 @@ public class MonitorService implements Runnable {
 
 		TerminalManager.sendToPos(inetSocketAddress, sendBuf);
 	}
-	
+
 	/**
 	 * 黑名单更新
 	 * 
@@ -543,15 +461,14 @@ public class MonitorService implements Runnable {
 	 * @throws Exception
 	 */
 	public void blackUpdate(Device device, InetSocketAddress inetSocketAddress, SendCommand sendCommand) throws Exception {
-		String sendBufStr = StringUtil.hexLeftPad(PosFrame.Black, 2) + StringUtil.hexLeftPad(PosSubFrameBlack.AllUpdate, 2) + "0000" + StringUtil.hexLeftPad(sendCommand.getCommandCode(), 4)
-				+ "0000";
+		String sendBufStr = StringUtil.hexLeftPad(PosFrame.Black, 2) + StringUtil.hexLeftPad(PosSubFrameBlack.AllUpdate, 2) + "0000" + StringUtil.hexLeftPad(sendCommand.getCommandCode(), 4) + "0000";
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
 		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + CommandDevice.NoSubDeviceNum + DeviceType.Main + DeviceType.getDeviceTypeFrame(device) + bufLen + sendBufStr;
 		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
 
 		TerminalManager.sendToPos(inetSocketAddress, sendBuf);
 	}
-	
+
 	/**
 	 * 黑名单追加
 	 * 
@@ -563,11 +480,11 @@ public class MonitorService implements Runnable {
 	 */
 	public void blackAppend(Device device, InetSocketAddress inetSocketAddress, SendCommand sendCommand) throws Exception {
 		String sendBufStr = StringUtil.hexLeftPad(PosFrame.Black, 2) + StringUtil.hexLeftPad(PosSubFrameBlack.IncAppend, 2) + "0000" + StringUtil.hexLeftPad(sendCommand.getCommandCode(), 4)
-		+ sendCommand.getBlackNums() + "0000";
+				+ sendCommand.getBlackNums() + "0000";
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
 		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + CommandDevice.NoSubDeviceNum + DeviceType.Main + DeviceType.getDeviceTypeFrame(device) + bufLen + sendBufStr;
 		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
-		
+
 		TerminalManager.sendToPos(inetSocketAddress, sendBuf);
 	}
 
@@ -599,7 +516,7 @@ public class MonitorService implements Runnable {
 				Thread.sleep(1000);
 			} catch (InterruptedException e1) {
 				stop = true;
-				e1.printStackTrace();
+				// e1.printStackTrace();
 			}
 			for (Device d : this.deviceList) {
 				String sn = d.getSn();
@@ -767,7 +684,7 @@ public class MonitorService implements Runnable {
 				map.put("des", DesUtil.decrypt(DeviceCommunicateStr.SendBlackUpdate));
 			} else if (sendCommand.getSubFrame() == PosSubFrameBlack.IncAppend) {
 				blackAppend(d, inetSocketAddress, sendCommand);
-				String log = String.format(DesUtil.decrypt(DeviceCommunicateStr.SendBlackAppend), sendCommand.getBlackNums());
+				String log = String.format(DesUtil.decrypt(DeviceCommunicateStr.SendBlackAppend), sendCommand.getBlackNumsDes());
 				map.put("des", log);
 			}
 			break;

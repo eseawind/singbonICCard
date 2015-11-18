@@ -130,20 +130,18 @@ public class CardReaderCommandExec {
 				map.put("'f1'", CardReaderResultCommandCode.ChargeDone);
 				map.put("'r'", cardStatus);
 			}
+			// 制功能卡完成
+			else if (commandCode == CardReaderCommandCode.MakeFuncCard) {
+				map.put("'f1'", CardReaderResultCommandCode.MakeFuncCardDone);
+				map.put("'r'", cardStatus);
+			}
 			// //////////////////////////////////////////////////////////////////////////////
 			// /////////////////////////////////////////////读卡回复
 			// //////////////////////////////////////////////////////////////////////////////
 		} else if (Arrays.equals(frameByte, new byte[] { 0x03, (byte) 0xcd, 0x00, 0x01 })) {
 			int baseLen = 43;
-			// 获取出纳卡基本信息命令
-			if (commandCode == CardReaderCommandCode.CashierCardBaseInfo) {
-				map.put("'f1'", CardReaderResultCommandCode.CashierCardBaseInfoCmd);
-				map.put("'r'", cardStatus);
-				map.put("'cardSN'", cardSN);
-				map.put("'cardNO'", cardSN);
-			}
 			// 发送单个发卡命令
-			else if (commandCode == CardReaderCommandCode.SingleCard) {
+			if (commandCode == CardReaderCommandCode.SingleCard) {
 				map.put("'f1'", CardReaderResultCommandCode.SingleCardCmd);
 				map.put("'r'", cardStatus);
 				map.put("'cardSN'", cardSN);
@@ -160,7 +158,7 @@ public class CardReaderCommandExec {
 				map.put("'r'", cardStatus);
 				map.put("'cardInfoStr'", StringUtil.getHexStrFromBytes(baseLen, b.length - 1, b));
 				map.put("'cardSN'", cardSN);
-				map.put("'userId'", Integer.parseInt(StringUtil.getHexStrFromBytes(baseLen + 3, baseLen + 3 + 3, b), 16));
+				map.put("'userId'", Long.parseLong(StringUtil.getHexStrFromBytes(baseLen + 3, baseLen + 3 + 3, b), 16));
 			}
 			// 发有卡注销命令
 			else if (commandCode == CardReaderCommandCode.OffWithCard) {
@@ -168,7 +166,7 @@ public class CardReaderCommandExec {
 				map.put("'r'", cardStatus);
 				map.put("'cardInfoStr'", StringUtil.getHexStrFromBytes(baseLen, b.length - 1, b));
 				map.put("'cardSN'", cardSN);
-				map.put("'userId'", Integer.parseInt(StringUtil.getHexStrFromBytes(baseLen + 3, baseLen + 3 + 3, b), 16));
+				map.put("'userId'", Long.parseLong(StringUtil.getHexStrFromBytes(baseLen + 3, baseLen + 3 + 3, b), 16));
 			}
 			// 发补卡命令
 			else if (commandCode == CardReaderCommandCode.RemakeCard) {
@@ -181,7 +179,7 @@ public class CardReaderCommandExec {
 				map.put("'f1'", CardReaderResultCommandCode.ReadOldCardCmd);
 				map.put("'r'", cardStatus);
 				map.put("'cardSN'", cardSN);
-				map.put("'userId'", Integer.parseInt(StringUtil.getHexStrFromBytes(baseLen + 3, baseLen + 3 + 3, b), 16));
+				map.put("'userId'", Long.parseLong(StringUtil.getHexStrFromBytes(baseLen + 3, baseLen + 3 + 3, b), 16));
 				map.put("'cardInfoStr'", StringUtil.getHexStrFromBytes(baseLen, b.length - 1, b));
 			}
 			// 换卡换新卡命令
@@ -197,12 +195,12 @@ public class CardReaderCommandExec {
 				map.put("'cardSN'", cardSN);
 				int base0 = baseLen + 3;
 				try {
-					map.put("'userId'", Integer.parseInt(StringUtil.getHexStrFromBytes(base0, base0 + 3, b), 16));
+					map.put("'userId'", Long.parseLong(StringUtil.getHexStrFromBytes(base0, base0 + 3, b), 16));
 				} catch (Exception e) {
 					map.put("userId", DesUtil.decrypt(DeviceCommunicateStr.Unknow));
 				}
 				try {
-					map.put("'cardNO'", Integer.parseInt(StringUtil.getHexStrFromBytes(base0 + 4, base0 + 7, b), 16));
+					map.put("'cardNO'", Long.parseLong(StringUtil.getHexStrFromBytes(base0 + 4, base0 + 7, b), 16));
 				} catch (Exception e) {
 					map.put("cardNO", DesUtil.decrypt(DeviceCommunicateStr.Unknow));
 				}
@@ -283,8 +281,8 @@ public class CardReaderCommandExec {
 				map.put("'r'", cardStatus);
 
 				int base0 = baseLen + 3;
-				map.put("'userId'", Integer.parseInt(StringUtil.getHexStrFromBytes(base0, base0 + 3, b), 16));
-				map.put("'cardNO'", Integer.parseInt(StringUtil.getHexStrFromBytes(base0 + 4, base0 + 7, b), 16));
+				map.put("'userId'", Long.parseLong(StringUtil.getHexStrFromBytes(base0, base0 + 3, b), 16));
+				map.put("'cardNO'", Long.parseLong(StringUtil.getHexStrFromBytes(base0 + 4, base0 + 7, b), 16));
 				map.put("'cardSN'", cardSN);
 
 				int status = Integer.parseInt(StringUtil.getHexStrFromBytes(base0 + 12, base0 + 12, b), 16);

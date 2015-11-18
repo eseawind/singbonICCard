@@ -5,6 +5,6 @@
 	</resultMap>
 	<parameterMap type="com.singbon.entity.CardBlack" id="cardBlack2" />
 	<insert id="insert" parameterMap="cardBlack2" useGeneratedKeys="true" keyProperty="id">
-		insert into cardBlack (companyId,cardNO) values (#{companyId},#{cardNO})
+		insert into cardBlack (companyId,cardNO,blackType) values (#{companyId},#{cardNO},#{blackType})
 	</insert>
 </mapper>

@@ -34,17 +34,17 @@
 	});
 	function setDisplay(type){
 		if(type==33){
-// 			$('#waterRateGroupForm #waterPrecision').show();
-			$('#waterRateGroupForm input[name^=rate][name*=Water]').removeClass('disabled');
-			$('#waterRateGroupForm input[name=waterPrecision]').removeClass('disabled');
-			$('#waterRateGroupForm input[name^=rate][name*=Fare]').addClass('disabled');
-			$('#waterRateGroupForm input[name^=rate][name*=Cycle]').addClass('disabled');
+			$('#waterRateGroupForm input[name^=rate][name*=Water]').removeClass('disabled').removeAttr('readonly');
+			$('#waterRateGroupForm input[name=waterPrecision]').removeClass('disabled').removeAttr('readonly');
+			$('#waterRateGroupForm input[name^=rate][name*=Cycle]').addClass('disabled').attr('readonly',true);
+			$('#waterRateGroupForm input[name*=cycleLimit]').addClass('disabled').attr('readonly',true);
+			$('#waterRateGroupForm input[name=waterLimit]').removeClass('disabled').removeAttr('readonly');
 		}else{
-// 			$('#waterRateGroupForm #waterPrecision').hide();
-			$('#waterRateGroupForm input[name^=rate][name*=Water]').addClass('disabled');
-			$('#waterRateGroupForm input[name=waterPrecision]').addClass('disabled');
-			$('#waterRateGroupForm input[name^=rate][name*=Fare]').removeClass('disabled');
-			$('#waterRateGroupForm input[name^=rate][name*=Cycle]').removeClass('disabled');
+			$('#waterRateGroupForm input[name^=rate][name*=Water]').addClass('disabled').attr('readonly',true);
+			$('#waterRateGroupForm input[name=waterPrecision]').addClass('disabled').attr('readonly',true);
+			$('#waterRateGroupForm input[name^=rate][name*=Cycle]').removeClass('disabled').removeAttr('readonly');
+			$('#waterRateGroupForm input[name*=waterLimit]').addClass('disabled').attr('readonly',true);
+			$('#waterRateGroupForm input[name=cycleLimit]').removeClass('disabled').removeAttr('readonly');
 		}
 	}
 	$('#waterRateGroupForm input[name=updateNum]').click(function(){
@@ -54,9 +54,9 @@
 	
 	function setNumDisplay(type){
 		if(type==1){
-			$('#waterRateGroupForm input[name=deviceNum]').removeClass('disabled');
+			$('#waterRateGroupForm input[name=deviceNum]').removeClass('disabled').removeAttr('readonly');
 		}else{
-			$('#waterRateGroupForm input[name=deviceNum]').addClass('disabled');
+			$('#waterRateGroupForm input[name=deviceNum]').addClass('disabled').attr('readonly',true);
 		}
 	}
 </script>
@@ -148,12 +148,6 @@
 						<dd>
 							<input name="stopWaterType" type="radio" <c:if test="${w.stopWaterType==0}">checked</c:if> value="0"/>拿卡延时停水
 							<input name="stopWaterType" type="radio" <c:if test="${w.stopWaterType==1}">checked</c:if> value="1"/>拿卡停水
-						</dd>
-					</dl>
-					<dl id="waterPrecision" style="width: 500px;">
-						<dt style="width: 90px;margin-left: 10px;">流量扣费精度：</dt>
-						<dd style="width: 300px;">
-							<input name="waterPrecision" type="text" class="required digits" value="${w.waterPrecision}"/>（单位：毫升/脉冲）
 						</dd>
 					</dl>
 				</td>
@@ -440,6 +434,31 @@
 				<dd>
 					<input name="enableMeal" type="radio" <c:if test="${w.enableMeal==1}">checked</c:if> value="1"/>启用
 					<input name="enableMeal" type="radio" <c:if test="${w.enableMeal==0}">checked</c:if> value="0"/>禁用
+				</dd>
+			</dl>
+			<dl id="waterLimit" style="width: 440px;">
+				<dt style="width: 110px;margin-left: 10px;">单次扣费水量下限：</dt>
+				<dd style="width: 300px;">
+					<input name="waterLimit" type="text" class="required digits" value="${w.waterLimit}"/>（单位：毫升）
+				</dd>
+			</dl>
+			<dl id="cycleLimit" style="width: 440px;">
+				<dt style="width: 110px;">单次扣费周期下限：</dt>
+				<dd style="width: 300px;">
+					<input name="cycleLimit" type="text" class="required digits" value="${w.cycleLimit}"/>（单位：秒）
+				</dd>
+			</dl>
+			<dl id="waterPrecision" style="width: 440px;">
+				<dt style="width: 110px;margin-left: 10px;">流量扣费精度：</dt>
+				<dd style="width: 300px;">
+					<input name="waterPrecision" type="text" class="required digits" value="${w.waterPrecision}"/>（单位：毫升/脉冲）
+				</dd>
+			</dl>
+			<dl id="enableAutoCalcRate" style="width: 440px;">
+				<dt style="width: 110px;">是否自动计算费率：</dt>
+				<dd style="width: 300px;">
+					<input name="enableAutoCalcRate" type="radio" <c:if test="${w.enableAutoCalcRate==1}">checked</c:if> value="1"/>是
+					<input name="enableAutoCalcRate" type="radio" <c:if test="${w.enableAutoCalcRate==0}">checked</c:if> value="0"/>否
 				</dd>
 			</dl>
 		</fieldset>

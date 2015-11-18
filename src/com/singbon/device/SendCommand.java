@@ -36,6 +36,7 @@ public class SendCommand {
 	private String batchIds;
 	private String batchNames;
 	private String blackNums;
+	private String blackNumsDes;
 
 	public ConsumeParam getConsumeParam() {
 		return consumeParam;
@@ -187,6 +188,14 @@ public class SendCommand {
 
 	public void setCookbookTotal(int cookbookTotal) {
 		this.cookbookTotal = cookbookTotal;
+	}
+
+	public String getBlackNumsDes() {
+		return blackNumsDes;
+	}
+
+	public void setBlackNumsDes(String blackNumsDes) {
+		this.blackNumsDes = blackNumsDes;
 	}
 
 }

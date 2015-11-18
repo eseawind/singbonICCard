@@ -17,7 +17,6 @@ public class WaterRateGroup implements Serializable {
 	private Integer consumeType;
 	private Integer goWaterType;
 	private Integer stopWaterType;
-	private Integer waterPrecision;
 	private Integer rate1Fare;
 	private Integer rate1Cycle;
 	private Integer rate1Water;
@@ -57,6 +56,10 @@ public class WaterRateGroup implements Serializable {
 	private Integer enableMeal;
 	private Integer updateNum;
 	private Integer deviceNum;
+	private Integer waterLimit;
+	private Integer cycleLimit;
+	private Integer waterPrecision;
+	private Integer enableAutoCalcRate;
 
 	public Integer getId() {
 		return id;
@@ -424,6 +427,30 @@ public class WaterRateGroup implements Serializable {
 
 	public void setDeviceNum(Integer deviceNum) {
 		this.deviceNum = deviceNum;
+	}
+
+	public Integer getWaterLimit() {
+		return waterLimit;
+	}
+
+	public void setWaterLimit(Integer waterLimit) {
+		this.waterLimit = waterLimit;
+	}
+
+	public Integer getCycleLimit() {
+		return cycleLimit;
+	}
+
+	public void setCycleLimit(Integer cycleLimit) {
+		this.cycleLimit = cycleLimit;
+	}
+
+	public Integer getEnableAutoCalcRate() {
+		return enableAutoCalcRate;
+	}
+
+	public void setEnableAutoCalcRate(Integer enableAutoCalcRate) {
+		this.enableAutoCalcRate = enableAutoCalcRate;
 	}
 
 }

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50528
 File Encoding         : 65001
 
-Date: 2015-11-10 00:06:49
+Date: 2015-11-19 11:03:53
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -30,7 +30,7 @@ CREATE TABLE `authgroup` (
 -- ----------------------------
 -- Records of authgroup
 -- ----------------------------
-INSERT INTO `authgroup` VALUES ('1', '1', '管理员', '', 'ROLE_SYSTEMMANAGER,ROLE_SYSTEMSETTING,ROLE_SYSTEMPARAM,ROLE_SYSTEMPARAM_SAVE,ROLE_BATCH,ROLE_BATCH_ADD,ROLE_BATCH_EDIT,ROLE_BATCH_DEL,ROLE_USERDEPT,ROLE_USERDEPT_ADD,ROLE_USERDEPT_EDIT,ROLE_USERDEPT_DEL,ROLE_DEPT,ROLE_DEPT_ADD,ROLE_DEPT_EDIT,ROLE_DEPT_DEL,ROLE_MEAL,ROLE_MEAL_SAVE,ROLE_COOKBOOK,ROLE_COOKBOOK_SAVE,ROLE_ORDERTIME,ROLE_ORDERTIME_SAVE,ROLE_DISCOUNT,ROLE_DISCOUNT_SAVE,ROLE_CONSUMEPARAM,ROLE_CONSUMEPARAM_SAVE,ROLE_POSPARAMGROUP,ROLE_POSPARAMGROUP_ADD,ROLE_POSPARAMGROUP_EDIT,ROLE_POSPARAMGROUP_DEL,ROLE_POSPARAMGROUP_SAVE,ROLE_WATERRATEGROUP,ROLE_WATERRATEGROUP_ADD,ROLE_WATERRATEGROUP_EDIT,ROLE_WATERRATEGROUP_DEL,ROLE_WATERRATEGROUP_SAVE,ROLE_CARDPARAM,ROLE_CARDPARAM_SAVE,ROLE_CARDPARAM,ROLE_CARDPARAM_SAVE,ROLE_ENTRANCEGUARD,ROLE_ENTRANCEGUARD_SAVE,ROLE_DEVICEMANAGER,ROLE_DEVICEMANAGER_POS,ROLE_DEVICEMANAGER_POS_ADD,ROLE_DEVICEMANAGER_POS_EDIT,ROLE_DEVICEMANAGER_POS_DEL,ROLE_DEVICEMANAGER_CARDREADER,ROLE_DEVICEMANAGER_CARDREADER_ADD,ROLE_DEVICEMANAGER_CARDREADER_EDIT,ROLE_DEVICEMANAGER_CARDREADER_DEL,ROLE_SYSUSER,ROLE_SYSUSER_ADD,ROLE_SYSUSER_EDIT,ROLE_SYSUSER_DEL,ROLE_USERROLES,ROLE_USERROLES_GROUP,ROLE_SYSUSER_ADD,ROLE_SYSUSER_EDIT,ROLE_SYSUSER_DEL,ROLE_USERROLES_USER,ROLE_USERROLES_USER_SAVE,ROLE_SUBSIDY,ROLE_ADDSUBSIDY,ROLE_ADDSUBSIDY_ADD_SUBSIDYFARE,ROLE_ADDSUBSIDY_AUTO_SUBSIDYFARE,ROLE_ADDSUBSIDY_ADD_SUBSIDY,ROLE_GENERATESUBSIDY,ROLE_GENERATESUBSIDY_EDIT_SUBSIDYFARE,ROLE_GENERATESUBSIDY_DEL,ROLE_GENERATESUBSIDY_GENERATE,ROLE_MONITOR,');
+INSERT INTO `authgroup` VALUES ('1', '1', '管理员', '', 'ROLE_SYSTEMMANAGER,ROLE_SYSTEMSETTING,ROLE_SYSTEMPARAM,ROLE_SYSTEMPARAM_SAVE,ROLE_BATCH,ROLE_BATCH_ADD,ROLE_BATCH_EDIT,ROLE_BATCH_DEL,ROLE_USERDEPT,ROLE_USERDEPT_ADD,ROLE_USERDEPT_EDIT,ROLE_USERDEPT_DEL,ROLE_DEPT,ROLE_DEPT_ADD,ROLE_DEPT_EDIT,ROLE_DEPT_DEL,ROLE_MEAL,ROLE_MEAL_SAVE,ROLE_COOKBOOK,ROLE_COOKBOOK_SAVE,ROLE_ORDERTIME,ROLE_ORDERTIME_SAVE,ROLE_DISCOUNT,ROLE_DISCOUNT_SAVE,ROLE_CONSUMEPARAM,ROLE_CONSUMEPARAM_SAVE,ROLE_POSPARAMGROUP,ROLE_POSPARAMGROUP_ADD,ROLE_POSPARAMGROUP_EDIT,ROLE_POSPARAMGROUP_DEL,ROLE_POSPARAMGROUP_SAVE,ROLE_WATERRATEGROUP,ROLE_WATERRATEGROUP_ADD,ROLE_WATERRATEGROUP_EDIT,ROLE_WATERRATEGROUP_DEL,ROLE_WATERRATEGROUP_SAVE,ROLE_CARDPARAM,ROLE_CARDPARAM_SAVE,ROLE_CARDPARAM,ROLE_CARDPARAM_SAVE,ROLE_ENTRANCEGUARD,ROLE_ENTRANCEGUARD_SAVE,ROLE_DEVICEMANAGER,ROLE_DEVICEMANAGER_POS,ROLE_DEVICEMANAGER_POS_ADD,ROLE_DEVICEMANAGER_POS_EDIT,ROLE_DEVICEMANAGER_POS_DEL,ROLE_DEVICEMANAGER_CARDREADER,ROLE_DEVICEMANAGER_CARDREADER_ADD,ROLE_DEVICEMANAGER_CARDREADER_EDIT,ROLE_DEVICEMANAGER_CARDREADER_DEL,ROLE_SYSUSER,ROLE_SYSUSER_ADD,ROLE_SYSUSER_EDIT,ROLE_SYSUSER_DEL,ROLE_USERROLES,ROLE_USERROLES_GROUP,ROLE_SYSUSER_ADD,ROLE_SYSUSER_EDIT,ROLE_SYSUSER_DEL,ROLE_USERROLES_USER,ROLE_USERROLES_USER_SAVE,ROLE_SUBSIDY,ROLE_ADDSUBSIDY,ROLE_ADDSUBSIDY_ADD_SUBSIDYFARE,ROLE_ADDSUBSIDY_AUTO_SUBSIDYFARE,ROLE_ADDSUBSIDY_ADD_SUBSIDY,ROLE_GENERATESUBSIDY,ROLE_GENERATESUBSIDY_EDIT_SUBSIDYFARE,ROLE_GENERATESUBSIDY_DEL,ROLE_GENERATESUBSIDY_GENERATE,ROLE_CARDMANAGER,ROLE_MAINCARD,ROLE_MAINCARD_INFO,ROLE_MAINCARD_EDIT,ROLE_MAINCARD_DEPT,ROLE_MAINCARD_SINGLE,ROLE_MAINCARD_INFOCARD,ROLE_MAINCARD_BATCH,ROLE_MAINCARD_READCARD,ROLE_MAINCARD_LOSS,ROLE_MAINCARD_UNLOSS,ROLE_MAINCARD_REMAKECARD,ROLE_MAINCARD_CHANGECARD,ROLE_MAINCARD_OFFWITHCARD,ROLE_MAINCARD_OFFNOCARD,ROLE_MAINCARD_CHARGE,ROLE_MAINCARD_DELETE,ROLE_FUNCCARD,ROLE_CARDREADER,ROLE_MONITOR,');
 INSERT INTO `authgroup` VALUES ('2', '1', '出纳员', '', 'ROLE_CARDMANAGER,ROLE_MAINCARD,ROLE_MAINCARD_INFO,ROLE_MAINCARD_EDIT,ROLE_MAINCARD_DEPT,ROLE_MAINCARD_SINGLE,ROLE_MAINCARD_INFOCARD,ROLE_MAINCARD_BATCH,ROLE_MAINCARD_READCARD,ROLE_MAINCARD_LOSS,ROLE_MAINCARD_UNLOSS,ROLE_MAINCARD_REMAKECARD,ROLE_MAINCARD_CHANGECARD,ROLE_MAINCARD_OFFWITHCARD,ROLE_MAINCARD_OFFNOCARD,ROLE_MAINCARD_CHARGE,ROLE_MAINCARD_DELETE,ROLE_FUNCCARD,ROLE_CARDREADER,ROLE_ACCOUNTCENTER,ROLE_MONITOR,');
 
 -- ----------------------------
@@ -80,27 +80,55 @@ CREATE TABLE `batch` (
   `companyId` int(11) DEFAULT NULL,
   `status` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of batch
 -- ----------------------------
 INSERT INTO `batch` VALUES ('1', '批次1', '2015-11-02 00:00:00', '2016-11-30 00:00:00', null, '1', '1');
+INSERT INTO `batch` VALUES ('2', '批次2', '2015-11-02 00:00:00', '2016-11-30 00:00:00', null, '1', '1');
+INSERT INTO `batch` VALUES ('3', '批次3', '2015-11-02 00:00:00', '2016-11-30 00:00:00', null, '1', '1');
+INSERT INTO `batch` VALUES ('4', '批次4', '2015-11-02 00:00:00', '2016-11-30 00:00:00', null, '1', '1');
 
 -- ----------------------------
--- Table structure for `cardloss`
+-- Table structure for `batchblack`
 -- ----------------------------
-DROP TABLE IF EXISTS `cardloss`;
-CREATE TABLE `cardloss` (
+DROP TABLE IF EXISTS `batchblack`;
+CREATE TABLE `batchblack` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `companyId` int(11) DEFAULT NULL,
+  `batchId` int(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of batchblack
+-- ----------------------------
+INSERT INTO `batchblack` VALUES ('1', '1', '1');
+INSERT INTO `batchblack` VALUES ('2', '1', '4');
+INSERT INTO `batchblack` VALUES ('3', '1', '3');
+INSERT INTO `batchblack` VALUES ('4', '1', '2');
+
+-- ----------------------------
+-- Table structure for `cardblack`
+-- ----------------------------
+DROP TABLE IF EXISTS `cardblack`;
+CREATE TABLE `cardblack` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `companyId` int(11) DEFAULT NULL,
   `cardNO` int(255) DEFAULT NULL,
+  `blackType` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of cardloss
+-- Records of cardblack
 -- ----------------------------
+INSERT INTO `cardblack` VALUES ('1', '1', '1', '0');
+INSERT INTO `cardblack` VALUES ('2', '1', '2', '0');
+INSERT INTO `cardblack` VALUES ('3', '1', '123456', '1');
+INSERT INTO `cardblack` VALUES ('4', '1', '5', '0');
+INSERT INTO `cardblack` VALUES ('5', '1', '102030', '1');
 
 -- ----------------------------
 -- Table structure for `cardparam`
@@ -150,8 +178,6 @@ CREATE TABLE `company` (
   `heartInterval` int(11) DEFAULT NULL,
   `uploadInterval` int(11) DEFAULT NULL,
   `uploadErrTime` int(11) DEFAULT NULL,
-  `subsidyVersion` int(11) DEFAULT NULL,
-  `subsidyInvalidDate` varchar(50) DEFAULT NULL,
   `invalidDate` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
@@ -159,7 +185,7 @@ CREATE TABLE `company` (
 -- ----------------------------
 -- Records of company
 -- ----------------------------
-INSERT INTO `company` VALUES ('1', '郑州兴邦科技有限公司', '12345678', '0371', '1', '5', '5', '5', '2', '2015-09-10', '');
+INSERT INTO `company` VALUES ('1', '郑州兴邦科技有限公司', '12345678', '0371', '1', '5', '5', '5', '');
 
 -- ----------------------------
 -- Table structure for `consumeparam`
@@ -462,29 +488,28 @@ CREATE TABLE `discount` (
   `discountType` int(255) DEFAULT NULL,
   `rate` int(11) DEFAULT NULL,
   `subsidy` int(11) DEFAULT NULL,
-  `giveCash` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of discount
 -- ----------------------------
-INSERT INTO `discount` VALUES ('4', '1', '0', '100', '200', '0');
-INSERT INTO `discount` VALUES ('5', '1', '1', '100', '100', '0');
-INSERT INTO `discount` VALUES ('6', '1', '2', '100', '0', '0');
-INSERT INTO `discount` VALUES ('7', '1', '3', '100', '0', '0');
-INSERT INTO `discount` VALUES ('8', '1', '4', '100', '0', '0');
-INSERT INTO `discount` VALUES ('9', '1', '5', '100', '0', '0');
-INSERT INTO `discount` VALUES ('10', '1', '6', '100', '0', '0');
-INSERT INTO `discount` VALUES ('11', '1', '7', '100', '1', '0');
-INSERT INTO `discount` VALUES ('12', '1', '8', '100', '0', '0');
-INSERT INTO `discount` VALUES ('13', '1', '9', '100', '0', '0');
-INSERT INTO `discount` VALUES ('14', '1', '10', '100', '0', '0');
-INSERT INTO `discount` VALUES ('15', '1', '11', '100', '0', '0');
-INSERT INTO `discount` VALUES ('16', '1', '12', '100', '0', '0');
-INSERT INTO `discount` VALUES ('17', '1', '13', '100', '0', '0');
-INSERT INTO `discount` VALUES ('18', '1', '14', '100', '0', '0');
-INSERT INTO `discount` VALUES ('19', '1', '15', '100', '0', '0');
+INSERT INTO `discount` VALUES ('4', '1', '0', '100', '200');
+INSERT INTO `discount` VALUES ('5', '1', '1', '100', '100');
+INSERT INTO `discount` VALUES ('6', '1', '2', '100', '0');
+INSERT INTO `discount` VALUES ('7', '1', '3', '100', '0');
+INSERT INTO `discount` VALUES ('8', '1', '4', '100', '0');
+INSERT INTO `discount` VALUES ('9', '1', '5', '100', '0');
+INSERT INTO `discount` VALUES ('10', '1', '6', '100', '0');
+INSERT INTO `discount` VALUES ('11', '1', '7', '100', '1');
+INSERT INTO `discount` VALUES ('12', '1', '8', '100', '0');
+INSERT INTO `discount` VALUES ('13', '1', '9', '100', '0');
+INSERT INTO `discount` VALUES ('14', '1', '10', '100', '0');
+INSERT INTO `discount` VALUES ('15', '1', '11', '100', '0');
+INSERT INTO `discount` VALUES ('16', '1', '12', '100', '0');
+INSERT INTO `discount` VALUES ('17', '1', '13', '100', '0');
+INSERT INTO `discount` VALUES ('18', '1', '14', '100', '0');
+INSERT INTO `discount` VALUES ('19', '1', '15', '100', '0');
 
 -- ----------------------------
 -- Table structure for `discountbase`
@@ -495,29 +520,28 @@ CREATE TABLE `discountbase` (
   `discountType` int(255) DEFAULT NULL,
   `rate` int(11) DEFAULT NULL,
   `subsidy` int(11) DEFAULT NULL,
-  `giveCash` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of discountbase
 -- ----------------------------
-INSERT INTO `discountbase` VALUES ('1', '0', '100', '0', '0');
-INSERT INTO `discountbase` VALUES ('2', '1', '100', '0', '0');
-INSERT INTO `discountbase` VALUES ('3', '2', '100', '0', '0');
-INSERT INTO `discountbase` VALUES ('4', '3', '100', '0', '0');
-INSERT INTO `discountbase` VALUES ('5', '4', '100', '0', '0');
-INSERT INTO `discountbase` VALUES ('6', '5', '100', '0', '0');
-INSERT INTO `discountbase` VALUES ('7', '6', '100', '0', '0');
-INSERT INTO `discountbase` VALUES ('8', '7', '100', '0', '0');
-INSERT INTO `discountbase` VALUES ('9', '8', '100', '0', '0');
-INSERT INTO `discountbase` VALUES ('10', '9', '100', '0', '0');
-INSERT INTO `discountbase` VALUES ('11', '10', '100', '0', '0');
-INSERT INTO `discountbase` VALUES ('12', '11', '100', '0', '0');
-INSERT INTO `discountbase` VALUES ('13', '12', '100', '0', '0');
-INSERT INTO `discountbase` VALUES ('14', '13', '100', '0', '0');
-INSERT INTO `discountbase` VALUES ('15', '14', '100', '0', '0');
-INSERT INTO `discountbase` VALUES ('16', '15', '100', '0', '0');
+INSERT INTO `discountbase` VALUES ('1', '0', '100', '0');
+INSERT INTO `discountbase` VALUES ('2', '1', '100', '0');
+INSERT INTO `discountbase` VALUES ('3', '2', '100', '0');
+INSERT INTO `discountbase` VALUES ('4', '3', '100', '0');
+INSERT INTO `discountbase` VALUES ('5', '4', '100', '0');
+INSERT INTO `discountbase` VALUES ('6', '5', '100', '0');
+INSERT INTO `discountbase` VALUES ('7', '6', '100', '0');
+INSERT INTO `discountbase` VALUES ('8', '7', '100', '0');
+INSERT INTO `discountbase` VALUES ('9', '8', '100', '0');
+INSERT INTO `discountbase` VALUES ('10', '9', '100', '0');
+INSERT INTO `discountbase` VALUES ('11', '10', '100', '0');
+INSERT INTO `discountbase` VALUES ('12', '11', '100', '0');
+INSERT INTO `discountbase` VALUES ('13', '12', '100', '0');
+INSERT INTO `discountbase` VALUES ('14', '13', '100', '0');
+INSERT INTO `discountbase` VALUES ('15', '14', '100', '0');
+INSERT INTO `discountbase` VALUES ('16', '15', '100', '0');
 
 -- ----------------------------
 -- Table structure for `entranceguard`
@@ -829,13 +853,14 @@ CREATE TABLE `subsidy` (
   `invalidDate` varchar(50) DEFAULT NULL,
   `status` int(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of subsidy
 -- ----------------------------
 INSERT INTO `subsidy` VALUES ('1', '14', '1', '110', '2', '2015-09-10', '2');
 INSERT INTO `subsidy` VALUES ('2', '15', '1', '100.01', '2', '2015-09-10', '2');
+INSERT INTO `subsidy` VALUES ('3', '14', '1', '1', '3', '2015-10-10', '0');
 
 -- ----------------------------
 -- Table structure for `sysuser`
@@ -900,8 +925,8 @@ CREATE TABLE `user` (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('14', '1', '9', '001', '001', '001', '123456789012345678', '1', '7025f025', '1', '241', '0', '0', '0', '1', '2015-11-02', null, '2016-11-30', '2015-11-09', '8888', '8888', '100000', '100000', null, '0', '1', '0', null, '0', '0', '0', null);
-INSERT INTO `user` VALUES ('15', '1', '7', '002', '002', '002', '123456789012345678', '2', 'a48a2a41', '1', '241', '0', '0', '0', '1', '2015-11-02', null, '2016-11-30', '2015-11-09', '8888', '8888', '20000', '20000', null, '0', '1', '0', null, '0', '0', '0', null);
+INSERT INTO `user` VALUES ('14', '1', '9', '001', '001', '001', '123456789012345678', '1', '7025f025', '1', '243', '0', '0', '0', '1', '2015-11-02', null, '2016-11-30', '2015-11-09', '8888', '8888', '100000', '100000', null, '0', '1', '0', null, '0', '0', '0', null);
+INSERT INTO `user` VALUES ('15', '1', '7', '002', '002', '002', '123456789012345678', '2', 'a48a2a41', '1', '243', '0', '0', '0', '1', '2015-11-02', null, '2016-11-30', '2015-11-09', '8888', '8888', '20000', '20000', null, '0', '1', '0', null, '0', '0', '0', null);
 
 -- ----------------------------
 -- Table structure for `userdept`
@@ -944,7 +969,6 @@ CREATE TABLE `waterrategroup` (
   `consumeType` int(11) DEFAULT NULL,
   `goWaterType` int(11) DEFAULT NULL,
   `stopWaterType` int(11) DEFAULT NULL,
-  `waterPrecision` int(11) DEFAULT NULL,
   `rate1Fare` int(11) DEFAULT NULL,
   `rate1Cycle` int(11) DEFAULT NULL,
   `rate1Water` int(11) DEFAULT NULL,
@@ -984,14 +1008,17 @@ CREATE TABLE `waterrategroup` (
   `enableMeal` int(11) DEFAULT NULL,
   `updateNum` int(11) DEFAULT NULL,
   `deviceNum` int(11) DEFAULT NULL,
+  `waterLimit` int(11) DEFAULT NULL,
+  `cycleLimit` int(11) DEFAULT NULL,
+  `waterPrecision` int(11) DEFAULT NULL,
+  `enableAutoCalcRate` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of waterrategroup
 -- ----------------------------
-INSERT INTO `waterrategroup` VALUES ('3', '1', '111', '97', '0', '1', '2', '0', '0', '100', '1', '0', ',,', '0', '0', '100', '00:00', '00:00', ',,', '0', '0', '100', '00:00', '00:00', ',,', '0', '0', '100', '00:00', '00:00', ',,', '0', '0', '0', '8888', '3', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1');
-INSERT INTO `waterrategroup` VALUES ('4', '1', '1112', '97', '0', '1', '2', '0', '0', '100', '1', '0', ',,', '0', '0', '100', '00:00', '00:00', ',,', '0', '0', '100', '00:00', '00:00', ',,', '0', '0', '100', '00:00', '00:00', ',,', '0', '0', '0', '8888', '3', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1');
+INSERT INTO `waterrategroup` VALUES ('3', '1', '水控费率1', '73', '0', '1', '0', '0', '100', '1', '0', ',,', '0', '0', '100', '00:00', '00:00', ',,', '0', '0', '100', '00:00', '00:00', ',,', '0', '0', '100', '00:00', '00:00', ',,', '0', '0', '0', '8888', '3', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '100', '10', '2', '1');
 
 -- ----------------------------
 -- Table structure for `waterrategroupbase`
@@ -1002,7 +1029,6 @@ CREATE TABLE `waterrategroupbase` (
   `consumeType` int(11) DEFAULT NULL,
   `goWaterType` int(11) DEFAULT NULL,
   `stopWaterType` int(11) DEFAULT NULL,
-  `waterPrecision` int(11) DEFAULT NULL,
   `rate1Fare` int(11) DEFAULT NULL,
   `rate1Cycle` int(11) DEFAULT NULL,
   `rate1Water` int(11) DEFAULT NULL,
@@ -1042,13 +1068,17 @@ CREATE TABLE `waterrategroupbase` (
   `enableMeal` int(11) DEFAULT NULL,
   `updateNum` int(11) DEFAULT NULL,
   `deviceNum` int(11) DEFAULT NULL,
+  `waterLimit` int(11) DEFAULT NULL,
+  `cycleLimit` int(11) DEFAULT NULL,
+  `waterPrecision` int(11) DEFAULT NULL,
+  `enableAutoCalcRate` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of waterrategroupbase
 -- ----------------------------
-INSERT INTO `waterrategroupbase` VALUES ('1', '97', '0', '1', '2', '0', '0', '100', '0', '0', null, '0', '0', '100', '00:00', '00:00', '', '0', '0', '100', '00:00', '00:00', null, '0', '0', '100', '00:00', '00:00', null, '0', '0', '0', '8888', '3', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1');
+INSERT INTO `waterrategroupbase` VALUES ('1', '73', '0', '1', '0', '0', '100', '1', '0', ',,', '0', '0', '100', '00:00', '00:00', ',,', '0', '0', '100', '00:00', '00:00', ',,', '0', '0', '100', '00:00', '00:00', ',,', '0', '0', '0', '8888', '3', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '100', '10', '2', '1');
 
 -- ----------------------------
 -- Procedure structure for `delInitData`
@@ -1124,6 +1154,18 @@ BEGIN
 	insert into authgroup(companyId,groupName,roles) select cId,groupName,roles from authgroupbase;
 	insert into sysUser (companyId,loginName,loginPwd) values(cId,'c66fc61212bbc6ed','a9e28c83699391f8');
 	insert into authgroupuser(operId,groupId) select (select operId from sysUser where companyId=cId),(select id from authgroup where companyId=cId and groupName='管理员');
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for `proc_calc`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `proc_calc`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `proc_calc`(IN `i` int,OUT `j` int)
+BEGIN	
+	
 END
 ;;
 DELIMITER ;
