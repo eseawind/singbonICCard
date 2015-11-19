@@ -130,7 +130,7 @@ public class FuncCardService extends BaseService {
 		String consumeType = StringUtil.hexLeftPad(w.getConsumeType(), 2);// 1--10-10
 		String deviceNum = StringUtil.hexLeftPad(w.getDeviceNum(), 2);// 4--11-14
 		String bound = StringUtil.hexLeftPad(w.getBound(), 2);// 1--15-15
-		String section4Block0 = stopWaterType + rate5Fare + subsidyReset + subsidyFirst + rate5Cycle + pwd + consumeType + deviceNum + bound;
+		String section4Block0 = goWaterType + stopWaterType + rate5Fare + subsidyReset + subsidyFirst + rate5Cycle + pwd + consumeType + deviceNum + bound;
 
 		// 第1块
 		ConsumeParam p = (ConsumeParam) this.consumeParamDAO.selectByCompanyId(device.getCompanyId());

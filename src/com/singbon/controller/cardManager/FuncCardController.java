@@ -1,6 +1,7 @@
 package com.singbon.controller.cardManager;
 
 import java.io.IOException;
+import java.nio.channels.SocketChannel;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -89,8 +90,15 @@ public class FuncCardController extends BaseController {
 				break;
 			}
 		}
-		
-
+		SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
+		if (socketChannel != null) {
+			int baseSection = company.getBaseSection();
+			try {
+				this.funcCardService.make(waterRateGroup, device, socketChannel, baseSection);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 }

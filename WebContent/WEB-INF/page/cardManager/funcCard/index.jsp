@@ -30,17 +30,6 @@
 	$('#funcCard .ok').click(function() {
 		if(isOnline){
 			validateCallback($('#funcForm'), function(e) {
-				if (e==1) {
-					alertMsg.correct('添加成功！');
-				}else if (e==2) {
-					alertMsg.warn('序列号不合法！');
-				}else if (e==3) {
-					alertMsg.warn('机器号已存在！');
-				}else if (e==4) {
-					alertMsg.warn('序列号已存在！');
-				} else {
-					alertMsg.warn('添加失败！');
-				}
 			}, null);
 		}else{
 			alertMsg.warn('读卡机当前处于离线状态不能制作功能卡！');
@@ -63,8 +52,8 @@
 						isHeart=true;
 					}
 				//确定
-				}else if(e2.f1==114){
-					alertMsg.correct('下载完成！');
+				}else if(e2.f1==16){
+					alertMsg.correct('功能卡制作完成！');
 				}
 			}
 		});

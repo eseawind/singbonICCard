@@ -82,7 +82,7 @@ public class CardReaderResultCommandCode {
 	 */
 	public static byte ReadCardDone = 0x0f;
 	/**
-	 * 制功能卡 0x71
+	 * 制功能卡 0x10
 	 */
 	public static byte MakeFuncCardDone = 0x10;
 	/**
