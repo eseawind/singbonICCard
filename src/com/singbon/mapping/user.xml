@@ -70,7 +70,7 @@
 	<select id="selectNoCardByDeptId" resultMap="user">
 		select * from user where status=0 and deptId=#{deptId}
 	</select>
-	<select id="selectMaxCardNO" resultType="java.lang.Integer">
+	<select id="selectMaxCardNO" resultType="java.lang.Long">
 		select ifnull(max(cardNO),0)+1 cardNO from user where companyId=#{companyId}
 	</select>
 	<select id="selectCountByCardSN" resultType="java.lang.Integer">
