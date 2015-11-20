@@ -751,7 +751,7 @@ public class MonitorService implements Runnable {
 			sendCommand1.setConsumeParam(consumeParam);
 			if (device.getDeviceType() == 2) {
 				// 消费机参数组
-				PosParamGroup posParamGroup = (PosParamGroup) posParamGroupDAO.selectById(device.getPosParamGroupId());
+				PosParamGroup posParamGroup = (PosParamGroup) posParamGroupDAO.selectById(device.getParamGroupId());
 				sendCommand1.setPosParamGroup(posParamGroup);
 			} else {
 				// 水控参数组

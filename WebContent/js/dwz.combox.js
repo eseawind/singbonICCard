@@ -62,6 +62,16 @@
 					if ($input.val() != $this.attr("value")) {
 						$("select", box).val($this.attr("value")).trigger("change");
 					}
+					
+					//联动参数分组
+					var clickPram=$this.attr('clickPram');
+					if(clickPram!=null && clickPram=='deviceType'){
+						var value=$this.attr("value");
+						$('ul.comboxop li[param^=p]').hide();
+						$('ul.comboxop li[param=p'+value+']').show();
+						$('#posForm select[name=paramGroupId]').val('').prev().attr('value','').html('');
+					}
+					
 				});
 			});
 		},
@@ -91,7 +101,10 @@
 				var options = '<ul class="comboxop" id="op_combox_'+ cid +'">';
 				$("option", $this).each(function(){
 					var option = $(this);
-					options +="<li><a class=\""+ (value==option[0].value?"selected":"") +"\" href=\"#\" value=\"" + option[0].value + "\">" + option[0].text + "</a></li>";
+					var hide=option.hasClass('hide')?" style='display:none;'":'';
+					var param=option.attr('param')!=null?" param="+option.attr('param'):'';
+					var clickPram=option.attr('clickPram')!=null?" clickPram="+option.attr('clickPram'):'';
+					options +="<li "+hide+param+"><a "+clickPram+" class=\""+ (value==option[0].value?"selected":"") +"\" href=\"#\" value=\"" + option[0].value + "\">" + option[0].text + "</a></li>";
 				});
 				options +="</ul>";
 				

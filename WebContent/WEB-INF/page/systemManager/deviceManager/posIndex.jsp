@@ -105,24 +105,35 @@
 	//选择设备
 	function posListClick(tr) {
 		selectDeviceId=tr.attr('id');
-		$('#posForm input').eq(0).val(selectDeviceId);
-		$('#posForm input').eq(2).val(tr.attr('deviceNum'));
-		$('#posForm input').eq(3).val(tr.attr('deviceName'));
-		$('#posForm input').eq(4).val(tr.attr('sn'));
+		$('#posForm input[name=id]').val(selectDeviceId);
+		$('#posForm input[name=deviceNum]').val(tr.attr('deviceNum'));
+		$('#posForm input[name=deviceName]').val(tr.attr('deviceName'));
+		$('#posForm input[name=sn]').val(tr.attr('sn'));
 		var enable = tr.attr('enable');
 		if(enable==0){
 			$('#posForm input[name=status]').attr('checked',false);
 		}else{
 			$('#posForm input[name=status]').attr('checked',true);			
 		}
-		var select = $('#posForm select');
-		var posParamGroupId=tr.attr('posParamGroupId');
-		select.eq(0).val(posParamGroupId);
-		select.eq(0).prev().attr('value',posParamGroupId).html($('option[value=' + posParamGroupId + ']', select.eq(0)).html());
-
+		
+		var deviceTypeSelect=$('#posForm select[name=deviceType]');
 		var deviceType=tr.attr('deviceType');
-		select.eq(1).val(deviceType);
-		select.eq(1).prev().attr('value',deviceType).html($('option[value=' + deviceType + ']', select.eq(1)).html());
+		var selectContent=$('option[value=' + deviceType + ']', deviceTypeSelect).html();
+		deviceTypeSelect.val(deviceType).prev().attr('value',deviceType).html(selectContent);
+		
+		$('ul.comboxop li[param^=p]').hide();
+		$('ul.comboxop li[param=p'+deviceType+']').show();
+		
+		var paramGroupSelect=$('#posForm select[name=paramGroupId]');
+		var paramGroupId=tr.attr('paramGroupId');
+		selectContent=$('option[param=p'+deviceType+'][value=' + paramGroupId + ']', paramGroupSelect).html();
+// 		alert(paramGroupId+" "+selectContent);
+		paramGroupSelect.val(paramGroupId).prev().attr('value',paramGroupId).html(selectContent);
+		
+		var transferSelect=$('#posForm select[name=transferId]');
+		var transferId=tr.attr('transferId');
+		selectContent=$('option[value=' + transferId + ']', transferSelect).html();
+		transferSelect.val(paramGroupId).prev().attr('value',transferId).html(selectContent);
 	};
 </script>
 <link href="themes/css/custom.css" rel="stylesheet" type="text/css" />
@@ -166,7 +177,7 @@
 </div>
 
 <div class="form posForm" layoutH="30" style="float: left; display: block; overflow: auto; width: 305px; border: solid 1px #CCC; line-height: 21px;">
-	<div layoutH="315" style="background: #fff;">
+	<div layoutH="360" style="background: #fff;">
 		<ul class="tree expand deptTree">
 			<li deptId="0"><a href="javascript:;" module="deviceDept" deptId="0">营业部门列表</a>
 			</li>
@@ -198,22 +209,37 @@
 					<input type="text" name="sn" minlength="32" maxlength="32" class="required" />
 				</dd>
 			</dl>
-			<dl>
+			<dl style="margin-bottom: 10px">
+				<dt>设备类型：</dt>
+				<dd>
+					<select class="combox" name="deviceType"  outerw="208" innerw="225">
+						<option clickPram="deviceType" value="2">点餐机</option>
+						<option clickPram="deviceType" value="3">水控机</option>
+					</select>
+				</dd>
+			</dl>
+			<dl style="margin-bottom: 10px">
 				<dt>参数分组：</dt>
 				<dd>
-					<select class="combox" name="posParamGroupId" outerw="208" innerw=225">
+					<select class="combox required" name="paramGroupId" outerw="208" innerw=225">
+						<option class="hide" value=""> </option>
 						<c:forEach items="${posParamGroupList }" var="p">
-							<option value="${p.id }">${p.groupName }</option>
+							<option param="p2" value="${p.id }">${p.groupName }</option>
+						</c:forEach>
+						<c:forEach items="${waterRateGroupList }" var="w">
+							<option class="hide" param="p3" value="${w.id }">${w.groupName }</option>
 						</c:forEach>
 					</select>
 				</dd>
 			</dl>
 			<dl>
-				<dt>设备类型：</dt>
+				<dt>所属中转：</dt>
 				<dd>
-					<select class="combox" name="deviceType"  outerw="208" innerw="225">
-						<option value="2">点餐机</option>
-						<option value="3">水控机</option>
+					<select class="combox required" name="transferId" outerw="208" innerw=225">
+						<option value="0">无</option>
+						<c:forEach items="${transferList }" var="t">
+							<option value="${t.id }">${t.deviceName }</option>
+						</c:forEach>
 					</select>
 				</dd>
 			</dl>

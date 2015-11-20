@@ -53,6 +53,7 @@ public class DeviceController {
 
 	List<PosParamGroup> posParamGroupList = null;
 	List<WaterRateGroup> waterRateGroupList = null;
+	List<Device> transferList = null;
 
 	/**
 	 * 消费机首页
@@ -72,9 +73,12 @@ public class DeviceController {
 		posParamGroupList = (List<PosParamGroup>) this.posParamGroupService.selectListByCompanyId(company.getId());
 		waterRateGroupList = (List<WaterRateGroup>) this.waterRateGroupService.selectListByCompanyId(company.getId());
 		List<Dept> deptList = (List<Dept>) this.deptService.selectListByCompanyId(company.getId());
+		transferList = this.deviceService.selectDeviceListByCompanyId(company.getId(), "1", 0);
+
 		model.addAttribute("deptList", deptList);
 		model.addAttribute("posParamGroupList", posParamGroupList);
 		model.addAttribute("waterRateGroupList", waterRateGroupList);
+		model.addAttribute("transferList", transferList);
 		model.addAttribute("base", "/systemManager/deviceManager");
 		return "/systemManager/deviceManager/posIndex";
 	}
@@ -157,22 +161,14 @@ public class DeviceController {
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value = "/posList.do")
-	public String list(@ModelAttribute Pagination pagination, String nameStr, Integer deptId, Integer includeSub, HttpServletRequest request, HttpServletResponse response, Model model) {
+	public String list(@ModelAttribute Pagination pagination, Integer deptId, Integer includeSub, Integer transferId, String nameStr, HttpServletRequest request, HttpServletResponse response,
+			Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
 
-		// <th width="80">机器号</th>
-		// <th width="120">设备名称</th>
-		// <th width="100">设备类型</th>
-		// <th width="120">消费参数分组</th>
-		// <th width="300">序列号</th>
-		// <th width="80">状态</th>
-
-		String[] columns = { "d.id", "d.deviceNum", "d.deviceName", "d.deviceType", "d.posParamGroupId", "d.sn", "d.enable" };
-		String fromSql = "device d";
-		String whereSql = String.format(" d.companyId=%s and deviceType!=8", company.getId());
-		if (!StringUtils.isEmpty(nameStr)) {
-			whereSql += String.format(" and (d.deviceNum like '%%%s%%' or d.deviceName like '%%%s%%')", nameStr, nameStr);
-		}
+		String[] countColumns = { "d.id", "deviceNum", "deviceName", "deviceType", "paramGroupId", "transferId", "transferName", "sn", "enable" };
+		String[] dataColumns = { "d.id", "d.deviceNum", "d.deviceName", "d.deviceType", "d.paramGroupId", "d.transferId", "t.deviceName transferName", "d.sn", "d.enable" };
+		String fromSql = "device d left join device t on d.transferId=t.id";
+		String whereSql = String.format(" d.companyId=%s and d.deviceType in (2,3)", company.getId());
 		if (!StringUtils.isEmpty(deptId) && deptId != 0) {
 			if (StringUtils.isEmpty(includeSub)) {
 				whereSql += String.format(" and d.deptId = %s", deptId);
@@ -181,21 +177,33 @@ public class DeviceController {
 			}
 		}
 
-		List<Map> deviceList = this.commonService.selectByPage(columns, null, fromSql, whereSql, pagination);
+		if (!StringUtils.isEmpty(transferId) && transferId != -1) {
+			whereSql += String.format(" and d.transferId = %s", transferId);
+		}
+
+		if (!StringUtils.isEmpty(nameStr)) {
+			whereSql += String.format(" and (d.deviceNum like '%%%s%%' or d.deviceName like '%%%s%%')", nameStr, nameStr);
+		}
+
+		List<Map> deviceList = this.commonService.selectByPage(countColumns, dataColumns, fromSql, whereSql, pagination);
 		int totalCount = Integer.valueOf(deviceList.get(0).get("id").toString());
 		deviceList.remove(0);
 
 		for (Map m : deviceList) {
 			int deviceType = Integer.valueOf(m.get("deviceType").toString());
+			int paramGroupId = Integer.valueOf(m.get("paramGroupId").toString());
 			if (deviceType == 2) {
 				m.put("deviceTypeDes", "点餐机");
+				for (PosParamGroup group : posParamGroupList) {
+					if (group.getId() == paramGroupId) {
+						m.put("groupName", group.getGroupName());
+						break;
+					}
+				}
 			} else if (deviceType == 3) {
 				m.put("deviceTypeDes", "水控机");
-			}
-			if (!StringUtils.isEmpty(m.get("posParamGroupId"))) {
-				int posParamGroupId = Integer.valueOf(m.get("posParamGroupId").toString());
-				for (PosParamGroup group : posParamGroupList) {
-					if (group.getId() == posParamGroupId) {
+				for (WaterRateGroup group : waterRateGroupList) {
+					if (group.getId() == paramGroupId) {
 						m.put("groupName", group.getGroupName());
 						break;
 					}
@@ -210,6 +218,9 @@ public class DeviceController {
 		model.addAttribute("nameStr", nameStr);
 		model.addAttribute("deptId", deptId);
 		model.addAttribute("includeSub", includeSub);
+		model.addAttribute("transferId", transferId);
+
+		model.addAttribute("transferList", transferList);
 
 		model.addAttribute("base", "/systemManager/deviceManager");
 		return "/systemManager/deviceManager/posList";
@@ -269,9 +280,70 @@ public class DeviceController {
 	@RequestMapping(value = "/cardReaderList.do")
 	public String cardReaderList(HttpServletRequest request, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
-		List<Device> list = this.deviceService.selectDeviceListByCompanyId(company.getId(), 1, 0);
+		List<Device> list = this.deviceService.selectDeviceListByCompanyId(company.getId(), "8", 0);
 		model.addAttribute("list", list);
 		model.addAttribute("base", "/systemManager/deviceManager");
 		return "/systemManager/deviceManager/cardReaderList";
 	}
+
+	/**
+	 * 中转首页
+	 * 
+	 * @param request
+	 * @param model
+	 * @param module
+	 * @return
+	 */
+	@RequestMapping(value = "/transferIndex.do")
+	public String transfer(HttpServletRequest request, Model model) {
+		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
+		Company company = (Company) request.getSession().getAttribute("company");
+		model.addAttribute("sysUser", sysUser);
+		model.addAttribute("company", company);
+
+		model.addAttribute("base", "/systemManager/deviceManager");
+		return "/systemManager/deviceManager/transferIndex";
+	}
+
+	/**
+	 * 中转列表
+	 * 
+	 * @param batch
+	 * @param request
+	 * @param model
+	 */
+	@RequestMapping(value = "/transferList.do")
+	public String transferList(HttpServletRequest request, Model model) {
+		Company company = (Company) request.getSession().getAttribute("company");
+		List<Device> list = this.deviceService.selectDeviceListByCompanyId(company.getId(), "1", 0);
+		model.addAttribute("list", list);
+		model.addAttribute("base", "/systemManager/deviceManager");
+		return "/systemManager/deviceManager/transferList";
+	}
+
+	/**
+	 * 删除中转设备
+	 * 
+	 * @param batch
+	 * @param request
+	 * @param model
+	 */
+	@RequestMapping(value = "/deleteTransfer.do")
+	public void deleteTransfer(Integer id, String sn, HttpServletRequest request, HttpServletResponse response, Model model) {
+		PrintWriter p = null;
+		try {
+			p = response.getWriter();
+			Integer count = this.deviceService.selectPosCountByTransferId(id);
+			if (count > 0) {
+				p.print(2);
+			} else {
+				this.deviceService.deleteDevice(id, sn);
+				p.print(1);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			p.print(0);
+		}
+	}
+
 }

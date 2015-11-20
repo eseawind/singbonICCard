@@ -32,17 +32,24 @@ public interface DeviceDAO extends BaseDAO {
 	 * @return
 	 */
 	public Integer selectSysUserCountByDeviceId(@Param("deviceId") Integer deviceId);
+	
+	/**
+	 * 中转设备被引用数量
+	 * 
+	 * @param groupId
+	 * @return
+	 */
+	public Integer selectPosCountByTransferId(@Param("transferId") Integer transferId);
 
 	/**
 	 * 设备列表
 	 * 
 	 * @param companyId
-	 * @param isCardReader
-	 *            是否为读卡机 1是 0消费机
+	 * @param deviceType
 	 * @param onlyEnable
 	 * @return
 	 */
-	public List<Device> selectDeviceListByCompanyId(@Param("companyId") Integer companyId, @Param("isCardReader") Integer isCardReader, @Param("onlyEnable") Integer onlyEnable);
+	public List<Device> selectDeviceListByCompanyId(@Param("companyId") Integer companyId, @Param("deviceType") String deviceType, @Param("onlyEnable") Integer onlyEnable);
 
 	/**
 	 * 系统所有列表

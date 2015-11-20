@@ -1,23 +1,23 @@
-<!-- 读卡机首页 -->
+<!-- 中转设备首页 -->
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <script type="text/javascript">
-	var selectCardReaderId=0;
+	var selectTransferId=0;
 	$(function() {
-		$('#cardReaderForm .add').click(function() {
-			$('#cardReaderForm input').eq(0).val('');
-			$('#cardReaderForm input').eq(1).val(8);
+		$('#transferForm .add').click(function() {
+			$('#transferForm input').eq(0).val('');
+			$('#transferForm input').eq(1).val(1);
 			var form = $(this).parents('form');
 			if(form.valid()){
-				var deviceNum=$('#cardReaderForm input[name=deviceNum]').val().trim();
-				var deviceCount=$('#cardReaderList tr[target][deviceNum='+deviceNum+']').length;
+				var deviceNum=$('#transferForm input[name=deviceNum]').val().trim();
+				var deviceCount=$('#transferList tr[target][deviceNum='+deviceNum+']').length;
 				if(deviceCount>0){
 					alertMsg.warn('该机器号已存在！');
 					return;
 				}
-				var sn=$('#cardReaderForm input[name=sn]').val().trim();
-				deviceCount=$('#cardReaderList tr[target][sn='+sn+']').length;
+				var sn=$('#transferForm input[name=sn]').val().trim();
+				deviceCount=$('#transferList tr[target][sn='+sn+']').length;
 				if(deviceCount>0){
 					alertMsg.warn('该序列号已存在！');
 					return;
@@ -31,8 +31,8 @@
 				
 				validateCallback(form, function(e) {
 					if (e==1) {
-						$('#cardReaderForm').clearForm();
-						refreshcardReaderList();
+						$('#transferForm').clearForm();
+						refreshtransferList();
 						alertMsg.correct('添加成功！');
 					}else if (e==2) {
 						alertMsg.warn('序列号不合法！');
@@ -47,18 +47,18 @@
 			}
 			
 		});
-		$('#cardReaderForm .edit').click(function() {
-			$('#cardReaderForm input').eq(1).val(8);
+		$('#transferForm .edit').click(function() {
+			$('#transferForm input').eq(1).val(1);
 			var form = $(this).parents('form');
 			if(form.valid()){
-				var deviceNum=$('#cardReaderForm input[name=deviceNum]').val().trim();
-				var deviceCount=$('#cardReaderList tr[target][id!='+selectCardReaderId+'][deviceNum='+deviceNum+']').length;
+				var deviceNum=$('#transferForm input[name=deviceNum]').val().trim();
+				var deviceCount=$('#transferList tr[target][id!='+selectTransferId+'][deviceNum='+deviceNum+']').length;
 				if(deviceCount>0){
 					alertMsg.warn('该机器号已存在！');
 					return;
 				}
-				var sn=$('#cardReaderForm input[name=sn]').val().trim();
-				deviceCount=$('#cardReaderList tr[target][id!='+selectCardReaderId+'][sn='+sn+']').length;
+				var sn=$('#transferForm input[name=sn]').val().trim();
+				deviceCount=$('#transferList tr[target][id!='+selectTransferId+'][sn='+sn+']').length;
 				if(deviceCount>0){
 					alertMsg.warn('该序列号已存在！');
 					return;
@@ -72,7 +72,7 @@
 				
 				validateCallback(form, function(e) {
 					if (e == 1) {
-						refreshcardReaderList();
+						refreshtransferList();
 						alertMsg.correct('修改成功！');
 					}else if (e==2) {
 						alertMsg.warn('序列号不合法！');
@@ -86,24 +86,25 @@
 				}, null, true);
 			}
 		});
-		$('#cardReaderForm .delete').click(function() {
-			if(selectCardReaderId==0){
+		$('#transferForm .delete').click(function() {
+			if(selectTransferId==0){
 				alertMsg.warn('请选择读卡机！');
 				return;
 			}
-			var deviceName=$('#cardReaderForm input[name=deviceName]').val();
+			var deviceName=$('#transferForm input[name=deviceName]').val();
 			alertMsg.confirm('确定要删除'+deviceName+'吗？', {
 				okCall : function() {
-					$.post('${base }/deleteCardReader.do?id=' + selectCardReaderId,function(e) {
+					var sn=$('#transferForm input[name=sn]').val();
+					$.post('${base }/deleteTransfer.do?id=' + selectTransferId+'&sn='+sn,function(e) {
 						if (e == 1) {
-							refreshcardReaderList();
-							$('#cardReaderForm').clearForm();
-							selectCardReaderId=0;
+							refreshtransferList();
+							$('#transferForm').clearForm();
+							selectTransferId=0;
 							alertMsg.correct('删除成功！');
 						} else if (e == 0) {
 							alertMsg.warn('删除失败！');
 						} else if (e == 2) {
-							alertMsg.warn('该读卡机已被绑定！');
+							alertMsg.warn('该中转有从属设备不能删除！');
 						}
 					});
 				}
@@ -111,36 +112,36 @@
 		});
 	});
 
-	function refreshcardReaderList() {
-		$('#cardReaderList').loadUrl('${base }/cardReaderList.do');
+	function refreshtransferList() {
+		$('#transferList').loadUrl('${base }/transferList.do');
 	}
 
 	//选择设备
-	function cardReaderClick(tr) {
-		selectCardReaderId=tr.attr('id');
-		$('#cardReaderForm input').eq(0).val(selectCardReaderId);
-		$('#cardReaderForm input').eq(2).val(tr.attr('deviceNum'));
-		$('#cardReaderForm input').eq(3).val(tr.attr('deviceName'));
-		$('#cardReaderForm input').eq(4).val(tr.attr('sn'));
+	function transferClick(tr) {
+		selectTransferId=tr.attr('id');
+		$('#transferForm input').eq(0).val(selectTransferId);
+		$('#transferForm input').eq(2).val(tr.attr('deviceNum'));
+		$('#transferForm input').eq(3).val(tr.attr('deviceName'));
+		$('#transferForm input').eq(4).val(tr.attr('sn'));
 	};
 </script>
 <link href="themes/css/custom.css" rel="stylesheet" type="text/css" />
 <style type="text/css">
-	.cardReaderForm input, .form input {
+	.transferForm input, .form input {
 		width: 230px;
 	}
-	.cardReaderForm dd span.error {
+	.transferForm dd span.error {
 		left: 180px;
 		width: 220px;
 	}
 </style>
 
 <div style="background: #fff;">
-	<div id="cardReaderList" layoutH="131">
-		<jsp:include page="${base}/cardReaderList.do"/>
+	<div id="transferList" layoutH="131">
+		<jsp:include page="${base}/transferList.do"/>
 	</div>
-	<div class="form cardReaderForm">
-		<form id="cardReaderForm" method="post" action="${base }/addEdit.do" class="pageForm required-validate">
+	<div class="form transferForm">
+		<form id="transferForm" method="post" action="${base }/addEdit.do" class="pageForm required-validate">
 			<div class="pageFormContent">
 				<dl style="width: 420px;">
 					<dt>机器号：</dt>
@@ -164,17 +165,17 @@
 					</dd>
 				</dl>
 			</div>
-			<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_DEVICEMANAGER_CARDREADER_ADD,ROLE_DEVICEMANAGER_CARDREADER_EDIT,ROLE_DEVICEMANAGER_CARDREADER_DEL">
+			<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_DEVICEMANAGER_TRANSFER_ADD,ROLE_DEVICEMANAGER_TRANSFER_EDIT,ROLE_DEVICEMANAGER_TRANSFER_DEL">
 				<div class="formBar">
 					<div class="panelBar" style="border-style: none;">
 						<ul class="toolBar">
-							<security:authorize ifAnyGranted="ROLE_DEVICEMANAGER_CARDREADER_ADD,ROLE_ADMIN">
+							<security:authorize ifAnyGranted="ROLE_DEVICEMANAGER_TRANSFER_ADD,ROLE_ADMIN">
 								<li><a class="add" href="javascript:;"><span>添加</span></a></li>
 							</security:authorize>
-							<security:authorize ifAnyGranted="ROLE_DEVICEMANAGER_CARDREADER_EDIT,ROLE_ADMIN">
+							<security:authorize ifAnyGranted="ROLE_DEVICEMANAGER_TRANSFER_EDIT,ROLE_ADMIN">
 								<li><a class="edit" href="javascript:;"><span>修改</span></a></li>
 							</security:authorize>
-							<security:authorize ifAnyGranted="ROLE_DEVICEMANAGER_CARDREADER_DEL,ROLE_ADMIN">
+							<security:authorize ifAnyGranted="ROLE_DEVICEMANAGER_TRANSFER_DEL,ROLE_ADMIN">
 								<li><a class="delete" href="javascript:;"><span>删除</span></a></li>
 							</security:authorize>
 						</ul>

@@ -15,10 +15,11 @@ public class Device implements Serializable {
 	private Integer id;
 	private Integer companyId;
 	private Integer deptId;
-	private Integer posParamGroupId;
+	private Integer paramGroupId;
 	private String deviceName;
 	private Integer deviceNum;
 	private Integer deviceType;
+	private Integer transferId;
 	private Integer enable;
 	private Integer lastRecordNO = 0;
 	/**
@@ -91,14 +92,6 @@ public class Device implements Serializable {
 		this.isOnline = isOnline;
 	}
 
-	public Integer getPosParamGroupId() {
-		return posParamGroupId;
-	}
-
-	public void setPosParamGroupId(Integer posParamGroupId) {
-		this.posParamGroupId = posParamGroupId;
-	}
-
 	public Integer getLastRecordNO() {
 		return lastRecordNO;
 	}
@@ -113,6 +106,22 @@ public class Device implements Serializable {
 
 	public void setDeptId(Integer deptId) {
 		this.deptId = deptId;
+	}
+
+	public Integer getParamGroupId() {
+		return paramGroupId;
+	}
+
+	public void setParamGroupId(Integer paramGroupId) {
+		this.paramGroupId = paramGroupId;
+	}
+
+	public Integer getTransferId() {
+		return transferId;
+	}
+
+	public void setTransferId(Integer transferId) {
+		this.transferId = transferId;
 	}
 
 }

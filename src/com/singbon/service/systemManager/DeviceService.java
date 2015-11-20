@@ -65,16 +65,25 @@ public class DeviceService extends BaseService {
 	}
 
 	/**
+	 * 中转设备被引用数量
+	 * 
+	 * @param groupId
+	 * @return
+	 */
+	public Integer selectPosCountByTransferId(Integer transferId) {
+		return this.deviceDAO.selectPosCountByTransferId(transferId);
+	}
+
+	/**
 	 * 设备列表
 	 * 
 	 * @param companyId
-	 * @param isCardReader
-	 *            是否为读卡机 1是 0消费机
+	 * @param deviceType
 	 * @param onlyEnable
 	 * @return
 	 */
-	public List<Device> selectDeviceListByCompanyId(Integer companyId, Integer isCardReader, Integer onlyEnable) {
-		return this.deviceDAO.selectDeviceListByCompanyId(companyId, isCardReader, onlyEnable);
+	public List<Device> selectDeviceListByCompanyId(Integer companyId, String deviceType, Integer onlyEnable) {
+		return this.deviceDAO.selectDeviceListByCompanyId(companyId, deviceType, onlyEnable);
 	}
 
 	/**

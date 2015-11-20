@@ -102,6 +102,8 @@
 						posListClick($(this));
 					}else if(target=="cardReader"){
 						cardReaderClick($(this));
+					}else if(target=="transfer"){
+						transferClick($(this));
 					}
 					$trs.filter(".selected").removeClass("selected");
 					$tr.addClass("selected");

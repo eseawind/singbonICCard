@@ -151,7 +151,7 @@ public class ConsumeRecordController extends BaseController {
 		model.addAttribute("endDate", endDate);
 		model.addAttribute("includeOff", includeOff);
 
-		List<Device> deviceList = this.deviceService.selectDeviceListByCompanyId(company.getId(), 0, 0);
+		List<Device> deviceList = this.deviceService.selectDeviceListByCompanyId(company.getId(), "2,3", 0);
 		model.addAttribute("deviceList", deviceList);
 
 		model.addAttribute("base", StringUtil.requestBase(request));

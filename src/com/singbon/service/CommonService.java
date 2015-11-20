@@ -51,7 +51,7 @@ public class CommonService extends BaseService {
 			}
 			i++;
 		}
-		for (String col : countColumns) {
+		for (String col : dataColumns) {
 			selectDataSql += col + ",";
 		}
 		selectCountSql = selectCountSql.substring(0, selectCountSql.length() - 1);

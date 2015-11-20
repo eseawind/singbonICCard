@@ -7,11 +7,11 @@
 	<cache eviction="FIFO" size="2000" readOnly="true"/>
 
 	<insert id="insert" parameterMap="device2">
-		insert into device (companyId,deptId,posParamGroupId,deviceName,deviceNum,deviceType,enable,sn)
-		values (#{companyId},#{deptId},#{posParamGroupId},#{deviceName},#{deviceNum},#{deviceType},#{enable},#{sn})
+		insert into device (companyId,deptId,paramGroupId,deviceName,deviceNum,deviceType,enable,sn)
+		values (#{companyId},#{deptId},#{paramGroupId},#{deviceName},#{deviceNum},#{deviceType},#{enable},#{sn})
 	</insert>
 	<update id="update" parameterMap="device2">
-		update device set posParamGroupId=#{posParamGroupId},deviceName=#{deviceName},deviceNum=#{deviceNum},deviceType=#{deviceType},enable=#{enable},sn=#{sn}
+		update device set paramGroupId=#{paramGroupId},deviceName=#{deviceName},deviceNum=#{deviceNum},deviceType=#{deviceType},transferId=#{transferId},enable=#{enable},sn=#{sn}
 		where id=#{id}
 	</update>
 	<delete id="delete">
@@ -24,6 +24,12 @@
 	<select id="selectCountByInfo" resultType="java.util.Map" parameterMap="device2" useCache="false">
 		select 
 			(select count(*) from device where deviceNum=#{deviceNum}
+			<if test="deviceType==2 or deviceType==3">
+			      and deviceType in (2,3)
+			</if>
+			<if test="deviceType!=2 and deviceType!=3">
+			      and deviceType = #{deviceType}
+			</if>
 			<if test="id!=null">
 			     and id!=#{id}
 			</if>
@@ -35,13 +41,7 @@
 			) snCount
 	</select>
 	<select id="selectDeviceListByCompanyId" resultMap="device" useCache="false">
-		select * from device where companyId=#{companyId}		
-		<if test="isCardReader == 1">
-			 and deviceType=8
-		</if>
-		<if test="isCardReader == 0">
-			 and deviceType!=8
-		</if>
+		select * from device where companyId=#{companyId} and deviceType in (#{deviceType})
 		<if test="onlyEnable == 1">
 			 and enable=1
 		</if>
@@ -49,6 +49,10 @@
 <!-- 	查询读卡机被引用数量 -->
 	<select id="selectSysUserCountByDeviceId" resultType="java.lang.Integer" useCache="false">
 		select count(*) count from sysUser where deviceId=#{deviceId}		
+	</select>
+<!-- 	查询中转设备被引用数量 -->
+	<select id="selectPosCountByTransferId" resultType="java.lang.Integer" useCache="false">
+		select count(*) count from device where transferId=#{transferId}		
 	</select>
 <!-- 	系统启动加载用 -->
 	<select id="selectAllList" resultMap="device" useCache="false">

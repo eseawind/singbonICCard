@@ -1,4 +1,4 @@
-<!-- 读卡机列表 -->
+<!-- 中转设备列表 -->
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
@@ -8,7 +8,7 @@
 </script>
 <style type="text/css">
 </style>
-<div id="cardReaderList">
+<div id="transferList">
 	<table class="table" width="99%" rel="jbsxBox">
 		<thead>
 			<tr>
@@ -20,7 +20,7 @@
 		</thead>
 		<tbody>
 			<c:forEach items="${list }" var="c" varStatus="status">
-				<tr target="cardReader" id="${c.id }" deviceNum="${c.deviceNum}" deviceName="${c.deviceName}" sn="${c.sn}">
+				<tr target="transfer" id="${c.id }" deviceNum="${c.deviceNum}" deviceName="${c.deviceName}" sn="${c.sn}">
 					<td>${status.index+1}</td>
 					<td>${c.deviceNum }</td>
 					<td>${c.deviceName }</td>

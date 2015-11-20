@@ -12,6 +12,9 @@
 				<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_DEVICEMANAGER_POS">
 					<li><a href="${base }/posIndex.do" class="j-ajax"><span>消费机</span></a></li>
 				</security:authorize>
+				<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_DEVICEMANAGER_TRANSFER">
+					<li><a href="${base }/transferIndex.do" class="j-ajax"><span>中转设备</span></a></li>
+				</security:authorize>
 				<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_DEVICEMANAGER_CARDREADER">
 					<li><a href="${base }/cardReaderIndex.do" class="j-ajax"><span>读卡机</span></a></li>
 				</security:authorize>
@@ -19,6 +22,7 @@
 		</div>
 	</div>
 	<div class="tabsContent" style="padding: 0;" layoutH="0">
+		<div></div>
 		<div></div>
 		<div></div>
 	</div>

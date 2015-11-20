@@ -94,6 +94,12 @@
 										<li><a href="javascript:;" tvalue="ROLE_DEVICEMANAGER_POS_EDIT">修改</a></li>
 										<li><a href="javascript:;" tvalue="ROLE_DEVICEMANAGER_POS_DEL">删除</a></li>
 									</ul></li>
+								<li><a href="javascript:;" tvalue="ROLE_DEVICEMANAGER_TRANSFER">中转设备</a>
+									<ul>
+										<li><a href="javascript:;" tvalue="ROLE_DEVICEMANAGER_TRANSFER_ADD">添加</a></li>
+										<li><a href="javascript:;" tvalue="ROLE_DEVICEMANAGER_TRANSFER_EDIT">修改</a></li>
+										<li><a href="javascript:;" tvalue="ROLE_DEVICEMANAGER_TRANSFER_DEL">删除</a></li>
+									</ul></li>
 								<li><a href="javascript:;" tvalue="ROLE_DEVICEMANAGER_CARDREADER">读卡机</a>
 									<ul>
 										<li><a href="javascript:;" tvalue="ROLE_DEVICEMANAGER_CARDREADER_ADD">添加</a></li>

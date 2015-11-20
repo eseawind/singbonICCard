@@ -32,6 +32,15 @@
 					<td>
 						<input type="text" name="nameStr" size="10" value="${nameStr }" />
 					</td>
+					<td style="padding-left: 10px;">所属中转：</td>
+					<td>
+						<select class="combox" outerw="50" innerw="70" name="transferId">
+							<option value="-1">全部</option>
+							<c:forEach items="${transferList }" var="t">
+								<option value="${t.id }" <c:if test="${transferId==t.id}">selected="selected"</c:if>>${t.deviceName }</option>
+							</c:forEach>
+						</select>
+					</td>
 					<td style="padding-left: 10px;">
 						<div class="buttonActive">
 							<div class="buttonContent">
@@ -53,6 +62,7 @@
 				<th width="80">机器号</th>
 				<th width="120">设备名称</th>
 				<th width="100">设备类型</th>
+				<th width="100">所属中转</th>
 				<th width="120">消费参数分组</th>
 				<th width="300">序列号</th>
 				<th width="80">状态</th>
@@ -60,11 +70,12 @@
 		</thead>
 		<tbody>
 			<c:forEach items="${deviceList }" var="d" varStatus="status">
-				<tr target="posList" id="${d.id }" deviceNum="${d.deviceNum}" deviceName="${d.deviceName}" deviceType="${d.deviceType}" posParamGroupId="${d.posParamGroupId}" sn="${d.sn}" enable="${d.enable}">
+				<tr target="posList" id="${d.id }" deviceNum="${d.deviceNum}" deviceName="${d.deviceName}" deviceType="${d.deviceType}" transferId="${d.transferId}" paramGroupId="${d.paramGroupId}" sn="${d.sn}" enable="${d.enable}">
 					<td>${status.index+1}</td>
 					<td>${d.deviceNum}</td>
 					<td>${d.deviceName}</td>
 					<td>${d.deviceTypeDes}</td>
+					<td>${d.transferName}</td>
 					<td>${d.groupName}</td>
 					<td>${d.sn }</td>
 					<td>${d.enable==1?"启用":"禁用" }</td>
