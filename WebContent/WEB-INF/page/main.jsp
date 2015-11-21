@@ -105,6 +105,9 @@
 				$('#themeList').theme({
 					themeBase : 'themes'
 				}); // themeBase 相对于index页面的主题base路径
+				if('${diffDays}'!=''){
+					alertMsg.warn('剩余试用${diffDays}天！');
+				}
 			}
 		});
 	});
@@ -136,7 +139,8 @@
 					<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_SYSTEMMANAGER">
 						<div class="accordionHeader">
 							<h2>
-								<span>Folder</span> <a href="/systemManager/index.do" target="navTab">系统管理</a>
+<!-- 								<span>Folder</span> <a href="/systemManager/index.do" target="navTab">系统管理</a> -->
+								<span>Folder</span>系统管理
 							</h2>
 						</div>
 						<div class="accordionContent">

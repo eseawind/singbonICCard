@@ -4,7 +4,7 @@
 (function($){
 	// jQuery validate
 	$.extend($.validator.messages, {
-		required: "必填字段",
+		required: "必填内容",
 		remote: "请修正该字段",
 		email: "请输入正确格式的电子邮件",
 		url: "请输入合法的网址",
@@ -18,6 +18,8 @@
 		maxlength: $.validator.format("长度最多是 {0} 的字符串"),
 		minlength: $.validator.format("长度最少是 {0} 的字符串"),
 		rangelength: $.validator.format("长度介于 {0} 和 {1} 之间的字符串"),
+		fixedlength: $.validator.format("输入内容长度为{0}"),
+		snIllegal: $.validator.format("序列号不合法"),
 		range: $.validator.format("请输入一个介于 {0} 和 {1} 之间的值"),
 //		max: $.validator.format("超出最大值"),
 //		min: $.validator.format("超出最小值"),

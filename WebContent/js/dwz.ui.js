@@ -154,14 +154,14 @@ function initUI(_box){
 			focusInvalid: false,
 			focusCleanup: true,
 			errorElement: "span",
-			ignore:".ignore",
-			invalidHandler: function(form, validator) {
-				var errors = validator.numberOfInvalids();
-				if (errors) {
-					var message = DWZ.msg("validateFormError",[errors]);
-					alertMsg.error(message);
-				} 
-			}
+			ignore:".ignore"
+//			invalidHandler: function(form, validator) {
+//				var errors = validator.numberOfInvalids();
+//				if (errors) {
+//					var message = DWZ.msg("validateFormError",[errors]);
+//					alertMsg.error(message);
+//				} 
+//			}
 		});
 		
 		$form.find('input[customvalid]').each(function(){

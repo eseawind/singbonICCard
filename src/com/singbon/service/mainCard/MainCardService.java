@@ -44,7 +44,7 @@ public class MainCardService extends BaseService {
 	public User selectByUserId(Long userId) {
 		return this.userDAO.selectByUserId(userId);
 	}
-	
+
 	/**
 	 * 删除未发卡人员
 	 * 
@@ -151,7 +151,7 @@ public class MainCardService extends BaseService {
 
 		String tmUserId = StringUtil.hexLeftPad(user.getUserId(), 8);// 4 0-3
 		String tmCardNo = StringUtil.hexLeftPad(user.getCardNO(), 8);// 4
-																						// 4-7
+																		// 4-7
 		String tmConsumePwd = StringUtil.hexLeftPad(Integer.valueOf(user.getConsumePwd()), 4);// 2
 																								// 8-9
 		c.setTime(user.getInvalidDate());
@@ -161,7 +161,9 @@ public class MainCardService extends BaseService {
 																					// 13-14
 		String tmCheck1 = "00"; // 异或校验，以后补充 1
 
-		String tmCardDeposit = StringUtil.hexLeftPad(cardAllInfo.getCardDeposit(), 2);// 1
+		// String tmCardDeposit =
+		// StringUtil.hexLeftPad(cardAllInfo.getCardDeposit(), 2);// 1
+		String tmCardDeposit = StringUtil.hexLeftPad(0, 2);// 1
 		String tmLimitTimesFare = StringUtil.hexLeftPad(cardAllInfo.getLimitTimesFare(), 2);// 2
 		String tmLimitDayFare = StringUtil.hexLeftPad(cardAllInfo.getLimitDayFare(), 4);// 1
 		String tmCardSeq = "01";// 1
@@ -382,21 +384,21 @@ public class MainCardService extends BaseService {
 	 * @return
 	 * @throws Exception
 	 */
-	public void doCharge(User user, float oddFare2, float opCash, SocketChannel socketChannel, Device device, Integer chargeType, String cardInfoStr) throws Exception {
+	public void doCharge(User user, Float oddFare, Float opFare, Float giveFare, SocketChannel socketChannel, Device device, Integer chargeType, String cardInfoStr) throws Exception {
 		String totalFareString = cardInfoStr.substring(26, 34);
 		int totalFare = Integer.parseInt(totalFareString, 16);
-		int oddFare = 0;
+		int oddFare2 = 0;
 		if (chargeType == 0) {
-			oddFare = (int) (100 * (oddFare2 + opCash));
-			totalFare += opCash * 100;
-			this.userDAO.changeFare(user.getUserId(), (int) opCash * 100);
+			oddFare2 = (int) (100 * (oddFare + opFare + giveFare));
+			totalFare += (opFare + giveFare) * 100;
+			this.userDAO.changeFare(user.getUserId(), (int) (opFare + giveFare) * 100);
 		} else {
-			oddFare = (int) (100 * (oddFare2 - opCash));
-			totalFare -= opCash * 100;
-			this.userDAO.changeFare(user.getUserId(), -(int) opCash * 100);
+			oddFare2 = (int) (100 * (oddFare - opFare));
+			totalFare -= opFare * 100;
+			this.userDAO.changeFare(user.getUserId(), -(int) (opFare * 100));
 		}
 
-		cardInfoStr = cardInfoStr.substring(0, 26) + StringUtil.hexLeftPad(totalFare, 8) + cardInfoStr.substring(34, 50) + StringUtil.hexLeftPad(oddFare, 6) + cardInfoStr.substring(56);
+		cardInfoStr = cardInfoStr.substring(0, 26) + StringUtil.hexLeftPad(totalFare, 8) + cardInfoStr.substring(34, 50) + StringUtil.hexLeftPad(oddFare2, 6) + cardInfoStr.substring(56);
 		String commandCodeStr = "0000" + StringUtil.hexLeftPad(CardReaderCommandCode.Charge, 4);
 		String sendBufStr = CardReaderFrame.WriteCard + commandCodeStr + CardReaderFrame.ValidateCardSN + user.getCardSN() + cardInfoStr;
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);

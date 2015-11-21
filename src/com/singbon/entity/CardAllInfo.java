@@ -15,7 +15,7 @@ public class CardAllInfo implements Serializable {
 	// 开户卡成本
 	private Integer cardCost;
 	// 卡底金 单位是元
-	private Integer cardDeposit;
+//	private Integer cardDeposit;
 	// 日消费限额 单位是元
 	private Integer limitDayFare;
 	// 次消费限额
@@ -45,13 +45,13 @@ public class CardAllInfo implements Serializable {
 		this.cardCost = cardCost;
 	}
 
-	public Integer getCardDeposit() {
-		return cardDeposit;
-	}
-
-	public void setCardDeposit(Integer cardDeposit) {
-		this.cardDeposit = cardDeposit;
-	}
+//	public Integer getCardDeposit() {
+//		return cardDeposit;
+//	}
+//
+//	public void setCardDeposit(Integer cardDeposit) {
+//		this.cardDeposit = cardDeposit;
+//	}
 
 	public Integer getLimitDayFare() {
 		return limitDayFare;

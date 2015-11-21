@@ -20,6 +20,7 @@
 <!-- 	登录 -->
 	<select id="login" resultMap="sysUser" useCache="false">
 		select u.* from sysuser u,company c where u.companyId=c.id and u.loginName =#{loginName} and u.loginPwd=#{loginPwd} and c.companyName =#{companyName}
+		 and (c.invalidDate is null or c.invalidDate='' or c.invalidDate>=substr(NOW(),1,10))
 	</select>
 <!-- 	列表 -->
 	<select id="selectListByCompanyId" resultType="java.util.Map" useCache="false">

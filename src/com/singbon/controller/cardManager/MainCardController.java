@@ -33,6 +33,7 @@ import com.singbon.entity.CardIdentity;
 import com.singbon.entity.CardParam;
 import com.singbon.entity.Company;
 import com.singbon.entity.Device;
+import com.singbon.entity.Discount;
 import com.singbon.entity.Pagination;
 import com.singbon.entity.SysUser;
 import com.singbon.entity.User;
@@ -42,6 +43,7 @@ import com.singbon.service.CompanyService;
 import com.singbon.service.mainCard.MainCardService;
 import com.singbon.service.systemManager.systemSetting.BatchService;
 import com.singbon.service.systemManager.systemSetting.CardParamService;
+import com.singbon.service.systemManager.systemSetting.DiscountService;
 import com.singbon.service.systemManager.systemSetting.UserDeptService;
 import com.singbon.util.StringUtil;
 
@@ -67,6 +69,8 @@ public class MainCardController extends BaseController {
 	public CommonService commonService;
 	@Autowired
 	public CardParamService cardParamService;
+	@Autowired
+	public DiscountService discountService;
 
 	/**
 	 * 首页
@@ -180,7 +184,7 @@ public class MainCardController extends BaseController {
 	 * @param model
 	 * @return
 	 */
-	@SuppressWarnings({ "rawtypes" })
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value = "/userInfo.do", method = RequestMethod.GET)
 	public String userInfo(Long userId, Integer deptId, Integer batchId, Integer editType, HttpServletRequest request, Model model) {
 		request.getSession().removeAttribute("companyId");
@@ -226,10 +230,11 @@ public class MainCardController extends BaseController {
 		cardIdentityList.add(m8);
 
 		CardParam cardParam = (CardParam) this.cardParamService.selectByCompanyId(company.getId());
+		List<Discount> discountList = (List<Discount>) discountService.selectListByCompanyId(company.getId());
 		Batch batch = (Batch) batchService.selectById(batchId);
 
 		model.addAttribute("cardFuncList", cardFuncList);
-		model.addAttribute("cardFuncList", cardFuncList);
+		model.addAttribute("discountList", discountList);
 		model.addAttribute("cardIdentityList", cardIdentityList);
 
 		model.addAttribute("cardParam", cardParam);
@@ -674,7 +679,7 @@ public class MainCardController extends BaseController {
 					cardAllInfo.setLimitDayFare(0);
 					cardAllInfo.setLimitTimesFare(0);
 					cardAllInfo.setLimitPeriods(new Integer[] { 0, 0, 0, 0, 0, 0 });
-					cardAllInfo.setCardDeposit(0);
+					// cardAllInfo.setCardDeposit(0);
 
 					Batch batch = this.batchService.selectByDeptId(user.getDeptId());
 					if (batch == null) {
@@ -829,7 +834,7 @@ public class MainCardController extends BaseController {
 					cardAllInfo.setLimitDayFare(0);
 					cardAllInfo.setLimitTimesFare(0);
 					cardAllInfo.setLimitPeriods(new Integer[] { 0, 0, 0, 0, 0, 0 });
-					cardAllInfo.setCardDeposit(0);
+					// cardAllInfo.setCardDeposit(0);
 
 					Batch batch = this.batchService.selectByDeptId(user2.getDeptId());
 					if (batch == null) {
@@ -901,8 +906,7 @@ public class MainCardController extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/doDeptAdjust.do")
-	public void doDeptAdjust(Integer adjustType, Integer fromDeptId, Integer toDeptId, Long selectedUserId, Long[] userIds, HttpServletRequest request, HttpServletResponse response,
-			Model model) {
+	public void doDeptAdjust(Integer adjustType, Integer fromDeptId, Integer toDeptId, Long selectedUserId, Long[] userIds, HttpServletRequest request, HttpServletResponse response, Model model) {
 		PrintWriter p = null;
 		try {
 			p = response.getWriter();
@@ -1007,19 +1011,22 @@ public class MainCardController extends BaseController {
 	 * 
 	 * @param user
 	 * @param chargeType
-	 * @param opCash
-	 * @param allOpCash
+	 * @param opFare
+	 * @param giveFare
+	 * @param oddFare
 	 * @param cardInfoStr
 	 * @param request
+	 * @param response
 	 * @param model
 	 */
 	@RequestMapping(value = "/doCharge.do", method = RequestMethod.POST)
-	public void doCharge(@ModelAttribute User user, Integer chargeType, Float opCash2, Float oddFare2, String cardInfoStr, HttpServletRequest request, HttpServletResponse response, Model model) {
+	public void doCharge(@ModelAttribute User user, Integer chargeType, Float oddFare, Float opFare, Float giveFare, String cardInfoStr, HttpServletRequest request, HttpServletResponse response,
+			Model model) {
 		Device device = (Device) request.getSession().getAttribute("device");
 		SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(device.getSn());
 		if (socketChannel != null) {
 			try {
-				this.mainCardService.doCharge(user, oddFare2, opCash2, socketChannel, device, chargeType, cardInfoStr);
+				this.mainCardService.doCharge(user, oddFare, opFare, giveFare, socketChannel, device, chargeType, cardInfoStr);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

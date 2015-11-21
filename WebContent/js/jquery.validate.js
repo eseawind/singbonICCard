@@ -292,6 +292,8 @@ $.extend($.validator, {
 		maxlength: $.validator.format("Please enter no more than {0} characters."),
 		minlength: $.validator.format("Please enter at least {0} characters."),
 		rangelength: $.validator.format("Please enter a value between {0} and {1} characters long."),
+		fixedlength: $.validator.format("Please enter a value {0} characters long."),
+		snIllegal: $.validator.format("SN is illegal"),
 		range: $.validator.format("Please enter a value between {0} and {1}."),
 		max: $.validator.format("Please enter a value less than or equal to {0}."),
 		min: $.validator.format("Please enter a value greater than or equal to {0}.")
@@ -959,10 +961,25 @@ $.extend($.validator, {
 				delete rules.min;
 				delete rules.max;
 			}
-			if ( rules.minlength && rules.maxlength ) {
-				rules.rangelength = [rules.minlength, rules.maxlength];
+
+			if ( rules.minlength && rules.maxlength && rules.minlength == rules.maxlength) {
+				rules.fixedlength = [rules.minlength, rules.maxlength];
+				
+				var sn=element.value;
+				if(sn.length==32){
+					var reg=/^[0-9a-fA-F]{32}$/;
+					if(!reg.test(sn)){
+						rules.snIllegal = [];
+						delete rules.fixedlength;
+					}					
+				}
+					
 				delete rules.minlength;
 				delete rules.maxlength;
+			}else if(rules.minlength && rules.maxlength){
+				rules.rangelength = [rules.minlength];
+				delete rules.minlength;
+				delete rules.maxlength;				
 			}
 		}
 
@@ -1088,6 +1105,17 @@ $.extend($.validator, {
 		rangelength: function( value, element, param ) {
 			var length = $.isArray( value ) ? value.length : this.getLength($.trim(value), element);
 			return this.optional(element) || ( length >= param[0] && length <= param[1] );
+		},
+		
+		// http://docs.jquery.com/Plugins/Validation/Methods/rangelength
+		fixedlength: function( value, element, param ) {
+			var length = $.isArray( value ) ? value.length : this.getLength($.trim(value), element);
+			return this.optional(element) || ( length >= param[0] && length <= param[1] );
+		},
+		
+		// http://docs.jquery.com/Plugins/Validation/Methods/rangelength
+		snIllegal: function( value, element, param ) {
+			return false;
 		},
 
 		// http://docs.jquery.com/Plugins/Validation/Methods/min

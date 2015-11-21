@@ -125,24 +125,25 @@
 		$('#transferForm input').eq(4).val(tr.attr('sn'));
 	};
 </script>
-<link href="themes/css/custom.css" rel="stylesheet" type="text/css" />
+<!-- <link href="themes/css/custom.css" rel="stylesheet" type="text/css" /> -->
 <style type="text/css">
 	.transferForm input, .form input {
 		width: 230px;
 	}
 	.transferForm dd span.error {
-		left: 180px;
-		width: 220px;
+		left: 65px;
+		width: 230px;
+		top:25px;
 	}
 </style>
 
 <div style="background: #fff;">
-	<div id="transferList" layoutH="131">
+	<div id="transferList" layoutH="146">
 		<jsp:include page="${base}/transferList.do"/>
 	</div>
 	<div class="form transferForm">
 		<form id="transferForm" method="post" action="${base }/addEdit.do" class="pageForm required-validate">
-			<div class="pageFormContent">
+			<div class="pageFormContent" style="padding-bottom: 15px;">
 				<dl style="width: 420px;">
 					<dt>机器号：</dt>
 					<dd style="width: 350px;">

@@ -167,6 +167,6 @@ public interface UserDAO extends BaseDAO {
 	 * @param cardNO
 	 * @param cardSN
 	 */
-	public void changeFare(@Param("userId") Long userId, @Param("opFare") Integer opFare) throws Exception;
+	public void changeFare(@Param("userId") Long userId, @Param("allOpFare") Integer allOpFare) throws Exception;
 
 }

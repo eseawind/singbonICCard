@@ -2,6 +2,7 @@ package com.singbon.controller;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +33,7 @@ import com.singbon.service.SysUserService;
 import com.singbon.service.systemManager.DeviceService;
 import com.singbon.service.systemManager.systemSetting.DeptService;
 import com.singbon.service.systemManager.systemSetting.UserDeptService;
+import com.singbon.util.StringUtil;
 
 /**
  * 公共通用控制类
@@ -90,7 +92,18 @@ public class CommonController {
 	 * @return
 	 */
 	@RequestMapping(value = "/main.do")
-	public String main(@ModelAttribute SysUser user, HttpServletRequest request, Model model) {
+	public String main(HttpServletRequest request, Model model) {
+		Company company = (Company) request.getSession().getAttribute("company");
+		String invalidDate = company.getInvalidDate();
+		if (!StringUtils.isEmpty(invalidDate)) {
+			Calendar c = Calendar.getInstance();
+			String[] date = invalidDate.split("-");
+			c.set(StringUtil.objToInt(date[0]), StringUtil.objToInt(date[1]), StringUtil.objToInt(date[2]), 23, 59, 59);
+			c.add(Calendar.MONTH, -1);
+			long diff = c.getTimeInMillis() - System.currentTimeMillis();
+			long diffDays = diff / (24 * 60 * 60 * 1000);
+			model.addAttribute("diffDays", diffDays + 1);
+		}
 		return "main";
 	}
 

@@ -6,11 +6,11 @@
 	<parameterMap type="com.singbon.entity.Discount" id="discount2" />
 	<cache eviction="FIFO" size="16" readOnly="true"/>
 	<insert id="insert">
-		insert into discount (companyId,discountType,rate,subsidy,giveCash)
-			select #{companyId},discountType,rate,subsidy,giveCash from discountBase
+		insert into discount (companyId,discountType,rate,subsidy)
+			select #{companyId},discountType,rate,subsidy from discountBase
 	</insert>
 	<update id="update" parameterMap="discount2">
-		update discount set rate=#{rate},subsidy=#{subsidy},giveCash=#{giveCash}
+		update discount set rate=#{rate},subsidy=#{subsidy}
 		where id=#{id}
 	</update>
 	<select id="selectListByCompanyId" resultMap="discount">

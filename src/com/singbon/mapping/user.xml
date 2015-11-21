@@ -51,7 +51,7 @@
 		update user set deptId=#{toDeptId} where deptId=#{fromDeptId}
 	</update>
 	<update id="changeFare">
-		update user set totalFare=totalFare+#{opFare},oddFare=oddFare+#{opFare} where userId=#{userId}
+		update user set totalFare=totalFare+#{allOpFare},oddFare=oddFare+#{allOpFare} where userId=#{userId}
 	</update>
 	<delete id="delete">
 		delete from user where status=0 and userId in (
@@ -61,7 +61,7 @@
 		)
 	</delete>
 	<select id="selectByUserId" resultMap="user">
-		select * from user where userId=#{id}
+		select * from user where userId=#{userId}
 	</select>
 	<select id="selectByUserIdCardSN" resultMap="user">
 		select * from user where companyId=#{companyId} and cardSN=#{cardSN}

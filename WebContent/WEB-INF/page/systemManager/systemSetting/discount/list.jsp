@@ -12,8 +12,6 @@
 		var rate = tds.eq(1).find('div').html();
 		select.val(rate);
 		select.prev().attr('value',rate).html($('option[value=' + rate + ']', select).html());
-		var giveCash = tds.eq(3).find('div').html();
-		$('#discountForm input[name=giveCash]').val(giveCash);
 	}
 </script>
 <style type="text/css">
@@ -24,7 +22,6 @@
 			<th width="100">卡类型</th>
 			<th width="100">扣费比例</th>
 			<th width="100">补助金额</th>
-			<th width="100">赠送金额</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -33,7 +30,6 @@
 				<td>${d.discountType }</td>
 				<td>${d.rate }</td>
 				<td>${d.subsidy }</td>
-				<td><c:out value="${d.giveCash}" /></td>
 			</tr>
 		</c:forEach>
 	</tbody>

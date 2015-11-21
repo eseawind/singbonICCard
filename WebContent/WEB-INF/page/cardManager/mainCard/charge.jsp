@@ -41,16 +41,16 @@
 			}
 		});
 		$('#userinfo input[name=chargeType]').click(function(){
-			var oddFare=$('#userinfo input[name=oddFare2]').val();
+			var oddFare=$('#userinfo input[name=oddFare]').val();
 			if(oddFare==''){
 				oddFare=0;
 			}
 			if($('#userinfo input[name=chargeType]:checked').val()==0){
-				$('#userinfo input[name=opFare2]').val(0);
+				$('#userinfo input[name=opFare]').val(0);
 				$('#userinfo input[name=allOddFare]').val(oddFare);
 				$('#userinfo input[name=giveFare]').attr("disabled",false);
 			}else{
-				$('#userinfo input[name=opFare2]').val(oddFare);
+				$('#userinfo input[name=opFare]').val(oddFare);
 				$('#userinfo input[name=allOddFare]').val(0);				
 				$('#userinfo input[name=giveFare]').attr("disabled",true);
 			}
@@ -93,10 +93,6 @@
 								alertMsg.warn('该卡状态异常！');
 								return;					
 							}
-							if(e4.status!=1){
-								alertMsg.warn('该卡库中人员信息状态异常！');
-								return;					
-							}
 							$('#userinfo #username').html(e4.username);
 							$('#userinfo #userNO').html(e4.userNO);
 							$('#userinfo #status').html(e4.statusDesc);
@@ -104,7 +100,7 @@
 							
 							$('#userinfo input[name=userId]').val(e4.userId);
 							$('#userinfo input[name=cardSN]').val(e4.cardSN);
-							$('#userinfo input[name=oddFare2]').val(e2.oddFare);
+							$('#userinfo input[name=oddFare]').val(e2.oddFare);
 							$('#userinfo input[name=cardInfoStr]').val(e2.cardInfoStr);
 							
 							$('#chargeLi').show();
@@ -153,8 +149,8 @@
 	}
 	
 	function getAllOddFare(){
-		var oddFare=$('#userinfo input[name=oddFare2]').val();
-		var opFareInput=$('#userinfo input[name=opFare2]');
+		var oddFare=$('#userinfo input[name=oddFare]').val();
+		var opFareInput=$('#userinfo input[name=opFare]');
 		var giveFareInput=$('#userinfo input[name=giveFare]');
 		
 		var opFare=0;
@@ -213,7 +209,7 @@
 	<input name="userId" type="hidden" /> 
 	<input name="cardSN" type="hidden" /> 
 	<input name="cardInfoStr" type="hidden"/> 
-	<input name="oddFare2" type="hidden"/> 
+	<input name="oddFare" type="hidden"/> 
 	<div class="pageFormContent" layoutH="60">
 		<fieldset>
 			<legend>用户信息</legend>
@@ -245,7 +241,7 @@
 			<dl style="width: 500px;">
 				<dt>操作金额：</dt>
 				<dd>
-					<input class="number required" name="opFare2" type="text" value="0" onkeyup="getAllOddFare();"/>
+					<input class="number required" name="opFare" type="text" value="0" onkeyup="getAllOddFare();"/>
 				</dd>
 			</dl>
 			<dl style="width: 500px;">

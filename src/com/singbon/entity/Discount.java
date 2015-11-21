@@ -42,7 +42,6 @@ public class Discount implements Serializable {
 	private Integer discountType;
 	private Integer rate;
 	private Integer subsidy;
-	private Integer giveCash;
 
 	public Integer getRate() {
 		return rate;
@@ -58,13 +57,5 @@ public class Discount implements Serializable {
 
 	public void setSubsidy(Integer subsidy) {
 		this.subsidy = subsidy;
-	}
-
-	public Integer getGiveCash() {
-		return giveCash;
-	}
-
-	public void setGiveCash(Integer giveCash) {
-		this.giveCash = giveCash;
 	}
 }
