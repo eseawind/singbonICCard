@@ -85,6 +85,18 @@ public class DeviceService extends BaseService {
 	public List<Device> selectDeviceListByCompanyId(Integer companyId, String deviceType, Integer onlyEnable) {
 		return this.deviceDAO.selectDeviceListByCompanyId(companyId, deviceType, onlyEnable);
 	}
+	
+	/**
+	 * 设备列表根据营业部门
+	 * 
+	 * @param companyId
+	 * @param deviceType
+	 * @param onlyEnable
+	 * @return
+	 */
+	public List<Device> selectPosListByDeptId(Integer deptId, Integer onlyEnable) {
+		return this.deviceDAO.selectPosListByDeptId(deptId, onlyEnable);
+	}
 
 	/**
 	 * 系统所有列表

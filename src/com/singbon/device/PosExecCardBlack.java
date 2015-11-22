@@ -64,7 +64,7 @@ public class PosExecCardBlack implements Runnable {
 					if (blackType == 0) {
 						blackCardNums += StringUtil.objToLong(map.get("cardNO")) + ",";
 					} else {
-						blackCardSNNums += StringUtil.hexLeftPad(StringUtil.objToLong(map.get("cardNO")), 8);
+						blackCardSNNums += StringUtil.hexLeftPad(StringUtil.objToLong(map.get("cardNO")), 8) + ",";
 					}
 				}
 				if (!"".equals(blackCardNums)) {

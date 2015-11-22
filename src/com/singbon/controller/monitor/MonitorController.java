@@ -112,20 +112,21 @@ public class MonitorController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/command.do", method = RequestMethod.POST)
-	public void command(String sn, Integer groupId, String cmd, Integer cookbookCode, HttpServletRequest request, HttpServletResponse response, Model model) {
+	public void command(String cmd, String sn, Integer deptId, Integer cookbookCode, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
 
 		List<String> snList = new ArrayList<String>();
 		// 对单个设备
 		if (!StringUtils.isEmpty(sn)) {
 			snList.add(sn);
-			// 对整个组
-		} else if (groupId != null) {
-			// List<Device> deviceList =
-			// this.deviceService.selectPosListByGroupId(groupId, 1);
-			// for (Device d : deviceList) {
-			// snList.add(d.getSn());
-			// }
+			// 对整个营业部门
+		} else if (deptId != null) {
+			List<Device> deviceList = this.deviceService.selectPosListByDeptId(deptId, 1);
+			for (Device d : deviceList) {
+				if (TerminalManager.SNToInetSocketAddressList.containsKey(d.getSn())) {
+					snList.add(d.getSn());
+				}
+			}
 		}
 
 		for (String sn2 : snList) {
@@ -134,7 +135,7 @@ public class MonitorController extends BaseController {
 				ArrayList<SendCommand> sendCommandList = TerminalManager.SNToSendCommandList.get(sn2);
 				if (sendCommandList == null) {
 					sendCommandList = new ArrayList<SendCommand>();
-					TerminalManager.SNToSendCommandList.put(sn, sendCommandList);
+					TerminalManager.SNToSendCommandList.put(sn2, sendCommandList);
 				} else {
 					int size = sendCommandList.size();
 					if (size > 0) {

@@ -516,10 +516,6 @@ public class StringUtil {
 		StringUtil.print(Integer.toHexString(b[b.length - 2]).replace("ffffff", "") + " ");
 		StringUtil.println(Integer.toHexString(b[b.length - 1]).replace("ffffff", ""));
 		
-		String blackNumsDes="";
-		blackNumsDes = blackNumsDes.substring(0,
-				 blackNumsDes.length() - 1);
-		
 	}
 
 	public static void print(Object obj) {

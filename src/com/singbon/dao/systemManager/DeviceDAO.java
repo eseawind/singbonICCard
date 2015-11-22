@@ -32,7 +32,7 @@ public interface DeviceDAO extends BaseDAO {
 	 * @return
 	 */
 	public Integer selectSysUserCountByDeviceId(@Param("deviceId") Integer deviceId);
-	
+
 	/**
 	 * 中转设备被引用数量
 	 * 
@@ -50,6 +50,16 @@ public interface DeviceDAO extends BaseDAO {
 	 * @return
 	 */
 	public List<Device> selectDeviceListByCompanyId(@Param("companyId") Integer companyId, @Param("deviceType") String deviceType, @Param("onlyEnable") Integer onlyEnable);
+
+	/**
+	 * 设备列表根据营业部门
+	 * 
+	 * @param companyId
+	 * @param deviceType
+	 * @param onlyEnable
+	 * @return
+	 */
+	public List<Device> selectPosListByDeptId(@Param("deptId") Integer companyId, @Param("onlyEnable") Integer onlyEnable);
 
 	/**
 	 * 系统所有列表

@@ -46,6 +46,12 @@
 			 and enable=1
 		</if>
 	</select>
+	<select id="selectPosListByDeptId" resultMap="device" useCache="false">
+		select * from device where deviceType between 2 and 3 and deptId=#{deptId}
+		<if test="onlyEnable == 1">
+			 and enable=1
+		</if>
+	</select>
 <!-- 	查询读卡机被引用数量 -->
 	<select id="selectSysUserCountByDeviceId" resultType="java.lang.Integer" useCache="false">
 		select count(*) count from sysUser where deviceId=#{deviceId}		

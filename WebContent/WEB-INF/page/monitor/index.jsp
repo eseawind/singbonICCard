@@ -115,6 +115,7 @@
 		heart();
 		
 		$('#deviceList img').contextMenu('menu',monitorOps);
+		$('#deptTreeLi a').contextMenu('menu',monitorOps);
 		
 		var deptTree=$('.deptTree');
 		var list = $('#deptTreeLi li');
@@ -202,9 +203,9 @@
 				if(e2.type=='status'){
 					$("#deviceList .device[id="+sn+"] img").attr('alt','在线').attr('src','/img/online.png');
 					var statusTr=$("#deviceStatusList tr.deviceStatus[id="+sn+"]");
- 					$('td[recordNum] div',statusTr).html(e2.recordNum);
-					$('td[batchNum] div',statusTr).html(e2.batchNum);
-					$('td[blackNum] div',statusTr).html(e2.blackNum);
+ 					$('td[recordCount] div',statusTr).html(e2.recordCount);
+					$('td[batchCount] div',statusTr).html(e2.batchCount);
+					$('td[blackCount] div',statusTr).html(e2.blackCount);
 					$('td[subsidyVersion] div',statusTr).html(e2.subsidyVersion);
 					$('td[subsidyAuth] div',statusTr).html(e2.subsidyAuth==1?'是':'否');
 				//消费记录
@@ -234,7 +235,7 @@
 					$('td[cookbookCode] div',tr).html(e2.consumeRecord.cookbookCode);
 					consumeRecordIndex++;
 
-					getStatus(sn);
+// 					getStatus(sn);
 				//订餐取餐记录
 				}else if(e2.type=='cookbookRecord'){
 					$("#deviceList .device[id="+sn+"] img").attr('alt','在线').attr('src','/img/online.png');
@@ -261,7 +262,7 @@
 					$('td[cookbookCode] div',tr).html(e2.consumeRecord.cookbookCode);
 					cookbookRecordIndex++;
 					
-					getStatus(sn);
+// 					getStatus(sn);
 				//日志
 				}else if(e2.type=='log'){
 					if(logIndex>=maxRow){
@@ -280,11 +281,11 @@
 	}
 	
 	function getStatus(sn){
-		var recordNum=$("#status"+sn+" div").html();
-		if(recordNum==null || recordNum=='' || recordNum=='0'){
+		var recordCount=$("#status"+sn+" div").html();
+		if(recordCount==null || recordCount=='' || recordCount=='0'){
 			$.post("${base }/command.do?cmd=getStatus&sn="+sn);
 		}else{
-			$("#status"+sn+" div").html(parseInt(recordNum)-1);
+			$("#status"+sn+" div").html(parseInt(recordCount)-1);
 		}
 	}
 	
@@ -384,10 +385,16 @@
 
 	//执行命令
 	function executeCmd(t,cmd){
-		var online=$(t).attr('src').indexOf('online');
-		if(online>0){
-			var sn=$(t).parent().attr('id');
-			$.post("${base }/command.do?cmd="+cmd+"&sn="+sn);
+		var target=t.tagName;
+		if(target=='A'){
+			var deptId=$(t).attr('deptId');
+			$.post("${base }/command.do?cmd="+cmd+"&deptId="+deptId);
+		}else{
+			var online=$(t).attr('src').indexOf('online');
+			if(online>0){
+				var sn=$(t).parent().attr('id');
+				$.post("${base }/command.do?cmd="+cmd+"&sn="+sn);
+			}			
 		}
 	}
 	function setCodeNull(){
@@ -487,7 +494,7 @@
 									<div id="deptTreeLi">
 										<c:forEach items="${deptList }" var="d">
 											<li deptId="${d.id }" parentId="${d.parentId }">
-												<a onclick="showDevice(${d.id });">${d.deptName }</a>
+												<a deptId="${d.id }" onclick="showDevice(${d.id });">${d.deptName }</a>
 											</li>
 										</c:forEach>
 									</div>
@@ -556,11 +563,11 @@
 																<tr class="deviceStatus" id="${d.sn}" deptId="${d.deptId }">
 																	<td>${d.deviceName }</td>
 																	<td>${d.deviceNum }</td>
-																	<td id="status${d.sn}" recordNum></td>
-																	<td batchNum></td>
-																	<td blackNum></td>
-																	<td subsidyVersion></td>
-																	<td subsidyAuth></td>
+																	<td id="status${d.sn}" recordCount>0</td>
+																	<td batchCount>0</td>
+																	<td blackCount>0</td>
+																	<td subsidyVersion>0</td>
+																	<td subsidyAuth>否</td>
 																</tr>
 															</c:forEach>
 														</tbody>
@@ -702,14 +709,14 @@
 														<thead>
 															<tr>
 																<th width="20">序号</th>
-																<th width="50">日志时间</th>
+																<th width="70">日志时间</th>
 																<th width="50">日期来源</th>
-																<th width="100">日志描述</th>
+																<th width="500">日志描述</th>
 															</tr>
 														</thead>
 														<tbody class="clearLog log">
 															<c:forEach begin="1" end="100" step="1" var="i">
-																<tr index="${i}"><td index></td><td time></td><td from></td><td des></td></tr>
+																<tr index="${i}"><td index></td><td time></td><td from></td><td des alt="dfdf"></td></tr>
 															</c:forEach>
 														</tbody>
 													</table>
