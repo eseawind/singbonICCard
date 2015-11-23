@@ -94,7 +94,8 @@
 			var deviceName=$('#cardReaderForm input[name=deviceName]').val();
 			alertMsg.confirm('确定要删除'+deviceName+'吗？', {
 				okCall : function() {
-					$.post('${base }/deleteCardReader.do?id=' + selectCardReaderId,function(e) {
+					var sn=$('#posForm input[name=sn]').val();
+					$.post('${base }/deleteCardReader.do?id=' + selectCardReaderId+'&sn='+sn,function(e) {
 						if (e == 1) {
 							refreshcardReaderList();
 							$('#cardReaderForm').clearForm();
@@ -122,6 +123,7 @@
 		$('#cardReaderForm input').eq(2).val(tr.attr('deviceNum'));
 		$('#cardReaderForm input').eq(3).val(tr.attr('deviceName'));
 		$('#cardReaderForm input').eq(4).val(tr.attr('sn'));
+		$('#cardReaderForm input').eq(5).val(tr.attr('sn'));
 	};
 </script>
 <!-- <link href="themes/css/custom.css" rel="stylesheet" type="text/css" /> -->
@@ -161,6 +163,7 @@
 				<dl style="width: 420px;">
 					<dt>序列号：</dt>
 					<dd>
+						<input type="hidden" name="oldSn"/>
 						<input type="text" name="sn" minlength="32" maxlength="32" class="required" />
 					</dd>
 				</dl>

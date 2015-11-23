@@ -22,9 +22,9 @@ public class PosExecCommandDispatch {
 		if (b == null)
 			return;
 		String sn = StringUtil.getHexStrFromBytes(0, 15, b).toUpperCase();
-		if (!TerminalManager.SNToDeviceList.containsKey(sn))
-			return;
 		Device device = TerminalManager.SNToDeviceList.get(sn);
+		if (device == null || device.getEnable() == 0)
+			return;
 
 		// 设置sn与inetSocketAddress对照关系
 		TerminalManager.SNToInetSocketAddressList.put(sn, inetSocketAddress);
