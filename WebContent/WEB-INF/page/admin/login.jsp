@@ -15,10 +15,10 @@
 		$('#login-box #loginButton').click(function(){
 			var valErr=false;
 			$('#login-box input:not(:hidden)').each(function(){
-				var val=$(this).val().trim();
+				var val=$.trim($(this).val());
 				if(val==''){
 					valErr=true;
-					$(this).next().show();
+					$(this).parent().next().find('div').show();
 				}
 			});
 			if(valErr){
@@ -35,7 +35,7 @@
 		
 		$('#login-box input').click(function(){
 			$('#login-box .error').hide();
-			$(this).next().hide();
+			$(this).parent().next().find('div').hide();
 		});
 	});
 </script>
@@ -55,6 +55,7 @@
 	#login-box input{
 		background-color:#f6fbfd;
 		border: 1px solid #c0c0c0;
+		width: 170px;
 	}
 	#login-box input:hover{
 		border-bottom: 1px solid #fc6f07;
@@ -84,14 +85,13 @@
 		color: red;
 		display: none;		
 	}
-	#login-box span{
+	#login-box .note{
 		color: white;
 		background-color: red;
 		width: 120px;
 		padding: 2px;
-		margin-top:2px;
-		position: absolute;
-		display: none;
+  		display: none;
+ 		width: 100px;
 	}
 </style>
 </head>
@@ -104,20 +104,24 @@
 				<td>
 					<div id="error" class="error">用户名或密码错误</div>
 				</td>
+				<td></td>
 			</tr>
 			<tr>
 				<td>用户名:</td>
-				<td><input type='text' name='username' value='admin'/><span>用户名不能为空</span></td>
+				<td><input type='text' name='username' value='admin'/></td>
+				<td><div class="note">用户名不能为空</div></td>
 			</tr>
 			<tr>
 				<td>密码:</td>
-				<td><input type='password' name='password' value=""/><span>密码不能为空</span></td>
+				<td><input type='password' name='password' value=""/></td>
+				<td><div class="note">密码不能为空</div></td>
 			</tr>
 			<tr>
 				<td></td>
 				<td>
 					<button id="loginButton" type="button"></button>
 				</td>
+				<td></td>
 			</tr>
 		</table>
 	</div>

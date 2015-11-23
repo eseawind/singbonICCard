@@ -13,8 +13,6 @@
 
 <!-- <script src="/js/comet4j.js" type="text/javascript"></script> -->
 <script type="text/javascript">
-// 	var isInit=false;
-	
 	$(function(){
 		var companyName=$.cookie('companyName');
 		if(companyName!=null && companyName!=''){
@@ -26,58 +24,28 @@
 				var val=$.trim($(this).val());
 				if(val==''){
 					valErr=true;
-					$(this).next().show();
+					$(this).parent().next().find('div').show();
 				}
 			});
 			if(valErr){
 				return;
 			}
-			//var loginType=$('#login-box :radio[checked]').val();
-// 			if(loginType==1){
 			$('#loginForm').submit();
-// 			}else{
-// 				var companyName=$('#login-box input[name=companyName]').val();
-// 				var username=$('#login-box input[name=username]').val();
-// 				var password=$('#login-box input[name=password]').val();
-// 				$.post("/login.do?companyName="+companyName+"&loginName="+username+"&loginPwd="+password, function(e){
-// 					var e2 = eval('(' + e + ')');
-// 					if(e2.r==0){
-// 						$('#login-box #error').show();
-// 					}else if(e2.r==1){
-// 						$('#login-box #noDevice').show();						
-// 					}else if(e2.r==2){
-// 						$('#login-box #offline').show();						
-// 					}else if(e2.r==3){
-// 						$('#login-box input[name=cardNO]').val(e2.cardNO);
-// 						$('#login-box input[name=cardSN]').val(e2.cardSN);
-// 						if(!isInit){
-// 							$('#loginComet').load('/loginComet.jsp?sn='+e2.sn);
-// 						}else{
-// 							valCashierCard();
-// 						}
-// 					}
-// 				});
-// 			}
 		});
 
 		$('#login-box input').click(function(){
 			$('#login-box .error').hide();
-			$(this).next().hide();
+			$(this).parent().next().find('div').hide();
 		});
 		
-	});
-	
-// 	function valCashierCard(){
-// 		$.post("/valCashierCard.do");
-// 	}
-	
+	});	
 </script>
 <style type="text/css">
 	#login-box{
 		position: absolute;
 		top:210px;
 		right:150px;
-		width:400px;
+		width:500px;
 		height:218px;
 		font-size:13px;
 /* 		background-image: url("/img/loginForm.png"); */
@@ -88,6 +56,7 @@
 	#login-box input{
 		background-color:#f6fbfd;
 		border: 1px solid #c0c0c0;
+		width: 170px;
 	}
 	#login-box input:hover{
 		border-bottom: 1px solid #fc6f07;
@@ -117,14 +86,13 @@
 		color: red;
 		display: none;		
 	}
-	#login-box span{
+	#login-box .note{
 		color: white;
 		background-color: red;
 		width: 120px;
 		padding: 2px;
-		margin-top:2px;
-		position: absolute;
-		display: none;
+  		display: none;
+ 		width: 120px;
 	}
 </style>
 </head>
@@ -135,28 +103,31 @@
 		<form id='loginForm' action="/userlogin.do" method='POST'>
 			<table>
 				<tr>
-					<td colspan="2">
+					<td colspan="3">
 						<div id="error" class="error">公司名称、用户名或密码错误或者没有分配权限</div>
 					</td>
 				</tr>
 				<tr>
 					<td>单位名称:</td>
-					<td><input type='text' name='companyName' value=''/><span>单位名称不能为空</span> </td>
-<!-- 					<td><input type='text' name='companyName' value='1'/><span>单位名称不能为空</span> </td> -->
+					<td><input type='text' name='companyName' value=''/></td>
+	 				<td><div class="note">单位名称不能为空</div></td>
 				</tr>
 				<tr>
 					<td>用户名:</td>
-					<td><input type='text' name='username' value=''/><span>用户名不能为空</span></td>
+					<td><input type='text' name='username' value=''/></td>
+	 				<td><div class="note">用户名不能为空</div></td>
 				</tr>
 				<tr>
 					<td>密码:</td>
-					<td><input type='password' name='password' value=""/><span>密码不能为空</span></td>
+					<td><input type='password' name='password' value=""/></td>
+	 				<td><div class="note">密码不能为空</div></td>
 				</tr>
 				<tr>
 					<td></td>
 					<td>
 						<button id="loginButton" type="button"></button>
 					</td>
+					<td></td>
 				</tr>
 			</table>
 		</form>
