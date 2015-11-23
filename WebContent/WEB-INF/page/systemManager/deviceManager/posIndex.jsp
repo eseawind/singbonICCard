@@ -108,6 +108,7 @@
 		$('#posForm input[name=id]').val(selectDeviceId);
 		$('#posForm input[name=deviceNum]').val(tr.attr('deviceNum'));
 		$('#posForm input[name=deviceName]').val(tr.attr('deviceName'));
+		$('#posForm input[name=oldSn]').val(tr.attr('sn'));
 		$('#posForm input[name=sn]').val(tr.attr('sn'));
 		var enable = tr.attr('enable');
 		if(enable==0){
@@ -206,6 +207,7 @@
 			<dl style="margin-bottom: 10px">
 				<dt>序列号：</dt>
 				<dd>
+					<input type="hidden" name="oldSn"/>
 					<input type="text" name="sn" minlength="32" maxlength="32" class="required" />
 				</dd>
 			</dl>

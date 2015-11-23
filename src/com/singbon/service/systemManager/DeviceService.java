@@ -41,16 +41,53 @@ public class DeviceService extends BaseService {
 	}
 
 	/**
+	 * 添加设备
+	 * 
+	 * @param deviceGroup
+	 * @return
+	 * @throws Exception
+	 */
+	public void insert(Device device) throws Exception {
+		this.deviceDAO.insert(device);
+		TerminalManager.SNToDeviceList.put(device.getSn(), device);
+	}
+
+	/**
+	 * 修改设备
+	 * 
+	 * @param deviceGroup
+	 * @return
+	 * @throws Exception
+	 */
+	public void update(Device device, String oldSn) throws Exception {
+		this.deviceDAO.update(device);
+		if (!device.getSn().equals(oldSn)) {
+			TerminalManager.SNToDeviceList.remove(oldSn);
+			if (device.getDeviceType() == 8) {
+				TerminalManager.SNToSocketChannelList.remove(oldSn);
+			} else {
+				TerminalManager.SNToInetSocketAddressList.remove(oldSn);
+			}
+		}
+		TerminalManager.SNToDeviceList.put(device.getSn(), device);
+	}
+
+	/**
 	 * 删除设备
 	 * 
 	 * @param deviceGroup
 	 * @return
 	 * @throws Exception
 	 */
-	public void deleteDevice(Integer id, String sn) throws Exception {
+	public void deleteDevice(Integer id, boolean isCardReader, String sn) throws Exception {
 		this.deviceDAO.delete(id);
 		if (sn != null) {
 			TerminalManager.SNToDeviceList.remove(sn);
+			if (isCardReader) {
+				TerminalManager.SNToSocketChannelList.remove(sn);
+			} else {
+				TerminalManager.SNToInetSocketAddressList.remove(sn);
+			}
 		}
 	}
 
@@ -85,7 +122,7 @@ public class DeviceService extends BaseService {
 	public List<Device> selectDeviceListByCompanyId(Integer companyId, String deviceType, Integer onlyEnable) {
 		return this.deviceDAO.selectDeviceListByCompanyId(companyId, deviceType, onlyEnable);
 	}
-	
+
 	/**
 	 * 设备列表根据营业部门
 	 * 

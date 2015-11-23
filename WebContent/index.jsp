@@ -21,17 +21,17 @@
 			$('#login-box input[name=companyName]').val(companyName);
 		}
 		$('#login-box #loginButton').click(function(){
-// 			var valErr=false;
-// 			$('#login-box input:not(:hidden)').each(function(){
-// 				var val=$(this).val().trim();
-// 				if(val==''){
-// 					valErr=true;
-// 					$(this).next().show();
-// 				}
-// 			});
-// 			if(valErr){
-// 				return;
-// 			}
+			var valErr=false;
+			$('#login-box input:not(:hidden)').each(function(){
+				var val=$(this).val().trim();
+				if(val==''){
+					valErr=true;
+					$(this).next().show();
+				}
+			});
+			if(valErr){
+				return;
+			}
 			//var loginType=$('#login-box :radio[checked]').val();
 // 			if(loginType==1){
 			$('#loginForm').submit();
@@ -146,11 +146,11 @@
 				</tr>
 				<tr>
 					<td>用户名:</td>
-					<td><input type='text' name='username' value='admin'/><span>用户名不能为空</span></td>
+					<td><input type='text' name='username' value=''/><span>用户名不能为空</span></td>
 				</tr>
 				<tr>
 					<td>密码:</td>
-					<td><input type='password' name='password' value="0"/><span>密码不能为空</span></td>
+					<td><input type='password' name='password' value=""/><span>密码不能为空</span></td>
 				</tr>
 				<tr>
 					<td></td>

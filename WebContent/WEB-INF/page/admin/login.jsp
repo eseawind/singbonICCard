@@ -111,7 +111,7 @@
 			</tr>
 			<tr>
 				<td>密码:</td>
-				<td><input type='password' name='password' value="admin"/><span>密码不能为空</span></td>
+				<td><input type='password' name='password' value=""/><span>密码不能为空</span></td>
 			</tr>
 			<tr>
 				<td></td>

@@ -92,7 +92,7 @@ public class DeviceController {
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/addEdit.do")
-	public void addEditDevice(@ModelAttribute Device device, String status, HttpServletRequest request, HttpServletResponse response, Model model) {
+	public void addEditDevice(@ModelAttribute Device device, String oldSn, String status, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
 		PrintWriter p = null;
 		try {
@@ -123,7 +123,7 @@ public class DeviceController {
 			if (device.getId() == null) {
 				this.deviceService.insert(device);
 			} else {
-				this.deviceService.update(device);
+				this.deviceService.update(device, oldSn);
 			}
 			p.print(1);
 		} catch (Exception e) {
@@ -144,7 +144,7 @@ public class DeviceController {
 		PrintWriter p = null;
 		try {
 			p = response.getWriter();
-			this.deviceService.deleteDevice(id, sn);
+			this.deviceService.deleteDevice(id, false, sn);
 			p.print(1);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -253,7 +253,7 @@ public class DeviceController {
 	 * @param model
 	 */
 	@RequestMapping(value = "/deleteCardReader.do")
-	public void deleteCardReader(Integer id, HttpServletRequest request, HttpServletResponse response, Model model) {
+	public void deleteCardReader(Integer id, String sn, HttpServletRequest request, HttpServletResponse response, Model model) {
 		PrintWriter p = null;
 		try {
 			p = response.getWriter();
@@ -261,7 +261,7 @@ public class DeviceController {
 			if (count > 0) {
 				p.print(2);
 			} else {
-				this.deviceService.deleteDevice(id, null);
+				this.deviceService.deleteDevice(id, true, sn);
 				p.print(1);
 			}
 		} catch (Exception e) {
@@ -337,7 +337,7 @@ public class DeviceController {
 			if (count > 0) {
 				p.print(2);
 			} else {
-				this.deviceService.deleteDevice(id, sn);
+				this.deviceService.deleteDevice(id, false, sn);
 				p.print(1);
 			}
 		} catch (Exception e) {
