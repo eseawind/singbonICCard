@@ -21,17 +21,17 @@
 			$('#login-box input[name=companyName]').val(companyName);
 		}
 		$('#login-box #loginButton').click(function(){
-// 			var valErr=false;
-// 			$('#login-box input:not(:hidden)').each(function(){
-// 				var val=$(this).val().trim();
-// 				if(val==''){
-// 					valErr=true;
-// 					$(this).next().show();
-// 				}
-// 			});
-// 			if(valErr){
-// 				return;
-// 			}
+			var valErr=false;
+			$('#login-box input:not(:hidden)').each(function(){
+				var val=$.trim($(this).val());
+				if(val==''){
+					valErr=true;
+					$(this).next().show();
+				}
+			});
+			if(valErr){
+				return;
+			}
 			//var loginType=$('#login-box :radio[checked]').val();
 // 			if(loginType==1){
 			$('#loginForm').submit();

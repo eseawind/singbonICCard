@@ -10,13 +10,13 @@
 			$('#cardReaderForm input').eq(1).val(8);
 			var form = $(this).parents('form');
 			if(form.valid()){
-				var deviceNum=$('#cardReaderForm input[name=deviceNum]').val().trim();
+				var deviceNum=$.trim($('#cardReaderForm input[name=deviceNum]').val());
 				var deviceCount=$('#cardReaderList tr[target][deviceNum='+deviceNum+']').length;
 				if(deviceCount>0){
 					alertMsg.warn('该机器号已存在！');
 					return;
 				}
-				var sn=$('#cardReaderForm input[name=sn]').val().trim();
+				var sn=$.trim($('#cardReaderForm input[name=sn]').val());
 				deviceCount=$('#cardReaderList tr[target][sn='+sn+']').length;
 				if(deviceCount>0){
 					alertMsg.warn('该序列号已存在！');
@@ -51,13 +51,13 @@
 			$('#cardReaderForm input').eq(1).val(8);
 			var form = $(this).parents('form');
 			if(form.valid()){
-				var deviceNum=$('#cardReaderForm input[name=deviceNum]').val().trim();
+				var deviceNum=$.trim($('#cardReaderForm input[name=deviceNum]').val());
 				var deviceCount=$('#cardReaderList tr[target][id!='+selectCardReaderId+'][deviceNum='+deviceNum+']').length;
 				if(deviceCount>0){
 					alertMsg.warn('该机器号已存在！');
 					return;
 				}
-				var sn=$('#cardReaderForm input[name=sn]').val().trim();
+				var sn=$.trim($('#cardReaderForm input[name=sn]').val());
 				deviceCount=$('#cardReaderList tr[target][id!='+selectCardReaderId+'][sn='+sn+']').length;
 				if(deviceCount>0){
 					alertMsg.warn('该序列号已存在！');

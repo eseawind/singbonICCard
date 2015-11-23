@@ -12,7 +12,7 @@
 			$('#posForm input').eq(1).val(selectDeptId);			
 			var form = $(this).parents('form');
 			if(form.valid()){
-				var sn=$('#posForm input[name=sn]').val().trim();
+				var sn=$.trim($('#posForm input[name=sn]').val());
 				var reg=/^[0-9a-fA-F]{32}$/;
 				if(!reg.test(sn)){
 					alertMsg.warn('序列号不合法！');
@@ -40,7 +40,7 @@
 		$('#posForm .edit').click(function() {
 			var form = $(this).parents('form');
 			if(form.valid()){
-				var sn=$('#posForm input[name=sn]').val().trim();
+				var sn=$.trim($('#posForm input[name=sn]').val());
 				var reg=/^[0-9a-fA-F]{32}$/;
 				if(!reg.test(sn)){
 					alertMsg.warn('序列号不合法！');

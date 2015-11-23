@@ -9,9 +9,9 @@
 			var form = $(this).parents('form');
 			if(form.valid()){
 				var err=false;
-				var loginName=$('#sysUserForm input[name=loginName]').val().trim();
+				var loginName=$.trim($('#sysUserForm input[name=loginName]').val());
 				$('#sysUserList td[loginName] div').each(function(e){
-					if($(this).html().trim()==loginName){
+					if($.trim($(this).html())==loginName){
 						alertMsg.warn('用户名已存在！');
 						err=true;
 						return false;
@@ -43,10 +43,10 @@
 			var form = $(this).parents('form');
 			if(form.valid()){
 				var err=false;
-				var operId=$('#sysUserForm input[name=operId]').val().trim();
-				var currLoginName=$('#sysUserForm input[name=loginName]').val().trim();
+				var operId=$.trim($('#sysUserForm input[name=operId]').val());
+				var currLoginName=$.trim($('#sysUserForm input[name=loginName]').val());
 				$('#sysUserList tr[operId!='+operId+'] td[loginName] div').each(function(e){
-					if($(this).html().trim()==currLoginName){
+					if($.trim($(this).html())==currLoginName){
 						alertMsg.warn('用户名已存在！');
 						err=true;
 						return false;

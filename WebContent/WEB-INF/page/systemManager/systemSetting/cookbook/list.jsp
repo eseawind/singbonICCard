@@ -20,7 +20,7 @@
 	
 	$(function(){
 		$('#coookbookList #search').click(function(){
-			var val=$('#coookbookList #searchStr').val().trim();
+			var val=$.trim($('#coookbookList #searchStr').val());
 			if(val==''){
 				$('#coookbookList .item').removeClass('hide');
 			}else{

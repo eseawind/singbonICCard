@@ -10,13 +10,13 @@
 			$('#transferForm input').eq(1).val(1);
 			var form = $(this).parents('form');
 			if(form.valid()){
-				var deviceNum=$('#transferForm input[name=deviceNum]').val().trim();
+				var deviceNum=$.trim($('#transferForm input[name=deviceNum]').val());
 				var deviceCount=$('#transferList tr[target][deviceNum='+deviceNum+']').length;
 				if(deviceCount>0){
 					alertMsg.warn('该机器号已存在！');
 					return;
 				}
-				var sn=$('#transferForm input[name=sn]').val().trim();
+				var sn=$.trim($('#transferForm input[name=sn]').val());
 				deviceCount=$('#transferList tr[target][sn='+sn+']').length;
 				if(deviceCount>0){
 					alertMsg.warn('该序列号已存在！');
@@ -51,13 +51,13 @@
 			$('#transferForm input').eq(1).val(1);
 			var form = $(this).parents('form');
 			if(form.valid()){
-				var deviceNum=$('#transferForm input[name=deviceNum]').val().trim();
+				var deviceNum=$.trim($('#transferForm input[name=deviceNum]').val());
 				var deviceCount=$('#transferList tr[target][id!='+selectTransferId+'][deviceNum='+deviceNum+']').length;
 				if(deviceCount>0){
 					alertMsg.warn('该机器号已存在！');
 					return;
 				}
-				var sn=$('#transferForm input[name=sn]').val().trim();
+				var sn=$.trim($('#transferForm input[name=sn]').val());
 				deviceCount=$('#transferList tr[target][id!='+selectTransferId+'][sn='+sn+']').length;
 				if(deviceCount>0){
 					alertMsg.warn('该序列号已存在！');
