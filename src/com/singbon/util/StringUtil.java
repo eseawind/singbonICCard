@@ -517,7 +517,6 @@ public class StringUtil {
 		CRC16.generate(b);
 		StringUtil.print(Integer.toHexString(b[b.length - 2]).replace("ffffff", "") + " ");
 		StringUtil.println(Integer.toHexString(b[b.length - 1]).replace("ffffff", ""));
-
 	}
 
 	public static void print(Object obj) {

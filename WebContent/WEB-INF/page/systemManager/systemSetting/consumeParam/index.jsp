@@ -16,7 +16,15 @@ $(function() {
 					}
 				}, null, false);
 			});
+	
+	$('#consumeParamForm .selectAll').click(function(){
+		if($(this).attr('checked')){
+			$(this).siblings().attr("checked",true);
+		}else{
+			$(this).siblings().attr("checked",false);			
+		}
 	});
+});
 </script>
 
 <style type="text/css">
@@ -47,14 +55,11 @@ $(function() {
 		left: 200px;
 	}
 	#consumeParamForm .cardTypesBox{
-		width: 700px;
-		padding:0;
-	}
-	#consumeParamForm .cardTypesBox .cardTypesTitle{
-		padding:5px 0;
+		width: 1000px;
+		padding:5px 0 0 10px;
 	}
 	#consumeParamForm .cardTypesBox .cardTypes{
-		width: 500px;
+		width: 800px;
 	}
 	#consumeParamForm fieldset{
 		padding: 3px 0 20px 3px;
@@ -72,12 +77,13 @@ $(function() {
 				</dd>
 			</dl>
 			<dl class="cardTypesBox">
-				<dt class="cardTypesTitle">授权卡类型：</dt>
+				<dt>授权卡类型：</dt>
 				<dd class="cardTypes">
+					<input type="checkbox" class="selectAll">全选
 				 	<c:set var="cardMinFareCardTypes" value="${consumeParam.cardMinFareCardTypes}"/>
 					<c:forEach begin="0" end="15" step="1" var="i">
 						<c:set var="str2" value=",${i},"/>
-						<input type="checkbox" name="cardMinFareCardTypes" value="${i}" <c:if test="${fn:indexOf(cardMinFareCardTypes, str2)!=-1}">checked</c:if>/>${i}类卡
+						<input type="checkbox" name="cardMinFareCardTypes" value="${i}" <c:if test="${fn:indexOf(cardMinFareCardTypes, str2)!=-1}">checked</c:if>/>${i}类
 					</c:forEach>
 				</dd>
 			</dl>
@@ -91,12 +97,13 @@ $(function() {
 				</dd>
 			</dl>
 			<dl class="cardTypesBox">
-				<dt class="cardTypesTitle">授权卡类型：</dt>
+				<dt>授权卡类型：</dt>
 				<dd class="cardTypes">
+					<input type="checkbox" class="selectAll">全选
 				 	<c:set var="dayLimitFareCardTypes" value="${consumeParam.dayLimitFareCardTypes}"/>
 					<c:forEach begin="0" end="15" step="1" var="i">
 						<c:set var="str2" value=",${i},"/>
-						<input type="checkbox" name="dayLimitFareCardTypes" value="${i}" <c:if test="${fn:indexOf(dayLimitFareCardTypes, str2)!=-1}">checked</c:if>/>${i}类卡
+						<input type="checkbox" name="dayLimitFareCardTypes" value="${i}" <c:if test="${fn:indexOf(dayLimitFareCardTypes, str2)!=-1}">checked</c:if>/>${i}类
 					</c:forEach>
 				</dd>
 			</dl>
@@ -110,12 +117,13 @@ $(function() {
 				</dd>
 			</dl>
 			<dl class="cardTypesBox">
-				<dt class="cardTypesTitle">授权卡类型：</dt>
+				<dt>授权卡类型：</dt>
 				<dd class="cardTypes">
+					<input type="checkbox" class="selectAll">全选
 				 	<c:set var="timeLimitFareCardTypes" value="${consumeParam.timeLimitFareCardTypes}"/>
 					<c:forEach begin="0" end="15" step="1" var="i">
 						<c:set var="str2" value=",${i},"/>
-						<input type="checkbox" name="timeLimitFareCardTypes" value="${i}" <c:if test="${fn:indexOf(timeLimitFareCardTypes, str2)!=-1}">checked</c:if>/>${i}类卡
+						<input type="checkbox" name="timeLimitFareCardTypes" value="${i}" <c:if test="${fn:indexOf(timeLimitFareCardTypes, str2)!=-1}">checked</c:if>/>${i}类
 					</c:forEach>
 				</dd>
 			</dl>

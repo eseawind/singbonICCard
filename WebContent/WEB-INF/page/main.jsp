@@ -132,7 +132,7 @@
 			<div id="sidebar">
 				<div class="toggleCollapse">
 					<h2>主菜单</h2>
-					<a style="padding: 7px 0 0 90px; float: left; color: #15428B; font-size: 11px; font-weight: bold;" href="/loginout.do">登出</a>
+					<a style="padding: 7px 0 0 90px; float: left; color: #15428B; font-size: 11px; font-weight: bold;" href="/loginout.do">退出</a>
 					<div>收缩</div>
 				</div>
 				<div class="accordion" fillSpace="sidebar">
