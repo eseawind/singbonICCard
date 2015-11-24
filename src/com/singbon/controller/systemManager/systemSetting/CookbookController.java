@@ -47,6 +47,7 @@ public class CookbookController extends BaseController {
 			if (status != null) {
 				cookbook.setEnable(true);
 			}
+			cookbook.setPrice(cookbook.getPrice() * 100);
 			if (cookbook.getId() == null) {
 				Integer maxCode = this.cookbookService.selectMaxCode(company.getId());
 				cookbook.setCookbookCode(maxCode);

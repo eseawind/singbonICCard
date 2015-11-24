@@ -15,7 +15,7 @@ public class Cookbook implements Serializable {
 	private Integer companyId;
 	private Integer cookbookCode;
 	private String cookbookName;
-	private Integer price;
+	private Float price;
 	private String remark;
 	private boolean enable;
 
@@ -51,11 +51,11 @@ public class Cookbook implements Serializable {
 		this.cookbookName = cookbookName;
 	}
 
-	public Integer getPrice() {
+	public Float getPrice() {
 		return price;
 	}
 
-	public void setPrice(Integer price) {
+	public void setPrice(Float price) {
 		this.price = price;
 	}
 

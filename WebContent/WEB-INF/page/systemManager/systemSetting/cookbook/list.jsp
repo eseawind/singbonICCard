@@ -69,7 +69,7 @@
 				<tr class="item" target="cookbook" cookbookId="${c.id }" cookbookCode="${c.cookbookCode}" cookbookName="${c.cookbookName }" enable="${c.enable }">
 					<td>${c.cookbookCode }</td>
 					<td>${c.cookbookName }</td>
-					<td>${c.price }</td>
+					<td>${c.price/100 }</td>
 					<td>${c.remark }</td>
 				</tr>
 			</c:forEach>

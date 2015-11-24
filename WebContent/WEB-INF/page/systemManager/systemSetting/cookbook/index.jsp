@@ -49,7 +49,7 @@
 			<dl style="margin: 10px 0;width: 300px;">
 				<dt>单价：</dt>
 				<dd>
-					<input type="text" name="price" maxlength="20" class="digits required" max="167772"/>元
+					<input type="text" name="price" maxlength="20" class="number required" max="167772"/>元
 				</dd>
 			</dl>
 			<dl style="margin: 10px 0;">
