@@ -106,6 +106,21 @@
 				
 				if (dp.hasTime()) {
 					$("#calendar .time").show();
+					$("#calendar ul.hh, #calendar ul.mm, #calendar ul.ss, #calendar .time .up, #calendar .time .down").click(function(){
+						var $dd = $(setting.days$).find("dd.slt");
+						
+						if ($dd.hasClass("disabled")) return false;
+						
+						var date = dp.changeDay($dd.attr("day"), $dd.attr("chMonth"));
+						
+						if (dp.hasTime()) {
+						 	date.setHours(parseInt($(setting.hour$).val()));
+							date.setMinutes(parseInt($(setting.minute$).val()));
+							date.setSeconds(parseInt($(setting.second$).val()));
+						}
+						
+						$this.val(dp.formatDate(date));
+					});
 					
 					var $hour = $(setting.hour$).val(dw.hour).focus(function(){
 						changeTmMenu("hh");
