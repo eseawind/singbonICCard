@@ -6,7 +6,13 @@
 	var selectedDeptId = -1;
 	$(function() {
 		$('#deptForm .add').click(function() {
-			var parentId=$('#deptForm input').eq(1).val();
+			var parentId='0';
+			var deptCount=$('.deptTree a').length;
+			if(deptCount==1){
+				$('#deptForm input').eq(1).val(0);
+			}else{
+				parentId=$('#deptForm input').eq(1).val();
+			}
 			if (parentId==null || parentId=='' || parentId == -1) {
 				alertMsg.warn('请选择上级人员部门');
 				return;
@@ -14,7 +20,6 @@
 			$('#deptForm input').eq(0).val('');
 			validateCallback($(this).parents('form'), function(e) {
 				if (e == 1) {
-					//$('#DEPTForm input').eq(1).val(-1);
 					refreshDeptList();
 					refreshdeptTreeList();
 					emptyForm();
@@ -26,7 +31,6 @@
 		$('#deptForm .edit').click(function() {
 			validateCallback($(this).parents('form'), function(e) {
 				if (e == 1) {
-					//$('#DEPTForm input').eq(1).val(-1);
 					refreshDeptList();
 					refreshdeptTreeList();
 					emptyForm();
@@ -54,7 +58,6 @@
 									function(e) {
 										//0失败1成功2包含下级部门3包含人员
 										if (e == 1) {
-											//$('#DEPTForm input').eq(1).val(-1);
 											refreshDeptList();
 											refreshdeptTreeList();
 											emptyForm();
@@ -80,9 +83,8 @@
 	}
 	function emptyForm() {
 		$('#deptForm input').eq(0).val('');
-		//$('#DEPTForm input').eq(1).val(-1);
+		$('#deptForm input').eq(1).val('-1');
 		$('#deptForm input').eq(2).val('');
-		// 		$('#deptForm select').eq(0).val(0);
 	}
 
 	//选择部门

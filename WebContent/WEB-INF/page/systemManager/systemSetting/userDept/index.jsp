@@ -6,7 +6,13 @@
 	var selectedUserDeptId = -1;
 	$(function() {
 		$('#userDeptForm .add').click(function() {
-			var parentId=$('#userDeptForm input').eq(1).val();
+			var parentId='0';
+			var deptCount=$('.userDeptTree a').length;
+			if(deptCount==1){
+				$('#userDeptForm input').eq(1).val(0);
+			}else{
+				parentId=$('#userDeptForm input').eq(1).val();
+			}
 			if (parentId==null || parentId=='' || parentId == -1) {
 				alertMsg.warn('请选择上级人员部门');
 				return;
@@ -52,7 +58,6 @@
 									function(e) {
 										//0失败1成功2包含下级部门3包含人员
 										if (e == 1) {
-											//$('#userDeptForm input').eq(1).val(-1);
 											refreshUserDeptList();
 											refreshUserDeptTreeList();
 											emptyForm();
@@ -78,7 +83,7 @@
 	}
 	function emptyForm() {
 		$('#userDeptForm input').eq(0).val('');
-		//$('#userDeptForm input').eq(1).val(-1);
+		$('#userDeptForm input').eq(1).val(-1);
 		$('#userDeptForm input').eq(2).val('');
 	}
 
@@ -122,7 +127,7 @@
 					<dl>
 						<dt>批次：</dt>
 						<dd>
-							<select class="combox" name="batchId" outerw="78" innerw="95">
+							<select class="combox required" name="batchId" outerw="78" innerw="95">
 								<c:forEach items="${batchList }" var="b">
 									<option value="${b.id }">${b.batchName }</option>
 								</c:forEach>
