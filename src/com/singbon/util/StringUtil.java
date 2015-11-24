@@ -89,7 +89,7 @@ public class StringUtil {
 		}
 		return temp;
 	}
-	
+
 	/**
 	 * long转换成16进制字符串再左补零
 	 * 
@@ -387,7 +387,7 @@ public class StringUtil {
 	public static Integer objToInt(Object obj) {
 		return Integer.valueOf(obj.toString());
 	}
-	
+
 	/**
 	 * object类型long字符串转Long
 	 * 
@@ -438,7 +438,7 @@ public class StringUtil {
 		hex += StringUtil.hexLeftPad(Integer.valueOf(time[1]), 2);
 		return hex;
 	}
-	
+
 	/**
 	 * 返回扣费周期或水量
 	 * 
@@ -454,7 +454,7 @@ public class StringUtil {
 			return StringUtil.hexLeftPad(cycle, 4);
 		}
 	}
-	
+
 	/**
 	 * 水控授权16个卡类型转hex字符串2字节
 	 * 
@@ -479,7 +479,7 @@ public class StringUtil {
 		}
 		return StringUtil.strLeftPadWithChar(StringUtil.binaryHexStr(result), 4, "0");
 	}
-	
+
 	/**
 	 * 消费机授权16个卡类型转hex字符串2字节
 	 * 
@@ -504,18 +504,20 @@ public class StringUtil {
 		}
 		return StringUtil.strLeftPadWithChar(StringUtil.binaryHexStr(result), 4, "0");
 	}
-	
+
 	public static void main(String[] args) {
 		// 密码 01010101010101010101010101010101 00 00 00 01 0000 00 00 00 00 02
 		// 02 00 11 04 03 00 00 00 00 43 74 61 61 88 88 01 B889
-		// 消费机初始化01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 00 00 00 01 00 00 00 00 00 00 02 02 00 0A 19 19 00 00 00 00 46 1b
-		byte[] b = StringUtil
-				.strTobytes("01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 00 00 00 01 00 00 00 00 00 00 02 02 00 12 05 05 00 00 00 00 00 0b 00 10 00 00 00 13 92 6a"
-						.replaceAll(" ", ""));
+		// 消费机初始化01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 00 00 00 01 00
+		// 00 00 00 00 00 02 02 00 0A 19 19 00 00 00 00 46 1b
+		// 消费机初始化03030303030303030303030303030303 00 00 00 01 00 00 00 00 00 00
+		// 03 03 00 0A 19 19 00 00 00 00 46 1b
+		// 消费机初始化03030303030303030303030303030303 00 00 00 01 00 00 00 00 00 00 02 02 00 16 04 03 00 00 00 00 43 74 61 61 88 88 01 00 0A 00 0A 00 B8 89
+		byte[] b = StringUtil.strTobytes("03030303030303030303030303030303 00 00 00 01 00 00 00 00 00 00 02 02 00 16 04 03 00 00 00 00 43 74 61 61 88 88 01 00 0A 00 0A 00 B8 89".replaceAll(" ", ""));
 		CRC16.generate(b);
 		StringUtil.print(Integer.toHexString(b[b.length - 2]).replace("ffffff", "") + " ");
 		StringUtil.println(Integer.toHexString(b[b.length - 1]).replace("ffffff", ""));
-		
+
 	}
 
 	public static void print(Object obj) {

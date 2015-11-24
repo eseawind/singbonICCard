@@ -59,24 +59,26 @@
 	});
 
 	function refreshcompanyList() {
-		var url='${base}/list.do?pageNum='+$('#companyList form input[name=pageNum]').val()+'&numPerPage='+$('#companyList form input[name=numPerPage]').val();
-		$('#companyList').loadUrl(url,{},function(){
-			$('#companyList').find('[layoutH]').layoutH();
-		});
+		divSearch($('#companyList #pagerForm'), 'companyList');
 	}
 	
 	//选择单位
 	function companyClick(tr) {
-		var i=0;
-		$('#companyForm input').eq(i++).val(tr.attr('id'));
-		tr.find('td:not(:first)').each(function(){
-			if(i==5){
-				i=4;
-			}
-			$('#companyForm input').eq(i++).val($('div',this).html());
-		});
+		$('#companyForm input').eq(0).val(tr.attr('id'));
+		$('#companyForm input').eq(1).val(tr.find('td').eq(1).find('div').html());
+		$('#companyForm input').eq(2).val(tr.find('td').eq(2).find('div').html());
+		$('#companyForm input').eq(3).val(tr.find('td').eq(3).find('div').html());
+		$('#companyForm input').eq(4).val(tr.find('td').eq(5).find('div').html());
+
 		var select = $('#companyForm select');
 		select.prev().val(tr.attr('baseSection')).html($('option[value=' + tr.attr('baseSection') + ']', select).html());
+		
+		var enable = tr.attr('enable');
+		if(enable=='false'){
+			$('#companyForm input[name=status]').attr('checked',false);
+		}else{
+			$('#companyForm input[name=status]').attr('checked',true);			
+		}
 	};
 </script>
 <link href="/themes/css/custom.css" rel="stylesheet" type="text/css"/>
@@ -87,7 +89,7 @@
 </style>
 <div class="form" layoutH="30"
 	style="float: left; display: block; overflow: auto; width: 240px; border: solid 1px #CCC; line-height: 21px; background: #fff">
-	<div layoutH="332"></div>
+	<div layoutH="362"></div>
 	<form id="companyForm" method="post" action="${base}/addEdit.do"
 		class="pageForm required-validate">
 		<div class="pageFormContent">
@@ -101,13 +103,13 @@
 			<dl style="margin: 10px 0;">
 				<dt>序列号：</dt>
 				<dd>
-					<input type="text" name="serialNumber" maxlength="20" class="required"/>
+					<input type="text" name="serialNumber" maxlength="20" class="required digits"/>
 				</dd>
 			</dl>
 			<dl style="margin: 10px 0;">
 				<dt>授权号：</dt>
 				<dd>
-					<input type="text" name="authNumber" maxlength="20" class="required"/>
+					<input type="text" name="authNumber" maxlength="20" class="required digits"/>
 				</dd>
 			</dl>
 			<dl style="margin: 10px 0;">
@@ -124,13 +126,19 @@
 					<input type="text" name="invalidDate" maxlength="20" class="date"/>
 				</dd>
 			</dl>
+			<dl style="margin: 0 0 10px 0;">
+				<dt>&nbsp;</dt>
+				<dd>
+					<input type="checkbox" name="status" checked="checked" style="width: 13px;" />是否启用
+				</dd>
+			</dl>
 		</div>
 		<div class="formBar">
 			<div class="panelBar" style="border-style: none;">
 				<ul class="toolBar">
 					<li><a class="add" href="javascript:;"><span>添加</span></a></li>
 					<li><a class="edit" href="javascript:;"><span>修改</span></a></li>
-					<li><a class="delete" href="javascript:;"><span>删除</span></a></li>
+<!-- 					<li><a class="delete" href="javascript:;"><span>删除</span></a></li> -->
 				</ul>
 			</div>
 		</div>

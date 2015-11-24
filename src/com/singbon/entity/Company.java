@@ -13,14 +13,15 @@ public class Company implements Serializable {
 	private static final long serialVersionUID = -4349415810057681133L;
 	private Integer id;
 	private String companyName;
-	private Integer serialNumber;
+	private String serialNumber;
 	private String authNumber;
 	private Integer baseSection;
 	private Integer heartInterval;
 	private Integer uploadInterval;
 	private Integer uploadErrTime;
 	private String invalidDate;
-	//不入库
+	private boolean enable;
+	// 不入库
 	private Integer subsidyVersion;
 	private String subsidyInvalidDate;
 	// 自动下载黑名单用
@@ -43,11 +44,11 @@ public class Company implements Serializable {
 		this.companyName = companyName;
 	}
 
-	public Integer getSerialNumber() {
+	public String getSerialNumber() {
 		return serialNumber;
 	}
 
-	public void setSerialNumber(Integer serialNumber) {
+	public void setSerialNumber(String serialNumber) {
 		this.serialNumber = serialNumber;
 	}
 
@@ -129,6 +130,14 @@ public class Company implements Serializable {
 
 	public void setLastBlackNum(Long lastBlackNum) {
 		this.lastBlackNum = lastBlackNum;
+	}
+
+	public boolean getEnable() {
+		return enable;
+	}
+
+	public void setEnable(boolean enable) {
+		this.enable = enable;
 	}
 
 }

@@ -42,5 +42,12 @@ public interface CompanyDAO extends BaseDAO {
 	 * @return
 	 */
 	public void updateAdmin(Company company);
+	
+	/**
+	 * 更新验证
+	 * 
+	 * @return
+	 */
+	public Integer selectCountByInfo(Company company);
 
 }

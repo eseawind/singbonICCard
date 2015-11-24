@@ -4,10 +4,8 @@
 
 <script type="text/javascript">
 	$(function() {
-		$(function() {
-			$('#companyList .search').click(function() {
-				divSearch($('#companyList #pagerForm'), 'companyList');
-			});
+		$('#companyList .search').click(function() {
+			divSearch($('#companyList #pagerForm'), 'companyList');
 		});
 	});
 </script>
@@ -23,6 +21,10 @@
 					<td>单位名称：</td>
 					<td>
 						<input type="text" name="nameStr" size="10" value="${nameStr }" />
+					</td>
+					<td style="padding-left: 10px;">包含禁用：</td>
+					<td>
+						<input type="checkbox" name="includeAll" size="10" <c:if test="${includeAll=='on'}">checked="checked"</c:if>/>
 					</td>
 					<td style="padding-left: 10px;">
 						<div class="buttonActive">
@@ -47,17 +49,19 @@
 				<th width="100">授权号</th>
 				<th width="100">基本扇区号</th>
 				<th width="100">试用日期</th>
+				<th width="100">状态</th>
 			</tr>
 		</thead>
 		<tbody class="companyList">
 			<c:forEach var="c" items="${list}" varStatus="status">
-				<tr target="company" id="${c.id }" baseSection="${c.baseSection}">
+				<tr target="company" id="${c.id }" enable="${c.enable }" baseSection="${c.baseSection}">
 					<td>${status.index+1}</td>
 					<td>${c.companyName}</td>
 					<td>${c.serialNumber}</td>
 					<td>${c.authNumber}</td>
 					<td>${c.baseSection}</td>
 					<td>${c.invalidDate}</td>
+					<td>${c.enable==true?"启用":"禁用" }</td>
 				</tr>
 			</c:forEach>
 		</tbody>

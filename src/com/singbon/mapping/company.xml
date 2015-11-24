@@ -6,15 +6,15 @@
 	<parameterMap type="com.singbon.entity.Company" id="company2" />
 	
 	<insert id="insert" parameterMap="company2" useGeneratedKeys="true" keyProperty="id">
-		insert into company (companyName,serialNumber,authNumber,baseSection,heartInterval,uploadInterval,uploadErrTime)
-		values (#{companyName},#{serialNumber},#{authNumber},#{baseSection},10,10,10)
+		insert into company (companyName,serialNumber,authNumber,baseSection,invalidDate,heartInterval,uploadInterval,uploadErrTime,enable)
+		values (#{companyName},#{serialNumber},#{authNumber},#{baseSection},#{invalidDate},10,10,10,#{enable})
 	</insert>
 	<select id="insertInit" statementType="CALLABLE">
         {CALL insertInit(#{companyId,mode=IN,jdbcType=INTEGER})}
     </select>
 	
 	<update id="updateAdmin" parameterMap="company2">
-		update company set companyName=#{companyName},serialNumber=#{serialNumber},authNumber=#{authNumber},baseSection=#{baseSection},invalidDate=#{invalidDate}
+		update company set companyName=#{companyName},serialNumber=#{serialNumber},authNumber=#{authNumber},baseSection=#{baseSection},invalidDate=#{invalidDate},enable=#{enable}
 		where id=#{id}
 	</update>
 	<update id="update" parameterMap="company2">
@@ -26,6 +26,13 @@
 	</delete>
 	<select id="selectById" resultMap="company">
 		select * from company where id=#{id}
+	</select>
+	<!-- 	添加单位验证 -->
+	<select id="selectCountByInfo" resultType="java.lang.Integer" parameterMap="company2" useCache="false">
+		select count(*) count from company where companyName=#{companyName}
+			<if test="id!=null">
+			     and id!=#{id}
+			</if>
 	</select>
 	<select id="selectAllList" resultMap="company">
 		select id,companyName,serialNumber,authNumber,baseSection,heartInterval,uploadInterval,uploadErrTime,invalidDate,subsidyVersion,subsidyInvalidDate,ifnull(lastBatchNum,0) lastBatchNum,ifnull(lastBlackNum,0) lastBlackNum 

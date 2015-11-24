@@ -57,10 +57,20 @@ public class CompanyController {
 	 * @param model
 	 */
 	@RequestMapping(value = "/addEdit.do")
-	public void addEdit(@ModelAttribute Company company, HttpServletRequest request, HttpServletResponse response, Model model) {
+	public void addEdit(@ModelAttribute Company company, String status, HttpServletRequest request, HttpServletResponse response, Model model) {
 		PrintWriter p = null;
 		try {
 			p = response.getWriter();
+			int count = this.companyService.selectCountByInfo(company);
+			if (count > 0) {
+				p.print(2);
+				return;
+			}
+			if("on".equals(status)){
+				company.setEnable(true);
+			}else{
+				company.setEnable(false);				
+			}
 			if (company.getId() == null) {
 				this.companyService.insert(company);
 			} else {
@@ -102,12 +112,15 @@ public class CompanyController {
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/list.do")
-	public String userList(@ModelAttribute Pagination pagination, String nameStr, HttpServletRequest request, Model model) {
-		String[] columns = { "id", "companyName", "serialNumber", "authNumber", "baseSection", "invalidDate" };
+	public String userList(@ModelAttribute Pagination pagination, String nameStr, String includeAll, HttpServletRequest request, Model model) {
+		String[] columns = { "id", "companyName", "serialNumber", "authNumber", "baseSection", "invalidDate", "enable" };
 		String fromSql = "company";
 		String whereSql = "1=1 ";
 		if (!StringUtils.isEmpty(nameStr)) {
 			whereSql += String.format(" and companyName like '%%%s%%'", nameStr);
+		}
+		if (!"on".equals(includeAll)) {
+			whereSql += " and enable=1";
 		}
 		List<Map> list = this.commonService.selectByPage(columns, null, fromSql, whereSql, pagination);
 		int totalCount = Integer.valueOf(list.get(0).get("id").toString());
@@ -118,6 +131,7 @@ public class CompanyController {
 		model.addAttribute("numPerPage", pagination.getNumPerPage());
 		model.addAttribute("totalCount", totalCount);
 		model.addAttribute("nameStr", nameStr);
+		model.addAttribute("includeAll", includeAll);
 		model.addAttribute("base", "/singbon/backgroud/system/admin/setting/company");
 		return "admin/setting/company/list";
 	}

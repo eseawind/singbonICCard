@@ -43,7 +43,7 @@ public class CompanyService extends BaseService {
 	 */
 	public void insert(Company company) throws Exception {
 		this.companyDAO.insert(company);
-		Integer cId=company.getId();
+		Integer cId = company.getId();
 		this.companyDAO.insertInit(cId);
 	}
 
@@ -54,5 +54,14 @@ public class CompanyService extends BaseService {
 	 */
 	public void updateAdmin(Company company) {
 		this.companyDAO.updateAdmin(company);
+	}
+
+	/**
+	 * 更新验证
+	 * 
+	 * @return
+	 */
+	public Integer selectCountByInfo(Company company) {
+		return this.companyDAO.selectCountByInfo(company);
 	}
 }

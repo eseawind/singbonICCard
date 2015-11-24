@@ -145,7 +145,7 @@
 				<div class="toggleCollapse">
 					<h2>主菜单</h2>
 					<a style="padding: 7px 0 0 20px;float: left;color: #15428B;font-size: 11px;font-weight: bold;" href="javascript:;" onclick="editPwd();" title="修改密码"><span>修改密码</span></a>
-					<a style="padding: 7px 0 0 20px;float: left;color: #15428B;font-size: 11px;font-weight: bold;" href="/singbon/backgroud/system/admin/loginout.do">登出</a>
+					<a style="padding: 7px 0 0 20px;float: left;color: #15428B;font-size: 11px;font-weight: bold;" href="/singbon/backgroud/system/admin/loginout.do">退出</a>
 					<div>收缩</div>
 				</div>
 
