@@ -263,7 +263,7 @@
 
 .dialog .pageFormContent dd span.error {
 	width: 85px;
-	left: 85px;
+	left: 180px;
 }
 </style>
 <c:if test="${editType==4 }">
