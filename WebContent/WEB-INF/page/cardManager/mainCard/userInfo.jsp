@@ -379,13 +379,13 @@
 			<dl>
 				<dt>赠送金额：</dt>
 				<dd>
-					<input class="number" name="giveFare" type="text" value="0" onkeyup="getAllFare();"/>
+					<input class="required number" name="giveFare" type="text" value="0" onkeyup="getAllFare();"/>
 				</dd>
 			</dl>
 			<dl>
 				<dt>预发金额：</dt>
 				<dd>
-					<input class="number" name="preOpFare" type="text" value="${cardParam.prepayFare}" onkeyup="getAllFare();"/>
+					<input class="required number" name="preOpFare" type="text" value="${cardParam.prepayFare}" onkeyup="getAllFare();"/>
 				</dd>
 			</dl>
 		</fieldset>

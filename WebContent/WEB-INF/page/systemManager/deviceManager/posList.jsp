@@ -60,10 +60,10 @@
 			<tr>
 				<th width="40">序号</th>
 				<th width="80">机器号</th>
-				<th width="120">设备名称</th>
-				<th width="100">设备类型</th>
+				<th width="140">设备名称</th>
+				<th width="80">设备类型</th>
 				<th width="100">所属中转</th>
-				<th width="120">消费参数分组</th>
+				<th width="140">消费参数分组</th>
 				<th width="300">序列号</th>
 				<th width="80">状态</th>
 			</tr>

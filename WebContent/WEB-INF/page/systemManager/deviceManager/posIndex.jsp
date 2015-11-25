@@ -8,6 +8,10 @@
 	$(function() {
 		//设备
 		$('#posForm .add').click(function() {
+			if(selectDeptId=='' || selectDeptId==0){
+				alertMsg.warn('请先选择所属营业部门！');
+				return;
+			}
 			$('#posForm input').eq(0).val('');
 			$('#posForm input').eq(1).val(selectDeptId);			
 			var form = $(this).parents('form');
