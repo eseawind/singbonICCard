@@ -6,6 +6,8 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.singbon.dao.systemManager.AuthorizationDAO;
 import com.singbon.entity.AuthGroup;
@@ -37,6 +39,7 @@ public class AuthorizationService {
 	 * 
 	 * @return
 	 */
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void insertGroup(AuthGroup authGroup) {
 		this.authorizationDAO.insertGroup(authGroup);
 	}
@@ -46,6 +49,7 @@ public class AuthorizationService {
 	 * 
 	 * @return
 	 */
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void updateGroup(AuthGroup authGroup) {
 		this.authorizationDAO.updateGroup(authGroup);
 	}
@@ -64,6 +68,7 @@ public class AuthorizationService {
 	 * 
 	 * @return
 	 */
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void deleteGroup(Integer id) {
 		this.authorizationDAO.deleteGroup(id);
 	}
@@ -83,6 +88,7 @@ public class AuthorizationService {
 	 * 
 	 * @return
 	 */
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void saveGroupUser(String groupIds, Integer operId) {
 		this.authorizationDAO.deleteGroupUser(operId);
 		if (groupIds != null && !"".equals(groupIds)) {

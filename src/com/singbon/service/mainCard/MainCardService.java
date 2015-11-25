@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.singbon.dao.BaseDAO;
 import com.singbon.dao.CardBlackDAO;
@@ -50,6 +52,7 @@ public class MainCardService extends BaseService {
 	 * 
 	 * @param user
 	 */
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void delete(Long[] userIds) throws Exception {
 		this.userDAO.delete(userIds);
 	}
@@ -137,6 +140,7 @@ public class MainCardService extends BaseService {
 	 *            开始扇区
 	 * @throws Exception
 	 */
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void makeCardByUserInfo(Device device, SocketChannel socketChannel, User user, CardAllInfo cardAllInfo, String cardSN, int commandCode, Integer section) throws Exception {
 		if (commandCode == CardReaderCommandCode.SingleCard) {
 			this.userDAO.insert(user);
@@ -255,6 +259,7 @@ public class MainCardService extends BaseService {
 	 * @return
 	 * @throws Exception
 	 */
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void changeStatus(Long userId, Integer status) throws Exception {
 		this.userDAO.changeStatus(userId, status);
 	}
@@ -266,6 +271,7 @@ public class MainCardService extends BaseService {
 	 * @return
 	 * @throws Exception
 	 */
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void loss(Long userId, Integer companyId, Long cardNO, Integer status, Integer lossReason) throws Exception {
 		this.userDAO.changeStatus(userId, status);
 		if (cardNO != null && (status == 244 || 0 == lossReason)) {
@@ -285,6 +291,7 @@ public class MainCardService extends BaseService {
 	 * @return
 	 * @throws Exception
 	 */
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void unloss(User user, SocketChannel socketChannel, Device device, String cardInfoStr) throws Exception {
 		long newCardNO = this.userDAO.selectMaxCardNO(user.getCompanyId());
 		user.setCardNO(newCardNO);
@@ -306,6 +313,7 @@ public class MainCardService extends BaseService {
 	 * @return
 	 * @throws Exception
 	 */
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void offWithCard(Long userId, SocketChannel socketChannel, Device device, String cardSN, String cardInfoStr) throws Exception {
 		this.userDAO.changeStatus(userId, 244);
 
@@ -329,6 +337,7 @@ public class MainCardService extends BaseService {
 	 * @return
 	 * @throws Exception
 	 */
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void changeNewCard(Integer companyId, Long userId, SocketChannel socketChannel, Device device, String cardSN, String cardInfoStr) throws Exception {
 		long cardNO = this.userDAO.selectMaxCardNO(companyId);
 		this.userDAO.changeNewCard(userId, cardNO, cardSN);
@@ -351,6 +360,7 @@ public class MainCardService extends BaseService {
 	 * @param cardNO
 	 * @param cardSN
 	 */
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void updateByCard(User user) throws Exception {
 		this.userDAO.updateByCard(user);
 	}
@@ -362,6 +372,7 @@ public class MainCardService extends BaseService {
 	 * @param toDeptId
 	 * @throws Exception
 	 */
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void changeToNewDept(Long[] userIds, Integer toDeptId) throws Exception {
 		this.userDAO.changeToNewDept(userIds, toDeptId);
 	}
@@ -373,6 +384,7 @@ public class MainCardService extends BaseService {
 	 * @param toDeptId
 	 * @throws Exception
 	 */
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void changeFromDeptToNew(Integer fromDeptId, Integer toDeptId) throws Exception {
 		this.userDAO.changeFromDeptToNew(fromDeptId, toDeptId);
 	}
@@ -384,6 +396,7 @@ public class MainCardService extends BaseService {
 	 * @return
 	 * @throws Exception
 	 */
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void doCharge(User user, Float oddFare, Float opFare, Float giveFare, SocketChannel socketChannel, Device device, Integer chargeType, String cardInfoStr) throws Exception {
 		String totalFareString = cardInfoStr.substring(26, 34);
 		int totalFare = Integer.parseInt(totalFareString, 16);

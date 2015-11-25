@@ -2,6 +2,8 @@ package com.singbon.service.systemManager.systemSetting;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.singbon.dao.BaseDAO;
 import com.singbon.dao.systemManager.systemSetting.BatchDAO;
@@ -41,6 +43,7 @@ public class BatchService extends BaseService {
 	 * 
 	 * @return
 	 */
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void black(Integer companyId, Integer batchId) {
 		this.batchDAO.black(batchId);
 		BatchBlack batchBlack = new BatchBlack();

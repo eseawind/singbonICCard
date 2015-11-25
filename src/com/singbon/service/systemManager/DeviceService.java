@@ -6,6 +6,8 @@ import java.util.Map;
 import org.comet4j.core.CometContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.singbon.dao.BaseDAO;
 import com.singbon.dao.systemManager.DeviceDAO;
@@ -20,6 +22,7 @@ import com.singbon.service.BaseService;
  * 
  */
 @Service
+@Transactional
 public class DeviceService extends BaseService {
 
 	@Autowired
@@ -48,6 +51,7 @@ public class DeviceService extends BaseService {
 	 * @return
 	 * @throws Exception
 	 */
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void insert(Device device) throws Exception {
 		this.deviceDAO.insert(device);
 		TerminalManager.SNToDeviceList.put(device.getSn(), device);
@@ -63,6 +67,7 @@ public class DeviceService extends BaseService {
 	 * @return
 	 * @throws Exception
 	 */
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void update(Device device, String oldSn) throws Exception {
 		this.deviceDAO.update(device);
 		if (!device.getSn().equals(oldSn)) {
@@ -85,6 +90,7 @@ public class DeviceService extends BaseService {
 	 * @return
 	 * @throws Exception
 	 */
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void deleteDevice(Integer id, boolean isCardReader, String sn) throws Exception {
 		this.deviceDAO.delete(id);
 		if (sn != null) {

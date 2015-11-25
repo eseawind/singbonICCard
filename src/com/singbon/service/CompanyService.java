@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.singbon.dao.BaseDAO;
 import com.singbon.dao.CompanyDAO;
@@ -42,6 +44,7 @@ public class CompanyService extends BaseService {
 	 * @return
 	 * @throws Exception
 	 */
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void insert(Company company) throws Exception {
 		this.companyDAO.insert(company);
 		Integer cId = company.getId();
@@ -54,6 +57,7 @@ public class CompanyService extends BaseService {
 	 * 
 	 * @return
 	 */
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void updateAdmin(Company company) {
 		this.companyDAO.updateAdmin(company);
 	}

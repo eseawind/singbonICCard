@@ -38,6 +38,7 @@ public class SystemListener implements ServletContextListener {
 	@Override
 	public void contextInitialized(ServletContextEvent arg0) {
 		WebApplicationContext app = WebApplicationContextUtils.getRequiredWebApplicationContext(arg0.getServletContext());
+		
 		DeviceService deviceService = (DeviceService) app.getBean("deviceService");
 		CompanyService companyService = (CompanyService) app.getBean("companyService");
 		MealService mealService = (MealService) app.getBean("mealService");

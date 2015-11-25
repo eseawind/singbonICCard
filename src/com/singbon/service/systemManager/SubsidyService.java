@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.singbon.dao.BaseDAO;
 import com.singbon.dao.CompanyDAO;
@@ -41,6 +43,7 @@ public class SubsidyService extends BaseService {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("rawtypes")
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void addSubsidy(Integer companyId, List<Map> list) throws Exception {
 		for (Map m : list) {
 			Long userId = Long.valueOf(m.get("userId").toString());
@@ -72,6 +75,7 @@ public class SubsidyService extends BaseService {
 	 * @param list
 	 * @throws Exception
 	 */
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void generateSubsidy(Company company, String invalidDate, HttpServletRequest request) throws Exception {
 		int subsidyVersion = company.getSubsidyVersion()+1;
 		this.subsidyDAO.generateSubsidy(company.getId(), subsidyVersion, invalidDate);

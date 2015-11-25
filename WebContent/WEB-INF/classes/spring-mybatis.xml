@@ -75,37 +75,6 @@
 	</bean>
 
 	<!-- 注解方式配置事物 -->
-	<tx:annotation-driven transaction-manager="transactionManager" />
-	<aop:aspectj-autoproxy />
-	<!-- 拦截器方式配置事物 -->
-	<!-- <tx:advice id="transactionAdvice" transaction-manager="transactionManager"> -->
-	<!-- <tx:attributes> -->
-	<!-- <tx:method name="add*" propagation="REQUIRED" /> -->
-	<!-- <tx:method name="append*" propagation="REQUIRED" /> -->
-	<!-- <tx:method name="save*" propagation="REQUIRED" /> -->
-	<!-- <tx:method name="update*" propagation="REQUIRED" /> -->
-	<!-- <tx:method name="modify*" propagation="REQUIRED" /> -->
-	<!-- <tx:method name="edit*" propagation="REQUIRED" /> -->
-	<!-- <tx:method name="insert*" propagation="REQUIRED" /> -->
-	<!-- <tx:method name="delete*" propagation="REQUIRED" /> -->
-	<!-- <tx:method name="remove*" propagation="REQUIRED" /> -->
-	<!-- <tx:method name="repair" propagation="REQUIRED" /> -->
-
-	<!-- <tx:method name="get*" propagation="REQUIRED" read-only="true" /> -->
-	<!-- <tx:method name="find*" propagation="REQUIRED" read-only="true" /> -->
-	<!-- <tx:method name="load*" propagation="REQUIRED" read-only="true" /> -->
-	<!-- <tx:method name="search*" propagation="REQUIRED" read-only="true" /> -->
-	<!-- <tx:method name="datagrid*" propagation="REQUIRED" -->
-	<!-- read-only="true" /> -->
-
-	<!-- <tx:method name="*" propagation="REQUIRED" read-only="true" /> -->
-	<!-- </tx:attributes> -->
-	<!-- </tx:advice> -->
-	<!-- <aop:config> -->
-	<!-- <aop:pointcut id="transactionPointcut" expression="execution(* .service..*Impl.*(..))" 
-		/> -->
-	<!-- <aop:advisor pointcut-ref="transactionPointcut" -->
-	<!-- advice-ref="transactionAdvice" /> -->
-	<!-- </aop:config> -->
+	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" /> 
 
 </beans>
