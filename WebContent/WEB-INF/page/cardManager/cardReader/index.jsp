@@ -80,13 +80,13 @@
 		$('body').everyTime('10s','getCardReaderStatus', function() {
 			var d=new Date();
 			var t=(d.getTime()-heartTime.getTime())/1000;
-			if(t>12){
-				$.post('/closeSocketChannel.do');
-				$('.dialogHeader_c h1').html(title + '——读卡机状态：离线');
-				isOnline=false;
-				isHeart=false;
-				$('body').stopTime();
-			}
+// 			if(t>12){
+// 				$.post('/closeSocketChannel.do');
+// 				$('.dialogHeader_c h1').html(title + '——读卡机状态：离线');
+// 				isOnline=false;
+// 				isHeart=false;
+// 				$('body').stopTime();
+// 			}
 		},0,true);
 	}
 	

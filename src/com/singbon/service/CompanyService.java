@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.singbon.dao.BaseDAO;
 import com.singbon.dao.CompanyDAO;
+import com.singbon.device.TerminalManager;
 import com.singbon.entity.Company;
 
 /**
@@ -45,6 +46,7 @@ public class CompanyService extends BaseService {
 		this.companyDAO.insert(company);
 		Integer cId = company.getId();
 		this.companyDAO.insertInit(cId);
+		TerminalManager.registChannel("Co" + cId);
 	}
 
 	/**

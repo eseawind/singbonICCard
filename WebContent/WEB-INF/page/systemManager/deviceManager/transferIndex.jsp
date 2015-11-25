@@ -72,6 +72,7 @@
 				
 				validateCallback(form, function(e) {
 					if (e == 1) {
+						form.clearForm();
 						refreshtransferList();
 						alertMsg.correct('修改成功！');
 					}else if (e==2) {

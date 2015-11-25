@@ -3,6 +3,7 @@ package com.singbon.service.systemManager;
 import java.util.List;
 import java.util.Map;
 
+import org.comet4j.core.CometContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,6 +51,9 @@ public class DeviceService extends BaseService {
 	public void insert(Device device) throws Exception {
 		this.deviceDAO.insert(device);
 		TerminalManager.SNToDeviceList.put(device.getSn(), device);
+		if (device.getDeviceType() == 8) {
+			TerminalManager.registChannel("c" + device.getSn());
+		}
 	}
 
 	/**
@@ -65,6 +69,8 @@ public class DeviceService extends BaseService {
 			TerminalManager.SNToDeviceList.remove(oldSn);
 			if (device.getDeviceType() == 8) {
 				TerminalManager.SNToSocketChannelList.remove(oldSn);
+				CometContext.getInstance().getAppModules().remove("c" + oldSn);
+				TerminalManager.registChannel("c" + device.getSn());
 			} else {
 				TerminalManager.SNToInetSocketAddressList.remove(oldSn);
 			}

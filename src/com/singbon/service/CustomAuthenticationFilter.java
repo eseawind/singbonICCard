@@ -137,8 +137,10 @@ public class CustomAuthenticationFilter extends AbstractAuthenticationProcessing
 			user.setLoginName(username);
 			request.getSession().setAttribute("sysUser", user);
 			username = user.getOperId() + USERNAME_LOGINID_SPLIT + username + USERNAME_LOGINID_SPLIT + password;
-			Device device = (Device) this.deviceDAO.selectById(user.getDeviceId());
-			request.getSession().setAttribute("device", device);
+			if (user.getDeviceId() != null && user.getDeviceId() != 0) {
+				Device device = (Device) this.deviceDAO.selectById(user.getDeviceId());
+				request.getSession().setAttribute("device", device);
+			}
 		}
 
 		UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username, password);
