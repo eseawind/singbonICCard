@@ -76,7 +76,7 @@ public class PosExecReplyCommand {
 			} else if (subFrame == PosSubFrameCookbook.Append) {
 				Cookbook cookbook = sendCommand.getCookbook();
 				String log = String.format(DesUtil.decrypt(DeviceCommunicateStr.ExecAppend), sendCommand.getCookbookIndex(), sendCommand.getCookbookTotal(), cookbook.getCookbookCode(),
-						cookbook.getPrice(), cookbook.getCookbookName());
+						cookbook.getPrice() / 100, cookbook.getCookbookName());
 				map.put("des", log);
 			} else if (subFrame == PosSubFrameCookbook.Modify) {
 				Cookbook cookbook = sendCommand.getCookbook();

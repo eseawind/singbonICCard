@@ -156,7 +156,7 @@
 								<li><a href="javascript:;" tvalue="ROLE_MAINCARD_LOSS">挂失</a></li>
 								<li><a href="javascript:;" tvalue="ROLE_MAINCARD_UNLOSS">解挂</a></li>
 								<li><a href="javascript:;" tvalue="ROLE_MAINCARD_REMAKECARD">补卡</a></li>
-								<li><a href="javascript:;" tvalue="ROLE_MAINCARD_CHANGECARD">换卡</a></li>
+<!-- 								<li><a href="javascript:;" tvalue="ROLE_MAINCARD_CHANGECARD">换卡</a></li> -->
 								<li><a href="javascript:;" tvalue="ROLE_MAINCARD_OFFWITHCARD">有卡注销</a></li>
 								<li><a href="javascript:;" tvalue="ROLE_MAINCARD_OFFNOCARD">无卡注销</a></li>
 								<li><a href="javascript:;" tvalue="ROLE_MAINCARD_CHARGE">存取款</a></li>

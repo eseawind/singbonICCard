@@ -28,18 +28,15 @@ public class CardReaderCommandCode {
 	 * 补卡 0x04
 	 */
 	public static byte RemakeCard = 0x04;
+	
 	/**
-	 * 换卡读原卡 0x05
-	 */
-	public static byte ReadOldCard = 0x05;
-	/**
-	 * 换卡换新卡 0x06
-	 */
-	public static byte ChangeNewCard = 0x06;
-	/**
-	 * 读卡修正 0x07
+	 * 读卡 0x07
 	 */
 	public static byte ReadCard = 0x07;
+	/**
+	 * 按库修正 0x08
+	 */
+	public static byte UpdateByInfo = 0x08;
 	/**
 	 * 读取卡余额 0x0e
 	 */
@@ -51,6 +48,15 @@ public class CardReaderCommandCode {
 	/**
 	 * 有卡注销 0x10
 	 */
-	public static byte OffWithCard = 0x10;
+	public static byte OffCardWithInfo = 0x10;
 
+	
+//	/**
+//	 * 换卡读原卡 0x05
+//	 */
+//	public static byte ReadOldCard = 0x05;
+//	/**
+//	 * 换卡换新卡 0x06
+//	 */
+//	public static byte ChangeNewCard = 0x06;
 }

@@ -57,7 +57,7 @@ public class SubsidyController extends BaseController {
 	 */
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/addIndex.do")
-	public String addIndex(HttpServletRequest request, Model model) {
+	public String addIndex(HttpServletRequest request, HttpServletResponse response, Model model) {
 		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
 		Company company = (Company) request.getSession().getAttribute("company");
 		List<UserDept> userDeptList = ((List<UserDept>) this.userDeptService.selectListByCompanyId(company.getId()));
@@ -237,7 +237,7 @@ public class SubsidyController extends BaseController {
 	 */
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/generateIndex.do")
-	public String generateIndex(HttpServletRequest request, Model model) {
+	public String generateIndex(HttpServletRequest request, HttpServletResponse response, Model model) {
 		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
 		Company company = (Company) request.getSession().getAttribute("company");
 		List<UserDept> userDeptList = ((List<UserDept>) this.userDeptService.selectListByCompanyId(company.getId()));

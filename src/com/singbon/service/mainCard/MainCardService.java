@@ -128,7 +128,7 @@ public class MainCardService extends BaseService {
 	}
 
 	/**
-	 * 通过用户信息写卡： 单个发卡、信息发卡、补卡
+	 * 通过用户信息写卡： 单个发卡、信息发卡、补卡、按卡修正
 	 * 
 	 * @param device
 	 * @param socketChannel
@@ -160,7 +160,7 @@ public class MainCardService extends BaseService {
 																								// 8-9
 		c.setTime(user.getInvalidDate());
 		String tmInvalidDate = StringUtil.dateToHexStr(c);// 2 10-11
-		String tmCardMark = StringUtil.hexLeftPad(241, 2);// 1 12
+		String tmCardMark = StringUtil.hexLeftPad(user.getStatus(), 2);// 1 12
 		String tmCardBatch = StringUtil.hexLeftPad(cardAllInfo.getCardBatch(), 4);// 2
 																					// 13-14
 		String tmCheck1 = "00"; // 异或校验，以后补充 1
@@ -307,51 +307,73 @@ public class MainCardService extends BaseService {
 	}
 
 	/**
-	 * 有卡注销
+	 * 有卡注销先把卡清零
 	 * 
 	 * @param userId
 	 * @return
 	 * @throws Exception
 	 */
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public void offWithCard(Long userId, SocketChannel socketChannel, Device device, String cardSN, String cardInfoStr) throws Exception {
-		this.userDAO.changeStatus(userId, 244);
+	public void offCardWithInfo(Long userId, SocketChannel socketChannel, Device device, String cardSN, Integer baseSection) throws Exception {
+		String commandCodeStr = "0000" + StringUtil.hexLeftPad(CardReaderCommandCode.OffCardWithInfo, 4);
+		String cardInfo = "";
+		for (int i = 0; i < 4; i++) {
+			String section = StringUtil.hexLeftPad(baseSection + i, 2);
+			for (int j = 0; j < 4; j++) {
+				cardInfo += section + StringUtil.hexLeftPad(j, 2) + "00" + StringUtil.hexLeftPad(0, 32);
+			}
+		}
+		String sendBufStr = CardReaderFrame.WriteCard + commandCodeStr + CardReaderFrame.ValidateCardSN + cardSN + cardInfo;
 
-		String commandCodeStr = "0000" + StringUtil.hexLeftPad(CardReaderCommandCode.OffWithCard, 4);
-		String sendBufStr = CardReaderFrame.WriteCard + commandCodeStr + CardReaderFrame.ValidateCardSN + cardSN + cardInfoStr;
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
 		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + CommandDevice.NoSubDeviceNum + DeviceType.Main + DeviceType.CardReader + bufLen + sendBufStr;
 		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
-		sendBuf[sendBuf.length - 6] = (byte) 0xf4;
 		TerminalManager.sendToCardReader(socketChannel, sendBuf);
-	}
-
-	public static void main(String[] args) {
-		System.out.println((byte) 0xf1);
 	}
 
 	/**
-	 * 换卡换新卡
+	 * 有卡注销再注销人员信息
 	 * 
 	 * @param userId
 	 * @return
 	 * @throws Exception
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public void changeNewCard(Integer companyId, Long userId, SocketChannel socketChannel, Device device, String cardSN, String cardInfoStr) throws Exception {
-		long cardNO = this.userDAO.selectMaxCardNO(companyId);
-		this.userDAO.changeNewCard(userId, cardNO, cardSN);
-
-		String cardNOStr = StringUtil.hexLeftPad(cardNO, 8);
-		String cardSeq = StringUtil.hexLeftPad(Integer.valueOf(cardInfoStr.substring(52, 54), 16) + 1, 2);
-		cardInfoStr = cardInfoStr.substring(0, 14) + cardNOStr + cardInfoStr.substring(22, 52) + cardSeq + cardInfoStr.substring(54);
-		String commandCodeStr = "0000" + StringUtil.hexLeftPad(CardReaderCommandCode.ChangeNewCard, 4);
-		String sendBufStr = CardReaderFrame.WriteCard + commandCodeStr + CardReaderFrame.ValidateCardSN + cardSN + cardInfoStr;
-		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
-		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + CommandDevice.NoSubDeviceNum + DeviceType.Main + DeviceType.CardReader + bufLen + sendBufStr;
-		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
-		TerminalManager.sendToCardReader(socketChannel, sendBuf);
+	public void offUserInfoWithInfo(Long userId) throws Exception {
+		this.userDAO.offUserInfoWithInfo(userId);
 	}
+
+	// /**
+	// * 换卡换新卡
+	// *
+	// * @param userId
+	// * @return
+	// * @throws Exception
+	// */
+	// @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	// public void changeNewCard(Integer companyId, Long userId, SocketChannel
+	// socketChannel, Device device, String cardSN, String cardInfoStr) throws
+	// Exception {
+	// long cardNO = this.userDAO.selectMaxCardNO(companyId);
+	// this.userDAO.changeNewCard(userId, cardNO, cardSN);
+	//
+	// String cardNOStr = StringUtil.hexLeftPad(cardNO, 8);
+	// String cardSeq =
+	// StringUtil.hexLeftPad(Integer.valueOf(cardInfoStr.substring(52, 54), 16)
+	// + 1, 2);
+	// cardInfoStr = cardInfoStr.substring(0, 14) + cardNOStr +
+	// cardInfoStr.substring(22, 52) + cardSeq + cardInfoStr.substring(54);
+	// String commandCodeStr = "0000" +
+	// StringUtil.hexLeftPad(CardReaderCommandCode.ChangeNewCard, 4);
+	// String sendBufStr = CardReaderFrame.WriteCard + commandCodeStr +
+	// CardReaderFrame.ValidateCardSN + cardSN + cardInfoStr;
+	// String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
+	// sendBufStr = device.getSn() +
+	// StringUtil.hexLeftPad(device.getDeviceNum(), 8) +
+	// CommandDevice.NoSubDeviceNum + DeviceType.Main + DeviceType.CardReader +
+	// bufLen + sendBufStr;
+	// byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
+	// TerminalManager.sendToCardReader(socketChannel, sendBuf);
+	// }
 
 	/**
 	 * 按卡修正

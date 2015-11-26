@@ -60,7 +60,7 @@ public class MealController extends BaseController {
 	 */
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/list.do")
-	public String mealList(HttpServletRequest request, Model model) {
+	public String mealList(HttpServletRequest request, HttpServletResponse response, Model model) {
 
 		Company company = (Company) request.getSession().getAttribute("company");
 		List<Meal> list = (List<Meal>) this.mealService.selectListByCompanyId(company.getId());

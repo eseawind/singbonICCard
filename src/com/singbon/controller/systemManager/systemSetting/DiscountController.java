@@ -60,7 +60,7 @@ public class DiscountController extends BaseController {
 	 */
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/list.do")
-	public String discountList(HttpServletRequest request, Model model) {
+	public String discountList(HttpServletRequest request, HttpServletResponse response, Model model) {
 
 		Company company = (Company) request.getSession().getAttribute("company");
 		List<Discount> list = (List<Discount>) this.discountService.selectListByCompanyId(company.getId());

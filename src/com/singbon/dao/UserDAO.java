@@ -125,6 +125,16 @@ public interface UserDAO extends BaseDAO {
 	public void changeStatus(@Param("userId") Long userId, @Param("status") Integer status) throws Exception;
 
 	/**
+	 * 有卡注销注销人员
+	 * 
+	 * @param userId
+	 * @param status
+	 *            2挂失、1解挂
+	 * @return
+	 */
+	public void offUserInfoWithInfo(@Param("userId") Long userId) throws Exception;
+
+	/**
 	 * 换新卡
 	 * 
 	 * @param userId

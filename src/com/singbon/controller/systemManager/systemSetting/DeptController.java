@@ -93,7 +93,7 @@ public class DeptController {
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/list.do")
-	public String list(Integer parentId, HttpServletRequest request, Model model) {
+	public String list(Integer parentId, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
 		List list = this.deptService.selectByParentId(company.getId(), parentId);
 		model.addAttribute("list", list);
@@ -109,7 +109,7 @@ public class DeptController {
 	 */
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/treeList.do")
-	public String treeList(HttpServletRequest request, Model model) {
+	public String treeList(HttpServletRequest request, HttpServletResponse response, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
 		List<Dept> treeList = (List<Dept>) this.deptService.selectListByCompanyId(company.getId());
 		model.addAttribute("treeList", treeList);

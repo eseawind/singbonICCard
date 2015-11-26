@@ -39,7 +39,7 @@ public class SystemParamController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/index.do")
-	public String index(HttpServletRequest request, Model model) {
+	public String index(HttpServletRequest request, HttpServletResponse response, Model model) {
 		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
 		Company company = (Company) request.getSession().getAttribute("company");
 		model.addAttribute("sysUser", sysUser);

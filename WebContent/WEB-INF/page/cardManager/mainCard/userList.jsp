@@ -137,34 +137,44 @@
 					alertMsg.warn('该卡不是挂失卡，不能进行补卡操作！');
 				}
 			},
-			'changeCard' : function(t, target) {
-				if (!checkDeviceSn()) {
-					return;
-				}
-				if ($(t).attr('status') == 241) {
-					var url = '${base}/changeCard.do?editType=3&userId='+ $(t).attr('userId');
-					$.pdialog.open(url, 'dialog', '换卡', cardOptions);
-				} else {
-					alertMsg.warn('该卡不是正常卡，不能进行换卡操作！');
-				}
-			},
+// 			'changeCard' : function(t, target) {
+// 				if (!checkDeviceSn()) {
+// 					return;
+// 				}
+// 				if ($(t).attr('status') == 241) {
+// 					var url = '${base}/changeCard.do?editType=3&userId='+ $(t).attr('userId');
+// 					$.pdialog.open(url, 'dialog', '换卡', cardOptions);
+// 				} else {
+// 					alertMsg.warn('该卡不是正常卡，不能进行换卡操作！');
+// 				}
+// 			},
 			'offWithCard' : function(t, target) {
 				if (!checkDeviceSn()) {
 					return;
+				}
+				var userId=$(t).attr('userId');
+				if(userId==null){
+					alertMsg.warn('请先选择人员！');
+					return;					
 				}
 				if ($(t).attr('status') == 0) {
 					alertMsg.warn('该卡尚未发卡，不能进行有卡注销操作！');
 				}else if($(t).attr('status') == 244){
 					alertMsg.warn('该卡已经注销，不能重复进行有卡注销操作！');					
 				} else {
-					var url = '${base}/changeCard.do?editType=5&userId='+ $(t).attr('userId');
+					var url = '${base}/changeCard.do?editType=5&userId='+ userId;
 					$.pdialog.open(url, 'dialog', '有卡注销', cardOptions);
 				}
 			},
 			'offNoCard' : function(t, target) {
+				var userId=$(t).attr('userId');
+				if(userId==null){
+					alertMsg.warn('请先选择人员！');
+					return;					
+				}
 				alertMsg.confirm('确定要注销该人员吗？', {
 					okCall : function() {
-						$.post('${base}/doChangeCard.do?editType=4&userId='+ $(t).attr('userId')+'&cardNO='+$(t).attr('cardNO'), function(e) {
+						$.post('${base}/doChangeCard.do?editType=4&userId='+ userId+'&cardNO='+$(t).attr('cardNO'), function(e) {
 							refreshUserList();
 						});
 					}
@@ -261,9 +271,9 @@
 		<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MAINCARD_REMAKECARD">
 			<li id="remakeCard">补卡</li>
 		</security:authorize>
-		<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MAINCARD_CHANGECARD">
-			<li id="changeCard">换卡</li>
-		</security:authorize>
+<%-- 		<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MAINCARD_CHANGECARD"> --%>
+<!-- 			<li id="changeCard">换卡</li> -->
+<%-- 		</security:authorize> --%>
 		<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MAINCARD_OFFWITHCARD">
 			<li id="offWithCard">有卡注销</li>
 		</security:authorize>

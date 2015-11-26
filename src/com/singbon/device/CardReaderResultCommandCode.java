@@ -74,13 +74,13 @@ public class CardReaderResultCommandCode {
 	 */
 	public static byte ChangeNewCardDone = 0x0d;
 	/**
-	 * 读卡修正命令 0x0e
+	 * 按库修正命令 0x0e
 	 */
 	public static byte ReadCardCmd = 0x0e;
 	/**
-	 * 读卡修正完成 0x0f
+	 * 按库修正完成 0x0f
 	 */
-	public static byte ReadCardDone = 0x0f;
+	public static byte UpdateByInfoDone = 0x0f;
 	/**
 	 * 制功能卡 0x10
 	 */

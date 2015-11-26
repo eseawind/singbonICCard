@@ -81,7 +81,7 @@ public class MainCardController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/index.do")
-	public String index(HttpServletRequest request, Model model) {
+	public String index(HttpServletRequest request, HttpServletResponse response, Model model) {
 		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
 		Company company = (Company) request.getSession().getAttribute("company");
 		Device device = (Device) request.getSession().getAttribute("device");
@@ -103,7 +103,7 @@ public class MainCardController extends BaseController {
 	 */
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/treeList.do")
-	public String treeList(HttpServletRequest request, Model model) {
+	public String treeList(HttpServletRequest request, HttpServletResponse response, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
 		List<UserDept> list = (List<UserDept>) this.userDeptService.selectListByCompanyId(company.getId());
 		model.addAttribute("list", list);
@@ -119,7 +119,7 @@ public class MainCardController extends BaseController {
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/list.do")
-	public String userList(@ModelAttribute Pagination pagination, Integer deptId, String nameStr, HttpServletRequest request, Model model) {
+	public String userList(@ModelAttribute Pagination pagination, Integer deptId, String nameStr, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
 
 		String[] columns = { "userId", "userNO", "username", "sex", "cardID", "cardTypeId", "status" };
@@ -186,7 +186,7 @@ public class MainCardController extends BaseController {
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value = "/userInfo.do", method = RequestMethod.GET)
-	public String userInfo(Long userId, Integer deptId, Integer batchId, Integer editType, HttpServletRequest request, Model model) {
+	public String userInfo(Long userId, Integer deptId, Integer batchId, Integer editType, HttpServletRequest request, HttpServletResponse response, Model model) {
 		request.getSession().removeAttribute("companyId");
 		Company company = (Company) request.getSession().getAttribute("company");
 		Device device = (Device) request.getSession().getAttribute("device");
@@ -483,7 +483,7 @@ public class MainCardController extends BaseController {
 	 * @throws IOException
 	 */
 	@RequestMapping(value = "/command.do", method = RequestMethod.POST)
-	public void command(String comm, HttpServletRequest request, Model model) {
+	public void command(String comm, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
 		Device device = (Device) request.getSession().getAttribute("device");
 		String sn = device.getSn();
@@ -505,29 +505,29 @@ public class MainCardController extends BaseController {
 			sectionBlocks.add(section * 10);
 			commandCode = CardReaderCommandCode.Unloss;
 		}
-		// 有卡注销初始化
-		else if ("offWithCard".equals(comm)) {
+		// 有卡注销注销卡初始化
+		else if ("offCardWithInfo".equals(comm)) {
 			sectionBlocks.add(section * 10);
-			commandCode = CardReaderCommandCode.OffWithCard;
+			commandCode = CardReaderCommandCode.OffCardWithInfo;
 		}
 		// 补卡初始化
 		else if ("remakeCardInit".equals(comm)) {
 			sectionBlocks.add(section * 10);
 			commandCode = CardReaderCommandCode.RemakeCard;
 		}
-		// 换卡读原卡
-		else if ("readOldCardInit".equals(comm)) {
-			sectionBlocks.add(section * 10);
-			sectionBlocks.add(section * 10 + 2);
-			sectionBlocks.add((section + 1) * 10);
-			sectionBlocks.add((section + 2) * 10);
-			commandCode = CardReaderCommandCode.ReadOldCard;
-		}
-		// 换卡换新卡
-		else if ("changeNewCardInit".equals(comm)) {
-			sectionBlocks.add(section * 10);
-			commandCode = CardReaderCommandCode.ChangeNewCard;
-		}
+		// // 换卡读原卡
+		// else if ("readOldCardInit".equals(comm)) {
+		// sectionBlocks.add(section * 10);
+		// sectionBlocks.add(section * 10 + 2);
+		// sectionBlocks.add((section + 1) * 10);
+		// sectionBlocks.add((section + 2) * 10);
+		// commandCode = CardReaderCommandCode.ReadOldCard;
+		// }
+		// // 换卡换新卡
+		// else if ("changeNewCardInit".equals(comm)) {
+		// sectionBlocks.add(section * 10);
+		// commandCode = CardReaderCommandCode.ChangeNewCard;
+		// }
 		// 读卡
 		else if ("readCardInit".equals(comm)) {
 			sectionBlocks.add(section * 10);
@@ -544,6 +544,8 @@ public class MainCardController extends BaseController {
 			sectionBlocks.add(section * 20);
 			commandCode = CardReaderCommandCode.ReadCardOddFare;
 		}
+		if (sectionBlocks.size() == 0)
+			return;
 		try {
 			TerminalManager.getCardInfo(socketChannel, device, commandCode, sectionBlocks);
 		} catch (IOException e) {
@@ -562,7 +564,7 @@ public class MainCardController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/changeCard.do")
-	public String changeCard(Long userId, Integer editType, HttpServletRequest request, Model model) {
+	public String changeCard(Long userId, Integer editType, HttpServletRequest request, HttpServletResponse response, Model model) {
 		request.getSession().removeAttribute("companyId");
 		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
 		Company company = (Company) request.getSession().getAttribute("company");
@@ -594,7 +596,7 @@ public class MainCardController extends BaseController {
 	 * 
 	 * @param userId
 	 * @param editType
-	 *            0挂失，1解挂，2补卡，3换卡，4无卡注销，5无卡注销
+	 *            0挂失，1解挂，2补卡，3换卡，4无卡注销，5有卡注销
 	 * @param cardSN
 	 *            物理卡号
 	 * @param newCardSN
@@ -647,12 +649,12 @@ public class MainCardController extends BaseController {
 				}
 			}
 		}
-		// 有卡注销
+		// 有卡注销先注销卡
 		else if (editType == 5) {
 			SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
 			if (socketChannel != null) {
 				try {
-					this.mainCardService.offWithCard(userId, socketChannel, device, cardSN, cardInfoStr);
+					this.mainCardService.offCardWithInfo(userId, socketChannel, device, cardSN, company.getBaseSection());
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -693,20 +695,42 @@ public class MainCardController extends BaseController {
 				}
 			}
 		}
-		// 换新卡
-		else if (editType == 3) {
-			int cardSNCount = getCardSNCount(company.getId(), newCardSN, sn);
-			if (cardSNCount > 0) {
-				return;
-			}
-			SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
-			if (socketChannel != null) {
-				try {
-					this.mainCardService.changeNewCard(company.getId(), userId, socketChannel, device, newCardSN, cardInfoStr);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
+		// // 换新卡
+		// else if (editType == 3) {
+		// int cardSNCount = getCardSNCount(company.getId(), newCardSN, sn);
+		// if (cardSNCount > 0) {
+		// return;
+		// }
+		// SocketChannel socketChannel =
+		// TerminalManager.SNToSocketChannelList.get(sn);
+		// if (socketChannel != null) {
+		// try {
+		// this.mainCardService.changeNewCard(company.getId(), userId,
+		// socketChannel, device, newCardSN, cardInfoStr);
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
+		// }
+		// }
+	}
+
+	/**
+	 * 注销人员信息
+	 * 
+	 * @param request
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/offUserInfoWithInfo.do")
+	public void offUserInfoWithInfo(Long userId, HttpServletRequest request, HttpServletResponse response, Model model) {
+		PrintWriter p = null;
+		try {
+			p = response.getWriter();
+			this.mainCardService.offUserInfoWithInfo(userId);
+			p.print(1);
+		} catch (Exception e) {
+			e.printStackTrace();
+			p.print(0);
 		}
 	}
 
@@ -718,7 +742,7 @@ public class MainCardController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/readCard.do")
-	public String readCard(HttpServletRequest request, Model model) {
+	public String readCard(HttpServletRequest request, HttpServletResponse response, Model model) {
 		request.getSession().removeAttribute("companyId");
 		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
 		Company company = (Company) request.getSession().getAttribute("company");
@@ -793,7 +817,7 @@ public class MainCardController extends BaseController {
 	}
 
 	/**
-	 * 读卡修正
+	 * 修正
 	 * 
 	 * @param user
 	 * @param updateType
@@ -842,7 +866,7 @@ public class MainCardController extends BaseController {
 					} else {
 						cardAllInfo.setCardBatch(batch.getId());
 					}
-					this.mainCardService.makeCardByUserInfo(device, socketChannel, user2, cardAllInfo, user2.getCardSN(), CardReaderCommandCode.ReadCard, section);
+					this.mainCardService.makeCardByUserInfo(device, socketChannel, user2, cardAllInfo, user2.getCardSN(), CardReaderCommandCode.UpdateByInfo, section);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -859,7 +883,7 @@ public class MainCardController extends BaseController {
 	 */
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/deptAdjust.do")
-	public String deptAdjust(Long userId, HttpServletRequest request, Model model) {
+	public String deptAdjust(Long userId, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
 		List<UserDept> list = (List<UserDept>) this.userDeptService.selectListByCompanyId(company.getId());
 		model.addAttribute("list", list);
@@ -879,7 +903,7 @@ public class MainCardController extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/adjustUserList.do")
-	public String adjustUserList(Integer deptId, String searchStr, Integer selectedUserId, Integer[] userIds, boolean load, HttpServletRequest request, Model model) {
+	public String adjustUserList(Integer deptId, String searchStr, Integer selectedUserId, Integer[] userIds, boolean load, HttpServletRequest request, HttpServletResponse response, Model model) {
 		if ("".equals(searchStr) || "null".equals(searchStr)) {
 			searchStr = null;
 		}
@@ -945,7 +969,7 @@ public class MainCardController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/charge.do")
-	public String charge(HttpServletRequest request, Model model) {
+	public String charge(HttpServletRequest request, HttpServletResponse response, Model model) {
 		request.getSession().removeAttribute("companyId");
 		Device device = (Device) request.getSession().getAttribute("device");
 		model.addAttribute("device", device);

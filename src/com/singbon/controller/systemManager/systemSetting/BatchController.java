@@ -67,7 +67,7 @@ public class BatchController extends BaseController {
 	 */
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/list.do")
-	public String list(HttpServletRequest request, Model model) {
+	public String list(HttpServletRequest request, HttpServletResponse response, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
 		List<Batch> list = (List<Batch>) this.batchService.selectListByCompanyId(company.getId());
 		model.addAttribute("list", list);

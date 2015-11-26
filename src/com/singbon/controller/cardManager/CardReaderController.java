@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.channels.SocketChannel;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,7 +41,7 @@ public class CardReaderController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/index.do")
-	public String index(HttpServletRequest request, Model model) {
+	public String index(HttpServletRequest request, HttpServletResponse response, Model model) {
 		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
 		Company company = (Company) request.getSession().getAttribute("company");
 		Device device = (Device) request.getSession().getAttribute("device");
@@ -72,7 +73,7 @@ public class CardReaderController extends BaseController {
 	 * @throws IOException
 	 */
 	@RequestMapping(value = "/command.do", method = RequestMethod.POST)
-	public void command(String comm, HttpServletRequest request, Model model) {
+	public void command(String comm, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
 		Device device = (Device) request.getSession().getAttribute("device");
 		String sn = device.getSn();

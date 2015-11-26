@@ -20,20 +20,19 @@
 		where userId=#{userId}
 	</update>
 	<update id="remakeCard" parameterMap="user2">
-		update user set cardNO=#{cardNO},cardSN=#{cardSN},cardSeq=#{cardSeq},status=241
-		where userId=#{userId}
+		update user set cardNO=#{cardNO},cardSN=#{cardSN},cardSeq=#{cardSeq},status=241 where userId=#{userId}
 	</update>
 	<update id="unloss" parameterMap="user2">
-		update user set cardNO=#{cardNO},status=241
-		where userId=#{userId}
+		update user set cardNO=#{cardNO},status=241 where userId=#{userId}
 	</update>
 	<update id="changeStatus">
-		update user set status=#{status}
-		where userId=#{userId}
+		update user set status=#{status} where userId=#{userId}
+	</update>
+	<update id="offUserInfoWithInfo">
+		update user set status=244,cardSN=null where userId=#{userId}
 	</update>
 	<update id="changeNewCard">
-		update user set cardNO=#{cardNO},cardSN=#{cardSN},cardSeq=cardSeq+1
-		where userId=#{userId}
+		update user set cardNO=#{cardNO},cardSN=#{cardSN},cardSeq=cardSeq+1 where userId=#{userId}
 	</update>
 	<update id="updateByCard" parameterMap="user2">
 		update user set invalidDate=#{invalidDate},status=#{status},cardSeq=#{cardSeq},cardTypeId=#{cardTypeId},totalFare=#{totalFare},

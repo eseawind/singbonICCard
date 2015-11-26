@@ -45,7 +45,7 @@ public class SysUserController {
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value = "/index.do")
-	public String index(HttpServletRequest request, Model model) {
+	public String index(HttpServletRequest request, HttpServletResponse response, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
 		List<Device> deviceList = this.deviceService.selectDeviceListByCompanyId(company.getId(), "8", 0);
 		List<Map> userList = (List<Map>) this.sysUserService.selectListByCompanyId(company.getId());
@@ -117,7 +117,7 @@ public class SysUserController {
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value = "/list.do")
-	public String list(Integer parentId, HttpServletRequest request, Model model) {
+	public String list(Integer parentId, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
 		List<Map> list = (List<Map>) this.sysUserService.selectListByCompanyId(company.getId());
 		for (Map m : list) {

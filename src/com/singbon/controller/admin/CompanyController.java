@@ -112,7 +112,7 @@ public class CompanyController {
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/list.do")
-	public String userList(@ModelAttribute Pagination pagination, String nameStr, String includeAll, HttpServletRequest request, Model model) {
+	public String userList(@ModelAttribute Pagination pagination, String nameStr, String includeAll, HttpServletRequest request, HttpServletResponse response, Model model) {
 		String[] columns = { "id", "companyName", "serialNumber", "authNumber", "baseSection", "invalidDate", "enable" };
 		String fromSql = "company";
 		String whereSql = "1=1 ";

@@ -84,7 +84,7 @@ public class OrderTimeController extends BaseController {
 	 */
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/list.do")
-	public String list(HttpServletRequest request, Model model) {
+	public String list(HttpServletRequest request, HttpServletResponse response, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
 		List<OrderTime> list = (List<OrderTime>) this.orderTimeService.selectListByCompanyId(company.getId());
 		model.addAttribute("list", list);

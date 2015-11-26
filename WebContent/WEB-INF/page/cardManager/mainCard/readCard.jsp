@@ -8,7 +8,8 @@
 	var isHeart=false;
 	var title=null;
 	var heartTime=new Date();
-
+	var userStatus=null;
+	
 	$(function() {
 		title = $('.dialogHeader_c h1').html().split('——')[0];
 		if ('${cardStatus}' == 1) {
@@ -34,10 +35,15 @@
 				alertMsg.warn('读卡机当前处于离线状态不能读卡！');
 			}
 		});
+		
 		$('#userinfo .update').click(function() {
 			if(isOnline){
+				var updateType=$('#userinfo input[name=updateType]:checked').val();
+				if(updateType==0 && userStatus=='注销'){
+					alertMsg.warn('改人员已经注销不允许按卡修正！');
+					return;
+				}				
 				validateCallback($('#userinfo'), function(e) {
-					var updateType=$('#userinfo input[name=updateType]:checked').val();
 					if(updateType==0){
 						if(e==1){
 							$('#updateLi').hide();
@@ -90,6 +96,9 @@
 									var attr=td.attr('id');
 									var e2value=e2[attr];//卡
 									var e4value=e4[attr];//库
+									if(attr=='statusDesc'){
+										userStatus=e4value;
+									}
 									td.next().find('div').html(e2value);
 									td.next().next().find('div').html(e4value);
 									$('#userinfo input[name='+attr+']').val(e2value);
@@ -113,11 +122,10 @@
 					}else{
 						opCardResult(e2.r);
 					}
-				//读卡修正完成
+				//按库修正完成
 				}else if(e2.f1==0x0f){
 					if(e2.r==1){
 						$('#updateLi').hide();
-// 						$('#userinfo .close').click();								
 						alertMsg.correct('按库修正成功！');
 					}else{
 						opCardResult(e2.r);
@@ -282,14 +290,14 @@
 	<div class="formBar">
 		<ul>
 			<li id="updateLi" style="display: none;">
-				<div style="float: left;">
-					<input type="radio" name="updateType" value="0" checked="checked"/>按卡修正
-					<input type="radio" name="updateType" value="1"/>按库修正
-				</div>
-				<div class="button">
+				<div class="button" style="margin-right: 10px;">
 					<div class="buttonContent">
 						<button type="button" class="update">修正</button>
 					</div>
+				</div>
+				<div style="float: left;">
+					<input type="radio" name="updateType" value="0" checked="checked"/>按卡修正
+					<input type="radio" name="updateType" value="1"/>按库修正
 				</div>
 			</li>
 			<li><div class="button">

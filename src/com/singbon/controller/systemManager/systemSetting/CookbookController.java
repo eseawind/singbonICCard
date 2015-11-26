@@ -72,7 +72,7 @@ public class CookbookController extends BaseController {
 	 */
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/list.do")
-	public String cookbookList(HttpServletRequest request, Model model) {
+	public String cookbookList(HttpServletRequest request, HttpServletResponse response, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
 		List<Cookbook> list = (List<Cookbook>) this.cookbookService.selectListByCompanyId(company.getId());
 		model.addAttribute("list", list);

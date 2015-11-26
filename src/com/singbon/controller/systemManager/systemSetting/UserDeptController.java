@@ -113,7 +113,7 @@ public class UserDeptController {
 	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/list.do")
-	public String list(Integer parentId, HttpServletRequest request, Model model) {
+	public String list(Integer parentId, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
 		List list = this.userDeptService.selectByParentId(company.getId(), parentId);
 		model.addAttribute("list", list);
@@ -129,7 +129,7 @@ public class UserDeptController {
 	 */
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/index.do")
-	public String index(HttpServletRequest request, Model model) {
+	public String index(HttpServletRequest request, HttpServletResponse response, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
 		List<Batch> list = (List<Batch>) this.batchService.selectListByCompanyId(company.getId());
 		model.addAttribute("batchList", list);

@@ -65,7 +65,7 @@ public class DeviceController {
 	 */
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/posIndex.do")
-	public String userIndex(HttpServletRequest request, Model model) {
+	public String userIndex(HttpServletRequest request, HttpServletResponse response, Model model) {
 		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
 		Company company = (Company) request.getSession().getAttribute("company");
 		model.addAttribute("sysUser", sysUser);
@@ -235,7 +235,7 @@ public class DeviceController {
 	 * @return
 	 */
 	@RequestMapping(value = "/cardReaderIndex.do")
-	public String cardReader(HttpServletRequest request, Model model) {
+	public String cardReader(HttpServletRequest request, HttpServletResponse response, Model model) {
 		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
 		Company company = (Company) request.getSession().getAttribute("company");
 		model.addAttribute("sysUser", sysUser);
@@ -278,7 +278,7 @@ public class DeviceController {
 	 * @param model
 	 */
 	@RequestMapping(value = "/cardReaderList.do")
-	public String cardReaderList(HttpServletRequest request, Model model) {
+	public String cardReaderList(HttpServletRequest request, HttpServletResponse response, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
 		List<Device> list = this.deviceService.selectDeviceListByCompanyId(company.getId(), "8", 0);
 		model.addAttribute("list", list);
@@ -295,7 +295,7 @@ public class DeviceController {
 	 * @return
 	 */
 	@RequestMapping(value = "/transferIndex.do")
-	public String transfer(HttpServletRequest request, Model model) {
+	public String transfer(HttpServletRequest request, HttpServletResponse response, Model model) {
 		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
 		Company company = (Company) request.getSession().getAttribute("company");
 		model.addAttribute("sysUser", sysUser);
@@ -313,7 +313,7 @@ public class DeviceController {
 	 * @param model
 	 */
 	@RequestMapping(value = "/transferList.do")
-	public String transferList(HttpServletRequest request, Model model) {
+	public String transferList(HttpServletRequest request, HttpServletResponse response, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
 		List<Device> list = this.deviceService.selectDeviceListByCompanyId(company.getId(), "1", 0);
 		model.addAttribute("list", list);

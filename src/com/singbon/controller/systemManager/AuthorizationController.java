@@ -42,7 +42,7 @@ public class AuthorizationController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/groupIndex.do")
-	public String groupIndex(HttpServletRequest request, Model model) {
+	public String groupIndex(HttpServletRequest request, HttpServletResponse response, Model model) {
 		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
 		Company company = (Company) request.getSession().getAttribute("company");
 		model.addAttribute("sysUser", sysUser);
@@ -113,7 +113,7 @@ public class AuthorizationController extends BaseController {
 	 * @param model
 	 */
 	@RequestMapping(value = "/groupList.do")
-	public String groupList(HttpServletRequest request, Model model) {
+	public String groupList(HttpServletRequest request, HttpServletResponse response, Model model) {
 
 		Company company = (Company) request.getSession().getAttribute("company");
 		List<AuthGroup> list = this.authorizationService.selectGroup(company.getId());
@@ -132,7 +132,7 @@ public class AuthorizationController extends BaseController {
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value = "/userIndex.do")
-	public String userIndex(HttpServletRequest request, Model model) {
+	public String userIndex(HttpServletRequest request, HttpServletResponse response, Model model) {
 		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
 		Company company = (Company) request.getSession().getAttribute("company");
 		model.addAttribute("sysUser", sysUser);

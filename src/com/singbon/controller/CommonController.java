@@ -71,7 +71,7 @@ public class CommonController {
 	 * @return
 	 */
 	@RequestMapping(value = "**/index.do")
-	public String index(HttpServletRequest request, Model model) {
+	public String index(HttpServletRequest request, HttpServletResponse response, Model model) {
 		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
 		Company company = (Company) request.getSession().getAttribute("company");
 		model.addAttribute("sysUser", sysUser);
@@ -92,7 +92,7 @@ public class CommonController {
 	 * @return
 	 */
 	@RequestMapping(value = "/main.do")
-	public String main(HttpServletRequest request, Model model) {
+	public String main(HttpServletRequest request, HttpServletResponse response, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
 		String invalidDate = company.getInvalidDate();
 		if (!StringUtils.isEmpty(invalidDate)) {
@@ -134,7 +134,7 @@ public class CommonController {
 	 */
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/selectUserDeptTree.do")
-	public String selectUserDeptTree(HttpServletRequest request, Model model) {
+	public String selectUserDeptTree(HttpServletRequest request, HttpServletResponse response, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
 		List<UserDept> list = (List<UserDept>) this.userDeptService.selectListByCompanyId(company.getId());
 		model.addAttribute("list", list);
@@ -151,7 +151,7 @@ public class CommonController {
 	 */
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/selectPosIndex.do")
-	public String userIndex(HttpServletRequest request, Model model) {
+	public String userIndex(HttpServletRequest request, HttpServletResponse response, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
 		List<Dept> deptList = (List<Dept>) this.deptService.selectListByCompanyId(company.getId());
 		model.addAttribute("deptList", deptList);
@@ -216,7 +216,7 @@ public class CommonController {
 	 * @throws IOException
 	 */
 	@RequestMapping(value = "/closeSocketChannel.do", method = RequestMethod.POST)
-	public void closeSocketChannel(HttpServletRequest request, Model model) {
+	public void closeSocketChannel(HttpServletRequest request, HttpServletResponse response, Model model) {
 		Device device = (Device) request.getSession().getAttribute("device");
 		String sn = device.getSn();
 		try {
