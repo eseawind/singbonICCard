@@ -17,9 +17,9 @@ public class CardAllInfo implements Serializable {
 	// 卡底金 单位是元
 //	private Integer cardDeposit;
 	// 日消费限额 单位是元
-	private Integer limitDayFare;
+//	private Integer limitDayFare;
 	// 次消费限额
-	private Integer limitTimesFare;
+//	private Integer limitTimesFare;
 	// 预发金额
 	private Integer preOpFare;
 	// 赠送金额
@@ -53,21 +53,21 @@ public class CardAllInfo implements Serializable {
 //		this.cardDeposit = cardDeposit;
 //	}
 
-	public Integer getLimitDayFare() {
-		return limitDayFare;
-	}
-
-	public void setLimitDayFare(Integer limitDayFare) {
-		this.limitDayFare = limitDayFare;
-	}
-
-	public Integer getLimitTimesFare() {
-		return limitTimesFare;
-	}
-
-	public void setLimitTimesFare(Integer limitTimesFare) {
-		this.limitTimesFare = limitTimesFare;
-	}
+//	public Integer getLimitDayFare() {
+//		return limitDayFare;
+//	}
+//
+//	public void setLimitDayFare(Integer limitDayFare) {
+//		this.limitDayFare = limitDayFare;
+//	}
+//
+//	public Integer getLimitTimesFare() {
+//		return limitTimesFare;
+//	}
+//
+//	public void setLimitTimesFare(Integer limitTimesFare) {
+//		this.limitTimesFare = limitTimesFare;
+//	}
 
 	public Integer[] getLimitPeriods() {
 		return LimitPeriods;

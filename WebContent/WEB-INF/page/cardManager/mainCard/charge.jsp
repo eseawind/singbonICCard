@@ -8,6 +8,7 @@
 	var isHeart=false;
 	var title=null;
 	var heartTime=new Date();
+	var subsidyOddFare=0;
 
 	$(function() {
 		title = $('.dialogHeader_c h1').html().split('——')[0];
@@ -26,13 +27,13 @@
 		}
 		init();
 		
-		$('#userinfo .ok').click(function() {
+		$('#userInfo .ok').click(function() {
 			getAllOddFare();
 			validateCallback($(this).parents('form'), function(e) {
 			}, null);
 		});
 		
-		$('#userinfo .readCard').click(function() {
+		$('#userInfo .readCard').click(function() {
 			if(isOnline){
 				$.post('${base }/command.do?comm=readCardOddFareInit',function(e){
 				});
@@ -40,19 +41,19 @@
 				alertMsg.warn('读卡机当前处于离线状态不能读卡！');
 			}
 		});
-		$('#userinfo input[name=chargeType]').click(function(){
-			var oddFare=$('#userinfo input[name=oddFare]').val();
+		$('#userInfo input[name=chargeType]').click(function(){
+			var oddFare=$('#userInfo input[name=oddFare]').val();
 			if(oddFare==''){
 				oddFare=0;
 			}
-			if($('#userinfo input[name=chargeType]:checked').val()==0){
-				$('#userinfo input[name=opFare]').val(0);
-				$('#userinfo input[name=allOddFare]').val(oddFare);
-				$('#userinfo input[name=giveFare]').attr("disabled",false);
+			if($('#userInfo input[name=chargeType]:checked').val()==0){
+				$('#userInfo input[name=opFare]').val(0);
+				$('#userInfo input[name=allOddFare]').val(oddFare);
+				$('#userInfo input[name=giveFare]').attr("disabled",false);
 			}else{
-				$('#userinfo input[name=opFare]').val(oddFare);
-				$('#userinfo input[name=allOddFare]').val(0);				
-				$('#userinfo input[name=giveFare]').attr("disabled",true);
+				$('#userInfo input[name=opFare]').val(oddFare);
+				$('#userInfo input[name=allOddFare]').val(0);				
+				$('#userInfo input[name=giveFare]').attr("disabled",true);
 			}
 		});
 	});
@@ -93,15 +94,18 @@
 								alertMsg.warn('该卡状态异常！');
 								return;					
 							}
-							$('#userinfo #username').html(e4.username);
-							$('#userinfo #userNO').html(e4.userNO);
-							$('#userinfo #status').html(e4.statusDesc);
-							$('#userinfo #oddFare').html(e2.oddFare);
+							subsidyOddFare=e2.subsidyOddFare;
+							$('#userInfo #username').html(e4.username);
+							$('#userInfo #userNO').html(e4.userNO);
+							$('#userInfo #status').html(e4.statusDesc);
+							$('#userInfo #oddFare').html(e2.oddFare);
+							$('#userInfo #subsidyOddFare').html(e2.subsidyOddFare);
+							$('#userInfo #allOddFare').html(e2.oddFare+e2.subsidyOddFare);
 							
-							$('#userinfo input[name=userId]').val(e4.userId);
-							$('#userinfo input[name=cardSN]').val(e4.cardSN);
-							$('#userinfo input[name=oddFare]').val(e2.oddFare);
-							$('#userinfo input[name=cardInfoStr]').val(e2.cardInfoStr);
+							$('#userInfo input[name=userId]').val(e4.userId);
+							$('#userInfo input[name=cardSN]').val(e4.cardSN);
+							$('#userInfo input[name=oddFare]').val(e2.oddFare);
+							$('#userInfo input[name=cardInfoStr]').val(e2.cardInfoStr);
 							
 							$('#chargeLi').show();
 						});
@@ -111,9 +115,23 @@
 				//存取款完成
 				}else if(e2.f1==0x1b){
 					if(e2.r==1){
+						var oddFare=$('#userInfo input[name=allOddFare]').val();
+						$('#userInfo #oddFare').html(oddFare);
+						$('#userInfo #allOddFare').html(parseFloat(oddFare)+parseFloat(subsidyOddFare));
+						
+						var msg='存款完成！';
+						var chargeType=$('#userInfo input[name=chargeType]:checked').val();
+						if(chargeType==1){
+							var msg='取款完成！';
+						}
+						
 						$('#chargeLi').hide();
-						$('#userinfo').clearForm();
-						alertMsg.correct('存取款成功！');
+						$('#userInfo').clearForm();
+						$('#userInfo input[name=opFare]').val(0);
+						$('#userInfo input[name=giveFare]').val(0);
+						$('#userInfo input[name=allOddFare]').val(0);
+						
+						alertMsg.correct(msg);						
 					}else{
 						opCardResult(e2.r);
 					}	
@@ -149,9 +167,9 @@
 	}
 	
 	function getAllOddFare(){
-		var oddFare=$('#userinfo input[name=oddFare]').val();
-		var opFareInput=$('#userinfo input[name=opFare]');
-		var giveFareInput=$('#userinfo input[name=giveFare]');
+		var oddFare=$('#userInfo input[name=oddFare]').val();
+		var opFareInput=$('#userInfo input[name=opFare]');
+		var giveFareInput=$('#userInfo input[name=giveFare]');
 		
 		var opFare=0;
 		var giveFare=0;
@@ -164,20 +182,20 @@
 		if(giveFareInput.val()!=''){
 			giveFare=giveFareInput.val();
 		}
-		var chargeType=$('#userinfo input[name=chargeType]:checked').val();
+		var chargeType=$('#userInfo input[name=chargeType]:checked').val();
 		if(chargeType==0){
 			var allOddFare=parseFloat(oddFare)+parseFloat(opFare)+parseFloat(giveFare);
 			if(allOddFare>167772.15){
 				alertMsg.warn('总操作余额不能大于167772.15！');
 			}else{
-				$('#userinfo input[name=allOddFare]').val(allOddFare);
+				$('#userInfo input[name=allOddFare]').val(allOddFare);
 			}
 		}else{
 			var allOddFare=oddFare-opFare;
 			if(allOddFare<0){
 				alertMsg.warn('操作额不能大于余额！');		
 			}else{
-				$('#userinfo input[name=allOddFare]').val(allOddFare);
+				$('#userInfo input[name=allOddFare]').val(allOddFare);
 			}
 		}
 	}
@@ -205,7 +223,7 @@
 	left: 220px;
 }
 </style>
-<form id="userinfo" method="post" action="${base }/doCharge.do" class="pageForm required-validate">
+<form id="userInfo" method="post" action="${base }/doCharge.do" class="pageForm required-validate">
 	<input name="userId" type="hidden" /> 
 	<input name="cardSN" type="hidden" /> 
 	<input name="cardInfoStr" type="hidden"/> 
@@ -226,7 +244,15 @@
 				<dd id="status"></dd>
 			</dl>
 			<dl>
-				<dt>卡余额：</dt>
+				<dt>卡总余额：</dt>
+				<dd id="allOddFare"></dd>
+			</dl>
+			<dl>
+				<dt>补助余额：</dt>
+				<dd id="subsidyOddFare"></dd>
+			</dl>
+			<dl>
+				<dt>大钱包余额：</dt>
 				<dd id="oddFare"></dd>
 			</dl>
 		</fieldset>

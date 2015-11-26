@@ -56,7 +56,7 @@
 <!-- <script src="/js/dwz.database.js" type="text/javascript"></script> -->
 <!-- <script src="/js/dwz.datepicker.js" type="text/javascript"></script> -->
 <!-- <script src="/js/dwz.effects.js" type="text/javascript"></script> -->
-<!-- <script src="/js/dwz.checkbox.js" type="text/javascript"></script> -->
+<script src="/js/dwz.checkbox.js" type="text/javascript"></script>
 <!-- <script src="/js/dwz.history.js" type="text/javascript"></script> -->
 <!-- <script src="/js/dwz.combox.js" type="text/javascript"></script> -->
 <!-- <script src="/js/dwz.print.js" type="text/javascript"></script> -->
@@ -98,13 +98,14 @@
 			debug : false, // 调试模式 【true|false】
 			callback : function() {
 				initEnv();
-				$('#themeList').theme({
-					themeBase : 'themes'
-				}); // themeBase 相对于index页面的主题base路径
+// 				$('#themeList').theme({
+// 					themeBase : 'themes'
+// 				}); // themeBase 相对于index页面的主题base路径
 			}
 		});
 		DWZ.ui.sbar=false;
 		init();
+// 		$('#progressBar').show();
 		
 		//初始添加在线设备
 		<c:forEach items="${deviceList }" var="d">
@@ -290,12 +291,13 @@
 	}
 	
 	function heart(){
+		var heartInterval=parseInt('${company.heartInterval}')*3;
 		$('body').everyTime('1s','getCardReaderStatus', function() {
 			var d=new Date();
 			var array = map.keySet();
 			for(var i in array) {
 				var t=(d.getTime()-map.get(array[i]).getTime())/1000;
-				if(t>12){
+				if(t>heartInterval){
 					$("#deviceList .device[id="+array[i]+"] img").attr('alt','离线').attr('src','/img/offline.png');
 					$.post('${base }/removeInetSocketAddress.do?sn='+array[i]);
 					map.remove(array[i]);
@@ -351,9 +353,9 @@
 			},
 			'batchUpdate' : function(t, target) {
 				executeCmd(t,'batchUpdate');
-			},
-			'blackUpdate' : function(t, target) {
-				executeCmd(t,'blackUpdate');
+// 			},
+// 			'blackUpdate' : function(t, target) {
+// 				executeCmd(t,'blackUpdate');
 			}
 		},
 		onShowMenu : function(e, menu) {
@@ -463,7 +465,7 @@
 			<li id="disableSubsidy">补助回收</li>
 			<li class="divide" />
 			<li id="batchUpdate">批次更新</li>
-			<li id="blackUpdate">黑名单更新</li>
+<!-- 			<li id="blackUpdate">黑名单更新</li> -->
 			<li class="divide" />
 			<li id="allCookbook">全部菜肴清单</li>
 			<li id="appendCookbook">追加菜肴清单</li>

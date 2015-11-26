@@ -171,7 +171,7 @@ public interface UserDAO extends BaseDAO {
 	public void changeFromDeptToNew(@Param("fromDeptId") Integer fromDeptId, @Param("toDeptId") Integer toDeptId) throws Exception;
 
 	/**
-	 * 更改金额
+	 * 存取款更改金额
 	 * 
 	 * @param userId
 	 * @param cardNO

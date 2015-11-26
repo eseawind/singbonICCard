@@ -408,8 +408,8 @@ public class MainCardController extends BaseController {
 		user.setSubsidyVersion(0);
 		user.setSubsidyDaySum(0);
 		user.setSubsidyInvalidDate(new Date());
-		cardAllInfo.setLimitDayFare(0);
-		cardAllInfo.setLimitTimesFare(0);
+//		cardAllInfo.setLimitDayFare(0);
+//		cardAllInfo.setLimitTimesFare(0);
 		cardAllInfo.setLimitPeriods(new Integer[] { 0, 0, 0, 0, 0, 0 });
 		cardAllInfo.setSubsidyLimitPeriods(new Integer[] { 0, 0, 0, 0, 0, 0 });
 	}
@@ -541,7 +541,8 @@ public class MainCardController extends BaseController {
 		else if ("readCardOddFareInit".equals(comm)) {
 			sectionBlocks.add(section * 10);
 			sectionBlocks.add(section * 10 + 2);
-			sectionBlocks.add(section * 20);
+			sectionBlocks.add((section + 1) * 10);
+			sectionBlocks.add((section + 2) * 10);
 			commandCode = CardReaderCommandCode.ReadCardOddFare;
 		}
 		if (sectionBlocks.size() == 0)
@@ -678,8 +679,8 @@ public class MainCardController extends BaseController {
 					CardAllInfo cardAllInfo = new CardAllInfo();
 					initUserInfo(user, cardAllInfo);
 
-					cardAllInfo.setLimitDayFare(0);
-					cardAllInfo.setLimitTimesFare(0);
+//					cardAllInfo.setLimitDayFare(0);
+//					cardAllInfo.setLimitTimesFare(0);
 					cardAllInfo.setLimitPeriods(new Integer[] { 0, 0, 0, 0, 0, 0 });
 					// cardAllInfo.setCardDeposit(0);
 
@@ -855,8 +856,8 @@ public class MainCardController extends BaseController {
 
 					CardAllInfo cardAllInfo = new CardAllInfo();
 					initUserInfo(user2, cardAllInfo);
-					cardAllInfo.setLimitDayFare(0);
-					cardAllInfo.setLimitTimesFare(0);
+//					cardAllInfo.setLimitDayFare(0);
+//					cardAllInfo.setLimitTimesFare(0);
 					cardAllInfo.setLimitPeriods(new Integer[] { 0, 0, 0, 0, 0, 0 });
 					// cardAllInfo.setCardDeposit(0);
 
