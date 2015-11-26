@@ -16,8 +16,8 @@
 	<select id="selectMaxCode" resultType="java.lang.Integer" useCache="false">
 		select ifnull(max(cookbookCode),0)+1 code from cookbook where companyId=#{companyId}
 	</select>
-	<select id="selectById" resultMap="cookbook">
-		select * from cookbook where id=#{id}
+	<select id="selectById" resultMap="cookbook" useCache="false">
+		select * from cookbook where cookbookCode=#{id}
 	</select>
 	<select id="selectListByCompanyId" resultMap="cookbook">
 		select * from cookbook where companyId=#{companyId}
