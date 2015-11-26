@@ -668,8 +668,8 @@ public class MonitorService implements Runnable {
 			} else if (sendCommand.getSubFrame() == PosSubFrameCookbook.OrderTime2) {
 				orderTime(d, inetSocketAddress, PosSubFrameCookbook.OrderTime2, sendCommand, 6, 12);
 				map.put("des", DesUtil.decrypt(DeviceCommunicateStr.SendOrderTime2));
-			} else
-				break;
+			}
+			break;
 			// 黑名单
 		case PosFrame.Black:
 			if (sendCommand.getSubFrame() == PosSubFrameBlack.BatchUpdate) {

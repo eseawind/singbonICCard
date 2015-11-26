@@ -1,3 +1,5 @@
+var sysLoaded=false;
+
 function initEnv() {
 	$("body").append(DWZ.frag["dwzFrag"]);
 
@@ -19,11 +21,13 @@ function initEnv() {
 	var ajaxbg = $("#background,#progressBar");
 	ajaxbg.show();
 //	ajaxbg.hide();
-//	$(document).ajaxStart(function(){
-//		ajaxbg.show();
-//	}).ajaxStop(function(){
-//		ajaxbg.hide();
-//	});
+	$(document).ajaxStart(function(){
+		ajaxbg.show();
+	}).ajaxStop(function(){
+		if(sysLoaded){
+			ajaxbg.hide();			
+		}
+	});
 	
 	$("#leftside").jBar({minW:150, maxW:700});
 	
@@ -309,6 +313,7 @@ function initUI(_box){
 	if ($.fn.selectedTodo) $("a[target=selectedTodo]", $p).selectedTodo();
 	if ($.fn.pagerForm) $("form[rel=pagerForm]", $p).pagerForm({parentBox:$p});
 
+	sysLoaded=true;
 	$("#background,#progressBar").hide();
 	// 这里放其他第三方jQuery插件...
 }
