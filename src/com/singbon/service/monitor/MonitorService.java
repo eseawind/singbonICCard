@@ -365,7 +365,7 @@ public class MonitorService implements Runnable {
 		if (cookbook == null)
 			return;
 		String sendBufStr = StringUtil.hexLeftPad(PosFrame.Cookbook, 2) + StringUtil.hexLeftPad(PosSubFrameCookbook.Append, 2) + "0000" + StringUtil.hexLeftPad(sendCommand.getCommandCode(), 4)
-				+ StringUtil.hexLeftPad(cookbook.getCookbookCode(), 4) + StringUtil.hexLeftPad(cookbook.getPrice().intValue() / 100, 8)
+				+ StringUtil.hexLeftPad(cookbook.getCookbookCode(), 4) + StringUtil.hexLeftPad(cookbook.getPrice().intValue(), 8)
 				+ StringUtil.strRightPad(StringUtil.strToGB2312(cookbook.getCookbookName()), 32) + "0000";
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
 		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + CommandDevice.NoSubDeviceNum + DeviceType.Main + DeviceType.getDeviceTypeFrame(device) + bufLen + sendBufStr;
@@ -670,7 +670,7 @@ public class MonitorService implements Runnable {
 				map.put("des", DesUtil.decrypt(DeviceCommunicateStr.SendOrderTime2));
 			}
 			break;
-			// 黑名单
+		// 黑名单
 		case PosFrame.Black:
 			if (sendCommand.getSubFrame() == PosSubFrameBlack.BatchUpdate) {
 				batchUpdate(d, inetSocketAddress, sendCommand);
