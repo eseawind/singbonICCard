@@ -621,13 +621,10 @@ public class MainCardController extends BaseController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		// 挂失、无卡注销
-		if (editType == 0 || editType == 4) {
+		// 挂失
+		if (editType == 0) {
 			try {
 				int status = 243;
-				if (editType == 4) {
-					status = 244;
-				}
 				this.mainCardService.loss(userId, company.getId(), cardNO, status, lossReason);
 				p.print(1);
 			} catch (Exception e) {

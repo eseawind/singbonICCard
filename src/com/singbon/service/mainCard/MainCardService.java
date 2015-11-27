@@ -318,7 +318,7 @@ public class MainCardService extends BaseService {
 		String cardInfo = "";
 		for (int i = 0; i < 4; i++) {
 			String section = StringUtil.hexLeftPad(baseSection + i, 2);
-			for (int j = 0; j < 4; j++) {
+			for (int j = 0; j < 3; j++) {
 				cardInfo += section + StringUtil.hexLeftPad(j, 2) + "00" + StringUtil.hexLeftPad(0, 32);
 			}
 		}

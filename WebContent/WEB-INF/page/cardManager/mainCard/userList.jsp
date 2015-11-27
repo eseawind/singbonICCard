@@ -166,20 +166,20 @@
 					$.pdialog.open(url, 'dialog', '有卡注销', cardOptions);
 				}
 			},
-			'offNoCard' : function(t, target) {
-				var userId=$(t).attr('userId');
-				if(userId==null){
-					alertMsg.warn('请先选择人员！');
-					return;					
-				}
-				alertMsg.confirm('确定要注销该人员吗？', {
-					okCall : function() {
-						$.post('${base}/doChangeCard.do?editType=4&userId='+ userId+'&cardNO='+$(t).attr('cardNO'), function(e) {
-							refreshUserList();
-						});
-					}
-				});
-			},
+// 			'offNoCard' : function(t, target) {
+// 				var userId=$(t).attr('userId');
+// 				if(userId==null){
+// 					alertMsg.warn('请先选择人员！');
+// 					return;					
+// 				}
+// 				alertMsg.confirm('确定要注销该人员吗？', {
+// 					okCall : function() {
+// 						$.post('${base}/doChangeCard.do?editType=4&userId='+ userId+'&cardNO='+$(t).attr('cardNO'), function(e) {
+// 							refreshUserList();
+// 						});
+// 					}
+// 				});
+// 			},
 			'charge' : function(t, target) {
 				if (!checkDeviceSn()) {
 					return;
@@ -275,11 +275,11 @@
 <!-- 			<li id="changeCard">换卡</li> -->
 <%-- 		</security:authorize> --%>
 		<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MAINCARD_OFFWITHCARD">
-			<li id="offWithCard">有卡注销</li>
+			<li id="offWithCard">卡注销</li>
 		</security:authorize>
-		<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MAINCARD_OFFNOCARD">
-			<li id="offNoCard">无卡注销</li>
-		</security:authorize>
+<%-- 		<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MAINCARD_OFFNOCARD"> --%>
+<!-- 			<li id="offNoCard">无卡注销</li> -->
+<%-- 		</security:authorize> --%>
 		<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MAINCARD_CHARGE">
 			<li id="charge">存、取款</li>
 		</security:authorize>
