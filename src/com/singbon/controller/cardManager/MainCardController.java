@@ -329,7 +329,6 @@ public class MainCardController extends BaseController {
 					user.setCardMakeDate(new Date());
 					user.setTotalFare(allOpCash);
 					user.setOddFare(allOpCash);
-					user.setDaySumFare(allOpCash);
 					user.setOpCount(cardOpCounter);
 
 					initUserInfo(user, cardAllInfo);
@@ -354,10 +353,10 @@ public class MainCardController extends BaseController {
 					User user2 = this.mainCardService.selectByUserId(user.getUserId());
 					user2.setCardSN(user.getCardSN());
 					long cardNO = this.mainCardService.selectMaxCardNO(company.getId());
+					user2.setStatus(241);
 					user2.setCardNO(cardNO);
 					user2.setTotalFare(allOpCash);
 					user2.setOddFare(allOpCash);
-					user2.setDaySumFare(allOpCash);
 					user2.setOpCount(cardOpCounter);
 
 					initUserInfo(user2, cardAllInfo);

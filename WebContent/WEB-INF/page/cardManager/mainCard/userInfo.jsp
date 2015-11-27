@@ -139,7 +139,11 @@
 				}else if(e2.f1==4){
 					if(e2.r==1){
 						refreshUserList();
- 						$('#userinfo').clearForm();
+						$('#userinfo input[name=cardSN]').val('');
+						$('#userinfo input[name=username]').val('');
+						$('#userinfo input[name=shortName]').val('');
+						$('#userinfo input[name=userNO]').val('');
+						
 						alertMsg.correct('单个发卡完成！');
 					}else{
 						opCardResult(e2.r);

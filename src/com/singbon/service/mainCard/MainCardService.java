@@ -191,7 +191,7 @@ public class MainCardService extends BaseService {
 		String tmCardOPCount = StringUtil.hexLeftPad(user.getOpCount(), 4);// 2
 		String tmCardOddFare = StringUtil.hexLeftPad(user.getOddFare(), 8);// 4
 		String tmLastConsumeTime = "000000";// 3
-		String tmDaySumFare = StringUtil.hexLeftPad(user.getDaySumFare(), 6);// 3
+		String tmDaySumFare = StringUtil.hexLeftPad(0, 6);// 3
 		String tmLimitPeriod1 = StringUtil.hexLeftPad(cardAllInfo.getLimitPeriods()[0], 1);
 		String tmLimitPeriod2 = StringUtil.hexLeftPad(cardAllInfo.getLimitPeriods()[1], 1);
 		String tmLimitPeriod3 = StringUtil.hexLeftPad(cardAllInfo.getLimitPeriods()[2], 1);
@@ -434,8 +434,9 @@ public class MainCardService extends BaseService {
 		}
 
 		String opCountStr = cardInfoStr.substring(44, 48);
-		int opCount=Integer.parseInt(opCountStr, 16)+1;
-		cardInfoStr = cardInfoStr.substring(0, 26) + StringUtil.hexLeftPad(totalFare, 8) + cardInfoStr.substring(34, 44) +StringUtil.hexLeftPad(opCount, 4)+ StringUtil.hexLeftPad(oddFare2, 8) + cardInfoStr.substring(56);
+		int opCount = Integer.parseInt(opCountStr, 16) + 1;
+		cardInfoStr = cardInfoStr.substring(0, 26) + StringUtil.hexLeftPad(totalFare, 8) + cardInfoStr.substring(34, 44) + StringUtil.hexLeftPad(opCount, 4) + StringUtil.hexLeftPad(oddFare2, 8)
+				+ cardInfoStr.substring(56);
 		String commandCodeStr = "0000" + StringUtil.hexLeftPad(CardReaderCommandCode.Charge, 4);
 		String sendBufStr = CardReaderFrame.WriteCard + commandCodeStr + CardReaderFrame.ValidateCardSN + user.getCardSN() + cardInfoStr;
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
