@@ -197,6 +197,43 @@ public class StringUtil {
 	}
 
 	/**
+	 * 转换日期格式为16进制字符串 例：“2009-12-04” -> “9C04”
+	 * 修改2009-07-06：二进制前7位表示年，下4位月，最后5位表示日如"2009-07-06" -> "12E6"
+	 * 
+	 * @param date
+	 * @return
+	 */
+
+	public static String dateStrToHexStr(String dateStr) {
+		Calendar date = Calendar.getInstance();
+		String[] dateStrs = dateStr.split("-");
+		date.set(StringUtil.objToInt(dateStrs[0]), StringUtil.objToInt(dateStrs[1]), StringUtil.objToInt(dateStrs[2]));
+		date.add(Calendar.MONTH, -1);
+		String year = String.valueOf(date.get(Calendar.YEAR));
+		byte tmYear = (byte) ((int) Integer.valueOf(year.substring(2)));
+		byte tmMonth = (byte) (date.get(Calendar.MONTH)+1);
+		byte tmDay = (byte) date.get(Calendar.DAY_OF_MONTH);
+
+		String tmpStr = Integer.toHexString((tmYear << 1) | (tmMonth >> 3));
+		if (tmpStr.length() == 1) {
+			tmpStr = "0" + tmpStr;
+		}
+
+		String tmpStr2 = Integer.toHexString((byte) (tmMonth << 5 | tmDay));
+		tmpStr2 = tmpStr2.substring(tmpStr2.length() - 2);
+		if (tmpStr2.length() == 1) {
+			tmpStr2 = "0" + tmpStr2;
+		}
+
+		tmpStr += tmpStr2;
+
+		if (tmpStr.length() == 4) {
+			return tmpStr;
+		}
+		return "0000";
+	}
+
+	/**
 	 * 转换16进制字符串为日期格式 例：“9C04” -> “2009-12-04”
 	 * 修改2009-07-06：二进制前7位表示年，下4位月，最后5位表示日如"12E6" -> "2009-07-06"
 	 */
@@ -512,7 +549,9 @@ public class StringUtil {
 		// 00 00 00 00 00 02 02 00 0A 19 19 00 00 00 00 46 1b
 		// 消费机初始化03030303030303030303030303030303 00 00 00 01 00 00 00 00 00 00
 		// 03 03 00 0A 19 19 00 00 00 00 46 1b
-		// 消费机初始化03030303030303030303030303030303 00 00 00 01 00 00 00 00 00 00 02 02 00 16 04 03 00 00 00 00 43 74 61 61 88 88 01 00 0A 00 0A 00 B8 89
+		// 消费机初始化03030303030303030303030303030303 00 00 00 01 00 00 00 00 00 00
+		// 02 02 00 16 04 03 00 00 00 00 43 74 61 61 88 88 01 00 0A 00 0A 00 B8
+		// 89
 		byte[] b = StringUtil.strTobytes("03030303030303030303030303030303 00 00 00 01 00 00 00 00 00 00 02 02 00 16 04 03 00 00 00 00 43 74 61 61 88 88 01 00 0A 00 0A 00 B8 89".replaceAll(" ", ""));
 		CRC16.generate(b);
 		StringUtil.print(Integer.toHexString(b[b.length - 2]).replace("ffffff", "") + " ");

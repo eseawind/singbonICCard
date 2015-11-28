@@ -6,7 +6,7 @@
 	// 0信息录入，1修改，2单个发卡，3信息发卡
 	var cardOptions = {
 		width : 600,
-		height : 500,
+		height : 420,
 		max : false,
 		mask : true,
 		mixable : false,
@@ -47,11 +47,13 @@
 					alertMsg.warn('请选择部门');
 					return;
 				}
-				var url = '${base}/userInfo.do?editType=0&deptId='+ selectedDeptId + '&batchId=' + selectedBatchId;
+				cardOptions.height=420;
+				var url = '${base}/editUser.do?editType=0&deptId='+ selectedDeptId + '&batchId=' + selectedBatchId;
 				$.pdialog.open(url, 'dialog', '信息录入', cardOptions);
 			},
 			'edit' : function(t, target) {
-				var url = '${base}/userInfo.do?editType=1&userId='+ $(t).attr('userId');
+				cardOptions.height=420;
+				var url = '${base}/editUser.do?editType=1&userId='+ $(t).attr('userId');
 				$.pdialog.open(url, 'dialog', '信息修改', cardOptions);
 			},
 			'dept' : function(t, target) {
@@ -71,7 +73,8 @@
 					return;
 				}
 
-				var url = '${base}/userInfo.do?editType=2&deptId='+ selectedDeptId + '&batchId=' + selectedBatchId;
+				cardOptions.height=420;
+				var url = '${base}/editUser.do?editType=2&deptId='+ selectedDeptId + '&batchId=' + selectedBatchId;
 				$.pdialog.open(url, 'dialog', '单个发卡', cardOptions);
 			},
 			'infoCard' : function(t, target) {
@@ -79,7 +82,8 @@
 					return;
 				}
 				if ($(t).attr('status') == 0) {
-					var url = '${base}/userInfo.do?editType=3&userId='+ $(t).attr('userId');
+					cardOptions.height=420;
+					var url = '${base}/editUser.do?editType=3&userId='+ $(t).attr('userId');
 					$.pdialog.open(url, 'dialog', '信息发卡', cardOptions);
 				} else {
 					alertMsg.warn('该用户已发卡不能重复操作！');
@@ -94,13 +98,15 @@
 					return;
 				}
 
-				var url = '${base}/userInfo.do?editType=4&deptId='+ selectedDeptId + '&batchId=' + selectedBatchId;
+				cardOptions.height=420;
+				var url = '${base}/editUser.do?editType=4&deptId='+ selectedDeptId + '&batchId=' + selectedBatchId;
 				$.pdialog.open(url, 'dialog', '批量发卡', batchCardOptions);
 			},
 			'readCard' : function(t, target) {
 				if (!checkDeviceSn()) {
 					return;
 				}
+				cardOptions.height=500;
 				var url = '${base}/readCard.do';
 				$.pdialog.open(url, 'dialog', '读卡修正', cardOptions);
 			},
@@ -137,17 +143,6 @@
 					alertMsg.warn('该卡不是挂失卡，不能进行补卡操作！');
 				}
 			},
-// 			'changeCard' : function(t, target) {
-// 				if (!checkDeviceSn()) {
-// 					return;
-// 				}
-// 				if ($(t).attr('status') == 241) {
-// 					var url = '${base}/changeCard.do?editType=3&userId='+ $(t).attr('userId');
-// 					$.pdialog.open(url, 'dialog', '换卡', cardOptions);
-// 				} else {
-// 					alertMsg.warn('该卡不是正常卡，不能进行换卡操作！');
-// 				}
-// 			},
 			'offWithCard' : function(t, target) {
 				if (!checkDeviceSn()) {
 					return;
@@ -166,20 +161,6 @@
 					$.pdialog.open(url, 'dialog', '有卡注销', cardOptions);
 				}
 			},
-// 			'offNoCard' : function(t, target) {
-// 				var userId=$(t).attr('userId');
-// 				if(userId==null){
-// 					alertMsg.warn('请先选择人员！');
-// 					return;					
-// 				}
-// 				alertMsg.confirm('确定要注销该人员吗？', {
-// 					okCall : function() {
-// 						$.post('${base}/doChangeCard.do?editType=4&userId='+ userId+'&cardNO='+$(t).attr('cardNO'), function(e) {
-// 							refreshUserList();
-// 						});
-// 					}
-// 				});
-// 			},
 			'charge' : function(t, target) {
 				if (!checkDeviceSn()) {
 					return;
@@ -271,15 +252,9 @@
 		<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MAINCARD_REMAKECARD">
 			<li id="remakeCard">补卡</li>
 		</security:authorize>
-<%-- 		<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MAINCARD_CHANGECARD"> --%>
-<!-- 			<li id="changeCard">换卡</li> -->
-<%-- 		</security:authorize> --%>
 		<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MAINCARD_OFFWITHCARD">
 			<li id="offWithCard">卡注销</li>
 		</security:authorize>
-<%-- 		<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MAINCARD_OFFNOCARD"> --%>
-<!-- 			<li id="offNoCard">无卡注销</li> -->
-<%-- 		</security:authorize> --%>
 		<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MAINCARD_CHARGE">
 			<li id="charge">存、取款</li>
 		</security:authorize>

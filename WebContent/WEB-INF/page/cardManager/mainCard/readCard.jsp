@@ -221,7 +221,7 @@
 				<td></td>
 			</tr>
 			<tr>
-				<td id="invalidDate">当前有效期</td>
+				<td id="endDate">当前有效期</td>
 				<td></td>
 				<td></td>
 			</tr>

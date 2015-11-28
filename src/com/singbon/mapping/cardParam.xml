@@ -6,11 +6,11 @@
 	<parameterMap type="com.singbon.entity.CardParam" id="cardParam2" />
 	<cache eviction="FIFO" size="1" readOnly="true"/>
 	<insert id="insert">
-		insert into cardParam (companyId,cardCost,prepayFare)
-			select #{companyId},cardCost,prepayFare from cardParamBase
+		insert into cardParam (companyId,cardDeposit,prepayFare)
+			select #{companyId},cardDeposit,prepayFare from cardParamBase
 	</insert>
 	<update id="update" parameterMap="cardParam2">
-		update cardParam set cardCost=#{cardCost},prepayFare=#{prepayFare}
+		update cardParam set cardDeposit=#{cardDeposit},prepayFare=#{prepayFare}
 		where id=#{id}
 	</update>
 	<select id="selectByCompanyId" resultMap="cardParam">

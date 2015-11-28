@@ -131,7 +131,7 @@ $(function() {
 		<dl style="padding-left: 33px;">
 			<dt>用户密码：</dt>
 			<dd>
-				<input name="userPwd" type="text" class="required digits" minlength="5" maxlength="5" value="${consumeParam.userPwd}"/>
+				<input name="userPwd" type="text" class="required digits" minlength="4" maxlength="4" value="${consumeParam.userPwd}"/>
 			</dd>
 		</dl>
 	</div>

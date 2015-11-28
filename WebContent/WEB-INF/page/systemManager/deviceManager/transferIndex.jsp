@@ -144,7 +144,7 @@
 	</div>
 	<div class="form transferForm">
 		<form id="transferForm" method="post" action="${base }/addEdit.do" class="pageForm required-validate">
-			<div class="pageFormContent" style="padding-bottom: 15px;">
+			<div class="pageFormContent" style="padding-bottom: 15px;overflow: auto;width: 1200px;">
 				<dl style="width: 420px;">
 					<dt>机器号：</dt>
 					<dd style="width: 350px;">

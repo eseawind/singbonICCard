@@ -104,7 +104,7 @@ public interface UserDAO extends BaseDAO {
 	 * @param user
 	 * @return
 	 */
-	public Long selectCountByUserNOUserId(@Param("companyId") Integer companyId, @Param("userNO") String userNO, @Param("userId") Long userId) throws Exception;
+	public Integer selectCountByUserNOUserId(@Param("companyId") Integer companyId, @Param("userNO") String userNO, @Param("userId") Long userId) throws Exception;
 
 	/**
 	 * 查询最大卡号+1

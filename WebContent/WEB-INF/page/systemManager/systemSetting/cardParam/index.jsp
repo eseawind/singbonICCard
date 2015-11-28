@@ -53,10 +53,10 @@
 <form id="cardParamForm" method="post" action="${base}/save.do" class="pageForm required-validate">
 	<div class="pageFormContent" layoutH="188" style="width: 500px;margin: 50px 0 0 200px;">
 		<dl style="margin: 10px 0;">
-			<dt>卡成本：</dt>
+			<dt>卡押金：</dt>
 			<dd>
 				<input type="hidden" name="id" value="${cardParam.id}"/>
-				<input type="text" name="cardCost" value="${cardParam.cardCost}" maxlength="20" class="digits required" />
+				<input type="text" name="cardDeposit" value="${cardParam.cardDeposit}" maxlength="20" class="digits required" />
 			</dd>
 		</dl>
 		<dl style="margin: 10px 0;">

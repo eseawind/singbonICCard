@@ -79,6 +79,8 @@
 		$('#userinfo .delete').click(function() {
 			$('body').stopTime();
 		});
+		
+		getAllFare();
 	});
 
 	function infoCard(){
@@ -213,6 +215,15 @@
 			$('#userinfo input[name=shortName]').val(tr.attr('shortName'));
 			$('#userinfo input[name=userNO]').val(tr.attr('userNO'));
 			$('#userinfo input[name=sex][value='+tr.attr('sex')+']').attr('checked',true);
+			$('#userinfo input[name=giveFare]').val(tr.attr('giveFare'));
+			$('#userinfo input[name=preOpFare]').val(tr.attr('preOpFare'));
+			$('#userinfo input[name=consumePwd]').val(tr.attr('consumePwd'));
+			
+			var select = $('#userinfo select');
+			var cardTypeId=tr.attr('cardTypeId');
+			select.prev().attr('value',cardTypeId).html($('option[value=' + cardTypeId + ']', select).html());
+			
+			getAllFare();
 		}else{
 			alertMsg.warn('该用户已发卡！');		
 		}
@@ -225,7 +236,7 @@
 		
 		var preOpFare=0;
 		var giveFare=0;
-		var cardCost=$('#userinfo input[name=cardCost]').val();
+		var cardDeposit=$('#userinfo input[name=cardDeposit]').val();
 		var allFare=0;
 		
 		if(preOpFareInput.val()==''){
@@ -238,7 +249,7 @@
 		}else{
 			giveFare=giveFareInput.val();
 		}
-		allFare=parseFloat(preOpFare)+parseFloat(giveFare)-parseFloat(cardCost);
+		allFare=parseFloat(preOpFare)+parseFloat(giveFare)-parseFloat(cardDeposit);
 		allFareInput.val(allFare);
 		if(allFare>167772.15){
 			alertMsg.warn('实际金额不能大于167772.15！');
@@ -266,8 +277,8 @@
 }
 
 .dialog .pageFormContent dd span.error {
-	width: 85px;
-	left: 180px;
+	width: 95px;
+	left: 175px;
 }
 </style>
 <c:if test="${editType==4 }">
@@ -284,7 +295,8 @@
 		<tbody>
 			<c:forEach var="user" items="${list}" varStatus="status">
 				<tr target="batchCard" <c:if test="${status.index==0}">class="selected"</c:if> 
-					userId="${user.userId}" status="0" username="${user.username}" shortName="${user.shortName}" userNO="${user.userNO}" cardID="${user.cardID}" sex="${user.sex}">
+					userId="${user.userId}" status="0" username="${user.username}" shortName="${user.shortName}" userNO="${user.userNO}" cardTypeId="${user.cardTypeId}"
+					cardID="${user.cardID}" sex="${user.sex}" consumePwd="${user.consumePwd}" giveFare="${user.giveFare}" preOpFare="${user.preOpFare}">
 					<td>${status.index+1}</td>
 					<td>${user.username}</td>
 					<td>${user.userNO}</td>
@@ -295,18 +307,18 @@
 	</table>
 	</div>
 </c:if>
-<form id="userinfo" method="post" action="${base }/addEdit.do" class="pageForm required-validate">
+<form id="userinfo" method="post" action="${base }/saveUser.do" class="pageForm required-validate">
 	<div class="pageFormContent" layoutH="60">
 		<fieldset>
 			<legend>基本信息</legend>
 			<dl>
 				<dt>用户姓名：</dt>
 				<dd>
-					<input name="userId" type="hidden" value="${user.userId }" /> 
-					<input name="deptId" type="hidden" value="${deptId }" />
-					<input name="editType" type="hidden" value="${editType }" />
-					<input name="cardSN" type="hidden" value="${user.cardSN }" /> 
-					<input name="batchId" type="hidden" value="${batch.id }" /> 
+					<input name="userId" type="hidden" value="${user.userId}" /> 
+					<input name="deptId" type="hidden" value="${deptId}" />
+					<input name="editType" type="hidden" value="${editType}" />
+					<input name="cardSN" type="hidden" value="${user.cardSN}" /> 
+					<input name="batchId" type="hidden" value="${batchId}" /> 
 					<input name="username" type="text" class="required"
 						value="${user.username }" onblur="shortName.value=($('input[name=username]').toPinyin());"
 						onchange="shortName.value=($('input[name=username]').toPinyin())"
@@ -328,15 +340,14 @@
 			<dl>
 				<dt>性别：</dt>
 				<dd>
-					<label><input type="radio" name="sex"
-						<c:if test="${user.sex==null || user.sex==0}">checked="checked"</c:if> value="0" />男</label> <label><input
-						type="radio" name="sex" value="1" <c:if test="${user.sex==1}">checked="checked"</c:if> />女</label>
+					<label><input type="radio" name="sex" <c:if test="${user.sex==null || user.sex==0}">checked="checked"</c:if> value="0" />男</label>
+					<label><input type="radio" name="sex" value="1" <c:if test="${user.sex==1}">checked="checked"</c:if> />女</label>
 				</dd>
 			</dl>
 			<dl>
 				<dt>身份证号：</dt>
 				<dd>
-					<input name="cardID" type="text" value="${user.cardID==null?'123456789012345678':user.cardID }" />
+					<input name="cardID" type="text" value="${cardID}" />
 				</dd>
 			</dl>
 		</fieldset>
@@ -347,29 +358,7 @@
 				<dd>
 					<select class="combox" name="cardTypeId" class="required" outerw="105" innerw="122">
 						<c:forEach items="${discountList }" var="d">
-							<option value="${d.discountType }" <c:if test="${d.discountType==user.cardTypeId}">selected="selected"</c:if>>${d.discountType}类卡</option>
-						</c:forEach>
-					</select>
-				</dd>
-			</dl>
-			<dl>
-				<dt>卡功能：</dt>
-				<dd>
-					<select class="combox" name="cardFunc" class="required" outerw="105" innerw="122">
-						<c:forEach items="${cardFuncList }" var="f">
-							<option value="${f.id }" <c:if test="${f.id==user.cardFunc}">selected="selected"</c:if>>${f.funcName
-								}</option>
-						</c:forEach>
-					</select>
-				</dd>
-			</dl>
-			<dl>
-				<dt>客户身份：</dt>
-				<dd>
-					<select class="combox" name="cardIdentity" class="required" outerw="105" innerw="122">
-						<c:forEach items="${cardIdentityList }" var="i">
-							<option value="${i.id }" <c:if test="${i.id==user.cardIdentity}">selected="selected"</c:if>>${i.identityName
-								}</option>
+							<option value="${d.discountType }" <c:if test="${d.discountType==cardTypeId}">selected="selected"</c:if>>${d.discountType}类卡</option>
 						</c:forEach>
 					</select>
 				</dd>
@@ -377,19 +366,19 @@
 			<dl>
 				<dt>实际金额：</dt>
 				<dd>
-					<input id="allFare" type="text" value="0" readonly="readonly"/>
+					<input class="required number" id="allFare" type="text" value="0" readonly="readonly"/>
 				</dd>
 			</dl>
 			<dl>
 				<dt>赠送金额：</dt>
 				<dd>
-					<input class="required number" name="giveFare" type="text" value="0" onkeyup="getAllFare();"/>
+					<input class="required number" name="giveFare" type="text" value="${giveFare}" onkeyup="getAllFare();"/>
 				</dd>
 			</dl>
 			<dl>
 				<dt>预发金额：</dt>
 				<dd>
-					<input class="required number" name="preOpFare" type="text" value="${cardParam.prepayFare}" onkeyup="getAllFare();"/>
+					<input class="required number" name="preOpFare" type="text" value="${preOpFare}" onkeyup="getAllFare();"/>
 				</dd>
 			</dl>
 		</fieldset>
@@ -398,28 +387,25 @@
 			<dl>
 				<dt>消费密码：</dt>
 				<dd>
-					<input name="consumePwd" type="text" class="digits"
-						value="${user.consumePwd==null?8888:user.consumePwd }" />
+					<input name="consumePwd" type="text" class="required digits" minlength="4" maxlength="4" value="${consumePwd}" />
 				</dd>
 			</dl>
 			<dl>
-				<dt>开户卡成本：</dt>
+				<dt>卡押金：</dt>
 				<dd>
-					<input name="cardCost" type="text" class="number" value="${cardParam.cardCost}" readonly="readonly"/>
+					<input name="cardDeposit" type="text" class="number required" value="${cardDeposit}" readonly="readonly"/>
 				</dd>
 			</dl>
 			<dl>
 				<dt>开始日期：</dt>
 				<dd>
-					<input readonly="true" type="text" name="beginDate" maxlength="20"
-						value="<fmt:formatDate value="${user.beginDate==null ? batch.beginDate :user.beginDate}" pattern="yyyy-MM-dd"/>" />
+					<input type="text" name="beginDate" maxlength="20" class="required" value="${beginDate}" readonly="readonly"/>
 				</dd>
 			</dl>
 			<dl>
 				<dt>当前有效期：</dt>
 				<dd>
-					<input type="text" name="invalidDate" maxlength="20" class="date required" readonly="readonly"
-						value="<fmt:formatDate value="${user.invalidDate==null ? batch.endDate :user.invalidDate }" pattern="yyyy-MM-dd"/>" />
+					<input type="text" name="endDate" maxlength="20" class="required" value="${endDate}" readonly="readonly"/>
 				</dd>
 			</dl>
 		</fieldset>

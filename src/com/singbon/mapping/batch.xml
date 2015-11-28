@@ -7,11 +7,11 @@
 	<parameterMap type="com.singbon.entity.BatchBlack" id="batchBlack2" />
 	<cache eviction="FIFO" size="2000" readOnly="true"/>
 	<insert id="insert" parameterMap="batch2">
-		insert into batch (companyId,batchName,beginDate,endDate,invalidDate,status)
-		values (#{companyId},#{batchName},#{beginDate},#{endDate},#{invalidDate},0)
+		insert into batch (companyId,batchName,beginDate,endDate,status)
+		values (#{companyId},#{batchName},#{beginDate},#{endDate},0)
 	</insert>
 	<update id="update" parameterMap="batch2">
-		update batch set batchName=#{batchName},beginDate=#{beginDate},endDate=#{endDate},invalidDate=#{invalidDate}
+		update batch set batchName=#{batchName},beginDate=#{beginDate},endDate=#{endDate}
 		where id=#{id}
 	</update>
 	<update id="black">

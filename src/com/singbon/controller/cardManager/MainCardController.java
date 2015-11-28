@@ -3,9 +3,7 @@ package com.singbon.controller.cardManager;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.channels.SocketChannel;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,10 +26,9 @@ import com.singbon.device.CardReaderResultCommandCode;
 import com.singbon.device.TerminalManager;
 import com.singbon.entity.Batch;
 import com.singbon.entity.CardAllInfo;
-import com.singbon.entity.CardFunc;
-import com.singbon.entity.CardIdentity;
 import com.singbon.entity.CardParam;
 import com.singbon.entity.Company;
+import com.singbon.entity.ConsumeParam;
 import com.singbon.entity.Device;
 import com.singbon.entity.Discount;
 import com.singbon.entity.Pagination;
@@ -43,6 +40,7 @@ import com.singbon.service.CompanyService;
 import com.singbon.service.mainCard.MainCardService;
 import com.singbon.service.systemManager.systemSetting.BatchService;
 import com.singbon.service.systemManager.systemSetting.CardParamService;
+import com.singbon.service.systemManager.systemSetting.ConsumeParamService;
 import com.singbon.service.systemManager.systemSetting.DiscountService;
 import com.singbon.service.systemManager.systemSetting.UserDeptService;
 import com.singbon.util.StringUtil;
@@ -69,6 +67,8 @@ public class MainCardController extends BaseController {
 	public CommonService commonService;
 	@Autowired
 	public CardParamService cardParamService;
+	@Autowired
+	public ConsumeParamService consumeParamService;
 	@Autowired
 	public DiscountService discountService;
 
@@ -172,81 +172,96 @@ public class MainCardController extends BaseController {
 	}
 
 	/**
-	 * 用户信息页面
+	 * 用户信息编辑页面
 	 * 
 	 * @param id
 	 * @param deptId
 	 * @param batchId
 	 * @param editType
-	 *            0信息录入，1修改，2单个发卡，3信息发卡
+	 *            0信息录入、1修改、2单个发卡、3信息发卡、4批量发卡
 	 * @param sn
 	 * @param request
 	 * @param model
 	 * @return
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@RequestMapping(value = "/userInfo.do", method = RequestMethod.GET)
-	public String userInfo(Long userId, Integer deptId, Integer batchId, Integer editType, HttpServletRequest request, HttpServletResponse response, Model model) {
+	@RequestMapping(value = "/editUser.do", method = RequestMethod.GET)
+	public String editUser(Long userId, Integer deptId, Integer batchId, Integer editType, HttpServletRequest request, HttpServletResponse response, Model model) {
 		request.getSession().removeAttribute("companyId");
 		Company company = (Company) request.getSession().getAttribute("company");
-		Device device = (Device) request.getSession().getAttribute("device");
 
-		List<CardFunc> cardFuncList = new ArrayList<CardFunc>();
-		List<CardIdentity> cardIdentityList = new ArrayList<CardIdentity>();
-		CardFunc m1 = new CardFunc();
-		m1.setId(0);
-		m1.setFuncName("银校卡");
-		CardFunc m2 = new CardFunc();
-		m2.setId(1);
-		m2.setFuncName("临时卡");
-		CardFunc m3 = new CardFunc();
-		m3.setId(2);
-		m3.setFuncName("身份卡");
+		// 批量发卡获取未发卡人员列表
+		if (editType == 4) {
+			List<User> list = this.mainCardService.selectNoCardByDeptId(deptId);
+			model.addAttribute("list", list);
 
-		cardFuncList.add(m1);
-		cardFuncList.add(m2);
-		cardFuncList.add(m3);
+			model.addAttribute("cardID", "123456789012345678");
+			model.addAttribute("cardTypeId", 0);
 
-		CardIdentity m4 = new CardIdentity();
-		m4.setId(1);
-		m4.setIdentityName("教师");
-		CardIdentity m5 = new CardIdentity();
-		m5.setId(2);
-		m5.setIdentityName("学生");
-		CardIdentity m6 = new CardIdentity();
-		m6.setId(3);
-		m6.setIdentityName("职工");
-		CardIdentity m7 = new CardIdentity();
-		m7.setId(4);
-		m7.setIdentityName("临时人员");
-		CardIdentity m8 = new CardIdentity();
-		m8.setId(5);
-		m8.setIdentityName("其他");
+			CardParam cardParam = (CardParam) this.cardParamService.selectByCompanyId(company.getId());
+			model.addAttribute("cardDeposit", cardParam.getCardDeposit());
 
-		cardIdentityList.add(m4);
-		cardIdentityList.add(m5);
-		cardIdentityList.add(m6);
-		cardIdentityList.add(m7);
-		cardIdentityList.add(m8);
+			Batch batch = this.batchService.selectByDeptId(deptId);
+			model.addAttribute("beginDate", batch.getBeginDate());
+			model.addAttribute("endDate", batch.getEndDate());
 
-		CardParam cardParam = (CardParam) this.cardParamService.selectByCompanyId(company.getId());
-		List<Discount> discountList = (List<Discount>) discountService.selectListByCompanyId(company.getId());
-		Batch batch = (Batch) batchService.selectById(batchId);
+			if (list.size() > 0) {
+				User user = list.get(0);
+				model.addAttribute("user", user);
+				model.addAttribute("cardID", user.getCardID());
+				model.addAttribute("cardTypeId", user.getCardTypeId());
+				model.addAttribute("giveFare", user.getGiveFare());
+				model.addAttribute("preOpFare", user.getPreOpFare());
+				model.addAttribute("consumePwd", user.getConsumePwd());
+			}
+		} else {
+			// 信息录入、单个发卡
+			if (userId == null) {
+				CardParam cardParam = (CardParam) this.cardParamService.selectByCompanyId(company.getId());
+				model.addAttribute("cardDeposit", cardParam.getCardDeposit());
+				model.addAttribute("giveFare", 0);
+				model.addAttribute("preOpFare", cardParam.getPrepayFare());
 
-		model.addAttribute("cardFuncList", cardFuncList);
-		model.addAttribute("discountList", discountList);
-		model.addAttribute("cardIdentityList", cardIdentityList);
+				ConsumeParam consumeParam = (ConsumeParam) this.consumeParamService.selectByCompanyId(company.getId());
+				model.addAttribute("consumePwd", consumeParam.getUserPwd());
 
-		model.addAttribute("cardParam", cardParam);
-		model.addAttribute("batch", batch);
-		model.addAttribute("base", StringUtil.requestBase(request));
-		model.addAttribute("deptId", deptId);
-		model.addAttribute("editType", editType);
-		if (userId != null) {
-			User user = this.mainCardService.selectByUserId(userId);
-			model.addAttribute("user", user);
+				Batch batch = this.batchService.selectByDeptId(deptId);
+				model.addAttribute("beginDate", batch.getBeginDate());
+				model.addAttribute("endDate", batch.getEndDate());
+
+				model.addAttribute("cardID", "123456789012345678");
+				model.addAttribute("cardTypeId", 0);
+			} else {
+				User user = this.mainCardService.selectByUserId(userId);
+				model.addAttribute("user", user);
+
+				model.addAttribute("cardID", user.getCardID());
+				model.addAttribute("cardTypeId", user.getCardTypeId());
+
+				int status = user.getStatus();
+				model.addAttribute("giveFare", user.getGiveFare());
+				model.addAttribute("preOpFare", user.getPreOpFare());
+				model.addAttribute("consumePwd", user.getConsumePwd());
+				// 未发卡、信息发卡
+				if (status == 0 || status == 3) {
+					CardParam cardParam = (CardParam) this.cardParamService.selectByCompanyId(company.getId());
+					model.addAttribute("cardDeposit", cardParam.getCardDeposit());
+					Batch batch = this.batchService.selectByDeptId(user.getDeptId());
+					model.addAttribute("beginDate", batch.getBeginDate());
+					model.addAttribute("endDate", batch.getEndDate());
+				} else {
+					model.addAttribute("cardDeposit", user.getCardDeposit());
+					model.addAttribute("beginDate", user.getBeginDate());
+					model.addAttribute("endDate", user.getEndDate());
+				}
+			}
 		}
-		if (editType == 2 || editType == 3) {
+
+		// 判断读卡机状态
+		if (editType == 2 || editType == 3 || editType == 4)
+
+		{
+			Device device = (Device) request.getSession().getAttribute("device");
 			if (device != null) {
 				String sn = device.getSn();
 				// 读卡机状态
@@ -257,15 +272,15 @@ public class MainCardController extends BaseController {
 				}
 			}
 		}
-		if (editType == 4) {
-			List list = this.mainCardService.selectNoCardByDeptId(deptId);
-			model.addAttribute("list", list);
-			if (list.size() > 0) {
-				model.addAttribute("user", list.get(0));
-			}
-		}
 
-		return StringUtil.requestPath(request, "userInfo");
+		List<Discount> discountList = (List<Discount>) discountService.selectListByCompanyId(company.getId());
+		model.addAttribute("discountList", discountList);
+		model.addAttribute("deptId", deptId);
+		model.addAttribute("batchId", batchId);
+		model.addAttribute("editType", editType);
+		model.addAttribute("base", StringUtil.requestBase(request));
+		return StringUtil.requestPath(request, "editUser");
+
 	}
 
 	/**
@@ -302,15 +317,15 @@ public class MainCardController extends BaseController {
 	 * @param response
 	 * @param model
 	 */
-	@RequestMapping(value = "/addEdit.do", method = RequestMethod.POST)
-	public void addEdit(@ModelAttribute User user, @ModelAttribute CardAllInfo cardAllInfo, Integer editType, Integer batchId, String cardSN, HttpServletRequest request, HttpServletResponse response,
+	@RequestMapping(value = "/saveUser.do", method = RequestMethod.POST)
+	public void saveUser(@ModelAttribute User user, @ModelAttribute CardAllInfo cardAllInfo, Integer editType, Integer batchId, String cardSN, HttpServletRequest request, HttpServletResponse response,
 			Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
 		Device device = (Device) request.getSession().getAttribute("device");
 		String sn = device.getSn();
 		int section = company.getBaseSection();
 		PrintWriter p = null;
-		int allOpCash = (cardAllInfo.getPreOpFare() + cardAllInfo.getGiveFare() - cardAllInfo.getCardCost()) * 100;
+		int allOpCash = (user.getPreOpFare() + user.getGiveFare() - user.getCardDeposit()) * 100;
 		int cardOpCounter = allOpCash > 0 ? 1 : 0;
 		// 单个发卡
 		if (editType == 2) {
@@ -326,7 +341,6 @@ public class MainCardController extends BaseController {
 					user.setStatus(241);
 					user.setCardSeq(1);
 					user.setCardNO(cardNO);
-					user.setCardMakeDate(new Date());
 					user.setTotalFare(allOpCash);
 					user.setOddFare(allOpCash);
 					user.setOpCount(cardOpCounter);
@@ -385,7 +399,7 @@ public class MainCardController extends BaseController {
 					}
 					this.mainCardService.insert(user);
 				} else {
-					long userNONum = this.mainCardService.selectCountByUserNOUserId(company.getId(), user.getUserNO(), user.getUserId());
+					Integer userNONum = this.mainCardService.selectCountByUserNOUserId(company.getId(), user.getUserNO(), user.getUserId());
 					if (userNONum > 0) {
 						p.print(2);
 						return;
@@ -406,9 +420,7 @@ public class MainCardController extends BaseController {
 		user.setSubsidyOddFare(0);
 		user.setSubsidyVersion(0);
 		user.setSubsidyDaySum(0);
-		user.setSubsidyInvalidDate(new Date());
-//		cardAllInfo.setLimitDayFare(0);
-//		cardAllInfo.setLimitTimesFare(0);
+		user.setSubsidyInvalidDate("2000-01-01");
 		cardAllInfo.setLimitPeriods(new Integer[] { 0, 0, 0, 0, 0, 0 });
 		cardAllInfo.setSubsidyLimitPeriods(new Integer[] { 0, 0, 0, 0, 0, 0 });
 	}
@@ -675,8 +687,8 @@ public class MainCardController extends BaseController {
 					CardAllInfo cardAllInfo = new CardAllInfo();
 					initUserInfo(user, cardAllInfo);
 
-//					cardAllInfo.setLimitDayFare(0);
-//					cardAllInfo.setLimitTimesFare(0);
+					// cardAllInfo.setLimitDayFare(0);
+					// cardAllInfo.setLimitTimesFare(0);
 					cardAllInfo.setLimitPeriods(new Integer[] { 0, 0, 0, 0, 0, 0 });
 					// cardAllInfo.setCardDeposit(0);
 
@@ -692,23 +704,6 @@ public class MainCardController extends BaseController {
 				}
 			}
 		}
-		// // 换新卡
-		// else if (editType == 3) {
-		// int cardSNCount = getCardSNCount(company.getId(), newCardSN, sn);
-		// if (cardSNCount > 0) {
-		// return;
-		// }
-		// SocketChannel socketChannel =
-		// TerminalManager.SNToSocketChannelList.get(sn);
-		// if (socketChannel != null) {
-		// try {
-		// this.mainCardService.changeNewCard(company.getId(), userId,
-		// socketChannel, device, newCardSN, cardInfoStr);
-		// } catch (Exception e) {
-		// e.printStackTrace();
-		// }
-		// }
-		// }
 	}
 
 	/**
@@ -797,8 +792,7 @@ public class MainCardController extends BaseController {
 			map.put("'cardSN'", user.getCardSN());
 			map.put("'userId'", user.getUserId());
 			map.put("'cardNO'", user.getCardNO());
-			SimpleDateFormat myFormatter = new SimpleDateFormat("yyyy-MM-dd");
-			map.put("'invalidDate'", myFormatter.format(user.getInvalidDate()));
+			map.put("'endDate'", user.getEndDate());
 			map.put("'statusDesc'", user.getStatusDesc());
 			map.put("'cardSeq'", user.getCardSeq());
 			map.put("'cardTypeId'", user.getCardTypeId());
@@ -852,8 +846,8 @@ public class MainCardController extends BaseController {
 
 					CardAllInfo cardAllInfo = new CardAllInfo();
 					initUserInfo(user2, cardAllInfo);
-//					cardAllInfo.setLimitDayFare(0);
-//					cardAllInfo.setLimitTimesFare(0);
+					// cardAllInfo.setLimitDayFare(0);
+					// cardAllInfo.setLimitTimesFare(0);
 					cardAllInfo.setLimitPeriods(new Integer[] { 0, 0, 0, 0, 0, 0 });
 					// cardAllInfo.setCardDeposit(0);
 

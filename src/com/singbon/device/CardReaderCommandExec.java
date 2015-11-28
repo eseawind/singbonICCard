@@ -207,9 +207,9 @@ public class CardReaderCommandExec {
 					map.put("cardNO", DesUtil.decrypt(DeviceCommunicateStr.Unknow));
 				}
 				try {
-					map.put("'invalidDate'", StringUtil.dateFromHexStr(StringUtil.getHexStrFromBytes(base0 + 10, base0 + 11, b)));
+					map.put("'endDate'", StringUtil.dateFromHexStr(StringUtil.getHexStrFromBytes(base0 + 10, base0 + 11, b)));
 				} catch (Exception e) {
-					map.put("invalidDate", DesUtil.decrypt(DeviceCommunicateStr.Unknow));
+					map.put("endDate", DesUtil.decrypt(DeviceCommunicateStr.Unknow));
 				}
 				try {
 					int status = Integer.parseInt(StringUtil.getHexStrFromBytes(base0 + 12, base0 + 12, b), 16);

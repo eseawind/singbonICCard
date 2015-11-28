@@ -17,7 +17,7 @@ public class CardParam implements Serializable {
 
 	private Integer id;
 	private Integer companyId;
-	private Integer cardCost;
+	private Integer cardDeposit;
 	private Integer prepayFare;
 
 	public Integer getId() {
@@ -36,14 +36,14 @@ public class CardParam implements Serializable {
 		this.companyId = companyId;
 	}
 
-	public Integer getCardCost() {
-		return cardCost;
+	public Integer getCardDeposit() {
+		return cardDeposit;
 	}
 
-	public void setCardCost(Integer cardCost) {
-		this.cardCost = cardCost;
+	public void setCardDeposit(Integer cardDeposit) {
+		this.cardDeposit = cardDeposit;
 	}
-	
+
 	public Integer getPrepayFare() {
 		return prepayFare;
 	}

@@ -2,7 +2,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <script type="text/javascript">
 	
@@ -24,8 +23,8 @@
 			<tr>
 				<td>${b.deptName }</td>
 				<td>${b.batchName }</td>
-				<td><fmt:formatDate value="${b.beginDate}" pattern="yyyy-MM-dd"/></td>
-				<td><fmt:formatDate value="${b.endDate}" pattern="yyyy-MM-dd"/></td>
+				<td>${b.beginDate}</td>
+				<td>${b.endDate}</td>
 			</tr>
 		</c:forEach>
 	</tbody>

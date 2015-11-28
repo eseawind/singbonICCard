@@ -1,7 +1,6 @@
 package com.singbon.entity;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * 批次
@@ -13,6 +12,12 @@ public class Batch implements Serializable {
 
 	private static final long serialVersionUID = -4349415810057681133L;
 	private Integer id;
+	private Integer companyId;
+	private String batchName;
+	private String beginDate;
+	private String endDate;
+	private Integer status;
+	private String statusDesc;
 
 	public Integer getId() {
 		return id;
@@ -22,8 +27,6 @@ public class Batch implements Serializable {
 		this.id = id;
 	}
 
-	private Integer companyId;
-
 	public Integer getCompanyId() {
 		return companyId;
 	}
@@ -31,13 +34,6 @@ public class Batch implements Serializable {
 	public void setCompanyId(Integer companyId) {
 		this.companyId = companyId;
 	}
-
-	private String batchName;
-	private Date beginDate;
-	private Date endDate;
-	private Date invalidDate;
-	private Integer status;
-	private String statusDesc;
 
 	public String getBatchName() {
 		return batchName;
@@ -47,28 +43,20 @@ public class Batch implements Serializable {
 		this.batchName = batchName;
 	}
 
-	public Date getBeginDate() {
+	public String getBeginDate() {
 		return beginDate;
 	}
 
-	public void setBeginDate(Date beginDate) {
+	public void setBeginDate(String beginDate) {
 		this.beginDate = beginDate;
 	}
 
-	public Date getEndDate() {
+	public String getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(Date endDate) {
+	public void setEndDate(String endDate) {
 		this.endDate = endDate;
-	}
-
-	public Date getInvalidDate() {
-		return invalidDate;
-	}
-
-	public void setInvalidDate(Date invalidDate) {
-		this.invalidDate = invalidDate;
 	}
 
 	public Integer getStatus() {

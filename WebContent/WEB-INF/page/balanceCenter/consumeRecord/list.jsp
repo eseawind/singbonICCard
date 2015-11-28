@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <script type="text/javascript">
 	$(function(){
 		$('.exportExcel').click(function(){
@@ -162,7 +161,7 @@
 					<td>${d.discountFare}</td>
 					<td>${d.opFare}</td>
 					<td>${d.mealName}</td>
-					<td><fmt:formatDate value="${d.opTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+					<td>${d.opTime}</td>
 					<td>${d.opCount}</td>
 					<td>${d.subsidyOpCount}</td>
 					<td>${d.recordNO}</td>

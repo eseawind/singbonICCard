@@ -56,14 +56,14 @@
 				<dt>起始时间：</dt>
 				<dd>
 					<input type="text" name="beginTime" maxlength="20"
-						class="date required" datefmt="HH:mm:ss" readonly="readonly" />
+						class="date required" datefmt="HH:mm" readonly="readonly" />
 				</dd>
 			</dl>
 			<dl style="margin: 10px 0;">
 				<dt>结束时间：</dt>
 				<dd>
 					<input type="text" name="endTime" maxlength="20"
-						class="date required" datefmt="HH:mm:ss" readonly="readonly" />
+						class="date required" datefmt="HH:mm" readonly="readonly" />
 				</dd>
 			</dl>
 			<dl style="margin: 10px 0 50px;">

@@ -1,7 +1,6 @@
 package com.singbon.service.mainCard;
 
 import java.nio.channels.SocketChannel;
-import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,7 +103,7 @@ public class MainCardService extends BaseService {
 	 * @param user
 	 * @return
 	 */
-	public Long selectCountByUserNOUserId(Integer companyId, String userNO, Long userId) throws Exception {
+	public Integer selectCountByUserNOUserId(Integer companyId, String userNO, Long userId) throws Exception {
 		return this.userDAO.selectCountByUserNOUserId(companyId, userNO, userId);
 	}
 
@@ -151,22 +150,17 @@ public class MainCardService extends BaseService {
 		}
 
 		// 基本扇区
-		Calendar c = Calendar.getInstance();
-
 		String tmUserId = StringUtil.hexLeftPad(user.getUserId(), 8);// 4 0-3
 		String tmCardNo = StringUtil.hexLeftPad(user.getCardNO(), 8);// 4
 																		// 4-7
 		String tmConsumePwd = StringUtil.hexLeftPad(Integer.valueOf(user.getConsumePwd()), 4);// 2
-																								// 8-9
-		c.setTime(user.getInvalidDate());
-		String tmInvalidDate = StringUtil.dateToHexStr(c);// 2 10-11
+		String tmEndDate = StringUtil.dateStrToHexStr(user.getEndDate());// 2
+																			// 10-11
 		String tmCardMark = StringUtil.hexLeftPad(user.getStatus(), 2);// 1 12
 		String tmCardBatch = StringUtil.hexLeftPad(cardAllInfo.getCardBatch(), 4);// 2
 																					// 13-14
 		String tmCheck1 = "00"; // 异或校验，以后补充 1
 
-		// String tmCardDeposit =
-		// StringUtil.hexLeftPad(cardAllInfo.getCardDeposit(), 2);// 1
 		String tmCardDeposit = StringUtil.hexLeftPad(0, 2);// 1
 		String tmLimitTimesFare = StringUtil.hexLeftPad(0, 2);// 2
 		String tmLimitDayFare = StringUtil.hexLeftPad(0, 4);// 1
@@ -180,8 +174,8 @@ public class MainCardService extends BaseService {
 		String tmStandby = "06"; // 备用字段//1
 		String tmCheck2 = "00"; // 异或校验//1
 
-		String baseData = tmUserId + tmCardNo + tmConsumePwd + tmInvalidDate + tmCardMark + tmCardBatch + tmCheck1 + tmCardDeposit + tmLimitTimesFare + tmLimitDayFare + tmCardSeq + tmCardType
-				+ tmDeptId + tmTotalFare + tmStandby + tmCheck2;
+		String baseData = tmUserId + tmCardNo + tmConsumePwd + tmEndDate + tmCardMark + tmCardBatch + tmCheck1 + tmCardDeposit + tmLimitTimesFare + tmLimitDayFare + tmCardSeq + tmCardType + tmDeptId
+				+ tmTotalFare + tmStandby + tmCheck2;
 		String baseInfoSection = StringUtil.hexLeftPad(section, 2);
 		String baseBlock0 = baseInfoSection + "0000" + baseData.substring(0, 32);
 		String baseBlock1 = baseInfoSection + "0100" + StringUtil.strRightPad(StringUtil.strToGB2312(user.getUsername()), 32);
@@ -216,8 +210,8 @@ public class MainCardService extends BaseService {
 		String tmLastSubsidyConsumeTime = "0000";// 2 6-7
 		String tmSubsidyVersion = StringUtil.hexLeftPad(user.getSubsidyVersion(), 4);// 2
 																						// 8-9
-		c.setTime(user.getSubsidyInvalidDate());
-		String tmSubsidyValidPeriod = StringUtil.dateToHexStr(c);// 2 10-11
+		String tmSubsidyValidPeriod = StringUtil.dateStrToHexStr(user.getSubsidyInvalidDate());// 2
+																								// 10-11
 		String tmSubsidyLimitPeriod1 = StringUtil.hexLeftPad(cardAllInfo.getSubsidyLimitPeriods()[0], 1);
 		String tmSubsidyLimitPeriod2 = StringUtil.hexLeftPad(cardAllInfo.getSubsidyLimitPeriods()[1], 1);
 		String tmSubsidyLimitPeriod3 = StringUtil.hexLeftPad(cardAllInfo.getSubsidyLimitPeriods()[2], 1);

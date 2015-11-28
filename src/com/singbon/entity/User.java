@@ -1,7 +1,6 @@
 package com.singbon.entity;
 
 import java.io.Serializable;
-import java.util.Date;
 
 //用户卡信息
 //
@@ -40,22 +39,12 @@ public class User implements Serializable {
 	private String sexDesc;
 	// 卡型号(0~15类卡)
 	private Integer cardTypeId;
-	// 卡功能
-	private Integer cardFunc;
-	// 卡功能描述
-	private String cardFuncDesc;
-	// 客户身份
-	private Integer cardIdentity;
-	// 客户身份描述
-	private String cardIdentityDesc;
-	private Date beginDate;
-	private Date endDate;
+	private String beginDate;
+	private String endDate;
 	// 消费密码
 	private String consumePwd;
-	// 失效期(YYYY-MM-DD)
-	private Date invalidDate;
 	// 制卡日期
-	private Date cardMakeDate;
+	private String cardMakeDate;
 	// 卡总额
 	private Integer totalFare;
 	// 卡状态
@@ -68,7 +57,7 @@ public class User implements Serializable {
 	// 卡余额
 	private Integer oddFare;
 	// 上次消费时间
-	private Date lastConsumeTime;
+	private String lastConsumeTime;
 	// 当日操作金额
 	private Integer daySumFare;
 	// 卡操作计数器(大钱包)
@@ -78,7 +67,7 @@ public class User implements Serializable {
 	// 卡补助余额
 	private Integer subsidyOddFare;
 	// 上次补助消费时间
-	private Date lastSubsidyConsumeTime;
+	private String lastSubsidyConsumeTime;
 	// 当日补助操作金额
 	private Integer subsidyDaySum;
 	// 卡操作计数器(小钱包)
@@ -86,9 +75,13 @@ public class User implements Serializable {
 	// 补助版本
 	private Integer subsidyVersion;
 	// 补助失效日期
-	private Date subsidyInvalidDate;
-	// 总数量
-	private Integer totalCount;
+	private String subsidyInvalidDate;
+	// 卡押金
+	private Integer cardDeposit;
+	// 赠送金额
+	private Integer giveFare;
+	// 预发金额
+	private Integer preOpFare;
 
 	public Long getUserId() {
 		return userId;
@@ -190,51 +183,19 @@ public class User implements Serializable {
 		this.cardTypeId = cardTypeId;
 	}
 
-	public Integer getCardFunc() {
-		return cardFunc;
-	}
-
-	public void setCardFunc(Integer cardFunc) {
-		this.cardFunc = cardFunc;
-	}
-
-	public String getCardFuncDesc() {
-		return cardFuncDesc;
-	}
-
-	public void setCardFuncDesc(String cardFuncDesc) {
-		this.cardFuncDesc = cardFuncDesc;
-	}
-
-	public Integer getCardIdentity() {
-		return cardIdentity;
-	}
-
-	public void setCardIdentity(Integer cardIdentity) {
-		this.cardIdentity = cardIdentity;
-	}
-
-	public String getCardIdentityDesc() {
-		return cardIdentityDesc;
-	}
-
-	public void setCardIdentityDesc(String cardIdentityDesc) {
-		this.cardIdentityDesc = cardIdentityDesc;
-	}
-
-	public Date getBeginDate() {
+	public String getBeginDate() {
 		return beginDate;
 	}
 
-	public void setBeginDate(Date beginDate) {
+	public void setBeginDate(String beginDate) {
 		this.beginDate = beginDate;
 	}
 
-	public Date getEndDate() {
+	public String getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(Date endDate) {
+	public void setEndDate(String endDate) {
 		this.endDate = endDate;
 	}
 
@@ -244,14 +205,6 @@ public class User implements Serializable {
 
 	public void setConsumePwd(String consumePwd) {
 		this.consumePwd = consumePwd;
-	}
-
-	public Date getInvalidDate() {
-		return invalidDate;
-	}
-
-	public void setInvalidDate(Date invalidDate) {
-		this.invalidDate = invalidDate;
 	}
 
 	/**
@@ -283,7 +236,7 @@ public class User implements Serializable {
 			des = "挂失";
 		} else if (status == 244) {
 			des = "注销";
-		} else  {
+		} else {
 			des = "异常卡";
 		}
 		return des;
@@ -293,11 +246,11 @@ public class User implements Serializable {
 		this.statusDesc = statusDesc;
 	}
 
-	public Date getLastConsumeTime() {
+	public String getLastConsumeTime() {
 		return lastConsumeTime;
 	}
 
-	public void setLastConsumeTime(Date lastConsumeTime) {
+	public void setLastConsumeTime(String lastConsumeTime) {
 		this.lastConsumeTime = lastConsumeTime;
 	}
 
@@ -309,11 +262,11 @@ public class User implements Serializable {
 		this.daySumFare = daySumFare;
 	}
 
-	public Date getLastSubsidyConsumeTime() {
+	public String getLastSubsidyConsumeTime() {
 		return lastSubsidyConsumeTime;
 	}
 
-	public void setLastSubsidyConsumeTime(Date lastSubsidyConsumeTime) {
+	public void setLastSubsidyConsumeTime(String lastSubsidyConsumeTime) {
 		this.lastSubsidyConsumeTime = lastSubsidyConsumeTime;
 	}
 
@@ -325,11 +278,11 @@ public class User implements Serializable {
 		this.subsidyVersion = subsidyVersion;
 	}
 
-	public Date getSubsidyInvalidDate() {
+	public String getSubsidyInvalidDate() {
 		return subsidyInvalidDate;
 	}
 
-	public void setSubsidyInvalidDate(Date subsidyInvalidDate) {
+	public void setSubsidyInvalidDate(String subsidyInvalidDate) {
 		this.subsidyInvalidDate = subsidyInvalidDate;
 	}
 
@@ -345,11 +298,11 @@ public class User implements Serializable {
 		this.cardID = cardID;
 	}
 
-	public Date getCardMakeDate() {
+	public String getCardMakeDate() {
 		return cardMakeDate;
 	}
 
-	public void setCardMakeDate(Date cardMakeDate) {
+	public void setCardMakeDate(String cardMakeDate) {
 		this.cardMakeDate = cardMakeDate;
 	}
 
@@ -401,12 +354,28 @@ public class User implements Serializable {
 		this.subsidyOpCount = subsidyOpCount;
 	}
 
-	public Integer getTotalCount() {
-		return totalCount;
+	public Integer getGiveFare() {
+		return giveFare;
 	}
 
-	public void setTotalCount(Integer totalCount) {
-		this.totalCount = totalCount;
+	public void setGiveFare(Integer giveFare) {
+		this.giveFare = giveFare;
+	}
+
+	public Integer getPreOpFare() {
+		return preOpFare;
+	}
+
+	public void setPreOpFare(Integer preOpFare) {
+		this.preOpFare = preOpFare;
+	}
+
+	public Integer getCardDeposit() {
+		return cardDeposit;
+	}
+
+	public void setCardDeposit(Integer cardDeposit) {
+		this.cardDeposit = cardDeposit;
 	}
 
 }
