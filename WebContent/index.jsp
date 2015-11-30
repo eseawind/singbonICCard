@@ -114,12 +114,12 @@
 				</tr>
 				<tr>
 					<td>用户名:</td>
-					<td><input type='text' name='username' value=''/></td>
+					<td><input type='text' name='username' value='admin'/></td>
 	 				<td><div class="note">用户名不能为空</div></td>
 				</tr>
 				<tr>
 					<td>密码:</td>
-					<td><input type='password' name='password' value=""/></td>
+					<td><input type='password' name='password' value="0"/></td>
 	 				<td><div class="note">密码不能为空</div></td>
 				</tr>
 				<tr>

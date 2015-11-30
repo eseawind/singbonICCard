@@ -12,6 +12,19 @@ public class CardRecord implements Serializable {
 
 	private static final long serialVersionUID = -4349415810057681133L;
 
+	public static String[] recordTypes = { "发卡", // 0
+			"收取卡押金", // 1
+			"赠送金额", // 2
+			"补卡", // 3
+			"挂失", // 4
+			"解挂", // 5
+			"PC存款", // 6
+			"PC取款", // 7
+			"退还卡押金", // 8
+			"补助存款", // 9
+			"补助清零", // 10
+			"卡注销"// 11
+	};
 	private Integer id;
 	private Integer companyId;
 	private Long userId;
@@ -84,5 +97,4 @@ public class CardRecord implements Serializable {
 	public void setOpTime(String opTime) {
 		this.opTime = opTime;
 	}
-
 }

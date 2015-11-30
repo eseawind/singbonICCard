@@ -26,4 +26,8 @@
 	<select id="selectListByCompanyId" resultType="java.util.Map" useCache="false">
 		select operId,loginName,loginPwd,deviceId,ifnull(deviceName,'无') deviceName from sysUser u left join device d on u.deviceId=d.id where u.companyId=#{companyId}
 	</select>
+<!-- 	 获取出纳员列表 -->
+	<select id="selectCashierList" resultMap="sysUser" useCache="false">
+		select operId,loginName from sysUser where companyId=#{companyId}
+	</select>
 </mapper>

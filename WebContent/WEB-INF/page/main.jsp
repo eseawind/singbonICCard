@@ -193,13 +193,13 @@
 							<ul class="tree">
 <!-- 								<li><a href="/balanceCenter/userInfo/index.do" target="navTab">用户信息查询</a></li> -->
 								<li><a href="/balanceCenter/consumeRecord/index.do" target="navTab">消费记录查询</a></li>
+								<li><a href="/balanceCenter/cardRecord/index.do" target="navTab">卡操作记录查询</a></li>
 								<li><a href="/balanceCenter/personRecord/index.do" target="navTab">个人记录查询</a></li>
 								<li><a href="/balanceCenter/personStat/index.do" target="navTab">个人统计查询</a></li>
 								<li><a href="/balanceCenter/subsidyRecord/index.do" target="navTab">补助记录查询</a></li>
 								<li><a href="/balanceCenter/deptStat/index.do" target="navTab">部门营业统计</a></li>
 								<li><a href="/balanceCenter/deviceStat/index.do" target="navTab">终端营业统计</a></li>
 								<li><a href="/balanceCenter/deptMeal/index.do" target="navTab">部门就餐统计</a></li>
-								<li><a href="/balanceCenter/cardOp/index.do" target="navTab">卡操作统计</a></li>
 								<li><a href="/balanceCenter/balance/index.do" target="navTab">结算汇总</a></li>
 								<li><a href="/balanceCenter" target="navTab">出纳汇总</a></li>
 								<li><a href="/balanceCenter" target="navTab">平衡汇总</a></li>

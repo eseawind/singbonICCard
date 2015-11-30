@@ -41,7 +41,7 @@ public class SysUserService extends BaseService {
 	 * @param user
 	 * @return
 	 */
-	public List<SysUser> selectCashierListByCompanyId(Integer companyId) {
+	public List<SysUser> selectCashierList(Integer companyId) {
 		return this.sysUserDAO.selectCashierList(companyId);
 	}
 	

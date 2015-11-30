@@ -184,7 +184,7 @@ public class MainCardController extends BaseController {
 	 * @param model
 	 * @return
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({ "unchecked" })
 	@RequestMapping(value = "/editUser.do", method = RequestMethod.GET)
 	public String editUser(Long userId, Integer deptId, Integer batchId, Integer editType, HttpServletRequest request, HttpServletResponse response, Model model) {
 		request.getSession().removeAttribute("companyId");
@@ -846,10 +846,7 @@ public class MainCardController extends BaseController {
 
 					CardAllInfo cardAllInfo = new CardAllInfo();
 					initUserInfo(user2, cardAllInfo);
-					// cardAllInfo.setLimitDayFare(0);
-					// cardAllInfo.setLimitTimesFare(0);
 					cardAllInfo.setLimitPeriods(new Integer[] { 0, 0, 0, 0, 0, 0 });
-					// cardAllInfo.setCardDeposit(0);
 
 					Batch batch = this.batchService.selectByDeptId(user2.getDeptId());
 					if (batch == null) {
