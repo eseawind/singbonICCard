@@ -27,7 +27,7 @@
 		}
 		init();
 		
-		$('#userinfo .readCard').click(function() {
+		$('#userInfo .readCard').click(function() {
 			if(isOnline){
 				$.post('${base }/command.do?editType=${editType}',function(e){
 				});
@@ -36,18 +36,46 @@
 			}
 		});
 		
-		$('#userinfo .update').click(function() {
+		$('#userInfo .unloss').click(function() {
 			if(isOnline){
-				var updateType=$('#userinfo input[name=updateType]:checked').val();
-				if(updateType==0 && userStatus=='注销'){
-					alertMsg.warn('改人员已经注销不允许按卡修正！');
+				if(userStatus!='挂失'){
+					alertMsg.warn('该人员尚未挂失不能解挂！');
 					return;
 				}				
-				validateCallback($('#userinfo'), function(e) {
+				validateCallback($('#userInfo'), function(e) {
+				}, null);
+			}else{
+				alertMsg.warn('读卡机当前处于离线状态不能读卡！');
+			}
+		});
+		
+		$('#userInfo .cardOff').click(function() {
+			if(isOnline){
+				if(userStatus!='正常'){
+					alertMsg.warn('该人员为非正常卡不能注销！');
+					return;
+				}				
+				validateCallback($('#userInfo'), function(e) {
+				}, null);
+			}else{
+				alertMsg.warn('读卡机当前处于离线状态不能注销！');
+			}
+		});
+		
+		$('#userInfo .update').click(function() {
+			if(isOnline){
+				var updateType=$('#userInfo input[name=updateType]:checked').val();
+				if(updateType==0 && userStatus=='注销'){
+					alertMsg.warn('该人员已经注销不允许按卡修正！');
+					return;
+				}				
+				validateCallback($('#userInfo'), function(e) {
 					if(updateType==0){
 						if(e==1){
-							$('#updateLi').hide();
-							alertMsg.correct('按卡修正成功！');
+// 							$('#updateLi').hide();
+							refreshUserList();
+							alertMsg.correct('按卡修正完成！');
+							$('#userInfo .close').click();
 						}else{
 							alertMsg.warn('按卡修正失败！');						
 						}
@@ -79,8 +107,8 @@
 						heart();
 						isHeart=true;
 					}
-				//读卡命令
-				} else if (e2.f1 == 0x0e) {
+				//命令：解挂、注销、读卡
+				} else if (e2.f1==0x07 || e2.f1==0x1c || e2.f1 == 0x0e) {
 					if(e2.r==1){
 						$.post('${base }/selectUserInfoByUserIdCardSN.do?userId='+e2.userId+'&cardSN='+e2.cardSN,function(e3){
 							var e4 = eval('(' + e3 + ')');
@@ -101,19 +129,30 @@
 									}
 									td.next().find('div').html(e2value);
 									td.next().next().find('div').html(e4value);
-									$('#userinfo input[name='+attr+']').val(e2value);
+									$('#userInfo input[name='+attr+']').val(e2value);
 									if(e2value!=e4value){
 										td.parent('tr').css('color','red');
 									}
 								});
-								$('#userinfo input[name=status]').val(e2['status']);
-								var totalFare=$('#userinfo input[name=totalFare]');
+								$('#userInfo input[name=userId]').val(e2['userId']);
+								$('#userInfo input[name=cardSN]').val(e2['cardSN']);
+								$('#userInfo input[name=status]').val(e2['status']);
+								var totalFare=$('#userInfo input[name=totalFare]');
 								totalFare.val(totalFare.val()*100);
-								var oddFare=$('#userinfo input[name=oddFare]');
+								var oddFare=$('#userInfo input[name=oddFare]');
 								oddFare.val(oddFare.val()*100);
-								var subsidyOddFare=$('#userinfo input[name=subsidyOddFare]');
+								var subsidyOddFare=$('#userInfo input[name=subsidyOddFare]');
 								subsidyOddFare.val(subsidyOddFare.val()*100);
 								
+								var editType='${editType}';
+								if(editType==2){
+									$('#userInfo input[name=cardInfoStr]').val(e2['cardInfoStr']);
+									$('#unlossLi').show();																		
+								}else if(editType==3){
+									$('#cardOffLi').show();																		
+								}else if(editType==4){
+									$('#updateLi').show();									
+								}
 								$('#updateLi').show();
 							}else{
 								alertMsg.warn('库中不存在此卡！');
@@ -122,11 +161,37 @@
 					}else{
 						opCardResult(e2.r);
 					}
+				//解挂完成
+				}else if(e2.f1==0x08){
+					if(e2.r==1){
+						refreshUserList();
+						alertMsg.correct('解挂完成！');
+						$('#userInfo .close').click();
+					}else{
+						opCardResult(e2.r);
+					}	
+				//卡注销完成
+				}else if(e2.f1==0x1d){
+					if(e2.r==1){
+						var userId= $('#userInfo input[name=userId]').val();
+						$.post('${base }/offUserInfoWithInfo.do?userId='+userId,function(e3){
+							if(e3==1){
+								refreshUserList();
+								$('#userInfo .close').click();								
+								alertMsg.correct('卡注销完成！');															
+							}else{
+								alertMsg.warn('卡注销失败！');
+							}
+						});
+					}else{
+						opCardResult(e2.r);
+					}	
 				//按库修正完成
 				}else if(e2.f1==0x0f){
 					if(e2.r==1){
-						$('#updateLi').hide();
-						alertMsg.correct('按库修正成功！');
+						refreshUserList();
+						alertMsg.correct('按库修正完成！');
+						$('#userInfo .close').click();
 					}else{
 						opCardResult(e2.r);
 					}	
@@ -221,7 +286,7 @@
 				<td></td>
 			</tr>
 			<tr>
-				<td id="endDate">当前有效期</td>
+				<td id="endDate">结束日期</td>
 				<td></td>
 				<td></td>
 			</tr>
@@ -273,11 +338,11 @@
 		</tbody>
 	</table>
 </div>
-<form id="userinfo" method="post" action="${base }/doChangeCard.do" class="pageForm">
+<form id="userInfo" method="post" action="${base }/doChangeCard.do" class="pageForm">
 	<input name="editType" type="hidden" value="${editType }" />
 	<input name="userId" type="hidden" /> 
 	<input name="cardSN" type="hidden" />
-	<input name="invalidDate" type="hidden" />
+	<input name="endDate" type="hidden" />
 	<input name="status" type="hidden" />
 	<input name="cardSeq" type="hidden" />
 	<input name="cardTypeId" type="hidden" />
@@ -287,11 +352,30 @@
 	<input name="subsidyOddFare" type="hidden" />
 	<input name="subsidyOpCount" type="hidden" />
 	<input name="subsidyVersion" type="hidden" />
+	<input name="cardInfoStr" type="hidden" />
 	 
 	<div class="formBar">
 		<ul>
-<!-- 			5挂失，3解挂，4补卡，6注销，7读卡修正 -->
-			<c:if test="${editType==7}">
+<!-- 			2解挂、3注销、4读卡修正 -->
+			<c:if test="${editType==2}">
+				<li id="unlossLi" style="display: none;">
+					<div class="button" style="margin-right: 10px;">
+						<div class="buttonContent">
+							<button type="button" class="unloss">解挂</button>
+						</div>
+					</div>
+				</li>
+			</c:if>
+			<c:if test="${editType==3}">
+				<li id="cardOffLi" style="display: none;">
+					<div class="button" style="margin-right: 10px;">
+						<div class="buttonContent">
+							<button type="button" class="cardOff">注销</button>
+						</div>
+					</div>
+				</li>
+			</c:if>
+			<c:if test="${editType==4}">
 				<li id="updateLi" style="display: none;">
 					<div class="button" style="margin-right: 10px;">
 						<div class="buttonContent">

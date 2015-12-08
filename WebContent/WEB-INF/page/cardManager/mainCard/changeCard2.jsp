@@ -11,38 +11,6 @@
 	var heartTime=new Date();
 
 	$(function() {
-		if('${editType}'!=0){
-			title = $('.dialogHeader_c h1').html().split('——')[0];
-			if ('${cardStatus}' == 1) {
-				$('.dialogHeader_c h1').html(title + '——读卡机状态：在线');
-				isOnline=true;
-				if(!isHeart){
-					heart();
-					isHeart=true;
-				}
-			} else {
-				$('.dialogHeader_c h1').html(title + '——读卡机状态：离线');
-				isOnline=false;
-				isHeart=false;
-				$('body').stopTime();
-			}
-			init();
-		}
-		$('#userInfo .loss').click(function() {
-			validateCallback($(this).parents('form'), function(e) {
-				var editType='${editType }';
-				//挂失
-				if(editType==0){
-					if (e == 1) {
-						refreshUserList();
-						$('#userInfo .close').click();								
-						alertMsg.correct('挂失成功！');
-					} else if(e==2) {
-						alertMsg.warn('挂失失败！');					
-					}
-				}
-			}, null);
-		});
 		$('#userInfo .unloss').click(function() {
 			if(isOnline){
 // 				if($('#userInfo').valid()){
@@ -53,38 +21,6 @@
 				alertMsg.warn('读卡机当前处于离线状态不能解挂！');
 			}
 		});
-		$('#userInfo .remakeCard').click(function() {
-			if(isOnline){
-// 				if($('#userInfo').valid()){
-					$.post('${base }/command.do?comm=remakeCardInit',function(e){
-					});
-// 				}
-			}else{
-				alertMsg.warn('读卡机当前处于离线状态不能补卡！');
-			}
-		});
-// 		$('#userInfo .readOldCard').click(function() {
-// 			if(isOnline){
-// 				alertMsg.confirm('换卡后要回收原卡，确定换卡吗？', {
-// 					okCall : function() {
-// 						$.post('${base }/command.do?comm=readOldCardInit',function(e){
-// 						});
-// 					}
-// 				});
-// 			}else{
-// 				alertMsg.warn('读卡机当前处于离线状态不能读原卡！');
-// 			}
-// 		});
-// 		$('#userInfo .changeNewCard').click(function() {
-// 			if(isOnline){
-// // 				if($('#userInfo').valid()){
-// 					$.post('${base }/command.do?comm=changeNewCardInit',function(e){
-// 					});
-// // 				}
-// 			}else{
-// 				alertMsg.warn('读卡机当前处于离线状态不能换新卡！');
-// 			}
-// 		});
 		$('#userInfo .offWithCard').click(function() {
 			if(isOnline){
 // 				alertMsg.confirm('确定要注销该人员吗？', {
@@ -143,7 +79,7 @@
 					}else{
 						opCardResult(e2.r);
 					}	
-				//有卡注销命令
+				//卡注销命令
 				} else if (e2.f1 == 0x1c) {
 					if(e2.r==1){
 						var userId= $('#userInfo input[name=userId]').val();
@@ -158,7 +94,7 @@
 					}else{
 						opCardResult(e2.r);
 					}
-				//有卡注销完成
+				//卡注销完成
 				}else if(e2.f1==0x1d){
 					if(e2.r==1){
 						var userId= $('#userInfo input[name=userId]').val();
@@ -174,65 +110,7 @@
 					}else{
 						opCardResult(e2.r);
 					}	
-				//补卡命令
-				} else if (e2.f1 == 0x09) {
-					if(e2.r==1){
-						$('#userInfo input[name=cardSN]').val(e2.cardSN);
-						validateCallback($('#userInfo'), function(e) {
-						}, null);
-					}else{
-						opCardResult(e2.r);
-					}
-				//补卡完成
-				} else if (e2.f1 == 0x0a) {
-					if(e2.r==1){
-						refreshUserList();
-						$('#userInfo .close').click();
-						alertMsg.correct('补卡完成！');
-					}else{
-						opCardResult(e2.r);
-					}
-// 				//换卡读原卡命令
-// 				} else if (e2.f1 == 0x0b) {
-// 					if(e2.r==1){
-// 						var userId= $('#userInfo input[name=userId]').val();
-// 						var cardSN= $('#userInfo input[name=cardSN]').val();
-// 						if(userId==e2.userId && cardSN==e2.cardSN){
-// 							$('#userInfo input[name=cardInfoStr]').val(e2.cardInfoStr);
-// 							$('#userInfo .readOldCard').hide();
-// 							$('#userInfo .changeNewCard').show();
-// 							alertMsg.correct('原卡读卡完毕，请放置新卡！');
-// 						}else{
-// 							alertMsg.warn('该原卡与人员信息不匹配请换卡！');
-// 						}
-// 					}else{
-// 						opCardResult(e2.r);
-// 					}
-// 				//换卡换新卡命令
-// 				} else if (e2.f1 == 0x0c) {
-// 					if(e2.r==1){
-// 						var cardSN= $('#userInfo input[name=cardSN]').val();
-// 						if(cardSN==e2.newCardSN){
-// 								alertMsg.warn('该卡片是原卡请放置新卡！');
-// 						}else{
-// 							$('#userInfo input[name=newCardSN]').val(e2.newCardSN);
-// 							validateCallback($('#userInfo'), function(e) {
-// 							}, null);
-// 						}
-// 					}else{
-// 						opCardResult(e2.r);
-// 					}
-// 				//换卡换新卡完成
-// 				} else if (e2.f1 == 0x0d) {
-// 					if(e2.r==1){
-// 						refreshUserList();
-// 						$('#userInfo .close').click();
-// 						alertMsg.correct('换卡完成！');
-// 					}else{
-// 						opCardResult(e2.r);
-// 					}
 				}
-				
 			}
 		});
 	}

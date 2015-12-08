@@ -35,7 +35,7 @@
 		update user set cardNO=#{cardNO},cardSN=#{cardSN},cardSeq=cardSeq+1 where userId=#{userId}
 	</update>
 	<update id="updateByCard" parameterMap="user2">
-		update user set invalidDate=#{invalidDate},status=#{status},cardSeq=#{cardSeq},cardTypeId=#{cardTypeId},totalFare=#{totalFare},
+		update user set endDate=#{endDate},status=#{status},cardSeq=#{cardSeq},cardTypeId=#{cardTypeId},totalFare=#{totalFare},
 		oddFare=#{oddFare},opCount=#{opCount},subsidyOddFare=#{subsidyOddFare},subsidyOpCount=#{subsidyOpCount},subsidyVersion=#{subsidyVersion}
 		where userId=#{userId}
 	</update>

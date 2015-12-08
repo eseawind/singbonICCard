@@ -112,7 +112,7 @@
 					return;
 				}
 				cardOptions.height=500;
-				var url = '${base}/changeCard.do?editType=7';
+				var url = '${base}/changeCard.do?editType=4';
 				$.pdialog.open(url, 'dialog', '读卡修正', cardOptions);
 			},
 			'loss' : function(t, target) {
@@ -134,7 +134,7 @@
 					return;
 				}
 				cardOptions.height=500;
-				var url = '${base}/changeCard.do?editType=3';
+				var url = '${base}/changeCard.do?editType=2';
 				$.pdialog.open(url, 'dialog', '解挂', cardOptions);
 			},
 			'remakeCard' : function(t, target) {
@@ -159,7 +159,7 @@
 					return;
 				}
 				cardOptions.height=500;
-				var url = '${base}/changeCard.do?editType=6';
+				var url = '${base}/changeCard.do?editType=3';
 				$.pdialog.open(url, 'dialog', '注销', cardOptions);
 			},
 			'charge' : function(t, target) {

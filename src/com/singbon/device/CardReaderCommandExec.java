@@ -147,10 +147,17 @@ public class CardReaderCommandExec {
 				map.put("'r'", cardStatus);
 				map.put("'cardSN'", cardSN);
 			}
+			// 发送补卡命令
+			else if (commandCode == CardReaderCommandCode.RemakeCard) {
+				map.put("'f1'", CardReaderResultCommandCode.RemakeCardCmd);
+				map.put("'r'", cardStatus);
+				map.put("'cardSN'", cardSN);
+			}
 			// 命令：解挂、注销、读卡
 			else if (commandCode == CardReaderCommandCode.Unloss || commandCode == CardReaderCommandCode.CardOff || commandCode == CardReaderCommandCode.ReadCard) {
 				if (commandCode == CardReaderCommandCode.Unloss) {
 					map.put("'f1'", CardReaderResultCommandCode.UnlossCmd);
+					map.put("'cardInfoStr'", StringUtil.getHexStrFromBytes(baseLen, baseLen+ 19-1, b));
 				} else if (commandCode == CardReaderCommandCode.CardOff) {
 					map.put("'f1'", CardReaderResultCommandCode.CardOffCmd);
 				} else if (commandCode == CardReaderCommandCode.ReadCard) {

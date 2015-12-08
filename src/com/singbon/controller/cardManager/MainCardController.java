@@ -259,9 +259,7 @@ public class MainCardController extends BaseController {
 		}
 
 		// 判断读卡机状态
-		if (editType == 2 || editType == 3 || editType == 4)
-
-		{
+		if (editType == 2 || editType == 3 || editType == 4 || editType == 6) {
 			Device device = (Device) request.getSession().getAttribute("device");
 			if (device != null) {
 				String sn = device.getSn();
@@ -319,7 +317,7 @@ public class MainCardController extends BaseController {
 	 * @param model
 	 */
 	@RequestMapping(value = "/saveUser.do", method = RequestMethod.POST)
-	public void saveUser(@ModelAttribute User user, @ModelAttribute CardAllInfo cardAllInfo, Integer editType, Integer batchId, String cardSN, Integer lossReason, HttpServletRequest request,
+	public void saveUser(@ModelAttribute User user, @ModelAttribute CardAllInfo cardAllInfo, Integer editType, Integer batchId, Integer lossReason, HttpServletRequest request,
 			HttpServletResponse response, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
 		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
@@ -360,14 +358,14 @@ public class MainCardController extends BaseController {
 
 					cardAllInfo.setCardBatch(batchId);
 
-					this.mainCardService.makeCardByUserInfo(sysUser, device, socketChannel, user, cardAllInfo, cardSN, CardReaderCommandCode.SingleCard, section);
+					this.mainCardService.makeCardByUserInfo(sysUser, device, socketChannel, user, cardAllInfo, CardReaderCommandCode.SingleCard, section);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		}
-		// 信息发卡批量发卡
-		else if (editType == 3 || editType == 4) {
+		// 信息发卡、批量发卡、补卡
+		else if (editType == 3 || editType == 4 || editType == 6) {
 			int cardSNCount = getCardSNCount(company.getId(), user.getCardSN(), sn);
 			if (cardSNCount > 0) {
 				return;
@@ -381,7 +379,7 @@ public class MainCardController extends BaseController {
 					user2.setStatus(241);
 					user2.setCardNO(cardNO);
 					// 非补卡，金额信息以修改的为准
-					if (editType != 5) {
+					if (editType != 6) {
 						user2.setTotalFare(allOpFare);
 						user2.setOddFare(allOpFare);
 						user2.setOpCount(cardOpCounter);
@@ -395,10 +393,10 @@ public class MainCardController extends BaseController {
 						cardAllInfo.setCardBatch(batch.getId());
 					}
 					int commandCode = CardReaderCommandCode.InfoCard;
-					if (editType == 5) {
+					if (editType == 6) {
 						commandCode = CardReaderCommandCode.RemakeCard;
 					}
-					this.mainCardService.makeCardByUserInfo(sysUser, device, socketChannel, user2, cardAllInfo, cardSN, commandCode, section);
+					this.mainCardService.makeCardByUserInfo(sysUser, device, socketChannel, user2, cardAllInfo, commandCode, section);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -518,7 +516,7 @@ public class MainCardController extends BaseController {
 	 * 
 	 * @param comm
 	 * @param editType
-	 *            3解挂，6注销，7读卡修正
+	 *            0信息发卡、1补卡、2解挂、3注销、4读卡修正、读取卡余额(存取款用)
 	 * @param request
 	 * @param response
 	 * @param model
@@ -537,8 +535,8 @@ public class MainCardController extends BaseController {
 		byte commandCode = 0;
 		List<Integer> sectionBlocks = new ArrayList<Integer>();
 
-		// 信息发卡初始化
-		if (editType == 0) {
+		// 信息发卡和补卡初始化
+		if (editType == 0 || editType == 1) {
 			sectionBlocks.add(section * 10);
 		} else {
 			sectionBlocks.add(section * 10);
@@ -552,24 +550,24 @@ public class MainCardController extends BaseController {
 		case 0:
 			commandCode = CardReaderCommandCode.InfoCard;
 			break;
-		// 解挂初始化
-		case 3:
-			commandCode = CardReaderCommandCode.Unloss;
-			break;
 		// 补卡初始化
-		case 4:
+		case 1:
 			commandCode = CardReaderCommandCode.RemakeCard;
 			break;
+		// 解挂初始化
+		case 2:
+			commandCode = CardReaderCommandCode.Unloss;
+			break;
 		// 卡注销初始化
-		case 6:
+		case 3:
 			commandCode = CardReaderCommandCode.CardOff;
 			break;
 		// 读卡
-		case 7:
+		case 4:
 			commandCode = CardReaderCommandCode.ReadCard;
 			break;
 		// 读取卡余额
-		case 8:
+		case 5:
 			commandCode = CardReaderCommandCode.ReadCardOddFare;
 			break;
 		default:
@@ -629,7 +627,7 @@ public class MainCardController extends BaseController {
 	 * 
 	 * @param userId
 	 * @param editType
-	 *            3解挂，6注销，7读卡修正
+	 *            2解挂、3注销、4读卡修正
 	 * @param cardSN
 	 *            物理卡号
 	 * @param newCardSN
@@ -641,7 +639,7 @@ public class MainCardController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/doChangeCard.do", method = RequestMethod.POST)
-	public void doChangeCard(@ModelAttribute User user, Integer editType, Integer updateType, String newCardSN, String cardInfoStr, HttpServletRequest request, HttpServletResponse response,
+	public void doChangeCard(@ModelAttribute User user, Integer editType, Integer updateType, String cardInfoStr, HttpServletRequest request, HttpServletResponse response,
 			Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
 		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
@@ -655,28 +653,29 @@ public class MainCardController extends BaseController {
 			e.printStackTrace();
 		}
 
+		user.setCompanyId(company.getId());
 		// 解挂
-		if (editType == 3) {
+		if (editType == 2) {
 			SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
 			if (socketChannel != null) {
 				try {
-					this.mainCardService.unloss(sysUser, user.getUserId(), socketChannel, device, cardInfoStr);
+					this.mainCardService.unloss(sysUser, user, socketChannel, device, cardInfoStr);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 			// 卡注销先注销卡
-		} else if (editType == 6) {
+		} else if (editType == 3) {
 			SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
 			if (socketChannel != null) {
 				try {
-					this.mainCardService.offCardWithInfo(user.getUserId(), socketChannel, device, newCardSN, company.getBaseSection());
+					this.mainCardService.cardOffWithInfo(user, socketChannel, device, company.getBaseSection());
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 			// 修正
-		} else if (editType == 7) {
+		} else if (editType == 4) {
 			// 按卡修正
 			if (updateType == 0) {
 				try {
@@ -702,7 +701,7 @@ public class MainCardController extends BaseController {
 						} else {
 							cardAllInfo.setCardBatch(batch.getId());
 						}
-						this.mainCardService.makeCardByUserInfo(sysUser, device, socketChannel, user2, cardAllInfo, user2.getCardSN(), CardReaderCommandCode.UpdateByInfo, section);
+						this.mainCardService.makeCardByUserInfo(sysUser, device, socketChannel, user2, cardAllInfo, CardReaderCommandCode.UpdateByInfo, section);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}

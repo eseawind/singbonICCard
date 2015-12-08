@@ -77,7 +77,15 @@
 			next();
 		});
 		$('#userinfo .remakeCard').click(function() {
-			infoCard();
+			if(isOnline){
+				if($('#userinfo').valid()){
+					if(!getAllFare())
+						return;
+					$.post('${base }/command.do?editType=1');
+				}
+			}else{
+				alertMsg.warn('读卡机当前处于离线状态不能补卡！');
+			}
 		});
 		$('#userinfo .loss').click(function() {
 			validateCallback($(this).parents('form'), function(e) {
@@ -193,6 +201,24 @@
 					}else{
 						opCardResult(e2.r);
 					}
+				//补卡命令
+				} else if (e2.f1 == 11) {
+					if(e2.r==1){
+						$('#userinfo input[name=cardSN]').val(e2.cardSN);
+						validateCallback($('#userinfo'), function(e) {
+						}, null);
+					}else{
+						opCardResult(e2.r);
+					}
+				//补卡完成
+				} else if (e2.f1 == 12) {
+					if(e2.r==1){
+						refreshUserList();
+						alertMsg.correct('补卡完成！');
+						$('#userinfo .close').click();
+					}else{
+						opCardResult(e2.r);
+					}
 				}
 			}
 		});
@@ -290,6 +316,10 @@
 
 .dialog .pageFormContent dd {
 	width: 120px;
+}
+
+.pageFormContent label {
+	width: 50px;
 }
 
 .dialog .pageFormContent dd span.error {
