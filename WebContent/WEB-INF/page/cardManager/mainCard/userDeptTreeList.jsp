@@ -30,3 +30,6 @@
 
 		</ul></li>
 </ul>
+<div style="position:absolute;top:5px;left: 150px;">
+	<input type="checkbox" name="includeSub" style="width: 13px;position:relative; top:2px; "/>包含下级
+</div> 

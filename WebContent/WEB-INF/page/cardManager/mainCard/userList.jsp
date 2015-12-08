@@ -208,10 +208,13 @@
 		return true;
 	}
 	$(function() {
-		$(function() {
-			$('#userList .search').click(function() {
-				divSearch($('#userList #pagerForm'), 'userList');
-			});
+		$('#userList .search').click(function() {
+			if($('#userDeptTree input[name=includeSub]').attr('checked')){
+				$('#userList #pagerForm input[name=includeSub]').val(1);				
+			}else{
+				$('#userList #pagerForm input[name=includeSub]').val('');				
+			}
+			divSearch($('#userList #pagerForm'), 'userList');
 		});
 	});
 </script>
@@ -266,16 +269,17 @@
 </div>
 <div class="pageHeader" style="border: 1px #B8D0D6 solid">
 	<form action="${base}/list.do" id="pagerForm">
+		<input type="hidden" name="deptId" value="${deptId}" /> 
 		<input type="hidden" name="pageNum" value="${pageNum}" /> 
 		<input type="hidden" name="numPerPage" value="${numPerPage}" />
 		<input type="hidden" name="totalCount" value="${totalCount}" />
+		<input type="hidden" name="includeSub" value="${includeSub}" />
 		<div class="searchBar">
 			<table border="0">
 				<tr align="right">
 					<td>用户信息：</td>
 					<td>
 						<input type="text" name="nameStr" size="10" value="${nameStr }" />
-						<input type="hidden" name="deptId" value="${deptId}" />
 					</td>
 					<td style="padding-left: 10px;">
 						<div class="buttonActive">

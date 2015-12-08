@@ -119,7 +119,7 @@ public class MainCardController extends BaseController {
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/list.do")
-	public String userList(@ModelAttribute Pagination pagination, Integer deptId, String nameStr, HttpServletRequest request, HttpServletResponse response, Model model) {
+	public String userList(@ModelAttribute Pagination pagination, Integer deptId, String includeSub, String nameStr, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
 
 		String[] columns = { "userId", "userNO", "username", "sex", "cardID", "cardTypeId", "status" };
@@ -130,7 +130,11 @@ public class MainCardController extends BaseController {
 		}
 
 		if (!StringUtils.isEmpty(deptId) && deptId != -1) {
-			whereSql += String.format(" and deptId = %s", deptId);
+			if (StringUtils.isEmpty(includeSub)) {
+				whereSql += String.format(" and deptId = %s", deptId);
+			} else {
+				whereSql += String.format(" and find_in_set(deptId,getSubIds(%s,0))>0", deptId);
+			}
 		}
 
 		List<Map> userList = this.commonService.selectByPage(columns, null, fromSql, whereSql, pagination);

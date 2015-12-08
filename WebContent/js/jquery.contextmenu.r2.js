@@ -143,16 +143,21 @@
 			}
 		});
 
+		var topY=e[cur.eventPosY];
+		var h= $(window).height();
+		if(topY+290>h){
+			topY=topY-(topY+290-h);
+		}
 		menu.css({
 			'left' : e[cur.eventPosX],
-			'top' : e[cur.eventPosY]
+			'top' : topY
 		}).show();
 		if (cur.shadow)
 			shadow.css({
 				width : menu.width(),
 				height : menu.height(),
 				left : e.pageX + 2,
-				top : e.pageY + 2
+				top : topY+2
 			}).show();
 		$(document).one('click', hide);
 	}

@@ -11,12 +11,16 @@
 	function selectUserDept(a) {
 		selectedDeptId = a.attr('deptId');
 		selectedBatchId = a.attr('batchId');
+		$('#userList #pagerForm input[name=deptId]').val(selectedDeptId);
+		if($('#userDeptTree input[name=includeSub]').attr('checked')){
+			$('#userList #pagerForm input[name=includeSub]').val(1);				
+		}else{
+			$('#userList #pagerForm input[name=includeSub]').val('');				
+		}
 		refreshUserList();
 	};
 	function refreshUserList() {
-		$('#userList').loadUrl('${base}/list.do?pageNum=1&numPerPage=50&deptId=' + selectedDeptId, {}, function(){
-			$('#userList').find('[layoutH]').layoutH();
-		});
+		divSearch($('#userList #pagerForm'), 'userList');
 	}
 </script>
 
