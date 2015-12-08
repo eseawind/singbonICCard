@@ -1,102 +1,63 @@
-<!-- 挂失补卡换卡注销 -->
+<!-- 读卡 -->
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <script src="/js/comet4j.js" type="text/javascript"></script>
 <script type="text/javascript">
-
 	var isOnline=false;
 	var isHeart=false;
 	var title=null;
 	var heartTime=new Date();
-
+	var userStatus=null;
+	
 	$(function() {
-		if('${editType}'!=0){
-			title = $('.dialogHeader_c h1').html().split('——')[0];
-			if ('${cardStatus}' == 1) {
-				$('.dialogHeader_c h1').html(title + '——读卡机状态：在线');
-				isOnline=true;
-				if(!isHeart){
-					heart();
-					isHeart=true;
-				}
-			} else {
-				$('.dialogHeader_c h1').html(title + '——读卡机状态：离线');
-				isOnline=false;
-				isHeart=false;
-				$('body').stopTime();
+		title = $('.dialogHeader_c h1').html().split('——')[0];
+		if ('${cardStatus}' == 1) {
+			$('.dialogHeader_c h1').html(title + '——读卡机状态：在线');
+			isOnline=true;
+			if(!isHeart){
+				heart();
+				isHeart=true;
 			}
-			init();
+		} else {
+			$('.dialogHeader_c h1').html(title + '——读卡机状态：离线');
+			isOnline=false;
+			isHeart=false;
+			$('body').stopTime();
 		}
-		$('#userInfo .loss').click(function() {
-			validateCallback($(this).parents('form'), function(e) {
-				var editType='${editType }';
-				//挂失
-				if(editType==0){
-					if (e == 1) {
-						refreshUserList();
-						$('#userInfo .close').click();								
-						alertMsg.correct('挂失成功！');
-					} else if(e==2) {
-						alertMsg.warn('挂失失败！');					
+		init();
+		
+		$('#userinfo .readCard').click(function() {
+			if(isOnline){
+				$.post('${base }/command.do?editType=${editType}',function(e){
+				});
+			}else{
+				alertMsg.warn('读卡机当前处于离线状态不能读卡！');
+			}
+		});
+		
+		$('#userinfo .update').click(function() {
+			if(isOnline){
+				var updateType=$('#userinfo input[name=updateType]:checked').val();
+				if(updateType==0 && userStatus=='注销'){
+					alertMsg.warn('改人员已经注销不允许按卡修正！');
+					return;
+				}				
+				validateCallback($('#userinfo'), function(e) {
+					if(updateType==0){
+						if(e==1){
+							$('#updateLi').hide();
+							alertMsg.correct('按卡修正成功！');
+						}else{
+							alertMsg.warn('按卡修正失败！');						
+						}
 					}
-				}
-			}, null);
-		});
-		$('#userInfo .unloss').click(function() {
-			if(isOnline){
-// 				if($('#userInfo').valid()){
-					$.post('${base }/command.do?comm=unlossInit',function(e){
-					});
-// 				}
+				}, null);
 			}else{
-				alertMsg.warn('读卡机当前处于离线状态不能解挂！');
+				alertMsg.warn('读卡机当前处于离线状态不能读卡！');
 			}
 		});
-		$('#userInfo .remakeCard').click(function() {
-			if(isOnline){
-// 				if($('#userInfo').valid()){
-					$.post('${base }/command.do?comm=remakeCardInit',function(e){
-					});
-// 				}
-			}else{
-				alertMsg.warn('读卡机当前处于离线状态不能补卡！');
-			}
-		});
-// 		$('#userInfo .readOldCard').click(function() {
-// 			if(isOnline){
-// 				alertMsg.confirm('换卡后要回收原卡，确定换卡吗？', {
-// 					okCall : function() {
-// 						$.post('${base }/command.do?comm=readOldCardInit',function(e){
-// 						});
-// 					}
-// 				});
-// 			}else{
-// 				alertMsg.warn('读卡机当前处于离线状态不能读原卡！');
-// 			}
-// 		});
-// 		$('#userInfo .changeNewCard').click(function() {
-// 			if(isOnline){
-// // 				if($('#userInfo').valid()){
-// 					$.post('${base }/command.do?comm=changeNewCardInit',function(e){
-// 					});
-// // 				}
-// 			}else{
-// 				alertMsg.warn('读卡机当前处于离线状态不能换新卡！');
-// 			}
-// 		});
-		$('#userInfo .offWithCard').click(function() {
-			if(isOnline){
-// 				alertMsg.confirm('确定要注销该人员吗？', {
-// 					okCall : function() {
-						$.post('${base }/command.do?comm=offCardWithInfo',function(e){
-						});
-// 					}
-// 				});
-			}else{
-				alertMsg.warn('读卡机当前处于离线状态不能注销卡！');
-			}
-		});
+		
 	});
 
 	function init() {
@@ -107,10 +68,10 @@
 				var e2 = eval('(' + e + ')');
 				heartTime=new Date();
 				//存在物理卡号
-				if(e2.f1==0x70){
+				if(e2.f1==0x7f){
 					alertMsg.warn('该卡片已经发行，请放置新卡！');
 				}
-				//读卡器状态
+				//读卡器状态心跳
 				else if (e2.f1 == 0x02 && e2.r == 1) {
 					$('.dialogHeader_c h1').html(title + '——读卡机状态：在线');
 					isOnline=true;
@@ -118,121 +79,58 @@
 						heart();
 						isHeart=true;
 					}
-				//解挂命令
-				} else if (e2.f1 == 0x07) {
+				//读卡命令
+				} else if (e2.f1 == 0x0e) {
 					if(e2.r==1){
-						var userId= $('#userInfo input[name=userId]').val();
-						var cardSN= $('#userInfo input[name=cardSN]').val();
-						
-						if(userId==e2.userId && cardSN==e2.cardSN){
-							$('#userInfo input[name=cardInfoStr]').val(e2.cardInfoStr);
-							validateCallback($('#userInfo'), function(e) {
-							}, null);
-						}else{
-							alertMsg.warn('该卡片与用户信息不匹配请更换！');					
-						}
-					}else{
-						opCardResult(e2.r);
-					}
-				//解挂完成
-				}else if(e2.f1==0x08){
-					if(e2.r==1){
-						refreshUserList();
-						$('#userInfo .close').click();								
-						alertMsg.correct('解挂成功！');
-					}else{
-						opCardResult(e2.r);
-					}	
-				//有卡注销命令
-				} else if (e2.f1 == 0x1c) {
-					if(e2.r==1){
-						var userId= $('#userInfo input[name=userId]').val();
-						var cardSN= $('#userInfo input[name=cardSN]').val();
-						
-						if(userId==e2.userId && cardSN==e2.cardSN){
-							validateCallback($('#userInfo'), function(e) {
-							}, null);
-						}else{
-							alertMsg.warn('该卡片与用户信息不匹配请更换！');					
-						}
-					}else{
-						opCardResult(e2.r);
-					}
-				//有卡注销完成
-				}else if(e2.f1==0x1d){
-					if(e2.r==1){
-						var userId= $('#userInfo input[name=userId]').val();
-						$.post('${base }/offUserInfoWithInfo.do?userId='+userId,function(e3){
-							if(e3==1){
-								refreshUserList();
-								$('#userInfo .close').click();								
-								alertMsg.correct('有卡注销完成！');															
+						$.post('${base }/selectUserInfoByUserIdCardSN.do?userId='+e2.userId+'&cardSN='+e2.cardSN,function(e3){
+							var e4 = eval('(' + e3 + ')');
+							if(e4.r==1){
+								$('.userInfoList #userName').html(e4.userName);
+								$('.userInfoList #userNO').html(e4.userNO);
+								$('.userInfoList #deptName').html(e4.deptName);
+								
+								var tds=$('.userInfoList .gridTbody td[id]');
+								tds.each(function(e){
+									var td=$(this);
+									td.parent('tr').removeAttr('style');
+									var attr=td.attr('id');
+									var e2value=e2[attr];//卡
+									var e4value=e4[attr];//库
+									if(attr=='statusDesc'){
+										userStatus=e4value;
+									}
+									td.next().find('div').html(e2value);
+									td.next().next().find('div').html(e4value);
+									$('#userinfo input[name='+attr+']').val(e2value);
+									if(e2value!=e4value){
+										td.parent('tr').css('color','red');
+									}
+								});
+								$('#userinfo input[name=status]').val(e2['status']);
+								var totalFare=$('#userinfo input[name=totalFare]');
+								totalFare.val(totalFare.val()*100);
+								var oddFare=$('#userinfo input[name=oddFare]');
+								oddFare.val(oddFare.val()*100);
+								var subsidyOddFare=$('#userinfo input[name=subsidyOddFare]');
+								subsidyOddFare.val(subsidyOddFare.val()*100);
+								
+								$('#updateLi').show();
 							}else{
-								alertMsg.warn('有卡注销失败！');
+								alertMsg.warn('库中不存在此卡！');
 							}
 						});
 					}else{
 						opCardResult(e2.r);
+					}
+				//按库修正完成
+				}else if(e2.f1==0x0f){
+					if(e2.r==1){
+						$('#updateLi').hide();
+						alertMsg.correct('按库修正成功！');
+					}else{
+						opCardResult(e2.r);
 					}	
-				//补卡命令
-				} else if (e2.f1 == 0x09) {
-					if(e2.r==1){
-						$('#userInfo input[name=cardSN]').val(e2.cardSN);
-						validateCallback($('#userInfo'), function(e) {
-						}, null);
-					}else{
-						opCardResult(e2.r);
-					}
-				//补卡完成
-				} else if (e2.f1 == 0x0a) {
-					if(e2.r==1){
-						refreshUserList();
-						$('#userInfo .close').click();
-						alertMsg.correct('补卡完成！');
-					}else{
-						opCardResult(e2.r);
-					}
-// 				//换卡读原卡命令
-// 				} else if (e2.f1 == 0x0b) {
-// 					if(e2.r==1){
-// 						var userId= $('#userInfo input[name=userId]').val();
-// 						var cardSN= $('#userInfo input[name=cardSN]').val();
-// 						if(userId==e2.userId && cardSN==e2.cardSN){
-// 							$('#userInfo input[name=cardInfoStr]').val(e2.cardInfoStr);
-// 							$('#userInfo .readOldCard').hide();
-// 							$('#userInfo .changeNewCard').show();
-// 							alertMsg.correct('原卡读卡完毕，请放置新卡！');
-// 						}else{
-// 							alertMsg.warn('该原卡与人员信息不匹配请换卡！');
-// 						}
-// 					}else{
-// 						opCardResult(e2.r);
-// 					}
-// 				//换卡换新卡命令
-// 				} else if (e2.f1 == 0x0c) {
-// 					if(e2.r==1){
-// 						var cardSN= $('#userInfo input[name=cardSN]').val();
-// 						if(cardSN==e2.newCardSN){
-// 								alertMsg.warn('该卡片是原卡请放置新卡！');
-// 						}else{
-// 							$('#userInfo input[name=newCardSN]').val(e2.newCardSN);
-// 							validateCallback($('#userInfo'), function(e) {
-// 							}, null);
-// 						}
-// 					}else{
-// 						opCardResult(e2.r);
-// 					}
-// 				//换卡换新卡完成
-// 				} else if (e2.f1 == 0x0d) {
-// 					if(e2.r==1){
-// 						refreshUserList();
-// 						$('#userInfo .close').click();
-// 						alertMsg.correct('换卡完成！');
-// 					}else{
-// 						opCardResult(e2.r);
-// 					}
 				}
-				
 			}
 		});
 	}
@@ -247,6 +145,8 @@
 				isOnline=false;
 				isHeart=false;
 				$('body').stopTime();
+			}else{
+				$('.dialogHeader_c h1').html(title + '——读卡机状态：在线');
 			}
 		},0,true);
 	}
@@ -285,90 +185,137 @@
 	left: 85px;
 }
 </style>
-<form id="userInfo" method="post" action="${base }/doChangeCard.do" class="pageForm required-validate">
-	<div class="pageFormContent" layoutH="60">
-		<fieldset>
-			<legend>用户信息</legend>
-			<dl>
-				<dt>用户姓名：</dt>
-				<dd>
-					${user.username }
-					<input name="userId" type="hidden" value="${user.userId }" /> 
-					<input name="editType" type="hidden" value="${editType }" />
-					<input name="cardSN" type="hidden" value="${user.cardSN }" /> 
-					<input name="newCardSN" type="hidden" />
-					<input name="cardInfoStr" type="hidden"/> 
-					<input name="batchId" type="hidden" value="${batch.id }" /> 
-				</dd>
-			</dl>
-			<dl>
-				<dt>用户编号：</dt>
-				<dd>
-					${user.userNO }
-				</dd>
-			</dl>
-		</fieldset>
-		<c:if test="${editType==0 }">
-		<fieldset>
-			<legend>挂失原因</legend>
-			<dl>
-				<dt>
-					<label>
-						<input type="hidden" name="cardNO" value="${user.cardNO }" />
-						<input type="radio" name="lossReason" checked="checked" value="0" />卡遗失 
-						<input type="radio" name="lossReason" value="1" />卡损坏
-					</label> 
-				</dt>
-			</dl>
-		</fieldset>
-		</c:if>
-	</div>
+<div class="pageFormContent userInfoList" layoutH="60">
+	<fieldset>
+		<legend>用户信息</legend>
+		<dl>
+			<dt>用户姓名：</dt>
+			<dd id="userName"></dd>
+		</dl>
+		<dl>
+			<dt>用户编号：</dt>
+			<dd id="userNO"></dd>
+		</dl>
+		<dl>
+			<dt>所在部门：</dt>
+			<dd id="deptName"></dd>
+		</dl>
+	</fieldset>
+	<table class="table" width="99%">
+		<thead>
+			<tr>
+				<th width="150">参数名</th>
+				<th >卡中参数值</th>
+				<th >库中参数值</th>
+			</tr>
+		</thead>
+		<tbody class="userList">
+			<tr>
+				<td id="userId">帐号</td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td id="cardNO">卡号</td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td id="endDate">当前有效期</td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td id="statusDesc">卡状态</td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td id="cardSeq">卡序号</td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td id="cardTypeId">卡类型</td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td id="totalFare">卡总额</td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td id="oddFare">卡余额</td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td id="opCount">大钱包计数器</td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td id="subsidyOddFare">卡补助余额</td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td id="subsidyOpCount">补助钱包计数器</td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td id="subsidyVersion">补助版本号</td>
+				<td></td>
+				<td></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<form id="userinfo" method="post" action="${base }/doChangeCard.do" class="pageForm">
+	<input name="editType" type="hidden" value="${editType }" />
+	<input name="userId" type="hidden" /> 
+	<input name="cardSN" type="hidden" />
+	<input name="invalidDate" type="hidden" />
+	<input name="status" type="hidden" />
+	<input name="cardSeq" type="hidden" />
+	<input name="cardTypeId" type="hidden" />
+	<input name="totalFare" type="hidden" />
+	<input name="oddFare" type="hidden" />
+	<input name="opCount" type="hidden" />
+	<input name="subsidyOddFare" type="hidden" />
+	<input name="subsidyOpCount" type="hidden" />
+	<input name="subsidyVersion" type="hidden" />
+	 
 	<div class="formBar">
 		<ul>
-			<c:if test="${editType==0 }">
-				<li><div class="buttonActive">
-						<div class="buttonContent loss">
-							<button type="button">挂失</button>
+<!-- 			5挂失，3解挂，4补卡，6注销，7读卡修正 -->
+			<c:if test="${editType==7}">
+				<li id="updateLi" style="display: none;">
+					<div class="button" style="margin-right: 10px;">
+						<div class="buttonContent">
+							<button type="button" class="update">修正</button>
 						</div>
-					</div></li>
+					</div>
+					<div style="float: left;">
+						<input type="radio" name="updateType" value="0" checked="checked"/>按卡修正
+						<input type="radio" name="updateType" value="1"/>按库修正
+					</div>
+				</li>
 			</c:if>
-			<c:if test="${editType==1 }">
-				<li><div class="button">
-						<div class="buttonContent unloss">
-							<button type="button">解挂</button>
-						</div>
-					</div></li>
-			</c:if>
-			<c:if test="${editType==2 }">
-				<li><div class="button">
-						<div class="buttonContent remakeCard">
-							<button type="button">补卡</button>
-						</div>
-					</div></li>
-			</c:if>
-<%-- 			<c:if test="${editType==3 }"> --%>
-<!-- 				<li><div class="button"> -->
-<!-- 						<div class="buttonContent readOldCard"> -->
-<!-- 							<button type="button">读原卡</button> -->
-<!-- 						</div> -->
-<!-- 						<div class="buttonContent changeNewCard" style="display: none;"> -->
-<!-- 							<button type="button">换新卡</button> -->
-<!-- 						</div> -->
-<!-- 					</div></li> -->
-<%-- 			</c:if> --%>
-			<c:if test="${editType==5 }">
-				<li><div class="button">
-						<div class="buttonContent offWithCard">
-							<button type="button">注销</button>
-						</div>
-					</div></li>
-			</c:if>
+			<li><div class="button">
+					<div class="buttonContent">
+						<button type="button" class="readCard">读卡</button>
+					</div>
+				</div>
+			</li>
 			<li><div class="button">
 					<div class="buttonContent">
 						<button type="button" class="close">关闭</button>
 					</div>
 				</div>
-				</li>
+			</li>
 		</ul>
 	</div>
 </form>

@@ -81,9 +81,14 @@
 				if (!checkDeviceSn()) {
 					return;
 				}
+				var userId=$(t).attr('userId');
+				if(userId==null){
+					alertMsg.warn('请先选择人员！');
+					return;
+				}
 				if ($(t).attr('status') == 0) {
 					cardOptions.height=420;
-					var url = '${base}/editUser.do?editType=3&userId='+ $(t).attr('userId');
+					var url = '${base}/editUser.do?editType=3&userId='+ userId;
 					$.pdialog.open(url, 'dialog', '信息发卡', cardOptions);
 				} else {
 					alertMsg.warn('该用户已发卡不能重复操作！');
@@ -107,15 +112,18 @@
 					return;
 				}
 				cardOptions.height=500;
-				var url = '${base}/readCard.do';
+				var url = '${base}/changeCard.do?editType=7';
 				$.pdialog.open(url, 'dialog', '读卡修正', cardOptions);
 			},
 			'loss' : function(t, target) {
-				if (!checkDeviceSn()) {
+				var userId=$(t).attr('userId');
+				if(userId==null){
+					alertMsg.warn('请先选择人员！');
 					return;
 				}
 				if ($(t).attr('status') == 241) {
-					var url = '${base}/changeCard.do?editType=0&userId='+ $(t).attr('userId');
+					cardOptions.height=470;
+					var url = '${base}/editUser.do?editType=5&userId='+ userId;
 					$.pdialog.open(url, 'dialog', '挂失', cardOptions);
 				} else {
 					alertMsg.warn('该卡不是正常卡，不能进行挂失操作！');
@@ -125,41 +133,34 @@
 				if (!checkDeviceSn()) {
 					return;
 				}
-				if ($(t).attr('status') == 243) {
-					var url = '${base}/changeCard.do?editType=1&userId='+ $(t).attr('userId');
-					$.pdialog.open(url, 'dialog', '解挂', cardOptions);
-				} else {
-					alertMsg.warn('该卡不是挂失卡，不能进行解挂操作！');
-				}
+				cardOptions.height=500;
+				var url = '${base}/changeCard.do?editType=3';
+				$.pdialog.open(url, 'dialog', '解挂', cardOptions);
 			},
 			'remakeCard' : function(t, target) {
-				if (!checkDeviceSn()) {
-					return;
-				}
-				if ($(t).attr('status') == 243) {
-					var url = '${base}/changeCard.do?editType=2&userId='+ $(t).attr('userId');
-					$.pdialog.open(url, 'dialog', '补卡', cardOptions);
-				} else {
-					alertMsg.warn('该卡不是挂失卡，不能进行补卡操作！');
-				}
-			},
-			'offWithCard' : function(t, target) {
 				if (!checkDeviceSn()) {
 					return;
 				}
 				var userId=$(t).attr('userId');
 				if(userId==null){
 					alertMsg.warn('请先选择人员！');
-					return;					
+					return;
 				}
-				if ($(t).attr('status') == 0) {
-					alertMsg.warn('该卡尚未发卡，不能进行有卡注销操作！');
-				}else if($(t).attr('status') == 244){
-					alertMsg.warn('该卡已经注销，不能重复进行有卡注销操作！');					
+				if ($(t).attr('status') == 243) {
+					cardOptions.height=420;
+					var url = '${base}/editUser.do?editType=6&userId='+ userId;
+					$.pdialog.open(url, 'dialog', '补卡', cardOptions);
 				} else {
-					var url = '${base}/changeCard.do?editType=5&userId='+ userId;
-					$.pdialog.open(url, 'dialog', '有卡注销', cardOptions);
+					alertMsg.warn('该卡不是挂失卡，不能进行补卡操作！');
 				}
+			},
+			'cardOff' : function(t, target) {
+				if (!checkDeviceSn()) {
+					return;
+				}
+				cardOptions.height=500;
+				var url = '${base}/changeCard.do?editType=6';
+				$.pdialog.open(url, 'dialog', '注销', cardOptions);
 			},
 			'charge' : function(t, target) {
 				if (!checkDeviceSn()) {
@@ -253,7 +254,7 @@
 			<li id="remakeCard">补卡</li>
 		</security:authorize>
 		<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MAINCARD_OFFWITHCARD">
-			<li id="offWithCard">卡注销</li>
+			<li id="cardOff">卡注销</li>
 		</security:authorize>
 		<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MAINCARD_CHARGE">
 			<li id="charge">存、取款</li>

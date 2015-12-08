@@ -53,26 +53,15 @@ public class CardReaderResultCommandCode {
 	 * 解挂完成 0x08
 	 */
 	public static byte UnlossDone = 0x08;
+	
 	/**
-	 * 补卡命令 0x09
+	 * 补卡命令 0x0b
 	 */
-	public static byte RemakeCardCmd = 0x09;
+	public static byte RemakeCardCmd = 0x0b;
 	/**
-	 * 补卡完成 0x0a
+	 * 补卡完成 0x0c
 	 */
-	public static byte RemakeCardDone = 0x0a;
-	/**
-	 * 换卡读原卡命令 0x0b
-	 */
-	public static byte ReadOldCardCmd = 0x0b;
-	/**
-	 * 换卡换新卡命令 0x0c
-	 */
-	public static byte ChangeNewCardCmd = 0x0c;
-	/**
-	 * 换卡换新卡完成 0x0d
-	 */
-	public static byte ChangeNewCardDone = 0x0d;
+	public static byte RemakeCardDone = 0x0c;
 	/**
 	 * 按库修正命令 0x0e
 	 */
@@ -94,12 +83,12 @@ public class CardReaderResultCommandCode {
 	 */
 	public static byte ChargeDone = 0x1b;
 	/**
-	 * 有卡注销命令 0x1c
+	 * 卡注销命令 0x1c
 	 */
-	public static byte OffWithCardCmd = 0x1c;
+	public static byte CardOffCmd = 0x1c;
 	/**
-	 * 有卡注销完成 0x1d
+	 * 卡注销完成 0x1d
 	 */
-	public static byte OffWithCardDone = 0x1d;
+	public static byte CardOffDone = 0x1d;
 
 }

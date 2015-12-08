@@ -35,12 +35,13 @@
 		
 		$('#userInfo .readCard').click(function() {
 			if(isOnline){
-				$.post('${base }/command.do?comm=readCardOddFareInit',function(e){
+				$.post('${base }/command.do?editType=8',function(e){
 				});
 			}else{
 				alertMsg.warn('读卡机当前处于离线状态不能读卡！');
 			}
 		});
+		
 		$('#userInfo input[name=chargeType]').click(function(){
 			var oddFare=$('#userInfo input[name=oddFare]').val();
 			if(oddFare==''){
@@ -50,10 +51,12 @@
 				$('#userInfo input[name=opFare]').val(0);
 				$('#userInfo input[name=allOddFare]').val(oddFare);
 				$('#userInfo input[name=giveFare]').attr("disabled",false);
+				$('#userInfo input[name=backCardDeposit]').attr("disabled",false);
 			}else{
 				$('#userInfo input[name=opFare]').val(oddFare);
 				$('#userInfo input[name=allOddFare]').val(0);				
 				$('#userInfo input[name=giveFare]').attr("disabled",true);
+				$('#userInfo input[name=backCardDeposit]').attr("disabled",true);
 			}
 		});
 	});
@@ -101,10 +104,12 @@
 							$('#userInfo #oddFare').html(e2.oddFare);
 							$('#userInfo #subsidyOddFare').html(e2.subsidyOddFare);
 							$('#userInfo #allOddFare').html(e2.oddFare+e2.subsidyOddFare);
+							$('#userInfo #cardDeposit').html(e4.cardDeposit);
 							
 							$('#userInfo input[name=userId]').val(e4.userId);
 							$('#userInfo input[name=cardSN]').val(e4.cardSN);
 							$('#userInfo input[name=oddFare]').val(e2.oddFare);
+							$('#userInfo input[name=subsidyOddFare]').val(e4.subsidyOddFare);
 							$('#userInfo input[name=cardInfoStr]').val(e2.cardInfoStr);
 							
 							$('#chargeLi').show();
@@ -227,7 +232,8 @@
 	<input name="userId" type="hidden" /> 
 	<input name="cardSN" type="hidden" /> 
 	<input name="cardInfoStr" type="hidden"/> 
-	<input name="oddFare" type="hidden"/> 
+	<input name="oddFare" type="hidden"/>
+	<input name="subsidyOddFare" type="hidden"/>
 	<div class="pageFormContent" layoutH="60">
 		<fieldset>
 			<legend>用户信息</legend>
@@ -255,13 +261,18 @@
 				<dt>大钱包余额：</dt>
 				<dd id="oddFare"></dd>
 			</dl>
+			<dl>
+				<dt>卡押金：</dt>
+				<dd id="cardDeposit"></dd>
+			</dl>
 		</fieldset>
 		<fieldset>
 			<legend>操作类型</legend>
 			<dl style="width: 500px;">
 				<dt>存取类型：</dt>
 				<dd>
-					<label><input type="radio" name="chargeType" checked="checked" value="0" />存款  <input type="radio" name="chargeType" value="1" />取款</label> 
+					<label><input type="radio" name="chargeType" checked="checked" value="0" />存款  <input type="radio" name="chargeType" value="1" />取款</label>
+					<input type="checkbox" name="backCardDeposit" checked="checked" disabled="disabled"/>退还卡押金
 				</dd>
 			</dl>
 			<dl style="width: 500px;">

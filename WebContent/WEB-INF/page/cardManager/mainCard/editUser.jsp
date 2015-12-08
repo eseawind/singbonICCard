@@ -11,7 +11,7 @@
 	var heartTime=new Date();
 
 	$(function() {
-		if('${editType}'!=0 && '${editType}'!=1){
+		if('${editType}'!=0 && '${editType}'!=1 && '${editType}'!=5){
 			title = $('.dialogHeader_c h1').html().split('——')[0];
 			if ('${cardStatus}' == 1) {
 				$('.dialogHeader_c h1').html(title + '——读卡机状态：在线');
@@ -76,11 +76,27 @@
 		$('#userinfo .next').click(function() {
 			next();
 		});
+		$('#userinfo .remakeCard').click(function() {
+			infoCard();
+		});
+		$('#userinfo .loss').click(function() {
+			validateCallback($(this).parents('form'), function(e) {
+				if (e == 1) {
+					refreshUserList();
+					alertMsg.correct('挂失完成！');
+					$('#userinfo .close').click();
+				} else {
+					alertMsg.warn('挂失失败！');					
+				}
+			}, null);
+		});
 		$('#userinfo .delete').click(function() {
 			$('body').stopTime();
 		});
-		
-		getAllFare();
+		//不是挂失或补卡时加载页面自动计算金额
+		if('${editType}'!=5 && '${editType!=6}'){
+			getAllFare();
+		}
 	});
 
 	function infoCard(){
@@ -88,7 +104,7 @@
 			if($('#userinfo').valid()){
 				if(!getAllFare())
 					return;
-				$.post('${base }/command.do?comm=infoCardInit');
+				$.post('${base }/command.do?editType=0');
 			}
 		}else{
 			alertMsg.warn('读卡机当前处于离线状态不能发卡！');
@@ -164,8 +180,8 @@
 					if(e2.r==1){
 						if('${editType}'==3){
 							refreshUserList();
-							$('#userinfo .close').click();
 							alertMsg.correct('信息发卡完成！');
+							$('#userinfo .close').click();
 						}else{
 							var userId=$('#userinfo input[name=userId]').val();
 							var tr= $('#batchCardUserList tr[userId='+userId+']');
@@ -350,6 +366,12 @@
 					<input name="cardID" type="text" value="${cardID}" />
 				</dd>
 			</dl>
+			<dl>
+				<dt>卡号：</dt>
+				<dd>
+					<input name="cardNO" type="text" value="${cardNO}" readonly="readonly"/>
+				</dd>
+			</dl>
 		</fieldset>
 		<fieldset>
 			<legend>校园卡信息</legend>
@@ -363,24 +385,41 @@
 					</select>
 				</dd>
 			</dl>
-			<dl>
-				<dt>实际金额：</dt>
-				<dd>
-					<input class="required number" id="allFare" type="text" value="0" readonly="readonly"/>
-				</dd>
-			</dl>
-			<dl>
-				<dt>赠送金额：</dt>
-				<dd>
-					<input class="required number" name="giveFare" type="text" value="${giveFare}" onkeyup="getAllFare();"/>
-				</dd>
-			</dl>
-			<dl>
-				<dt>预发金额：</dt>
-				<dd>
-					<input class="required number" name="preOpFare" type="text" value="${preOpFare}" onkeyup="getAllFare();"/>
-				</dd>
-			</dl>
+<!-- 			挂失、补卡 -->
+			<c:if test="${editType==5 || editType==6}">
+				<dl>
+					<dt>大钱包余额：</dt>
+					<dd>
+						<input type="text" value="${user.oddFare/100 }" readonly="readonly"/>
+					</dd>
+				</dl>
+				<dl>
+					<dt>补助余额：</dt>
+					<dd>
+						<input type="text" value="${user.subsidyOddFare/100 }" readonly="readonly"/>
+					</dd>
+				</dl>			
+			</c:if>
+			<c:if test="${editType!=5 && editType!=6}">
+				<dl>
+					<dt>实际金额：</dt>
+					<dd>
+						<input class="required number" id="allFare" type="text" value="0" readonly="readonly"/>
+					</dd>
+				</dl>
+				<dl>
+					<dt>赠送金额：</dt>
+					<dd>
+						<input class="required number" name="giveFare" type="text" value="${giveFare}" onkeyup="getAllFare();"/>
+					</dd>
+				</dl>
+				<dl>
+					<dt>预发金额：</dt>
+					<dd>
+						<input class="required number" name="preOpFare" type="text" value="${preOpFare}" onkeyup="getAllFare();"/>
+					</dd>
+				</dl>
+			</c:if>
 		</fieldset>
 		<fieldset>
 			<legend>发卡参数</legend>
@@ -403,12 +442,25 @@
 				</dd>
 			</dl>
 			<dl>
-				<dt>当前有效期：</dt>
+				<dt>结束日期：</dt>
 				<dd>
 					<input type="text" name="endDate" maxlength="20" class="required" value="${endDate}" readonly="readonly"/>
 				</dd>
 			</dl>
 		</fieldset>
+		<c:if test="${editType==5 }">
+			<fieldset>
+				<legend>挂失原因</legend>
+				<dl>
+					<dt>
+						<label style="width: 150px;">
+							<input type="radio" name="lossReason" checked="checked" value="0" />卡遗失 
+							<input type="radio" name="lossReason" value="1" />卡损坏
+						</label> 
+					</dt>
+				</dl>
+			</fieldset>
+		</c:if>
 	</div>
 	<div class="formBar">
 		<ul>
@@ -449,6 +501,20 @@
 				<li><div class="button">
 						<div class="buttonContent makeCard">
 							<button type="button">发卡</button>
+						</div>
+					</div></li>
+			</c:if>
+			<c:if test="${editType==5 }">
+				<li><div class="button">
+						<div class="buttonContent loss">
+							<button type="button">挂失</button>
+						</div>
+					</div></li>
+			</c:if>
+			<c:if test="${editType==6 }">
+				<li><div class="button">
+						<div class="buttonContent remakeCard">
+							<button type="button">补卡</button>
 						</div>
 					</div></li>
 			</c:if>

@@ -89,8 +89,8 @@
 							<option value="1" width="100" <c:if test="${consumeType==1}">selected</c:if>>消费机普通消费</option>
 							<option value="2" width="100" <c:if test="${consumeType==2}">selected</c:if>>消费机补助消费</option>
 							<option value="3" width="100" <c:if test="${consumeType==3}">selected</c:if>>消费机混合消费</option>
-							<option value="9" width="100" <c:if test="${consumeType==9}">selected</c:if>>消费机补助领取</option>
-							<option value="39" width="100" <c:if test="${consumeType==39}">selected</c:if>>消费机补助清零</option>
+<%-- 							<option value="9" width="100" <c:if test="${consumeType==9}">selected</c:if>>消费机补助领取</option> --%>
+<%-- 							<option value="39" width="100" <c:if test="${consumeType==39}">selected</c:if>>消费机补助清零</option> --%>
 							
 							<option value="101" width="100" <c:if test="${consumeType==101}">selected</c:if>>水控普通消费</option>
 							<option value="102" width="100" <c:if test="${consumeType==102}">selected</c:if>>水控补助消费</option>
@@ -98,8 +98,8 @@
 							<option value="105" width="100" <c:if test="${consumeType==105}">selected</c:if>>水控大钱包找零</option>
 							<option value="106" width="100" <c:if test="${consumeType==106}">selected</c:if>>水控补助找零</option>
 							<option value="107" width="100" <c:if test="${consumeType==107}">selected</c:if>>水控混合找零</option>
-							<option value="109" width="100" <c:if test="${consumeType==109}">selected</c:if>>水控补助领取</option>
-							<option value="139" width="100" <c:if test="${consumeType==139}">selected</c:if>>水控补助清零</option>
+<%-- 							<option value="109" width="100" <c:if test="${consumeType==109}">selected</c:if>>水控补助领取</option> --%>
+<%-- 							<option value="139" width="100" <c:if test="${consumeType==139}">selected</c:if>>水控补助清零</option> --%>
 						</select>
 					</td>		
 					<td colspan="12">

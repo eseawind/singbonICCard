@@ -105,9 +105,9 @@ public class CardReaderCommandExec {
 				map.put("'f1'", CardReaderResultCommandCode.UnlossDone);
 				map.put("'r'", cardStatus);
 			}
-			// 有卡注销完成
-			else if (commandCode == CardReaderCommandCode.OffCardWithInfo) {
-				map.put("'f1'", CardReaderResultCommandCode.OffWithCardDone);
+			// 卡注销完成
+			else if (commandCode == CardReaderCommandCode.CardOff) {
+				map.put("'f1'", CardReaderResultCommandCode.CardOffDone);
 				map.put("'r'", cardStatus);
 			}
 			// 补卡完成
@@ -115,11 +115,6 @@ public class CardReaderCommandExec {
 				map.put("'f1'", CardReaderResultCommandCode.RemakeCardDone);
 				map.put("'r'", cardStatus);
 			}
-			// // 换新卡完成
-			// else if (commandCode == CardReaderCommandCode.ChangeNewCard) {
-			// map.put("'f1'", CardReaderResultCommandCode.ChangeNewCardDone);
-			// map.put("'r'", cardStatus);
-			// }
 			// 按库修正完成
 			else if (commandCode == CardReaderCommandCode.UpdateByInfo) {
 				map.put("'f1'", CardReaderResultCommandCode.UpdateByInfoDone);
@@ -152,49 +147,19 @@ public class CardReaderCommandExec {
 				map.put("'r'", cardStatus);
 				map.put("'cardSN'", cardSN);
 			}
-			// 发解挂命令
-			else if (commandCode == CardReaderCommandCode.Unloss) {
-				map.put("'f1'", CardReaderResultCommandCode.UnlossCmd);
-				map.put("'r'", cardStatus);
-				map.put("'cardInfoStr'", StringUtil.getHexStrFromBytes(baseLen, b.length - 1, b));
-				map.put("'cardSN'", cardSN);
-				map.put("'userId'", Long.parseLong(StringUtil.getHexStrFromBytes(baseLen + 3, baseLen + 3 + 3, b), 16));
-			}
-			// 发有卡注销命令
-			else if (commandCode == CardReaderCommandCode.OffCardWithInfo) {
-				map.put("'f1'", CardReaderResultCommandCode.OffWithCardCmd);
-				map.put("'r'", cardStatus);
-				map.put("'cardSN'", cardSN);
-				map.put("'userId'", Long.parseLong(StringUtil.getHexStrFromBytes(baseLen + 3, baseLen + 3 + 3, b), 16));
-			}
-			// 发补卡命令
-			else if (commandCode == CardReaderCommandCode.RemakeCard) {
-				map.put("'f1'", CardReaderResultCommandCode.RemakeCardCmd);
+			// 命令：解挂、注销、读卡
+			else if (commandCode == CardReaderCommandCode.Unloss || commandCode == CardReaderCommandCode.CardOff || commandCode == CardReaderCommandCode.ReadCard) {
+				if (commandCode == CardReaderCommandCode.Unloss) {
+					map.put("'f1'", CardReaderResultCommandCode.UnlossCmd);
+				} else if (commandCode == CardReaderCommandCode.CardOff) {
+					map.put("'f1'", CardReaderResultCommandCode.CardOffCmd);
+				} else if (commandCode == CardReaderCommandCode.ReadCard) {
+					map.put("'f1'", CardReaderResultCommandCode.ReadCardCmd);
+				}
+
 				map.put("'r'", cardStatus);
 				map.put("'cardSN'", cardSN);
-			}
-			// // 换卡读原卡命令
-			// else if (commandCode == CardReaderCommandCode.ReadOldCard) {
-			// map.put("'f1'", CardReaderResultCommandCode.ReadOldCardCmd);
-			// map.put("'r'", cardStatus);
-			// map.put("'cardSN'", cardSN);
-			// map.put("'userId'",
-			// Long.parseLong(StringUtil.getHexStrFromBytes(baseLen + 3, baseLen
-			// + 3 + 3, b), 16));
-			// map.put("'cardInfoStr'", StringUtil.getHexStrFromBytes(baseLen,
-			// b.length - 1, b));
-			// }
-			// // 换卡换新卡命令
-			// else if (commandCode == CardReaderCommandCode.ChangeNewCard) {
-			// map.put("'f1'", CardReaderResultCommandCode.ChangeNewCardCmd);
-			// map.put("'r'", cardStatus);
-			// map.put("'newCardSN'", cardSN);
-			// }
-			// 读卡命令
-			else if (commandCode == CardReaderCommandCode.ReadCard) {
-				map.put("'f1'", CardReaderResultCommandCode.ReadCardCmd);
-				map.put("'r'", cardStatus);
-				map.put("'cardSN'", cardSN);
+
 				int base0 = baseLen + 3;
 				try {
 					map.put("'userId'", Long.parseLong(StringUtil.getHexStrFromBytes(base0, base0 + 3, b), 16));
@@ -305,7 +270,7 @@ public class CardReaderCommandExec {
 				int consume0 = baseLen + 19 * 2 + 3;
 				map.put("'oddFare'", (float) Integer.parseInt(StringUtil.getHexStrFromBytes(consume0 + 3, consume0 + 5, b), 16) / 100);
 				map.put("'cardInfoStr'", StringUtil.getHexStrFromBytes(baseLen + 19, b.length - 20, b));
-				
+
 				int subsidy0 = baseLen + 19 * 3 + 3;
 				map.put("'subsidyOddFare'", (float) Integer.parseInt(StringUtil.getHexStrFromBytes(subsidy0 + 2, subsidy0 + 5, b), 16) / 100);
 			}

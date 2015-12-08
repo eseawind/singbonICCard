@@ -6,7 +6,7 @@
 	<parameterMap type="com.singbon.entity.CardRecord" id="cardRecord2" />
 	<cache eviction="FIFO" size="2000" readOnly="true"/>
 	<insert id="insert" parameterMap="cardRecord2">
-		insert into cardRecord (companyId,userId,cardNO,cardSN,recordType,opFare,opTime)
-		values (#{companyId},#{userId},#{cardNO},#{cardSN},#{recordType},#{opFare},NOW())
+		insert into cardRecord (companyId,operId,userId,cardNO,cardSN,recordType,opFare,oddFare,subsidyOddFare,cardOddFare,cardSubsidyOddFare,opTime)
+		values (#{companyId},#{operId},#{userId},#{cardNO},#{cardSN},#{recordType},#{opFare},#{oddFare},#{subsidyOddFare},#{cardOddFare},#{cardSubsidyOddFare},NOW())
 	</insert>
 </mapper>
