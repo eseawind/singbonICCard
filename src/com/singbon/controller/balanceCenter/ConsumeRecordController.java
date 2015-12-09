@@ -112,22 +112,22 @@ public class ConsumeRecordController extends BaseController {
 			List<List<String>> exportList = new ArrayList<List<String>>();
 			for (Map m : list) {
 				List<String> list2 = new ArrayList<String>();
-				list2.add(StringUtil.getString(m.get("deviceName")));
-				list2.add(StringUtil.getString(m.get("userNO")));
-				list2.add(StringUtil.getString(m.get("cardNO")));
-				list2.add(StringUtil.getString(m.get("username")));
-				list2.add(StringUtil.getString(m.get("oddFare")));
-				list2.add(StringUtil.getString(m.get("subsidyOddFare")));
-				list2.add(StringUtil.getString(m.get("discountFare")));
-				list2.add(StringUtil.getString(m.get("opFare")));
-				list2.add(StringUtil.getString(m.get("mealName")));
-				list2.add(StringUtil.getString(m.get("opTime")));
-				list2.add(StringUtil.getString(m.get("opCount")));
-				list2.add(StringUtil.getString(m.get("subsidyOpCount")));
-				list2.add(StringUtil.getString(m.get("recordNO")));
-				list2.add(StringUtil.getString(m.get("consumeType")));
-				list2.add(StringUtil.getString(m.get("cookbookName")));
-				list2.add(StringUtil.getString(m.get("cookbookNum")));
+				list2.add(StringUtil.objToString(m.get("deviceName")));
+				list2.add(StringUtil.objToString(m.get("userNO")));
+				list2.add(StringUtil.objToString(m.get("cardNO")));
+				list2.add(StringUtil.objToString(m.get("username")));
+				list2.add(StringUtil.objToString(m.get("oddFare")));
+				list2.add(StringUtil.objToString(m.get("subsidyOddFare")));
+				list2.add(StringUtil.objToString(m.get("discountFare")));
+				list2.add(StringUtil.objToString(m.get("opFare")));
+				list2.add(StringUtil.objToString(m.get("mealName")));
+				list2.add(StringUtil.objToString(m.get("opTime")));
+				list2.add(StringUtil.objToString(m.get("opCount")));
+				list2.add(StringUtil.objToString(m.get("subsidyOpCount")));
+				list2.add(StringUtil.objToString(m.get("recordNO")));
+				list2.add(StringUtil.objToString(m.get("consumeType")));
+				list2.add(StringUtil.objToString(m.get("cookbookName")));
+				list2.add(StringUtil.objToString(m.get("cookbookNum")));
 				exportList.add(list2);
 			}
 

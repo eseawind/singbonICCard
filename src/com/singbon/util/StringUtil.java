@@ -449,7 +449,7 @@ public class StringUtil {
 	 * @param obj
 	 * @return
 	 */
-	public static String getString(Object obj) {
+	public static String objToString(Object obj) {
 		if (obj != null) {
 			return obj.toString();
 		} else {

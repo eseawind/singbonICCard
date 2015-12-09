@@ -520,7 +520,7 @@ public class MainCardController extends BaseController {
 	 * 
 	 * @param comm
 	 * @param editType
-	 *            0信息发卡、1补卡、2解挂、3注销、4读卡修正、读取卡余额(存取款用)
+	 *            0信息发卡、1补卡、2解挂、3注销、4读卡修正、5读取卡余额(存取款用)
 	 * @param request
 	 * @param response
 	 * @param model
@@ -629,22 +629,21 @@ public class MainCardController extends BaseController {
 	/**
 	 * 变更卡
 	 * 
-	 * @param userId
+	 * @param user
+	 *            卡对象
 	 * @param editType
-	 *            2解挂、3注销、4读卡修正
-	 * @param cardSN
-	 *            物理卡号
-	 * @param newCardSN
-	 *            新物理卡号，换新卡用
+	 *            2解挂、3注销卡、4读卡修正、5注销人员
+	 * @param updateType
+	 * @param dbOddFare
+	 * @param dbSubsidyOddFare
 	 * @param cardInfoStr
-	 *            卡信息
 	 * @param request
+	 * @param response
 	 * @param model
-	 * @return
 	 */
 	@RequestMapping(value = "/doChangeCard.do", method = RequestMethod.POST)
-	public void doChangeCard(@ModelAttribute User user, Integer editType, Integer updateType, String cardInfoStr, HttpServletRequest request, HttpServletResponse response,
-			Model model) {
+	public void doChangeCard(@ModelAttribute User user, Integer editType, Integer updateType, Integer dbOddFare, Integer dbSubsidyOddFare, String cardInfoStr, HttpServletRequest request,
+			HttpServletResponse response, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
 		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
 		Device device = (Device) request.getSession().getAttribute("device");
@@ -663,7 +662,7 @@ public class MainCardController extends BaseController {
 			SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
 			if (socketChannel != null) {
 				try {
-					this.mainCardService.unloss(sysUser, user, socketChannel, device, cardInfoStr);
+					this.mainCardService.unloss(sysUser, user, dbOddFare, dbSubsidyOddFare, socketChannel, device, cardInfoStr);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -677,6 +676,16 @@ public class MainCardController extends BaseController {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+			}
+			// 卡注销后注销人员
+		} else if (editType == 5) {
+			try {
+				p = response.getWriter();
+				this.mainCardService.offUserInfoWithInfo(sysUser, user, dbOddFare, dbSubsidyOddFare);
+				p.print(1);
+			} catch (Exception e) {
+				e.printStackTrace();
+				p.print(0);
 			}
 			// 修正
 		} else if (editType == 4) {
@@ -711,27 +720,6 @@ public class MainCardController extends BaseController {
 					}
 				}
 			}
-		}
-	}
-
-	/**
-	 * 注销人员信息
-	 * 
-	 * @param request
-	 * @param model
-	 * @return
-	 */
-	@RequestMapping(value = "/offUserInfoWithInfo.do")
-	public void offUserInfoWithInfo(Long userId, HttpServletRequest request, HttpServletResponse response, Model model) {
-		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
-		PrintWriter p = null;
-		try {
-			p = response.getWriter();
-			this.mainCardService.offUserInfoWithInfo(sysUser, userId);
-			p.print(1);
-		} catch (Exception e) {
-			e.printStackTrace();
-			p.print(0);
 		}
 	}
 
@@ -936,7 +924,8 @@ public class MainCardController extends BaseController {
 			map.put("'statusDesc'", user.getStatusDesc());
 
 			map.put("'oddFare'", (float) user.getOddFare() / 100);
-			map.put("'cardDeposit'", (float) user.getCardDeposit() / 100);
+			map.put("'subsidyOddFare'", (float) user.getSubsidyOddFare() / 100);
+			map.put("'cardDeposit'", (float) user.getCardDeposit());
 		}
 		String msg = JSONUtil.convertToJson(map);
 		p.print(msg);
@@ -956,14 +945,14 @@ public class MainCardController extends BaseController {
 	 * @param model
 	 */
 	@RequestMapping(value = "/doCharge.do", method = RequestMethod.POST)
-	public void doCharge(@ModelAttribute User user, Integer chargeType, String backDeposit, Float oldOddFare, Float newOpFare, Float newGiveFare, String cardInfoStr, HttpServletRequest request,
-			HttpServletResponse response, Model model) {
+	public void doCharge(@ModelAttribute User user, Integer chargeType, Float opFare, Integer cardOddFare, Integer cardSubsidyOddFare, String backCardDeposit, String cardInfoStr,
+			HttpServletRequest request, HttpServletResponse response, Model model) {
 		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
 		Device device = (Device) request.getSession().getAttribute("device");
 		SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(device.getSn());
 		if (socketChannel != null) {
 			try {
-				this.mainCardService.doCharge(sysUser, user, oldOddFare, newOpFare, newGiveFare, socketChannel, device, chargeType, backDeposit, cardInfoStr);
+				this.mainCardService.doCharge(sysUser, user, chargeType, opFare, cardOddFare, cardSubsidyOddFare, backCardDeposit, socketChannel, device, cardInfoStr);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

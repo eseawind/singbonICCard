@@ -78,6 +78,8 @@ public class SubsidyService extends BaseService {
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void generateSubsidy(Company company, String invalidDate, HttpServletRequest request) throws Exception {
 		int subsidyVersion = company.getSubsidyVersion()+1;
+		company.setSubsidyVersion(subsidyVersion);
+		company.setSubsidyInvalidDate(invalidDate);
 		this.subsidyDAO.generateSubsidy(company.getId(), subsidyVersion, invalidDate);
 		
 		request.getSession().setAttribute("company", company);

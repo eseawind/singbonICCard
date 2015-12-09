@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50528
 File Encoding         : 65001
 
-Date: 2015-11-24 19:16:36
+Date: 2015-12-09 20:56:25
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -25,7 +25,7 @@ CREATE TABLE `authgroup` (
   `remark` varchar(50) DEFAULT NULL,
   `roles` varchar(5000) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of authgroup
@@ -57,7 +57,7 @@ CREATE TABLE `authgroupuser` (
   `operId` int(11) DEFAULT NULL,
   `groupId` int(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of authgroupuser
@@ -70,9 +70,8 @@ DROP TABLE IF EXISTS `batch`;
 CREATE TABLE `batch` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `batchName` varchar(255) DEFAULT NULL,
-  `beginDate` datetime DEFAULT NULL,
-  `endDate` datetime DEFAULT NULL,
-  `invalidDate` datetime DEFAULT NULL,
+  `beginDate` varchar(50) DEFAULT NULL,
+  `endDate` varchar(50) DEFAULT NULL,
   `companyId` int(11) DEFAULT NULL,
   `status` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -91,7 +90,7 @@ CREATE TABLE `batchblack` (
   `companyId` int(11) DEFAULT NULL,
   `batchId` int(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of batchblack
@@ -107,7 +106,7 @@ CREATE TABLE `cardblack` (
   `cardNO` bigint(11) DEFAULT NULL,
   `blackType` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of cardblack
@@ -120,11 +119,10 @@ DROP TABLE IF EXISTS `cardparam`;
 CREATE TABLE `cardparam` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `companyId` int(11) DEFAULT NULL,
-  `cardCost` int(11) DEFAULT NULL,
   `cardDeposit` int(11) DEFAULT NULL,
   `prepayFare` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of cardparam
@@ -148,6 +146,39 @@ CREATE TABLE `cardparambase` (
 INSERT INTO `cardparambase` VALUES ('1', '0', '0', '0');
 
 -- ----------------------------
+-- Table structure for `cardrecord`
+-- ----------------------------
+DROP TABLE IF EXISTS `cardrecord`;
+CREATE TABLE `cardrecord` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `companyId` int(11) DEFAULT NULL,
+  `operId` int(11) DEFAULT NULL,
+  `userId` int(11) DEFAULT NULL,
+  `cardNO` int(11) DEFAULT NULL,
+  `cardSN` varchar(50) DEFAULT NULL,
+  `recordType` int(11) DEFAULT NULL,
+  `opFare` int(11) DEFAULT NULL,
+  `oddFare` int(11) DEFAULT NULL,
+  `subsidyOddFare` int(11) DEFAULT NULL,
+  `cardOddFare` int(11) DEFAULT NULL,
+  `cardSubsidyOddFare` int(11) DEFAULT NULL,
+  `opTime` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of cardrecord
+-- ----------------------------
+INSERT INTO `cardrecord` VALUES ('41', null, '28', '5', '1', '0c4d582f', '6', '100000', '0', '0', '0', '0', '2015-12-09 18:49:18');
+INSERT INTO `cardrecord` VALUES ('42', null, '28', '5', '1', '0c4d582f', '7', '1000', '0', '0', '0', '0', '2015-12-09 18:49:18');
+INSERT INTO `cardrecord` VALUES ('43', null, '28', '5', '1', '0c4d582f', '8', '101000', '101000', '0', '101000', '0', '2015-12-09 18:49:31');
+INSERT INTO `cardrecord` VALUES ('44', null, '28', '5', '1', '0c4d582f', '1', '500', '101000', '0', '101000', '0', '2015-12-09 18:49:37');
+INSERT INTO `cardrecord` VALUES ('45', '7', '28', '5', null, '0c4d582f', '14', '0', '0', '0', '0', '0', '2015-12-09 19:18:59');
+INSERT INTO `cardrecord` VALUES ('46', '7', '28', '6', '2', '0c4d582f', '0', '9500', '0', '0', '0', '0', '2015-12-09 19:19:23');
+INSERT INTO `cardrecord` VALUES ('47', '7', '28', '6', '2', '0c4d582f', '1', '500', '0', '0', '0', '0', '2015-12-09 19:19:23');
+INSERT INTO `cardrecord` VALUES ('48', null, '28', '6', '2', '0c4d582f', '6', '1000', '9500', '0', '8700', '0', '2015-12-09 19:24:10');
+
+-- ----------------------------
 -- Table structure for `company`
 -- ----------------------------
 DROP TABLE IF EXISTS `company`;
@@ -163,7 +194,7 @@ CREATE TABLE `company` (
   `invalidDate` varchar(255) DEFAULT NULL,
   `enable` bit(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of company
@@ -184,7 +215,7 @@ CREATE TABLE `consumeparam` (
   `timeLimitFareCardTypes` varchar(50) DEFAULT NULL,
   `userPwd` varchar(5) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of consumeparam
@@ -209,7 +240,7 @@ CREATE TABLE `consumeparambase` (
 -- ----------------------------
 -- Records of consumeparambase
 -- ----------------------------
-INSERT INTO `consumeparambase` VALUES ('1', '0', ',,', '0', ',,', '0', ',,', '88888');
+INSERT INTO `consumeparambase` VALUES ('1', '0', ',,', '0', ',,', '0', ',,', '8888');
 
 -- ----------------------------
 -- Table structure for `consumerecord`
@@ -229,8 +260,8 @@ CREATE TABLE `consumerecord` (
   `opFare` int(11) DEFAULT NULL,
   `subsidyOpFare` int(11) DEFAULT NULL,
   `mealId` int(11) DEFAULT NULL,
-  `opTime` datetime DEFAULT NULL,
-  `collectTime` datetime DEFAULT NULL,
+  `opTime` varchar(50) DEFAULT NULL,
+  `collectTime` varchar(50) DEFAULT NULL,
   `opCount` int(11) DEFAULT NULL,
   `subsidyOpCount` int(11) DEFAULT NULL,
   `recordNO` int(11) DEFAULT NULL,
@@ -239,7 +270,7 @@ CREATE TABLE `consumerecord` (
   `cookbookNum` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `userId` (`userId`,`cardNO`,`recordNO`)
-) ENGINE=InnoDB AUTO_INCREMENT=76 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of consumerecord
@@ -258,7 +289,7 @@ CREATE TABLE `cookbook` (
   `remark` varchar(50) DEFAULT NULL,
   `enable` bit(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=102 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=104 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of cookbook
@@ -274,7 +305,7 @@ CREATE TABLE `dept` (
   `companyId` int(11) DEFAULT NULL,
   `parentId` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of dept
@@ -296,7 +327,7 @@ CREATE TABLE `device` (
   `enable` int(11) DEFAULT NULL,
   `sn` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of device
@@ -313,7 +344,7 @@ CREATE TABLE `discount` (
   `rate` int(11) DEFAULT NULL,
   `subsidy` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=98 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of discount
@@ -365,7 +396,7 @@ CREATE TABLE `entranceguard` (
   `openStatus` int(11) DEFAULT NULL,
   `operPwd` varchar(6) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of entranceguard
@@ -403,7 +434,7 @@ CREATE TABLE `meal` (
   `endTime` varchar(8) DEFAULT NULL,
   `timeLimit` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of meal
@@ -425,12 +456,12 @@ CREATE TABLE `mealbase` (
 -- ----------------------------
 -- Records of mealbase
 -- ----------------------------
-INSERT INTO `mealbase` VALUES ('1', '早餐', '06:30:00', '10:30:00', '0');
-INSERT INTO `mealbase` VALUES ('2', '午餐', '10:30:01', '15:30:00', '0');
-INSERT INTO `mealbase` VALUES ('3', '晚餐', '15:30:01', '18:30:00', '0');
-INSERT INTO `mealbase` VALUES ('4', '夜宵', '18:30:01', '20:30:00', '0');
-INSERT INTO `mealbase` VALUES ('5', '加班一', '20:30:01', '22:30:00', '0');
-INSERT INTO `mealbase` VALUES ('6', '加班二', '22:00:01', '23:59:59', '0');
+INSERT INTO `mealbase` VALUES ('1', '早餐', '06:30', '10:30', '0');
+INSERT INTO `mealbase` VALUES ('2', '午餐', '10:30', '15:30', '0');
+INSERT INTO `mealbase` VALUES ('3', '晚餐', '15:30', '18:30', '0');
+INSERT INTO `mealbase` VALUES ('4', '夜宵', '18:30', '20:30', '0');
+INSERT INTO `mealbase` VALUES ('5', '加班一', '20:30', '22:30', '0');
+INSERT INTO `mealbase` VALUES ('6', '加班二', '22:00', '23:59', '0');
 
 -- ----------------------------
 -- Table structure for `multiwaterrategroup`
@@ -468,7 +499,7 @@ CREATE TABLE `multiwaterrategroup` (
   `updateNum` int(11) DEFAULT NULL,
   `deviceNum` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of multiwaterrategroup
@@ -528,7 +559,7 @@ CREATE TABLE `ordertime` (
   `remark` varchar(100) DEFAULT NULL,
   `enable` bit(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of ordertime
@@ -580,7 +611,7 @@ CREATE TABLE `posparamgroup` (
   `enableMeal` int(11) DEFAULT NULL,
   `bound` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of posparamgroup
@@ -637,7 +668,7 @@ CREATE TABLE `subsidy` (
   `invalidDate` varchar(50) DEFAULT NULL,
   `status` int(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of subsidy
@@ -655,7 +686,7 @@ CREATE TABLE `sysuser` (
   `deviceId` int(11) DEFAULT NULL,
   `status` int(11) DEFAULT NULL,
   PRIMARY KEY (`operId`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sysuser
@@ -666,40 +697,39 @@ CREATE TABLE `sysuser` (
 -- ----------------------------
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
-  `userId` int(11) NOT NULL AUTO_INCREMENT,
+  `userId` bigint(11) NOT NULL AUTO_INCREMENT,
   `companyId` int(11) DEFAULT NULL,
   `deptId` int(11) DEFAULT NULL,
   `username` varchar(255) DEFAULT NULL,
   `shortName` varchar(255) DEFAULT NULL,
   `userNO` varchar(255) DEFAULT NULL,
   `cardID` varchar(255) DEFAULT NULL,
-  `cardNO` int(255) DEFAULT NULL,
+  `cardNO` bigint(255) DEFAULT NULL,
   `cardSN` varchar(255) DEFAULT NULL,
   `cardSeq` int(255) DEFAULT NULL,
   `status` int(11) DEFAULT NULL COMMENT '0未发卡、241正常、243挂失、244注销卡，其他都是异常卡',
   `sex` int(11) DEFAULT NULL,
   `cardTypeId` int(11) DEFAULT NULL,
-  `cardFunc` int(11) DEFAULT NULL,
-  `cardIdentity` int(11) DEFAULT NULL,
-  `beginDate` date DEFAULT NULL,
-  `endDate` date DEFAULT NULL,
-  `invalidDate` date DEFAULT NULL,
-  `cardMakeDate` date DEFAULT NULL,
+  `beginDate` varchar(50) DEFAULT NULL,
+  `endDate` varchar(50) DEFAULT NULL,
+  `cardMakeDate` varchar(50) DEFAULT NULL,
   `consumePwd` varchar(255) DEFAULT NULL,
-  `identityPwd` varchar(255) DEFAULT NULL,
   `totalFare` int(11) DEFAULT '0',
-  `oddFare` int(11) DEFAULT '0',
-  `lastConsumeTime` datetime DEFAULT NULL,
-  `daySumFare` int(11) DEFAULT '0',
   `opCount` int(11) DEFAULT '0',
-  `subsidyOddFare` float DEFAULT '0',
-  `lastSubsidyConsumeTime` datetime DEFAULT NULL,
-  `subsidydaySum` int(11) DEFAULT '0',
+  `oddFare` int(11) DEFAULT '0',
   `subsidyOpCount` int(11) DEFAULT '0',
+  `subsidyOddFare` int(11) DEFAULT '0',
+  `cardDeposit` int(11) DEFAULT NULL,
+  `giveFare` int(11) DEFAULT NULL,
+  `preOpFare` int(11) DEFAULT NULL,
+  `lastConsumeTime` varchar(50) DEFAULT NULL,
+  `lastSubsidyConsumeTime` varchar(50) DEFAULT NULL,
+  `subsidydaySum` int(11) DEFAULT '0',
   `subsidyVersion` int(11) DEFAULT '0',
-  `subsidyInvalidDate` date DEFAULT NULL,
+  `subsidyInvalidDate` varchar(50) DEFAULT NULL,
+  `daySumFare` int(11) DEFAULT '0',
   PRIMARY KEY (`userId`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of user
@@ -716,7 +746,7 @@ CREATE TABLE `userdept` (
   `parentId` int(11) DEFAULT NULL,
   `batchId` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of userdept
@@ -777,7 +807,7 @@ CREATE TABLE `waterrategroup` (
   `waterPrecision` int(11) DEFAULT NULL,
   `enableAutoCalcRate` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of waterrategroup
@@ -878,6 +908,31 @@ END
 DELIMITER ;
 
 -- ----------------------------
+-- Procedure structure for `insertCardRecord`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `insertCardRecord`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertCardRecord`(IN `tcompanyId` int,IN `tuserId` int,IN `tcardNO` int,IN `toddFare` int,IN `tsubsidyOddFare` int,IN `topFare` int,IN `tsubsidyOpFare` int,IN `topTime` datetime,IN `trecordNO` int,IN `tconsumeType` int,OUT `tresult` int)
+BEGIN
+		DECLARE EXIT HANDLER FOR SQLEXCEPTION set tresult=0;
+		set tresult=1;
+
+		insert cardrecord(companyId,operId,userId,cardNO,cardSN,recordType,opFare,oddFare,subsidyOddFare,cardOddFare,cardSubsidyOddFare,opTime) values
+			(tcompanyId,0,tuserId,tcardNO,tcardSN,trecordType,topFare,toddFare,tsubsidyOddFare,tcardOddFare,tcardSubsidyOddFare,topTime);
+
+		#领取补助
+		if tconsumeType = 9 or tconsumeType = 109
+		then
+			update subsidy set status=2 where companyId=tcompanyId and userId=tuserId and status=1;
+			update user set subsidyOddFare=subsidyOddFare+tsubsidyOddFare where userId=tuserId;
+		else
+			update user set subsidyOddFare=0 where userId=tuserId;
+		end if;
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
 -- Procedure structure for `insertConsumeRecord`
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `insertConsumeRecord`;
@@ -889,12 +944,6 @@ BEGIN
 		insert into consumerecord (companyId,userId,cardNO,cardSeq,deviceId,sumFare,oddFare,subsidyOddFare,discountFare,opFare,subsidyOpFare,mealId,opTime,collectTime,opCount,subsidyOpCount,recordNO,consumeType,cookbookCode,cookbookNum)
 		values (tcompanyId,tuserId,tcardNO,tcardSeq,tdeviceId,tsumFare,toddFare,tsubsidyOddFare,tdiscountFare,topFare,tsubsidyOpFare,tmealId,topTime,NOW(),topCount,tsubsidyOpCount,trecordNO,tconsumeType,tcookbookCode,tcookbookNum);
 		select userNO,username into tuserNO,tusername from user where userId=tuserId;
-
-		#补助设为已领取
-		if tconsumeType = 9 or tconsumeType = 109
-		then
-			update subsidy set status=2 where companyId=tcompanyId and userId=tuserId and status=1;
-		end if;
 
 		#查询菜单名称
 		if tcookbookCode is not null

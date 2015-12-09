@@ -104,9 +104,13 @@
 				<th width="100">编号</th>
 				<th width="100">卡号</th>
 				<th width="100">物理卡号</th>
-				<th width="100">操作类型</th>
+				<th width="120">操作类型</th>
 				<th width="100">操作额</th>
-				<th width="100">操作时间</th>
+				<th width="120">操作前库大钱包</th>
+				<th width="150">操作前库补助钱包</th>
+				<th width="120">操作前卡大钱包</th>
+				<th width="150">操作前卡补助钱包</th>
+				<th width="150">操作时间</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -120,6 +124,10 @@
 					<td>${c.cardSN}</td>
 					<td>${c.recordTypeDes}</td> 
 					<td>${c.opFare}</td>
+					<td>${c.oddFare}</td>
+					<td>${c.subsidyOddFare}</td>
+					<td>${c.cardOddFare}</td>
+					<td>${c.cardSubsidyOddFare}</td>
 					<td>${c.opTime}</td>
 				</tr>
 			</c:forEach>

@@ -82,7 +82,8 @@ public class CardRecordController extends BaseController {
 			pagination.setNumPerPage(pagination.getTotalCount());
 		}
 
-		String[] columns = { "o.loginName", "u.username", "u.userNO", "c.cardNO", "c.cardSN", "c.recordType", "c.opFare", "c.opTime" };
+		String[] columns = { "o.loginName", "u.username", "u.userNO", "c.cardNO", "c.cardSN", "c.recordType", "c.opFare", "c.oddFare", "c.subsidyOddFare", "c.cardOddFare", "c.cardSubsidyOddFare",
+				"c.opTime" };
 		String fromSql = "cardRecord c left join user u on c.userId=u.userId left join sysUser o on c.operId=o.operId";
 		String whereSql = "u.companyId=" + company.getId();
 
@@ -108,6 +109,13 @@ public class CardRecordController extends BaseController {
 		list.remove(0);
 
 		for (Map map : list) {
+			map.put("loginName", DesUtil.decrypt(StringUtil.objToString(map.get("loginName"))));
+			map.put("opFare", StringUtil.objToInt(map.get("opFare")) / 100);
+			map.put("oddFare", StringUtil.objToInt(map.get("oddFare")) / 100);
+			map.put("subsidyOddFare", StringUtil.objToInt(map.get("subsidyOddFare")) / 100);
+			map.put("cardOddFare", StringUtil.objToInt(map.get("cardOddFare")) / 100);
+			map.put("cardSubsidyOddFare", StringUtil.objToInt(map.get("cardSubsidyOddFare")) / 100);
+
 			map.put("recordTypeDes", CardRecord.recordTypes[StringUtil.objToInt(map.get("recordType"))]);
 		}
 
@@ -118,14 +126,14 @@ public class CardRecordController extends BaseController {
 			for (Map m : list) {
 				List<String> list2 = new ArrayList<String>();
 
-				list2.add(StringUtil.getString(m.get("loginName")));
-				list2.add(StringUtil.getString(m.get("username")));
-				list2.add(StringUtil.getString(m.get("userNO")));
-				list2.add(StringUtil.getString(m.get("cardNO")));
-				list2.add(StringUtil.getString(m.get("cardSN")));
-				list2.add(StringUtil.getString(m.get("recordTypeDes")));
-				list2.add(StringUtil.getString(m.get("opFare")));
-				list2.add(StringUtil.getString(m.get("opTime")));
+				list2.add(StringUtil.objToString(m.get("loginName")));
+				list2.add(StringUtil.objToString(m.get("username")));
+				list2.add(StringUtil.objToString(m.get("userNO")));
+				list2.add(StringUtil.objToString(m.get("cardNO")));
+				list2.add(StringUtil.objToString(m.get("cardSN")));
+				list2.add(StringUtil.objToString(m.get("recordTypeDes")));
+				list2.add(StringUtil.objToString(m.get("opFare")));
+				list2.add(StringUtil.objToString(m.get("opTime")));
 				exportList.add(list2);
 			}
 

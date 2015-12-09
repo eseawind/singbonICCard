@@ -164,10 +164,12 @@ public class MainCardService extends BaseService {
 			cardRecord.setOpFare(0);
 			cardRecord.setOddFare(user.getOddFare());
 			cardRecord.setSubsidyOddFare(user.getSubsidyOddFare());
+			cardRecord.setCardOddFare(0);
+			cardRecord.setCardSubsidyOddFare(0);
 			this.cardRecordService.insert(cardRecord);
 		}
 
-		// 添加卡操作记录
+		// 添加卡操作记录：单个发卡、信息发卡
 		if (commandCode == CardReaderCommandCode.SingleCard || commandCode == CardReaderCommandCode.InfoCard) {
 			CardRecord cardRecord = new CardRecord();
 			cardRecord.setCompanyId(user.getCompanyId());
@@ -177,6 +179,8 @@ public class MainCardService extends BaseService {
 			cardRecord.setCardSN(user.getCardSN());
 			cardRecord.setOddFare(0);
 			cardRecord.setSubsidyOddFare(0);
+			cardRecord.setCardOddFare(0);
+			cardRecord.setCardSubsidyOddFare(0);
 			// 发卡
 			cardRecord.setRecordType(CardRecord.MakeCard);
 			int opFare = (user.getPreOpFare() - user.getCardDeposit()) * 100;
@@ -337,6 +341,8 @@ public class MainCardService extends BaseService {
 		cardRecord.setOpFare(0);
 		cardRecord.setOddFare(user.getOddFare());
 		cardRecord.setSubsidyOddFare(user.getSubsidyOddFare());
+		cardRecord.setCardOddFare(0);
+		cardRecord.setCardSubsidyOddFare(0);
 		this.cardRecordService.insert(cardRecord);
 	}
 
@@ -348,7 +354,7 @@ public class MainCardService extends BaseService {
 	 * @throws Exception
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public void unloss(SysUser sysUser, User user, SocketChannel socketChannel, Device device, String cardInfoStr) throws Exception {
+	public void unloss(SysUser sysUser, User user, Integer dbOddFare, Integer dbSubsidyOddFare, SocketChannel socketChannel, Device device, String cardInfoStr) throws Exception {
 		long newCardNO = this.userDAO.selectMaxCardNO(user.getCompanyId());
 		user.setCardNO(newCardNO);
 		this.userDAO.unloss(user);
@@ -362,8 +368,10 @@ public class MainCardService extends BaseService {
 		cardRecord.setCardSN(user.getCardSN());
 		cardRecord.setRecordType(CardRecord.Unloss);
 		cardRecord.setOpFare(0);
-		cardRecord.setOddFare(user.getOddFare());
-		cardRecord.setSubsidyOddFare(user.getSubsidyOddFare());
+		cardRecord.setOddFare(dbOddFare);
+		cardRecord.setSubsidyOddFare(dbSubsidyOddFare);
+		cardRecord.setCardOddFare(user.getOddFare());
+		cardRecord.setCardSubsidyOddFare(user.getSubsidyOddFare());
 		this.cardRecordService.insert(cardRecord);
 
 		String commandCodeStr = "0000" + StringUtil.hexLeftPad(CardReaderCommandCode.Unloss, 4);
@@ -372,7 +380,7 @@ public class MainCardService extends BaseService {
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
 		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + CommandDevice.NoSubDeviceNum + DeviceType.Main + DeviceType.CardReader + bufLen + sendBufStr;
 		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
-//		sendBuf[sendBuf.length - 6] = (byte) 0xf1;
+		// sendBuf[sendBuf.length - 6] = (byte) 0xf1;
 		TerminalManager.sendToCardReader(socketChannel, sendBuf);
 	}
 
@@ -408,11 +416,10 @@ public class MainCardService extends BaseService {
 	 * @throws Exception
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public void offUserInfoWithInfo(SysUser sysUser, Long userId) throws Exception {
-		this.userDAO.offUserInfoWithInfo(userId);
+	public void offUserInfoWithInfo(SysUser sysUser, User user, Integer dbOddFare, Integer dbSubsidyOddFare) throws Exception {
+		this.userDAO.offUserInfoWithInfo(user.getUserId());
 
 		// 添加卡操作记录
-		User user = this.userDAO.selectByUserId(userId);
 		CardRecord cardRecord = new CardRecord();
 		cardRecord.setCompanyId(user.getCompanyId());
 		cardRecord.setOperId(sysUser.getOperId());
@@ -422,8 +429,10 @@ public class MainCardService extends BaseService {
 		cardRecord.setRecordType(CardRecord.CardOff);
 		cardRecord.setOpFare(user.getOddFare());
 		cardRecord.setOpFare(0);
-		cardRecord.setOddFare(user.getOddFare());
-		cardRecord.setSubsidyOddFare(user.getSubsidyOddFare());
+		cardRecord.setOddFare(dbOddFare);
+		cardRecord.setSubsidyOddFare(dbSubsidyOddFare);
+		cardRecord.setCardOddFare(user.getOddFare());
+		cardRecord.setCardSubsidyOddFare(user.getSubsidyOddFare());
 		this.cardRecordService.insert(cardRecord);
 	}
 
@@ -471,68 +480,73 @@ public class MainCardService extends BaseService {
 	 * @throws Exception
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public void doCharge(SysUser sysUser, User user, Float oldOddFare, Float newOpFare, Float newGiveFare, SocketChannel socketChannel, Device device, Integer chargeType, String backDeposit,
+	public void doCharge(SysUser sysUser, User user, Integer chargeType, Float opFare, Integer cardOddFare, Integer cardSubsidyOddFare, String backCardDeposit, SocketChannel socketChannel, Device device,
 			String cardInfoStr) throws Exception {
+		// 卡上总额
 		String totalFareString = cardInfoStr.substring(26, 34);
-		int totalFare = Integer.parseInt(totalFareString, 16);
-		int oddFare2 = 0;
+		int cardTotalFare = Integer.parseInt(totalFareString, 16);
+		// 卡总操作余额
+		int cardAllOddFare = 0;
 		// 存款
-		// if (chargeType == 0) {
-		// oddFare2 = (int) (100 * (oddFare + opFare + giveFare));
-		// totalFare += (opFare + giveFare) * 100;
-		// this.userDAO.changeFare(user.getUserId(), (int) (opFare + giveFare) *
-		// 100);
-		//
-		// // 添加卡操作记录
-		// CardRecord cardRecord = new CardRecord();
-		// cardRecord.setCompanyId(user.getCompanyId());
-		// cardRecord.setOperId(sysUser.getOperId());
-		// cardRecord.setUserId(user.getUserId());
-		// cardRecord.setCardNO(user.getCardNO());
-		// cardRecord.setCardSN(user.getCardSN());
-		// cardRecord.setOpFare((int) (100 * opFare));
-		// cardRecord.setOddFare(user.getOddFare());
-		// cardRecord.setSubsidyOddFare(user.getSubsidyOddFare());
-		// cardRecord.setRecordType(CardRecord.PCSaving);
-		// this.cardRecordService.insert(cardRecord);
-		//
-		// // 存款赠送金额
-		// if (user.getGiveFare() > 0) {
-		// cardRecord.setRecordType(CardRecord.PCSavingGiveFare);
-		// cardRecord.setOpFare(user.getGiveFare() * 100);
-		// this.cardRecordService.insert(cardRecord);
-		// }
-		//
-		// // 取款
-		// } else {
-		// oddFare2 = (int) (100 * (oddFare - opFare));
-		// totalFare -= opFare * 100;
-		// this.userDAO.changeFare(user.getUserId(), -(int) (opFare * 100));
-		//
-		// // 添加卡操作记录
-		// CardRecord cardRecord = new CardRecord();
-		// cardRecord.setCompanyId(user.getCompanyId());
-		// cardRecord.setOperId(sysUser.getOperId());
-		// cardRecord.setUserId(user.getUserId());
-		// cardRecord.setCardNO(user.getCardNO());
-		// cardRecord.setCardSN(user.getCardSN());
-		// cardRecord.setOpFare((int) (100 * opFare));
-		// cardRecord.setOddFare(user.getOddFare());
-		// cardRecord.setSubsidyOddFare(user.getSubsidyOddFare());
-		// cardRecord.setRecordType(CardRecord.PCTake);
-		// this.cardRecordService.insert(cardRecord);
-		//
-		// // if (user.getCardDeposit() > 0) {
-		// // cardRecord.setRecordType(CardRecord.GetCardDeposit);
-		// // cardRecord.setOpFare(user.getCardDeposit() * 100);
-		// // this.cardRecordService.insert(cardRecord);
-		// // }
-		// }
+		if (chargeType == 0) {
+			cardAllOddFare = (int) (cardOddFare + (100 * (opFare + user.getGiveFare())));
+			cardTotalFare += (opFare + user.getGiveFare()) * 100;
+			this.userDAO.changeFare(user.getUserId(), (int) (opFare + user.getGiveFare()) * 100);
+
+			// 添加卡操作记录
+			CardRecord cardRecord = new CardRecord();
+			cardRecord.setCompanyId(user.getCompanyId());
+			cardRecord.setOperId(sysUser.getOperId());
+			cardRecord.setUserId(user.getUserId());
+			cardRecord.setCardNO(user.getCardNO());
+			cardRecord.setCardSN(user.getCardSN());
+			cardRecord.setOpFare((int) (100 * opFare));
+			cardRecord.setOddFare(user.getOddFare());
+			cardRecord.setSubsidyOddFare(user.getSubsidyOddFare());
+			cardRecord.setCardOddFare(cardOddFare);
+			cardRecord.setCardSubsidyOddFare(cardSubsidyOddFare);
+			cardRecord.setRecordType(CardRecord.PCSaving);
+			this.cardRecordService.insert(cardRecord);
+
+			// 存款赠送金额
+			if (user.getGiveFare() > 0) {
+				cardRecord.setRecordType(CardRecord.PCSavingGiveFare);
+				cardRecord.setOpFare(user.getGiveFare() * 100);
+				this.cardRecordService.insert(cardRecord);
+			}
+
+			// 取款
+		} else {
+			cardAllOddFare = (int) (cardOddFare - 100 * (opFare));
+			cardTotalFare -= opFare * 100;
+			this.userDAO.changeFare(user.getUserId(), -(int) (opFare * 100));
+
+			// 添加卡操作记录
+			CardRecord cardRecord = new CardRecord();
+			cardRecord.setCompanyId(user.getCompanyId());
+			cardRecord.setOperId(sysUser.getOperId());
+			cardRecord.setUserId(user.getUserId());
+			cardRecord.setCardNO(user.getCardNO());
+			cardRecord.setCardSN(user.getCardSN());
+			cardRecord.setOpFare((int) (100 * opFare));
+			cardRecord.setOddFare(user.getOddFare());
+			cardRecord.setSubsidyOddFare(user.getSubsidyOddFare());
+			cardRecord.setCardOddFare(cardOddFare);
+			cardRecord.setCardSubsidyOddFare(cardSubsidyOddFare);
+			cardRecord.setRecordType(CardRecord.PCTake);
+			this.cardRecordService.insert(cardRecord);
+
+			if ("on".equals(backCardDeposit) && user.getCardDeposit() > 0) {
+				cardRecord.setRecordType(CardRecord.GetCardDeposit);
+				cardRecord.setOpFare(user.getCardDeposit() * 100);
+				this.cardRecordService.insert(cardRecord);
+			}
+		}
 
 		String opCountStr = cardInfoStr.substring(44, 48);
 		int opCount = Integer.parseInt(opCountStr, 16) + 1;
-		cardInfoStr = cardInfoStr.substring(0, 26) + StringUtil.hexLeftPad(totalFare, 8) + cardInfoStr.substring(34, 44) + StringUtil.hexLeftPad(opCount, 4) + StringUtil.hexLeftPad(oddFare2, 8)
-				+ cardInfoStr.substring(56);
+		cardInfoStr = cardInfoStr.substring(0, 26) + StringUtil.hexLeftPad(cardTotalFare, 8) + cardInfoStr.substring(34, 44) + StringUtil.hexLeftPad(opCount, 4)
+				+ StringUtil.hexLeftPad(cardAllOddFare, 8) + cardInfoStr.substring(56);
 		String commandCodeStr = "0000" + StringUtil.hexLeftPad(CardReaderCommandCode.Charge, 4);
 		String sendBufStr = CardReaderFrame.WriteCard + commandCodeStr + CardReaderFrame.ValidateCardSN + user.getCardSN() + cardInfoStr;
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);

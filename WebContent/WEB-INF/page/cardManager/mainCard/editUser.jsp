@@ -420,12 +420,14 @@
 				<dl>
 					<dt>大钱包余额：</dt>
 					<dd>
+						<input type="hidden" name="oddFare" value="${user.oddFare}" />
 						<input type="text" value="${user.oddFare/100 }" readonly="readonly"/>
 					</dd>
 				</dl>
 				<dl>
 					<dt>补助余额：</dt>
 					<dd>
+						<input type="hidden" name="subsidyOddFare" value="${user.subsidyOddFare}" />
 						<input type="text" value="${user.subsidyOddFare/100 }" readonly="readonly"/>
 					</dd>
 				</dl>			

@@ -129,20 +129,24 @@
 									}
 									td.next().find('div').html(e2value);
 									td.next().next().find('div').html(e4value);
-									$('#userInfo input[name='+attr+']').val(e2value);
+									if(attr.indexOf('Fare')!=-1){
+										$('#userInfo input[name='+attr+']').val(e2value*100);										
+									}else{
+										$('#userInfo input[name='+attr+']').val(e2value);																				
+									}
 									if(e2value!=e4value){
 										td.parent('tr').css('color','red');
 									}
 								});
+								
+// 								按卡修正用
 								$('#userInfo input[name=userId]').val(e2['userId']);
 								$('#userInfo input[name=cardSN]').val(e2['cardSN']);
-								$('#userInfo input[name=status]').val(e2['status']);
-								var totalFare=$('#userInfo input[name=totalFare]');
-								totalFare.val(totalFare.val()*100);
-								var oddFare=$('#userInfo input[name=oddFare]');
-								oddFare.val(oddFare.val()*100);
-								var subsidyOddFare=$('#userInfo input[name=subsidyOddFare]');
-								subsidyOddFare.val(subsidyOddFare.val()*100);
+								$('#userInfo input[name=status]').val(e2['status']);								
+								
+// 								库金额解挂注销卡操作记录用								
+								$('#userInfo input[name=dbOddFare]').val(e4['oddFare']*100);
+								$('#userInfo input[name=dbSubsidyOddFare]').val(e4['subsidyOddFare']*100);
 								
 								var editType='${editType}';
 								if(editType==2){
@@ -173,8 +177,8 @@
 				//卡注销完成
 				}else if(e2.f1==0x1d){
 					if(e2.r==1){
-						var userId= $('#userInfo input[name=userId]').val();
-						$.post('${base }/offUserInfoWithInfo.do?userId='+userId,function(e3){
+						$('#userInfo input[name=editType]').val(5);
+						validateCallback($('#userInfo'), function(e3) {
 							if(e3==1){
 								refreshUserList();
 								$('#userInfo .close').click();								
@@ -182,7 +186,7 @@
 							}else{
 								alertMsg.warn('卡注销失败！');
 							}
-						});
+						}, null);
 					}else{
 						opCardResult(e2.r);
 					}	
@@ -340,6 +344,7 @@
 </div>
 <form id="userInfo" method="post" action="${base }/doChangeCard.do" class="pageForm">
 	<input name="editType" type="hidden" value="${editType }" />
+<!-- 	按卡修正用 -->
 	<input name="userId" type="hidden" /> 
 	<input name="cardSN" type="hidden" />
 	<input name="endDate" type="hidden" />
@@ -347,12 +352,16 @@
 	<input name="cardSeq" type="hidden" />
 	<input name="cardTypeId" type="hidden" />
 	<input name="totalFare" type="hidden" />
-	<input name="oddFare" type="hidden" />
 	<input name="opCount" type="hidden" />
+	<input name="oddFare" type="hidden" />
 	<input name="subsidyOddFare" type="hidden" />
 	<input name="subsidyOpCount" type="hidden" />
 	<input name="subsidyVersion" type="hidden" />
 	<input name="cardInfoStr" type="hidden" />
+	 
+<!-- 	库金额解挂注销卡操作记录用  -->
+	<input name="dbOddFare" type="hidden" />
+	<input name="dbSubsidyOddFare" type="hidden" />
 	 
 	<div class="formBar">
 		<ul>

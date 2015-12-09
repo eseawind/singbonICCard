@@ -166,6 +166,7 @@
 				if (!checkDeviceSn()) {
 					return;
 				}
+				cardOptions.height=400;
 				var url = '${base}/charge.do';
 				$.pdialog.open(url, 'dialog', '存取款', cardOptions);
 			},

@@ -25,7 +25,13 @@
 		delete from company where id=#{0}
 	</delete>
 	<select id="selectById" resultMap="company">
-		select * from company where id=#{id}
+		select id,companyName,serialNumber,authNumber,baseSection,heartInterval,uploadInterval,uploadErrTime,invalidDate,subsidyVersion,subsidyInvalidDate,ifnull(lastBatchNum,0) lastBatchNum,ifnull(lastBlackNum,0) lastBlackNum 
+			from (select id,companyName,serialNumber,authNumber,baseSection,heartInterval,uploadInterval,uploadErrTime,invalidDate,
+					(select ifnull(max(subsidyVersion),0) from subsidy where companyId=c.id) subsidyVersion,
+					(select invalidDate from subsidy where companyId=c.id order by subsidyVersion desc limit 1) subsidyInvalidDate,
+					(select batchId from batchblack where companyId=c.id order by id desc limit 1) lastBatchNum,
+					(select cardNO from cardblack where companyId=c.id order by id desc limit 1) lastBlackNum 
+					from company c where id=#{id}) t
 	</select>
 	<!-- 	添加单位验证 -->
 	<select id="selectCountByInfo" resultType="java.lang.Integer" parameterMap="company2" useCache="false">
@@ -35,12 +41,10 @@
 			</if>
 	</select>
 	<select id="selectAllList" resultMap="company">
-		select id,companyName,serialNumber,authNumber,baseSection,heartInterval,uploadInterval,uploadErrTime,invalidDate,subsidyVersion,subsidyInvalidDate,ifnull(lastBatchNum,0) lastBatchNum,ifnull(lastBlackNum,0) lastBlackNum 
-			from (select id,companyName,serialNumber,authNumber,baseSection,heartInterval,uploadInterval,uploadErrTime,invalidDate,
-					(select ifnull(max(subsidyVersion),0) from subsidy where companyId=c.id) subsidyVersion,
-					(select invalidDate from subsidy where companyId=c.id order by subsidyVersion desc limit 1) subsidyInvalidDate,
+	    select id,ifnull(lastBatchNum,0) lastBatchNum,ifnull(lastBlackNum,0) lastBlackNum 
+			from (select id,
 					(select batchId from batchblack where companyId=c.id order by id desc limit 1) lastBatchNum,
 					(select cardNO from cardblack where companyId=c.id order by id desc limit 1) lastBlackNum 
-					from company c) t
+					from company c) t;
 	</select>
 </mapper>
