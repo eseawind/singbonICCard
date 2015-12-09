@@ -49,6 +49,8 @@ public class ConsumeType {
 		map.put(1, "消费机普通消费");
 		map.put(2, "消费机补助消费");
 		map.put(3, "消费机混合消费");
+		map.put(9, "消费机补助领取");
+		map.put(39, "消费机补助清零");
 
 		map.put(101, "水控普通消费");
 		map.put(102, "水控补助消费");
@@ -56,6 +58,8 @@ public class ConsumeType {
 		map.put(105, "水控大钱包找零");
 		map.put(106, "水控补助找零");
 		map.put(107, "水控混合找零");
+		map.put(109, "水控补助领取");
+		map.put(139, "水控补助清零");
 	}
 
 	/**

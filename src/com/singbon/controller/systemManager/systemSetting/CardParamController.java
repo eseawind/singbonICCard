@@ -62,14 +62,7 @@ public class CardParamController extends BaseController {
 
 		Company company = (Company) request.getSession().getAttribute("company");
 		CardParam cardParam = (CardParam) this.cardParamService.selectByCompanyId(company.getId());
-		if (cardParam == null) {
-			try {
-				this.cardParamService.insert(company.getId());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			cardParam = (CardParam) this.cardParamService.selectByCompanyId(company.getId());
-		}
+		
 		model.addAttribute("cardParam", cardParam);
 		String url = request.getRequestURI();
 		model.addAttribute("base", url.replace("/index.do", ""));

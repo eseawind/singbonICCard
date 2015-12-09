@@ -64,10 +64,6 @@ public class MealController extends BaseController {
 
 		Company company = (Company) request.getSession().getAttribute("company");
 		List<Meal> list = (List<Meal>) this.mealService.selectListByCompanyId(company.getId());
-		if (list.size() == 0) {
-			this.mealService.insert(company.getId());
-			list = (List<Meal>) this.mealService.selectListByCompanyId(company.getId());
-		}
 		model.addAttribute("list", list);
 		return StringUtil.requestPath(request, "list");
 	}

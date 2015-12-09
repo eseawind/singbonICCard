@@ -58,8 +58,8 @@ public class ConsumeRecordController extends BaseController {
 			pagination.setNumPerPage(pagination.getTotalCount());
 		}
 
-		String[] columns = { "d.deviceName", "u.userNO", "c.cardNO", "u.username", "c.oddFare", "c.subsidyOddFare", "c.discountFare", "c.opFare", "c.subsidyOpFare", "m.mealName", "c.opTime",
-				"c.opCount", "c.subsidyOpCount", "c.recordNO", "c.consumeType", "cb.cookbookName", "c.cookbookNum" };
+		String[] columns = { "d.deviceName", "u.userNO", "c.cardNO", "c.cardSN", "u.username", "c.oddFare", "c.subsidyOddFare", "c.discountFare", "c.opFare", "c.subsidyOpFare", "m.mealName",
+				"c.opTime", "c.opCount", "c.subsidyOpCount", "c.recordNO", "c.consumeType", "cb.cookbookName", "c.cookbookNum" };
 		String fromSql = "consumeRecord c left join user u on c.userId=u.userId left join device d on c.deviceId=d.id left join meal m on c.mealId=m.id left join cookbook cb on c.cookbookCode=cb.cookbookCode";
 		String whereSql = "u.companyId=" + company.getId();
 		if (!StringUtils.isEmpty(nameStr)) {
@@ -107,7 +107,7 @@ public class ConsumeRecordController extends BaseController {
 
 		if (export != null && 1 == export) {
 
-			String[] expColumns = { "终端名称", "用户编号", "卡号", "姓名", "钱包余额", "补助余额", "管理费", "操作额", "餐别名称", "操作时间", "卡计数", "补助卡计数", "记录序号", "记录类型", "菜肴名称", "菜肴份数" };
+			String[] expColumns = { "终端名称", "用户编号", "卡号", "物理卡号", "姓名", "钱包余额", "补助余额", "管理费", "操作额", "餐别名称", "操作时间", "卡计数", "补助卡计数", "记录序号", "记录类型", "菜肴名称", "菜肴份数" };
 
 			List<List<String>> exportList = new ArrayList<List<String>>();
 			for (Map m : list) {
@@ -115,6 +115,7 @@ public class ConsumeRecordController extends BaseController {
 				list2.add(StringUtil.objToString(m.get("deviceName")));
 				list2.add(StringUtil.objToString(m.get("userNO")));
 				list2.add(StringUtil.objToString(m.get("cardNO")));
+				list2.add(StringUtil.objToString(m.get("cardSN")));
 				list2.add(StringUtil.objToString(m.get("username")));
 				list2.add(StringUtil.objToString(m.get("oddFare")));
 				list2.add(StringUtil.objToString(m.get("subsidyOddFare")));

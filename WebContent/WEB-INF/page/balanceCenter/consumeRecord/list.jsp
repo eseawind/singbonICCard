@@ -133,6 +133,7 @@
 				<th width="100">终端名称</th>
 				<th width="100">用户编号</th>
 				<th width="100">卡号</th>
+				<th width="100">物理卡号</th>
 				<th width="100">姓名</th>
 				<th width="100">钱包余额</th>
 				<th width="100">补助余额</th>
@@ -155,6 +156,7 @@
 					<td>${d.deviceName}</td>
 					<td>${d.userNO}</td>
 					<td>${d.cardNO}</td>
+					<td>${d.cardSN}</td>
 					<td>${d.username}</td>
 					<td>${d.oddFare}</td>
 					<td>${d.subsidyOddFare}</td>

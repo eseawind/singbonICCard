@@ -61,15 +61,8 @@ public class OrderTimeController extends BaseController {
 	 * @param request
 	 * @param model
 	 */
-	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/index.do")
 	public String index(HttpServletRequest request, HttpServletResponse response, Model model) {
-		Company company = (Company) request.getSession().getAttribute("company");
-		List<OrderTime> orderTimeList = (List<OrderTime>) this.orderTimeService.selectListByCompanyId(company.getId());
-		if (orderTimeList.size() == 0) {
-			this.orderTimeService.insert(company.getId());
-			orderTimeList = (List<OrderTime>) this.orderTimeService.selectListByCompanyId(company.getId());
-		}
 		String url = request.getRequestURI();
 		model.addAttribute("base", url.replace("/index.do", ""));
 		return StringUtil.requestPath(request, "index");

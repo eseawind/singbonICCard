@@ -37,13 +37,12 @@ public class PosExecCommandDispatch {
 		if (b[30] == PosFrame.Status && b[31] == PosSubFrameStatus.SysStatus) {
 			map.put("'type'", "status");
 			map.put("recordCount", Integer.parseInt(StringUtil.getHexStrFromBytes(36, 37, b), 16));
-			int lastBatchId = Integer.parseInt(StringUtil.getHexStrFromBytes(38, 39, b), 16);
-			map.put("lastBatchId", lastBatchId);
-			long lastBlackNum = Long.parseLong(StringUtil.getHexStrFromBytes(40, 43, b), 16);
-			map.put("lastBlackNum", lastBlackNum);
+			
+//			map.put("lastBatchId", lastBatchId);
+//			map.put("lastBlackNum", lastBlackNum);
 			map.put("subsidyAuth", (b[44] >> 1) & 0x1);
-			map.put("batchCount", Integer.parseInt(StringUtil.getHexStrFromBytes(51, 52, b), 16));
-			map.put("blackCount", Integer.parseInt(StringUtil.getHexStrFromBytes(53, 54, b), 16));
+//			map.put("batchCount", Integer.parseInt(StringUtil.getHexStrFromBytes(51, 52, b), 16));
+//			map.put("blackCount", Integer.parseInt(StringUtil.getHexStrFromBytes(53, 54, b), 16));
 			map.put("subsidyVersion", Integer.parseInt(StringUtil.getHexStrFromBytes(55, 56, b), 16));
 
 			// 相差半分钟校时
@@ -69,9 +68,17 @@ public class PosExecCommandDispatch {
 				}
 			}
 
+			int lastBatchId = Integer.parseInt(StringUtil.getHexStrFromBytes(38, 39, b), 16);
+			long lastBlackNum = Long.parseLong(StringUtil.getHexStrFromBytes(40, 43, b), 16);
 			// 自动下载批次黑名单
-			long sysLastBatchId = TerminalManager.CompanyIdToLastBatchIdList.get(device.getCompanyId());
-			long sysLastBlackNum = TerminalManager.CompanyIdToLastBlackNumList.get(device.getCompanyId());
+			long sysLastBatchId = 0;
+			if (TerminalManager.CompanyIdToLastBatchIdList.containsKey(device.getCompanyId())) {
+				sysLastBatchId = TerminalManager.CompanyIdToLastBatchIdList.get(device.getCompanyId());
+			}
+			long sysLastBlackNum = 0;
+			if (TerminalManager.CompanyIdToLastBlackNumList.containsKey(device.getCompanyId())) {
+				sysLastBatchId = TerminalManager.CompanyIdToLastBlackNumList.get(device.getCompanyId());
+			}
 			if (lastBatchId != sysLastBatchId) {
 				PosExecBatchBlack black = new PosExecBatchBlack(lastBatchId, device);
 				black.run();

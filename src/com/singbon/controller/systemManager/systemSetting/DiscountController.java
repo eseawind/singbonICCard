@@ -64,10 +64,7 @@ public class DiscountController extends BaseController {
 
 		Company company = (Company) request.getSession().getAttribute("company");
 		List<Discount> list = (List<Discount>) this.discountService.selectListByCompanyId(company.getId());
-		if (list.size() == 0) {
-			this.discountService.insert(company.getId());
-			list = (List<Discount>) this.discountService.selectListByCompanyId(company.getId());
-		}
+		
 		model.addAttribute("list", list);
 		return StringUtil.requestPath(request, "list");
 	}

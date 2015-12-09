@@ -600,7 +600,7 @@ public class MonitorService implements Runnable {
 		byte frame = sendCommand.getFrame();
 		Map map = new HashMap();
 		map.put("type", "log");
-		map.put("time", StringUtil.dateFormat(new Date(), "yyyyMMdd HH:mm:ss"));
+		map.put("time", StringUtil.dateFormat(new Date(), "yyyy-MM-dd HH:mm:ss"));
 		map.put("from", d.getDeviceName());
 		switch (frame) {
 		// 系统07
@@ -835,7 +835,7 @@ public class MonitorService implements Runnable {
 						&& (sc.getSubFrame() == PosSubFrameCookbook.Update || sc.getSubFrame() == PosSubFrameCookbook.Append || sc.getSubFrame() == PosSubFrameCookbook.GetLastNum)) {
 					Map map = new HashMap();
 					map.put("type", "log");
-					map.put("time", StringUtil.dateFormat(new Date(), "yyyyMMdd HH:mm:ss"));
+					map.put("time", StringUtil.dateFormat(new Date(), "yyyy-MM-dd HH:mm:ss"));
 					map.put("from", device.getDeviceName());
 					map.put("des", DesUtil.decrypt(DeviceCommunicateStr.CookbookAdded));
 					TerminalManager.sendToMonitor(map, company.getId());
@@ -867,7 +867,7 @@ public class MonitorService implements Runnable {
 				if (sc.getSubFrame() == PosSubFrameCookbook.Update || sc.getSubFrame() == PosSubFrameCookbook.Append || sc.getSubFrame() == PosSubFrameCookbook.GetLastNum) {
 					Map map = new HashMap();
 					map.put("type", "log");
-					map.put("time", StringUtil.dateFormat(new Date(), "yyyyMMdd HH:mm:ss"));
+					map.put("time", StringUtil.dateFormat(new Date(), "yyyy-MM-dd HH:mm:ss"));
 					map.put("from", device.getDeviceName());
 					map.put("des", DesUtil.decrypt(DeviceCommunicateStr.CookbookAdded));
 					TerminalManager.sendToMonitor(map, company.getId());
@@ -900,7 +900,7 @@ public class MonitorService implements Runnable {
 			if (cookbook == null) {
 				Map map = new HashMap();
 				map.put("type", "log");
-				map.put("time", StringUtil.dateFormat(new Date(), "yyyyMMdd HH:mm:ss"));
+				map.put("time", StringUtil.dateFormat(new Date(), "yyyy-MM-dd HH:mm:ss"));
 				map.put("from", device.getDeviceName());
 				String des = String.format(DesUtil.decrypt(DeviceCommunicateStr.NotExsitCookbook), cookbookCode);
 				map.put("des", des);

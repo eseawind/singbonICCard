@@ -11,6 +11,7 @@
         	#{userId,mode=IN,jdbcType=INTEGER},
         	#{cardNO,mode=IN,jdbcType=INTEGER},
         	#{cardSeq,mode=IN,jdbcType=INTEGER},
+        	#{cardSN,mode=IN,jdbcType=VARCHAR},
         	#{deviceId,mode=IN,jdbcType=INTEGER},
         	#{sumFare,mode=IN,jdbcType=INTEGER},
         	#{oddFare,mode=IN,jdbcType=INTEGER},

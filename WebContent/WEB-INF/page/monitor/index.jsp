@@ -205,8 +205,8 @@
 					$("#deviceList .device[id="+sn+"] img").attr('alt','在线').attr('src','/img/online.png');
 					var statusTr=$("#deviceStatusList tr.deviceStatus[id="+sn+"]");
  					$('td[recordCount] div',statusTr).html(e2.recordCount);
-					$('td[batchCount] div',statusTr).html(e2.batchCount);
-					$('td[blackCount] div',statusTr).html(e2.blackCount);
+// 					$('td[batchCount] div',statusTr).html(e2.batchCount);
+// 					$('td[blackCount] div',statusTr).html(e2.blackCount);
 					$('td[subsidyVersion] div',statusTr).html(e2.subsidyVersion);
 					$('td[subsidyAuth] div',statusTr).html(e2.subsidyAuth==1?'是':'否');
 				//消费记录
@@ -554,8 +554,8 @@
 																<th width="100">设备名称</th>
 																<th width="100">机器号</th>
 																<th width="100">未采记录</th>
-																<th width="100">批次个数</th>
-																<th width="100">黑名单个数</th>
+<!-- 																<th width="100">批次个数</th> -->
+<!-- 																<th width="100">黑名单个数</th> -->
 																<th width="100">补助版本号</th>
 																<th width="100">补助授权</th>
 															</tr>
@@ -566,8 +566,8 @@
 																	<td>${d.deviceName }</td>
 																	<td>${d.deviceNum }</td>
 																	<td id="status${d.sn}" recordCount>0</td>
-																	<td batchCount>0</td>
-																	<td blackCount>0</td>
+<!-- 																	<td batchCount>0</td> -->
+<!-- 																	<td blackCount>0</td> -->
 																	<td subsidyVersion>0</td>
 																	<td subsidyAuth>否</td>
 																</tr>

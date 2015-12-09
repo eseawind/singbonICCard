@@ -37,7 +37,7 @@ public class PosExecReplyCommand {
 		}
 
 		map.put("type", "log");
-		map.put("time", StringUtil.dateFormat(new Date(), "yyyyMMdd HH:mm:ss"));
+		map.put("time", StringUtil.dateFormat(new Date(), "yyyy-MM-dd HH:mm:ss"));
 		map.put("from", device.getDeviceName());
 		byte subFrame = b[32];
 		switch (b[31]) {

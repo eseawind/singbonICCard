@@ -92,14 +92,6 @@ public class ConsumeParamController extends BaseController {
 
 		Company company = (Company) request.getSession().getAttribute("company");
 		ConsumeParam consumeParam = (ConsumeParam) this.consumeParamService.selectByCompanyId(company.getId());
-		if (consumeParam == null) {
-			try {
-				this.consumeParamService.insert(company.getId());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			consumeParam = (ConsumeParam) this.consumeParamService.selectByCompanyId(company.getId());
-		}
 		model.addAttribute("consumeParam", consumeParam);
 		String url = request.getRequestURI();
 		model.addAttribute("base", url.replace("/index.do", ""));

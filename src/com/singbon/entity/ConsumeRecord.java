@@ -40,6 +40,9 @@ public class ConsumeRecord implements Serializable {
 	private String cookbookName;
 	private Integer cookbookNum;
 	private Integer result;
+	private Integer recordCount;
+	private Integer subsidyAuth;
+	private String cardSN;
 
 	public Integer getId() {
 		return id;
@@ -263,6 +266,30 @@ public class ConsumeRecord implements Serializable {
 
 	public void setCookbookName(String cookbookName) {
 		this.cookbookName = cookbookName;
+	}
+
+	public Integer getRecordCount() {
+		return recordCount;
+	}
+
+	public void setRecordCount(Integer recordCount) {
+		this.recordCount = recordCount;
+	}
+
+	public Integer getSubsidyAuth() {
+		return subsidyAuth;
+	}
+
+	public void setSubsidyAuth(Integer subsidyAuth) {
+		this.subsidyAuth = subsidyAuth;
+	}
+
+	public String getCardSN() {
+		return cardSN;
+	}
+
+	public void setCardSN(String cardSN) {
+		this.cardSN = cardSN;
 	}
 
 }

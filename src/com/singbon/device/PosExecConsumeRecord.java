@@ -2,6 +2,7 @@ package com.singbon.device;
 
 import java.net.InetSocketAddress;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +42,7 @@ public class PosExecConsumeRecord implements Runnable {
 		record.setCompanyId(device.getCompanyId());
 		record.setUserId(Long.parseLong(StringUtil.getHexStrFromBytes(baseIndex + 6, baseIndex + 9, b), 16));
 		record.setCardNO(Long.parseLong(StringUtil.getHexStrFromBytes(baseIndex + 10, baseIndex + 13, b), 16));
-		
+
 		record.setCardSeq(StringUtil.hexToInt(baseIndex + 14, baseIndex + 14, b));
 		record.setDeviceId(device.getId());
 		record.setDeviceName(device.getDeviceName());
@@ -65,6 +66,55 @@ public class PosExecConsumeRecord implements Runnable {
 		record.setOpTime(StringUtil.dateFormat(c.getTime(), "yyyy-MM-dd HH:mm:ss"));
 		int recordNO = StringUtil.hexToInt(baseIndex + 49, baseIndex + 50, b);
 		record.setRecordNO(recordNO);
+		record.setRecordCount(StringUtil.hexToInt(baseIndex + 52, baseIndex + 53, b));
+		record.setSubsidyAuth((b[baseIndex +60] >> 1) & 0x1);
+		record.setCardSN(StringUtil.getHexStrFromBytes(baseIndex + 67, baseIndex + 70, b).toUpperCase());
+		
+		
+		// 相差半分钟校时
+		Calendar c1 = Calendar.getInstance();
+		c1.set(StringUtil.objToInt("20" + StringUtil.getHexStrFromBytes(baseIndex + 61, baseIndex + 61, b)), StringUtil.objToInt(StringUtil.getHexStrFromBytes(baseIndex + 62, baseIndex + 62, b)),
+				StringUtil.objToInt(StringUtil.getHexStrFromBytes(baseIndex + 63, baseIndex + 63, b)), StringUtil.objToInt(StringUtil.getHexStrFromBytes(baseIndex + 64, baseIndex + 64, b)),
+				StringUtil.objToInt(StringUtil.getHexStrFromBytes(baseIndex + 65, baseIndex + 65, b)), StringUtil.objToInt(StringUtil.getHexStrFromBytes(baseIndex + 66, baseIndex + 66, b)));
+		c1.add(Calendar.MONTH, -1);
+		Calendar c2 = Calendar.getInstance();
+		c2.setTime(new Date());
+
+		if (Math.abs(c1.getTimeInMillis() - c2.getTimeInMillis()) > 30000) {
+			String sendBufStr = StringUtil.hexLeftPad(PosFrame.Sys07, 2) + StringUtil.hexLeftPad(PosSubFrameSys07.SysTime, 2) + "0000" + "0000" + StringUtil.timeToHexStr() + "0000";
+			String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
+			sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + CommandDevice.NoSubDeviceNum + DeviceType.Main + DeviceType.getDeviceTypeFrame(device) + bufLen
+					+ sendBufStr;
+			byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
+			try {
+				TerminalManager.sendToPos(inetSocketAddress, sendBuf);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		int lastBatchId = Integer.parseInt(StringUtil.getHexStrFromBytes(baseIndex +54, baseIndex +55, b), 16);
+		long lastBlackNum = Long.parseLong(StringUtil.getHexStrFromBytes(baseIndex +56, baseIndex +59, b), 16);
+
+		// 自动下载批次黑名单
+		long sysLastBatchId = 0;
+		if (TerminalManager.CompanyIdToLastBatchIdList.containsKey(device.getCompanyId())) {
+			sysLastBatchId = TerminalManager.CompanyIdToLastBatchIdList.get(device.getCompanyId());
+		}
+		long sysLastBlackNum = 0;
+		if (TerminalManager.CompanyIdToLastBlackNumList.containsKey(device.getCompanyId())) {
+			sysLastBatchId = TerminalManager.CompanyIdToLastBlackNumList.get(device.getCompanyId());
+		}
+		if (lastBatchId != sysLastBatchId) {
+			PosExecBatchBlack black = new PosExecBatchBlack(lastBatchId, device);
+			black.run();
+		}
+
+		// 自动下载黑名单
+		if (lastBlackNum != sysLastBlackNum) {
+			PosExecCardBlack black = new PosExecCardBlack(lastBlackNum, device);
+			black.run();
+		}
 
 		int consumeType = (int) b[31];
 		if (device.getDeviceType() == 3) {
@@ -76,10 +126,12 @@ public class PosExecConsumeRecord implements Runnable {
 		List<Meal> mealList = TerminalManager.CompanyIdToMealList.get(device.getCompanyId());
 		int mealId = 0;
 		String opTime = StringUtil.dateFormat(c.getTime(), "HH:mm:ss");
-		for (Meal m : mealList) {
-			if (m.getBeginTime().compareTo(opTime) <= 0 && m.getEndTime().compareTo(opTime) >= 0) {
-				mealId = m.getId();
-				record.setMealName(m.getMealName());
+		if (mealList != null) {
+			for (Meal m : mealList) {
+				if (m.getBeginTime().compareTo(opTime) <= 0 && m.getEndTime().compareTo(opTime) >= 0) {
+					mealId = m.getId();
+					record.setMealName(m.getMealName());
+				}
 			}
 		}
 		record.setMealId(mealId);
