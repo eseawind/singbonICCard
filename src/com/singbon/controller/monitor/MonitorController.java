@@ -58,15 +58,17 @@ public class MonitorController extends BaseController {
 		model.addAttribute("company", company);
 
 		List<Dept> deptList = (List<Dept>) this.deptService.selectListByCompanyId(company.getId());
-		List<Device> deviceList = this.deviceService.selectDeviceListByCompanyId(company.getId(), "2,3", 1);
+		List<String> transferList = (List<String>) this.deviceService.selectTransferListByCompanyId(company.getId());		
+		List<Device> deviceList = this.deviceService.selectDeviceListByCompanyId(company.getId(), new String[] { "2", "3" }, 1);
 		for (Device d : deviceList) {
-			if (TerminalManager.SNToInetSocketAddressList.containsKey(d.getSn())) {
+			if (TerminalManager.SNToInetSocketAddressList.containsKey(d.getTransferSn())) {
 				d.setIsOnline(1);
 			} else {
 				d.setIsOnline(0);
 			}
 		}
 		model.addAttribute("deptList", deptList);
+		model.addAttribute("transferList", transferList);
 		model.addAttribute("deviceList", deviceList);
 
 		String url = request.getRequestURI();

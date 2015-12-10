@@ -27,6 +27,7 @@ public class Device implements Serializable {
 	 */
 	private Integer isOnline;
 	private String sn;
+	private String transferSn;
 
 	public Integer getId() {
 		return id;
@@ -122,6 +123,14 @@ public class Device implements Serializable {
 
 	public void setTransferId(Integer transferId) {
 		this.transferId = transferId;
+	}
+
+	public String getTransferSn() {
+		return transferSn;
+	}
+
+	public void setTransferSn(String transferSn) {
+		this.transferSn = transferSn;
 	}
 
 }

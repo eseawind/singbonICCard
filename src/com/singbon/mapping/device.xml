@@ -40,8 +40,16 @@
 			</if>
 			) snCount
 	</select>
+	<select id="selectTransferListByCompanyId" resultType="String" useCache="false">
+		select sn from device d where companyId=#{companyId} and exists (select id from device where transferId=d.id)
+	</select>
 	<select id="selectDeviceListByCompanyId" resultMap="device" useCache="false">
-		select * from device where companyId=#{companyId} and deviceType in (#{deviceType})
+		select id,companyId,deptId,paramGroupId,deviceName,deviceNum,deviceType,transferId,enable,sn,case when ifnull(transferId,0) =0 then sn else (select sn from device where id=d.transferId) end transferSn
+		 from device d where companyId=#{companyId} and deviceType in (
+		<foreach collection="deviceTypes" item="item" index="index" separator=",">  
+    		#{item}
+		</foreach>
+		)
 		<if test="onlyEnable == 1">
 			 and enable=1
 		</if>

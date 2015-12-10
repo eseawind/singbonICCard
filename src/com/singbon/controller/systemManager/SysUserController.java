@@ -47,7 +47,7 @@ public class SysUserController {
 	@RequestMapping(value = "/index.do")
 	public String index(HttpServletRequest request, HttpServletResponse response, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
-		List<Device> deviceList = this.deviceService.selectDeviceListByCompanyId(company.getId(), "8", 0);
+		List<Device> deviceList = this.deviceService.selectDeviceListByCompanyId(company.getId(), new String[] { "8" }, 0);
 		List<Map> userList = (List<Map>) this.sysUserService.selectListByCompanyId(company.getId());
 		model.addAttribute("deviceList", deviceList);
 		model.addAttribute("userList", userList);

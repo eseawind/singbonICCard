@@ -122,6 +122,18 @@ public class DeviceService extends BaseService {
 	public Integer selectPosCountByTransferId(Integer transferId) {
 		return this.deviceDAO.selectPosCountByTransferId(transferId);
 	}
+	
+	/**
+	 * 中转列表监控用
+	 * 
+	 * @param companyId
+	 * @param deviceType
+	 * @param onlyEnable
+	 * @return
+	 */
+	public List<String> selectTransferListByCompanyId(Integer companyId) {
+		return this.deviceDAO.selectTransferListByCompanyId(companyId);
+	}
 
 	/**
 	 * 设备列表
@@ -131,8 +143,8 @@ public class DeviceService extends BaseService {
 	 * @param onlyEnable
 	 * @return
 	 */
-	public List<Device> selectDeviceListByCompanyId(Integer companyId, String deviceType, Integer onlyEnable) {
-		return this.deviceDAO.selectDeviceListByCompanyId(companyId, deviceType, onlyEnable);
+	public List<Device> selectDeviceListByCompanyId(Integer companyId, String[] deviceTypes, Integer onlyEnable) {
+		return this.deviceDAO.selectDeviceListByCompanyId(companyId, deviceTypes, onlyEnable);
 	}
 
 	/**

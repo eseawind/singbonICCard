@@ -42,6 +42,16 @@ public interface DeviceDAO extends BaseDAO {
 	public Integer selectPosCountByTransferId(@Param("transferId") Integer transferId);
 
 	/**
+	 * 中转列表监控用
+	 * 
+	 * @param companyId
+	 * @param deviceType
+	 * @param onlyEnable
+	 * @return
+	 */
+	public List<String> selectTransferListByCompanyId(@Param("companyId") Integer companyId);
+
+	/**
 	 * 设备列表
 	 * 
 	 * @param companyId
@@ -49,7 +59,7 @@ public interface DeviceDAO extends BaseDAO {
 	 * @param onlyEnable
 	 * @return
 	 */
-	public List<Device> selectDeviceListByCompanyId(@Param("companyId") Integer companyId, @Param("deviceType") String deviceType, @Param("onlyEnable") Integer onlyEnable);
+	public List<Device> selectDeviceListByCompanyId(@Param("companyId") Integer companyId, @Param("deviceTypes") String[] deviceTypes, @Param("onlyEnable") Integer onlyEnable);
 
 	/**
 	 * 设备列表根据营业部门

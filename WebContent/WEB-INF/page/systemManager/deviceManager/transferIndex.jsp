@@ -8,6 +8,7 @@
 		$('#transferForm .add').click(function() {
 			$('#transferForm input').eq(0).val('');
 			$('#transferForm input').eq(1).val(1);
+			$('#transferForm input').eq(2).val('on');
 			var form = $(this).parents('form');
 			if(form.valid()){
 				var deviceNum=$.trim($('#transferForm input[name=deviceNum]').val());
@@ -49,6 +50,7 @@
 		});
 		$('#transferForm .edit').click(function() {
 			$('#transferForm input').eq(1).val(1);
+			$('#transferForm input').eq(2).val('on');
 			var form = $(this).parents('form');
 			if(form.valid()){
 				var deviceNum=$.trim($('#transferForm input[name=deviceNum]').val());
@@ -121,9 +123,9 @@
 	function transferClick(tr) {
 		selectTransferId=tr.attr('id');
 		$('#transferForm input').eq(0).val(selectTransferId);
-		$('#transferForm input').eq(2).val(tr.attr('deviceNum'));
-		$('#transferForm input').eq(3).val(tr.attr('deviceName'));
-		$('#transferForm input').eq(4).val(tr.attr('sn'));
+		$('#transferForm input').eq(3).val(tr.attr('deviceNum'));
+		$('#transferForm input').eq(4).val(tr.attr('deviceName'));
+		$('#transferForm input').eq(5).val(tr.attr('sn'));
 	};
 </script>
 <!-- <link href="themes/css/custom.css" rel="stylesheet" type="text/css" /> -->
@@ -150,6 +152,7 @@
 					<dd style="width: 350px;">
 						<input type="hidden" name="id" /> 
 						<input type="hidden" name="deviceType"/>
+						<input type="hidden" name="status"/>
 						<input type="text" name="deviceNum" min="1" max="99999999" class="required digits" />
 						<span style="float: left;margin: 5px;">(范围 1-99999999)</span>
 					</dd>

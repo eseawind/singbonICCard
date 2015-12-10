@@ -516,10 +516,12 @@ public class MonitorService implements Runnable {
 				Thread.sleep(1000);
 			} catch (InterruptedException e1) {
 				stop = true;
-				// e1.printStackTrace();
 			}
 			for (Device d : this.deviceList) {
 				String sn = d.getSn();
+				if (d.getTransferSn() != null) {
+					sn = d.getTransferSn();
+				}
 				InetSocketAddress inetSocketAddress = TerminalManager.SNToInetSocketAddressList.get(sn);
 				if (inetSocketAddress == null) {
 					continue;
@@ -531,7 +533,7 @@ public class MonitorService implements Runnable {
 				SendCommand sendCommand = null;
 				// 同步执行当前命令
 				synchronized (TerminalManager.sendCommandObject) {
-					sendCommandList = TerminalManager.SNToSendCommandList.get(sn);
+					sendCommandList = TerminalManager.SNToSendCommandList.get(d.getSn());
 					if (sendCommandList != null && sendCommandList.size() > 0) {
 						StringUtil.println("命令个数：" + sendCommandList.size());
 						sendCommand = sendCommandList.get(0);
@@ -562,7 +564,7 @@ public class MonitorService implements Runnable {
 
 					for (int i = 0; i < 5; i++) {
 						synchronized (TerminalManager.sendCommandObject) {
-							List<SendCommand> sendCommandList2 = TerminalManager.SNToSendCommandList.get(sn);
+							List<SendCommand> sendCommandList2 = TerminalManager.SNToSendCommandList.get(d.getSn());
 							if (sendCommandList2.size() > 0) {
 								SendCommand tempSendCommand = sendCommandList2.get(0);
 								if (sendCommand != tempSendCommand) {

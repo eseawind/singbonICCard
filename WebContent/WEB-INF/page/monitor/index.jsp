@@ -107,11 +107,15 @@
 		init();
 // 		$('#progressBar').show();
 		
-		//初始添加在线设备
+		//初始添加在线非中转消费机设备
 		<c:forEach items="${deviceList }" var="d">
-			<c:if test="${d.isOnline==1}">
+			<c:if test="${d.isOnline==1 && (d.transferId==null || d.transferId==0)}">
 				map.put("${d.sn}",new Date());
 			</c:if>
+		</c:forEach>
+		//中转设备
+		<c:forEach items="${transferList }" var="t">
+			map.put("${t}",new Date());
 		</c:forEach>
 		heart();
 		
@@ -199,16 +203,22 @@
 			'Co${company.id}' : function(e) {//侦听一个channel
 				var e2 = eval('(' + e + ')');
 				var sn=e2.sn;
-				map.put(sn,new Date());
+				var transferId=e2.transferId;
+				//非中转消费机
+				if(transferId==0){
+					map.put(sn,new Date());
+				}
 			    //状态
 				if(e2.type=='status'){
-					$("#deviceList .device[id="+sn+"] img").attr('alt','在线').attr('src','/img/online.png');
+					$("#deviceList .device[name="+sn+"] img").attr('alt','在线').attr('src','/img/online.png');
 					var statusTr=$("#deviceStatusList tr.deviceStatus[id="+sn+"]");
- 					$('td[recordCount] div',statusTr).html(e2.recordCount);
-// 					$('td[batchCount] div',statusTr).html(e2.batchCount);
-// 					$('td[blackCount] div',statusTr).html(e2.blackCount);
-					$('td[subsidyVersion] div',statusTr).html(e2.subsidyVersion);
-					$('td[subsidyAuth] div',statusTr).html(e2.subsidyAuth==1?'是':'否');
+					if(statusTr.length!=0){
+	 					$('td[recordCount] div',statusTr).html(e2.recordCount);
+	// 					$('td[batchCount] div',statusTr).html(e2.batchCount);
+	// 					$('td[blackCount] div',statusTr).html(e2.blackCount);
+						$('td[subsidyVersion] div',statusTr).html(e2.subsidyVersion);
+						$('td[subsidyAuth] div',statusTr).html(e2.subsidyAuth==1?'是':'否');
+					}
 				//消费记录
 				}else if(e2.type=='consumeRecord'){
 					$("#deviceList .device[id="+sn+"] img").attr('alt','在线').attr('src','/img/online.png');
@@ -235,8 +245,11 @@
 					$('td[cookbookName] div',tr).html(e2.consumeRecord.cookbookName);
 					$('td[cookbookCode] div',tr).html(e2.consumeRecord.cookbookCode);
 					consumeRecordIndex++;
-
-// 					getStatus(sn);
+					
+					var statusTr=$("#deviceStatusList tr.deviceStatus[id="+sn+"]");
+ 					$('td[recordCount] div',statusTr).html(e2.consumeRecord.recordCount);
+					$('td[subsidyVersion] div',statusTr).html(e2.consumeRecord.subsidyVersion);
+					$('td[subsidyAuth] div',statusTr).html(e2.consumeRecord.subsidyAuth==1?'是':'否');
 				//订餐取餐记录
 				}else if(e2.type=='cookbookRecord'){
 					$("#deviceList .device[id="+sn+"] img").attr('alt','在线').attr('src','/img/online.png');
@@ -263,7 +276,6 @@
 					$('td[cookbookCode] div',tr).html(e2.consumeRecord.cookbookCode);
 					cookbookRecordIndex++;
 					
-// 					getStatus(sn);
 				//日志
 				}else if(e2.type=='log'){
 					if(logIndex>=maxRow){
@@ -298,7 +310,7 @@
 			for(var i in array) {
 				var t=(d.getTime()-map.get(array[i]).getTime())/1000;
 				if(t>heartInterval){
-					$("#deviceList .device[id="+array[i]+"] img").attr('alt','离线').attr('src','/img/offline.png');
+					$("#deviceList .device[name="+array[i]+"] img").attr('alt','离线').attr('src','/img/offline.png');
 					$.post('${base }/removeInetSocketAddress.do?sn='+array[i]);
 					map.remove(array[i]);
 				}
@@ -518,7 +530,7 @@
 									<!-- 设备显示区域 -->
 									<div id="deviceList" class="unitBox" style="margin-left: 175px;height:240px;border: solid 1px #CCC; background: #fff;overflow: auto;padding: 5px 0 0 5px;">
 										<c:forEach items="${deviceList }" var="d">
-											<div class="device" id="${d.sn}" deptId="${d.deptId }">
+											<div class="device" id="${d.sn}" name="${d.transferSn}" deptId="${d.deptId }">
 												<c:if test="${d.isOnline==1}">
 													<img alt="在线" src="/img/online.png" />
 												</c:if>
