@@ -77,7 +77,7 @@ public class PosExecCommandDispatch {
 			}
 			long sysLastBlackNum = 0;
 			if (TerminalManager.CompanyIdToLastBlackNumList.containsKey(device.getCompanyId())) {
-				sysLastBatchId = TerminalManager.CompanyIdToLastBlackNumList.get(device.getCompanyId());
+				sysLastBlackNum = TerminalManager.CompanyIdToLastBlackNumList.get(device.getCompanyId());
 			}
 			if (lastBatchId != sysLastBatchId) {
 				PosExecBatchBlack black = new PosExecBatchBlack(lastBatchId, device);

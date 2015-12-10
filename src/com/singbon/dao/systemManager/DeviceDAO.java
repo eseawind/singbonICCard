@@ -49,7 +49,7 @@ public interface DeviceDAO extends BaseDAO {
 	 * @param onlyEnable
 	 * @return
 	 */
-	public List<Device> selectDeviceListByCompanyId(@Param("companyId") Integer companyId, @Param("deviceType") String deviceType, @Param("onlyEnable") Integer onlyEnable);
+	public List<Device> selectDeviceListByCompanyId(@Param("companyId") Integer companyId, @Param("deviceTypes") String[] deviceTypes, @Param("onlyEnable") Integer onlyEnable);
 
 	/**
 	 * 设备列表根据营业部门

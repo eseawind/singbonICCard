@@ -58,7 +58,7 @@ public class MonitorController extends BaseController {
 		model.addAttribute("company", company);
 
 		List<Dept> deptList = (List<Dept>) this.deptService.selectListByCompanyId(company.getId());
-		List<Device> deviceList = this.deviceService.selectDeviceListByCompanyId(company.getId(), "2,3", 1);
+		List<Device> deviceList = this.deviceService.selectDeviceListByCompanyId(company.getId(), new String[] { "2", "3" }, 1);
 		for (Device d : deviceList) {
 			if (TerminalManager.SNToInetSocketAddressList.containsKey(d.getSn())) {
 				d.setIsOnline(1);

@@ -131,8 +131,8 @@ public class DeviceService extends BaseService {
 	 * @param onlyEnable
 	 * @return
 	 */
-	public List<Device> selectDeviceListByCompanyId(Integer companyId, String deviceType, Integer onlyEnable) {
-		return this.deviceDAO.selectDeviceListByCompanyId(companyId, deviceType, onlyEnable);
+	public List<Device> selectDeviceListByCompanyId(Integer companyId, String[] deviceTypes, Integer onlyEnable) {
+		return this.deviceDAO.selectDeviceListByCompanyId(companyId, deviceTypes, onlyEnable);
 	}
 
 	/**

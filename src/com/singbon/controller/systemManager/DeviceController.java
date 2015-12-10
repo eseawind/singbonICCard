@@ -73,7 +73,7 @@ public class DeviceController {
 		posParamGroupList = (List<PosParamGroup>) this.posParamGroupService.selectListByCompanyId(company.getId());
 		waterRateGroupList = (List<WaterRateGroup>) this.waterRateGroupService.selectListByCompanyId(company.getId());
 		List<Dept> deptList = (List<Dept>) this.deptService.selectListByCompanyId(company.getId());
-		transferList = this.deviceService.selectDeviceListByCompanyId(company.getId(), "1", 0);
+		transferList = this.deviceService.selectDeviceListByCompanyId(company.getId(), new String[] { "1" }, 0);
 
 		model.addAttribute("deptList", deptList);
 		model.addAttribute("posParamGroupList", posParamGroupList);
@@ -280,7 +280,7 @@ public class DeviceController {
 	@RequestMapping(value = "/cardReaderList.do")
 	public String cardReaderList(HttpServletRequest request, HttpServletResponse response, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
-		List<Device> list = this.deviceService.selectDeviceListByCompanyId(company.getId(), "8", 0);
+		List<Device> list = this.deviceService.selectDeviceListByCompanyId(company.getId(), new String[] { "8" }, 0);
 		model.addAttribute("list", list);
 		model.addAttribute("base", "/systemManager/deviceManager");
 		return "/systemManager/deviceManager/cardReaderList";
@@ -315,7 +315,7 @@ public class DeviceController {
 	@RequestMapping(value = "/transferList.do")
 	public String transferList(HttpServletRequest request, HttpServletResponse response, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
-		List<Device> list = this.deviceService.selectDeviceListByCompanyId(company.getId(), "1", 0);
+		List<Device> list = this.deviceService.selectDeviceListByCompanyId(company.getId(), new String[] { "1" }, 0);
 		model.addAttribute("list", list);
 		model.addAttribute("base", "/systemManager/deviceManager");
 		return "/systemManager/deviceManager/transferList";

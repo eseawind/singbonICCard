@@ -235,8 +235,11 @@
 					$('td[cookbookName] div',tr).html(e2.consumeRecord.cookbookName);
 					$('td[cookbookCode] div',tr).html(e2.consumeRecord.cookbookCode);
 					consumeRecordIndex++;
-
-// 					getStatus(sn);
+					
+					var statusTr=$("#deviceStatusList tr.deviceStatus[id="+sn+"]");
+ 					$('td[recordCount] div',statusTr).html(e2.consumeRecord.recordCount);
+					$('td[subsidyVersion] div',statusTr).html(e2.consumeRecord.subsidyVersion);
+					$('td[subsidyAuth] div',statusTr).html(e2.consumeRecord.subsidyAuth==1?'是':'否');
 				//订餐取餐记录
 				}else if(e2.type=='cookbookRecord'){
 					$("#deviceList .device[id="+sn+"] img").attr('alt','在线').attr('src','/img/online.png');
@@ -263,7 +266,6 @@
 					$('td[cookbookCode] div',tr).html(e2.consumeRecord.cookbookCode);
 					cookbookRecordIndex++;
 					
-// 					getStatus(sn);
 				//日志
 				}else if(e2.type=='log'){
 					if(logIndex>=maxRow){
