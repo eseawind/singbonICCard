@@ -100,6 +100,12 @@
 				<input type="text" name="uploadErrTime" value="${company.uploadErrTime}" maxlength="20" class="digits required" />
 			</dd>
 		</dl>
+		<dl style="margin: 10px 0;">
+			<dt>数据采集间隔：</dt>
+			<dd>
+				<input type="text" name="collectInterval" value="${company.collectInterval}" maxlength="20" class="digits required" />
+			</dd>
+		</dl>
 <!-- 		<dl style="margin: 10px 0;"> -->
 <!-- 			<dt>是否启用补助宏冲：</dt> -->
 <!-- 			<dd> -->

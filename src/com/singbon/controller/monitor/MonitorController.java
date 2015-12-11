@@ -20,6 +20,7 @@ import com.singbon.entity.Company;
 import com.singbon.entity.Dept;
 import com.singbon.entity.Device;
 import com.singbon.entity.SysUser;
+import com.singbon.service.monitor.CollectService;
 import com.singbon.service.monitor.MonitorService;
 import com.singbon.service.systemManager.DeviceService;
 import com.singbon.service.systemManager.systemSetting.DeptService;
@@ -57,14 +58,19 @@ public class MonitorController extends BaseController {
 		model.addAttribute("sysUser", sysUser);
 		model.addAttribute("company", company);
 
+		List<Device> transferPosList = new ArrayList<>();
+
 		List<Dept> deptList = (List<Dept>) this.deptService.selectListByCompanyId(company.getId());
-		List<String> transferList = (List<String>) this.deviceService.selectTransferListByCompanyId(company.getId());		
+		List<String> transferList = (List<String>) this.deviceService.selectTransferListByCompanyId(company.getId());
 		List<Device> deviceList = this.deviceService.selectDeviceListByCompanyId(company.getId(), new String[] { "2", "3" }, 1);
 		for (Device d : deviceList) {
 			if (TerminalManager.SNToInetSocketAddressList.containsKey(d.getTransferSn())) {
 				d.setIsOnline(1);
 			} else {
 				d.setIsOnline(0);
+			}
+			if (d.getTransferId() != null && d.getTransferId() != 0) {
+				transferPosList.add(d);
 			}
 		}
 		model.addAttribute("deptList", deptList);
@@ -75,18 +81,33 @@ public class MonitorController extends BaseController {
 		model.addAttribute("base", url.replace("/index.do", ""));
 
 		// 关闭老线程
-		Thread oldThread = TerminalManager.CompanyIdToMonitorThreadList.get(company.getId());
-		if (oldThread != null && oldThread.isAlive()) {
-			oldThread.interrupt();
+		Thread oldCommandThread = TerminalManager.CompanyIdToMonitorCommandThreadList.get(company.getId());
+		if (oldCommandThread != null && oldCommandThread.isAlive()) {
+			oldCommandThread.interrupt();
+		}
+		Thread oldColectThread = TerminalManager.CompanyIdToMonitorCollectThreadList.get(company.getId());
+		if (oldColectThread != null && oldColectThread.isAlive()) {
+			oldColectThread.interrupt();
 		}
 
 		// 启动监控线程
 		MonitorService monitorService = new MonitorService();
 		monitorService.setDeviceList(deviceList);
-		Thread thread = new Thread(monitorService);
-		thread.setName("Co" + company.getId());
-		TerminalManager.CompanyIdToMonitorThreadList.put(company.getId(), thread);
-		thread.start();
+		Thread comandThread = new Thread(monitorService);
+		comandThread.setName("Co-command" + company.getId());
+		TerminalManager.CompanyIdToMonitorCommandThreadList.put(company.getId(), comandThread);
+		comandThread.start();
+
+		// 启动采集线程
+		if (transferPosList.size() > 0) {
+			CollectService collectService = new CollectService();
+			collectService.setCollectInterval(company.getCollectInterval());
+			collectService.setDeviceList(transferPosList);
+			Thread collectThread = new Thread(collectService);
+			collectThread.setName("Co-collect" + company.getId());
+			TerminalManager.CompanyIdToMonitorCollectThreadList.put(company.getId(), collectThread);
+			collectThread.start();
+		}
 
 		request.getSession().setAttribute("companyId", company.getId().toString());
 		return url.replace(".do", "");

@@ -19,6 +19,7 @@ public class Company implements Serializable {
 	private Integer heartInterval;
 	private Integer uploadInterval;
 	private Integer uploadErrTime;
+	private Integer collectInterval;
 	private String invalidDate;
 	private boolean enable;
 	// 不入库
@@ -138,6 +139,14 @@ public class Company implements Serializable {
 
 	public void setEnable(boolean enable) {
 		this.enable = enable;
+	}
+
+	public Integer getCollectInterval() {
+		return collectInterval;
+	}
+
+	public void setCollectInterval(Integer collectInterval) {
+		this.collectInterval = collectInterval;
 	}
 
 }

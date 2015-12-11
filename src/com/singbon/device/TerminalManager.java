@@ -66,9 +66,14 @@ public class TerminalManager {
 	public static Map<String, InetSocketAddress> SNToInetSocketAddressList = new HashMap<String, InetSocketAddress>();
 
 	/**
-	 * 公司ID到采集监控多线程映射列表
+	 * 公司ID到采集监控命令多线程映射列表
 	 */
-	public static Map<Integer, Thread> CompanyIdToMonitorThreadList = new HashMap<Integer, Thread>();
+	public static Map<Integer, Thread> CompanyIdToMonitorCommandThreadList = new HashMap<Integer, Thread>();
+
+	/**
+	 * 公司ID到采集监控采集数据多线程映射列表
+	 */
+	public static Map<Integer, Thread> CompanyIdToMonitorCollectThreadList = new HashMap<Integer, Thread>();
 
 	/**
 	 * SN序列号到发送命令映射列表

@@ -15,7 +15,7 @@ import com.singbon.util.StringUtil;
  * @author 郝威
  * 
  */
-public class CometServer{
+public class CometServer {
 
 	public void init() {
 		CometContext cc = CometContext.getInstance();
@@ -39,9 +39,13 @@ public class CometServer{
 				// 停止监控线程
 				String companyId = connection.getCompanyId();
 				if (companyId != null) {
-					Thread oldThread = TerminalManager.CompanyIdToMonitorThreadList.get(Integer.valueOf(companyId));
-					if (oldThread != null && oldThread.isAlive()) {
-						oldThread.interrupt();
+					Thread oldCommandThread = TerminalManager.CompanyIdToMonitorCommandThreadList.get(Integer.valueOf(companyId));
+					if (oldCommandThread != null && oldCommandThread.isAlive()) {
+						oldCommandThread.interrupt();
+					}
+					Thread oldColectThread = TerminalManager.CompanyIdToMonitorCollectThreadList.get(Integer.valueOf(companyId));
+					if (oldColectThread != null && oldColectThread.isAlive()) {
+						oldColectThread.interrupt();
 					}
 				}
 				String ip = connection.getClientIp();

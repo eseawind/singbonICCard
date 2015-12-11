@@ -21,7 +21,7 @@ public class PosSubFrameSys07 {
 	 */
 	public final static byte DisableSubsidy = 0x06;
 	/**
-	 * 初始化
+	 * 初始化 0x19
 	 */
 	public final static byte SysInit = 0x19;
 

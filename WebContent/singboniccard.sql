@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50528
 File Encoding         : 65001
 
-Date: 2015-12-10 03:01:13
+Date: 2015-12-12 00:24:54
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -190,6 +190,7 @@ CREATE TABLE `company` (
   `heartInterval` int(11) DEFAULT NULL,
   `uploadInterval` int(11) DEFAULT NULL,
   `uploadErrTime` int(11) DEFAULT NULL,
+  `collectInterval` int(11) DEFAULT NULL,
   `invalidDate` varchar(255) DEFAULT NULL,
   `enable` bit(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -198,7 +199,7 @@ CREATE TABLE `company` (
 -- ----------------------------
 -- Records of company
 -- ----------------------------
-INSERT INTO `company` VALUES ('1', '郑州兴邦科技有限公司', '12345678', '0371', '1', '10', '10', '10', '', '');
+INSERT INTO `company` VALUES ('1', '郑州兴邦科技有限公司', '12345678', '0371', '1', '10', '10', '10', '5', '', '');
 
 -- ----------------------------
 -- Table structure for `consumeparam`
@@ -253,7 +254,7 @@ CREATE TABLE `consumerecord` (
   `userId` int(11) DEFAULT NULL,
   `cardNO` int(11) DEFAULT NULL,
   `cardSeq` int(11) DEFAULT NULL,
-  `cardSN` varchar(50) DEFAULT NULL,
+  `cardSN` varchar(8) DEFAULT NULL,
   `deviceId` int(11) DEFAULT NULL,
   `sumFare` int(11) DEFAULT NULL,
   `oddFare` int(11) DEFAULT NULL,
@@ -262,8 +263,8 @@ CREATE TABLE `consumerecord` (
   `opFare` int(11) DEFAULT NULL,
   `subsidyOpFare` int(11) DEFAULT NULL,
   `mealId` int(11) DEFAULT NULL,
-  `opTime` varchar(50) DEFAULT NULL,
-  `collectTime` varchar(50) DEFAULT NULL,
+  `opTime` varchar(20) DEFAULT NULL,
+  `collectTime` varchar(20) DEFAULT NULL,
   `opCount` int(11) DEFAULT NULL,
   `subsidyOpCount` int(11) DEFAULT NULL,
   `recordNO` int(11) DEFAULT NULL,
@@ -272,11 +273,14 @@ CREATE TABLE `consumerecord` (
   `cookbookNum` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `userId` (`userId`,`cardNO`,`recordNO`)
-) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=97 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of consumerecord
 -- ----------------------------
+INSERT INTO `consumerecord` VALUES ('94', '1', '1', '1', '1', '90d24626', '9', '99500', '99300', '0', '0', '100', '0', '0', '2015-12-10 03:08:42', '2015-12-10 03:08:53', '3', '0', '3', '1', null, null);
+INSERT INTO `consumerecord` VALUES ('95', '1', '1', '1', '1', '90D24626', '9', '99500', '99199', '0', '0', '101', '0', '0', '2015-12-10 03:11:17', '2015-12-10 03:11:23', '4', '0', '4', '1', null, null);
+INSERT INTO `consumerecord` VALUES ('96', '1', '1', '1', '1', '90D24626', '9', '99500', '99099', '0', '0', '100', '0', '0', '2015-12-10 03:12:33', '2015-12-10 03:12:43', '5', '0', '5', '1', null, null);
 
 -- ----------------------------
 -- Table structure for `cookbook`
@@ -291,11 +295,13 @@ CREATE TABLE `cookbook` (
   `remark` varchar(50) DEFAULT NULL,
   `enable` bit(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of cookbook
 -- ----------------------------
+INSERT INTO `cookbook` VALUES ('1', '1', '1', '杏鲍菇肉片', '1200', '', '');
+INSERT INTO `cookbook` VALUES ('2', '1', '2', '青椒肉丝', '1000', '', '');
 
 -- ----------------------------
 -- Table structure for `dept`
@@ -330,13 +336,16 @@ CREATE TABLE `device` (
   `enable` int(11) DEFAULT NULL,
   `sn` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of device
 -- ----------------------------
-INSERT INTO `device` VALUES ('9', '1', '3', '8', '1', '1', '2', null, '1', '01010101010101010101010101010101');
+INSERT INTO `device` VALUES ('9', '1', '3', '8', '消费机100', '100', '2', '0', '1', '01010101010101010101010101010101');
 INSERT INTO `device` VALUES ('10', '1', null, null, '读卡机', '12345678', '8', null, '0', '4159A96E838E4DF5BDECD4E2D8E940F1');
+INSERT INTO `device` VALUES ('11', '1', '3', '8', '消费机2001', '2001', '2', '12', '1', '00000000000000000000000000002001');
+INSERT INTO `device` VALUES ('12', '1', null, null, '中转', '200', '1', null, '1', '02020202020202020202020202020202');
+INSERT INTO `device` VALUES ('13', '1', '3', '8', '消费机2002', '2002', '2', '12', '1', '00000000000000000000000000002002');
 
 -- ----------------------------
 -- Table structure for `discount`
@@ -776,7 +785,7 @@ CREATE TABLE `user` (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('1', '1', '7', '001', '001', '001', '123456789012345678', '1', '90d24626', '1', '241', '0', '0', '2015-12-10', '2015-12-31', null, '8888', '99500', '1', '99500', '0', '0', '5', '0', '1000', null, null, '0', '0', null, '0');
+INSERT INTO `user` VALUES ('1', '1', '7', '001', '001', '001', '123456789012345678', '1', '90d24626', '1', '241', '0', '0', '2015-12-10', '2015-12-31', null, '8888', '99500', '5', '99099', '0', '0', '5', '0', '1000', null, null, '0', '0', null, '0');
 
 -- ----------------------------
 -- Table structure for `userdept`
@@ -957,7 +966,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `insertConsumeRecord`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `insertConsumeRecord`(IN `tcompanyId` int,IN `tuserId` int,IN `tcardNO` int,IN `tcardSeq` int,IN `tcardSN` int,IN `tdeviceId` int,IN `tsumFare` int,IN `toddFare` int,IN `tsubsidyOddFare` int,IN `tdiscountFare` int,IN `topFare` int,IN `tsubsidyOpFare` int,IN `tmealId` int,IN `topTime` datetime,IN `topCount` int,IN `tsubsidyOpCount` int,IN `trecordNO` int,IN `tconsumeType` int,IN `tcookbookCode` int,IN `tcookbookNum` int,OUT `tresult` int,OUT `tuserNO` varchar(50),OUT `tusername` varchar(50),OUT `tcookbookName` varchar(50))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertConsumeRecord`(IN `tcompanyId` int,IN `tuserId` int,IN `tcardNO` int,IN `tcardSeq` int,IN `tcardSN` varchar(8),IN `tdeviceId` int,IN `tsumFare` int,IN `toddFare` int,IN `tsubsidyOddFare` int,IN `tdiscountFare` int,IN `topFare` int,IN `tsubsidyOpFare` int,IN `tmealId` int,IN `topTime` datetime,IN `topCount` int,IN `tsubsidyOpCount` int,IN `trecordNO` int,IN `tconsumeType` int,IN `tcookbookCode` int,IN `tcookbookNum` int,OUT `tresult` int,OUT `tuserNO` varchar(20),OUT `tusername` varchar(20),OUT `tcookbookName` varchar(20))
 BEGIN
 		declare cardRecordType int;
     declare dbOddFare int;
