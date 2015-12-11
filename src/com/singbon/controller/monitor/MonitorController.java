@@ -125,7 +125,11 @@ public class MonitorController extends BaseController {
 		} else if (deptId != null) {
 			List<Device> deviceList = this.deviceService.selectPosListByDeptId(deptId, 1);
 			for (Device d : deviceList) {
-				if (TerminalManager.SNToInetSocketAddressList.containsKey(d.getSn())) {
+				String sn2 = d.getSn();
+				if (d.getTransferSn() != null) {
+					sn2 = d.getTransferSn();
+				}
+				if (TerminalManager.SNToInetSocketAddressList.containsKey(sn2)) {
 					snList.add(d.getSn());
 				}
 			}

@@ -26,16 +26,19 @@ public class PosExecCommandDispatch {
 		if (device == null || device.getEnable() == 0)
 			return;
 
-		// 设置sn与inetSocketAddress对照关系
-		TerminalManager.SNToInetSocketAddressList.put(sn, inetSocketAddress);
-		// 命令码
-		int commandCode = StringUtil.byteToInt(b[36]) * 256 + StringUtil.byteToInt(b[37]);
-		Map map = new HashMap();
-		map.put("'sn'", sn);
 		Integer transferId = device.getTransferId();
 		if (transferId == null) {
 			transferId = 0;
 		}
+		// 设置sn与inetSocketAddress对照关系
+		if (transferId == 0) {
+			TerminalManager.SNToInetSocketAddressList.put(sn, inetSocketAddress);
+		}
+
+		// 命令码
+		int commandCode = StringUtil.byteToInt(b[36]) * 256 + StringUtil.byteToInt(b[37]);
+		Map map = new HashMap();
+		map.put("'sn'", sn);
 		map.put("'transferId'", transferId);
 
 		// 心跳包

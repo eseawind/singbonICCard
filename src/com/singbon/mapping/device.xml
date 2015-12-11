@@ -55,7 +55,8 @@
 		</if>
 	</select>
 	<select id="selectPosListByDeptId" resultMap="device" useCache="false">
-		select * from device where deviceType between 2 and 3 and deptId=#{deptId}
+		select id,companyId,deptId,paramGroupId,deviceName,deviceNum,deviceType,transferId,enable,sn,case when ifnull(transferId,0) =0 then sn else (select sn from device where id=d.transferId) end transferSn
+		 from device d where deviceType between 2 and 3 and deptId=#{deptId}
 		<if test="onlyEnable == 1">
 			 and enable=1
 		</if>
