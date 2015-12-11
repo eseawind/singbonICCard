@@ -29,6 +29,8 @@ public class Pagination implements Serializable {
 				pageNum = 1;
 			}
 		}
+		if(pageNum==null)
+			pageNum=1;
 		return pageNum;
 	}
 
@@ -37,6 +39,8 @@ public class Pagination implements Serializable {
 	}
 
 	public Integer getNumPerPage() {
+		if(numPerPage==null)
+			numPerPage=50;
 		return numPerPage;
 	}
 
@@ -53,7 +57,7 @@ public class Pagination implements Serializable {
 	}
 
 	public Integer getOffset() {
-		offset = (getPageNum() - 1) * numPerPage;
+		offset = (getPageNum() - 1) * getNumPerPage();
 		return offset;
 	}
 

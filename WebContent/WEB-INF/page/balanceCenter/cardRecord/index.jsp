@@ -13,7 +13,7 @@
 	<div class="tabsContent" style="border: none;">
 		<div>
 			<div id="cardRecordList" class="unitBox">
-				<jsp:include page="${base }/detailList.do?pageNum=1&numPerPage=50" />
+				<jsp:include page="${base }/list.do" />
 			</div>
 		</div>
 	</div>
