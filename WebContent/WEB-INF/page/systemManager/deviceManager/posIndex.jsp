@@ -133,13 +133,12 @@
 		var paramGroupSelect=$('#posForm select[name=paramGroupId]');
 		var paramGroupId=tr.attr('paramGroupId');
 		selectContent=$('option[param=p'+deviceType+'][value=' + paramGroupId + ']', paramGroupSelect).html();
-// 		alert(paramGroupId+" "+selectContent);
 		paramGroupSelect.val(paramGroupId).prev().attr('value',paramGroupId).html(selectContent);
 		
 		var transferSelect=$('#posForm select[name=transferId]');
 		var transferId=tr.attr('transferId');
 		selectContent=$('option[value=' + transferId + ']', transferSelect).html();
-		transferSelect.val(paramGroupId).prev().attr('value',transferId).html(selectContent);
+		transferSelect.val(transferId).prev().attr('value',transferId).html(selectContent);
 	};
 </script>
 <link href="themes/css/custom.css" rel="stylesheet" type="text/css" />
