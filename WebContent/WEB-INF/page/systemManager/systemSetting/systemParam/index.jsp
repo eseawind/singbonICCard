@@ -23,13 +23,13 @@
 	}
 	
 	#systemParamForm dl {
-		width: 330px;
+		width: 340px;
 	}
 	
 	#systemParamForm dt {
 		margin: 0 0 0 5px;
 		padding: 0;
-		width: 110px;
+		width: 120px;
 	}
 	
 	#systemParamForm dd {
@@ -101,10 +101,20 @@
 			</dd>
 		</dl>
 		<dl style="margin: 10px 0;">
-			<dt>数据采集间隔：</dt>
-			<dd>
-				<input type="text" name="collectInterval" value="${company.collectInterval}" maxlength="20" class="digits required" />
-			</dd>
+			<dt>终端访问超次：</dt>
+			<select class="combox" outerw="178" innerw="195" name="accessTimeout" class="required">
+				<c:forEach var="i" begin="1" end="50" step="1">
+					<option value="${i}" width="220" <c:if test="${company.accessTimeout==i}">selected</c:if>>${i}</option>
+				</c:forEach>
+			</select>
+		</dl>
+		<dl style="margin: 10px 0;">
+			<dt>中转访问间隔(毫秒)：</dt>
+			<select class="combox" outerw="178" innerw="195" name="transferInterval" class="required">
+				<c:forEach var="i" begin="1" end="50" step="1">
+					<option value="${i*100}" width="220" <c:if test="${company.transferInterval==i*100}">selected</c:if>>${i*100}</option>
+				</c:forEach>
+			</select>
 		</dl>
 <!-- 		<dl style="margin: 10px 0;"> -->
 <!-- 			<dt>是否启用补助宏冲：</dt> -->

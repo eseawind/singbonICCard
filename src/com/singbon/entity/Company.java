@@ -19,7 +19,8 @@ public class Company implements Serializable {
 	private Integer heartInterval;
 	private Integer uploadInterval;
 	private Integer uploadErrTime;
-	private Integer collectInterval;
+	private Integer accessTimeout;
+	private Integer transferInterval;
 	private String invalidDate;
 	private boolean enable;
 	// 不入库
@@ -141,12 +142,20 @@ public class Company implements Serializable {
 		this.enable = enable;
 	}
 
-	public Integer getCollectInterval() {
-		return collectInterval;
+	public Integer getAccessTimeout() {
+		return accessTimeout;
 	}
 
-	public void setCollectInterval(Integer collectInterval) {
-		this.collectInterval = collectInterval;
+	public void setAccessTimeout(Integer accessTimeout) {
+		this.accessTimeout = accessTimeout;
+	}
+
+	public Integer getTransferInterval() {
+		return transferInterval;
+	}
+
+	public void setTransferInterval(Integer transferInterval) {
+		this.transferInterval = transferInterval;
 	}
 
 }

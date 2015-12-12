@@ -71,7 +71,17 @@ public class MonitorService implements Runnable {
 	@Autowired
 	public BatchDAO batchDAO;
 
+	private Integer accessTimeout;
+	private Integer transferInterval;
 	private List<Device> deviceList;
+
+	public void setAccessTimeout(Integer accessTimeout) {
+		this.accessTimeout = accessTimeout;
+	}
+
+	public void setTransferInterval(Integer transferInterval) {
+		this.transferInterval = transferInterval;
+	}
 
 	public void setDeviceList(List<Device> deviceList) {
 		this.deviceList = deviceList;
@@ -539,7 +549,7 @@ public class MonitorService implements Runnable {
 						sendCommand = sendCommandList.get(0);
 						// 访问次数
 						int sendTime = sendCommand.getSendTime();
-						if (sendTime >= 5) {
+						if (sendTime >= accessTimeout) {
 							sendCommandList.clear();
 							continue;
 						}
@@ -562,7 +572,7 @@ public class MonitorService implements Runnable {
 					// 等待消除网络延时
 					Thread.sleep(1000);
 
-					for (int i = 0; i < 5; i++) {
+					for (int i = 0; i < accessTimeout; i++) {
 						synchronized (TerminalManager.sendCommandObject) {
 							List<SendCommand> sendCommandList2 = TerminalManager.SNToSendCommandList.get(d.getSn());
 							if (sendCommandList2.size() > 0) {
@@ -578,6 +588,11 @@ public class MonitorService implements Runnable {
 						}
 						System.out.println("nf" + sendCommand.getSendTime());
 						Thread.sleep(200);
+					}
+
+					// 中转延时
+					if (d.getTransferId() != null && d.getTransferId() != 0) {
+						Thread.sleep(transferInterval);
 					}
 				} catch (InterruptedException e) {
 					e.printStackTrace();

@@ -92,6 +92,8 @@ public class MonitorController extends BaseController {
 
 		// 启动监控线程
 		MonitorService monitorService = new MonitorService();
+		monitorService.setAccessTimeout(company.getAccessTimeout());
+		monitorService.setTransferInterval(company.getTransferInterval());
 		monitorService.setDeviceList(deviceList);
 		Thread comandThread = new Thread(monitorService);
 		comandThread.setName("Co-command" + company.getId());
@@ -101,7 +103,7 @@ public class MonitorController extends BaseController {
 		// 启动采集线程
 		if (transferPosList.size() > 0) {
 			CollectService collectService = new CollectService();
-			collectService.setCollectInterval(company.getCollectInterval());
+			collectService.setTransferInterval(company.getTransferInterval());
 			collectService.setDeviceList(transferPosList);
 			Thread collectThread = new Thread(collectService);
 			collectThread.setName("Co-collect" + company.getId());

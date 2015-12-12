@@ -21,15 +21,15 @@ import com.singbon.util.StringUtil;
 @Service
 public class CollectService implements Runnable {
 
-	private Integer collectInterval;
+	private Integer transferInterval;
 	private List<Device> deviceList;
 
-	public Integer getCollectInterval() {
-		return collectInterval;
+	public Integer getTransferInterval() {
+		return transferInterval;
 	}
 
-	public void setCollectInterval(Integer collectInterval) {
-		this.collectInterval = collectInterval;
+	public void setTransferInterval(Integer transferInterval) {
+		this.transferInterval = transferInterval;
 	}
 
 	public List<Device> getDeviceList() {
@@ -78,8 +78,8 @@ public class CollectService implements Runnable {
 
 				if (sendCommandList == null || sendCommandList.size() == 0) {
 					try {
-						// 采集延时
-						Thread.sleep(collectInterval * 1000);
+						// 采集间隔
+						Thread.sleep(transferInterval * 1000);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 						stop = true;
