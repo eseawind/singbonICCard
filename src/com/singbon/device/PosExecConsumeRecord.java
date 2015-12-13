@@ -83,7 +83,7 @@ public class PosExecConsumeRecord implements Runnable {
 		// 订餐消费记录
 		if (frame == 8) {
 			record.setCookbookCode(StringUtil.hexToInt(baseIndex + 52, baseIndex + 53, b));
-			record.setCookbookNum(StringUtil.hexToInt(baseIndex + 60, baseIndex + 60, b));
+			record.setCookbookNum(StringUtil.hexToInt(baseIndex + 60, baseIndex + 61, b));
 			addIndex = 11;
 		}
 

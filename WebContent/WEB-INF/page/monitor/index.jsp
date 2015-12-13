@@ -243,7 +243,7 @@
 					$('td[recordNO] div',tr).html(e2.consumeRecord.recordNO);
 					$('td[consumeTypeDes] div',tr).html(e2.consumeRecord.consumeTypeDes);
 					$('td[cookbookName] div',tr).html(e2.consumeRecord.cookbookName);
-					$('td[cookbookCode] div',tr).html(e2.consumeRecord.cookbookCode);
+					$('td[cookbookNum] div',tr).html(e2.consumeRecord.cookbookNum);
 					consumeRecordIndex++;
 					
 					var statusTr=$("#deviceStatusList tr.deviceStatus[id="+sn+"]");
@@ -632,7 +632,7 @@
 																	<td recordNO></td>
 																	<td consumeTypeDes></td>
 																	<td cookbookName></td>
-																	<td cookbookCode></td>
+																	<td cookbookNum></td>
 																</tr>
 															</c:forEach>
 														</tbody>

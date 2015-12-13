@@ -169,7 +169,7 @@
 					<td>${d.recordNO}</td>
 					<td>${d.consumeType}</td>
 					<td>${d.cookbookName}</td>
-					<td>${d.cookbookCode}</td>
+					<td>${d.cookbookNum}</td>
 				</tr>
 			</c:forEach>
 		</tbody>
