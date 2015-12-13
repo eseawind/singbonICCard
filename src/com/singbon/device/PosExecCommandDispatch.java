@@ -112,7 +112,7 @@ public class PosExecCommandDispatch {
 			}
 
 			// 记录帧 1普通消费、2补助消费、9领取补助记录
-		} else if (b[30] == 1 && (b[31] == 1 || b[31] == 2 || b[31] == 9 || b[31] == 39)) {
+		} else if (b[30] == 1 && (b[31] == 1 || b[31] == 2 || b[31] == 3 || b[31] == 9 || b[31] == 39)) {
 			PosExecConsumeRecord record = new PosExecConsumeRecord(device, b, inetSocketAddress);
 			record.run();
 			// 订餐取餐记录

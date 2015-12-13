@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.singbon.entity.ConsumeRecord;
 import com.singbon.entity.Device;
 import com.singbon.entity.Meal;
@@ -33,6 +36,7 @@ public class PosExecConsumeRecord implements Runnable {
 
 	// 分解消费记录
 	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void run() {
 		// 大帧：1为普通8为菜单
 		int frame = b[30];
