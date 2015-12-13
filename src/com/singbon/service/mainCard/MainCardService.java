@@ -537,7 +537,7 @@ public class MainCardService extends BaseService {
 			this.cardRecordService.insert(cardRecord);
 
 			if ("on".equals(backCardDeposit) && user.getCardDeposit() > 0) {
-				cardRecord.setRecordType(CardRecord.GetCardDeposit);
+				cardRecord.setRecordType(CardRecord.BackCardDeposit);
 				cardRecord.setOpFare(user.getCardDeposit() * 100);
 				this.cardRecordService.insert(cardRecord);
 			}

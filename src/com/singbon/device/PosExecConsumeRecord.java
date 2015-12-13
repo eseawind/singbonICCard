@@ -40,6 +40,14 @@ public class PosExecConsumeRecord implements Runnable {
 		int baseIndex = 30;
 
 		record.setCompanyId(device.getCompanyId());
+
+		int consumeType = (int) b[31];
+		if (device.getDeviceType() == 3) {
+			consumeType += 100;
+		}
+		record.setConsumeType(consumeType);
+		record.setConsumeTypeDes(ConsumeType.getTypeDes(consumeType));
+
 		record.setUserId(Long.parseLong(StringUtil.getHexStrFromBytes(baseIndex + 6, baseIndex + 9, b), 16));
 		record.setCardNO(Long.parseLong(StringUtil.getHexStrFromBytes(baseIndex + 10, baseIndex + 13, b), 16));
 
@@ -66,16 +74,27 @@ public class PosExecConsumeRecord implements Runnable {
 		record.setOpTime(StringUtil.dateFormat(c.getTime(), "yyyy-MM-dd HH:mm:ss"));
 		int recordNO = StringUtil.hexToInt(baseIndex + 49, baseIndex + 50, b);
 		record.setRecordNO(recordNO);
-		record.setRecordCount(StringUtil.hexToInt(baseIndex + 52, baseIndex + 53, b));
-		record.setSubsidyAuth((b[baseIndex +60] >> 1) & 0x1);
-		record.setCardSN(StringUtil.getHexStrFromBytes(baseIndex + 67, baseIndex + 70, b).toUpperCase());
-		
-		
+
+		int addIndex = 0;
+		// 订餐消费记录
+		if (frame == 8) {
+			record.setCookbookCode(StringUtil.hexToInt(baseIndex + 52, baseIndex + 53, b));
+			record.setCookbookNum(StringUtil.hexToInt(baseIndex + 60, baseIndex + 60, b));
+			addIndex = 11;
+		}
+
+		record.setRecordCount(StringUtil.hexToInt(baseIndex + addIndex + 52, baseIndex + addIndex + 53, b));
+		record.setSubsidyAuth((b[baseIndex + addIndex + 60] >> 1) & 0x1);
+		record.setCardSN(StringUtil.getHexStrFromBytes(baseIndex + addIndex + 67, baseIndex + addIndex + 70, b).toUpperCase());
+
 		// 相差半分钟校时
 		Calendar c1 = Calendar.getInstance();
-		c1.set(StringUtil.objToInt("20" + StringUtil.getHexStrFromBytes(baseIndex + 61, baseIndex + 61, b)), StringUtil.objToInt(StringUtil.getHexStrFromBytes(baseIndex + 62, baseIndex + 62, b)),
-				StringUtil.objToInt(StringUtil.getHexStrFromBytes(baseIndex + 63, baseIndex + 63, b)), StringUtil.objToInt(StringUtil.getHexStrFromBytes(baseIndex + 64, baseIndex + 64, b)),
-				StringUtil.objToInt(StringUtil.getHexStrFromBytes(baseIndex + 65, baseIndex + 65, b)), StringUtil.objToInt(StringUtil.getHexStrFromBytes(baseIndex + 66, baseIndex + 66, b)));
+		c1.set(StringUtil.objToInt("20" + StringUtil.getHexStrFromBytes(baseIndex + addIndex + 61, baseIndex + addIndex + 61, b)),
+				StringUtil.objToInt(StringUtil.getHexStrFromBytes(baseIndex + addIndex + 62, baseIndex + addIndex + 62, b)),
+				StringUtil.objToInt(StringUtil.getHexStrFromBytes(baseIndex + addIndex + 63, baseIndex + addIndex + 63, b)),
+				StringUtil.objToInt(StringUtil.getHexStrFromBytes(baseIndex + addIndex + 64, baseIndex + addIndex + 64, b)),
+				StringUtil.objToInt(StringUtil.getHexStrFromBytes(baseIndex + addIndex + 65, baseIndex + addIndex + 65, b)),
+				StringUtil.objToInt(StringUtil.getHexStrFromBytes(baseIndex + addIndex + 66, baseIndex + addIndex + 66, b)));
 		c1.add(Calendar.MONTH, -1);
 		Calendar c2 = Calendar.getInstance();
 		c2.setTime(new Date());
@@ -93,8 +112,8 @@ public class PosExecConsumeRecord implements Runnable {
 			}
 		}
 
-		int lastBatchId = Integer.parseInt(StringUtil.getHexStrFromBytes(baseIndex +54, baseIndex +55, b), 16);
-		long lastBlackNum = Long.parseLong(StringUtil.getHexStrFromBytes(baseIndex +56, baseIndex +59, b), 16);
+		int lastBatchId = Integer.parseInt(StringUtil.getHexStrFromBytes(baseIndex + 54, baseIndex + 55, b), 16);
+		long lastBlackNum = Long.parseLong(StringUtil.getHexStrFromBytes(baseIndex + 56, baseIndex + 59, b), 16);
 
 		// 自动下载批次黑名单
 		long sysLastBatchId = 0;
@@ -116,13 +135,6 @@ public class PosExecConsumeRecord implements Runnable {
 			black.run();
 		}
 
-		int consumeType = (int) b[31];
-		if (device.getDeviceType() == 3) {
-			consumeType += 100;
-		}
-		record.setConsumeType(consumeType);
-		record.setConsumeTypeDes(ConsumeType.getTypeDes(consumeType));
-
 		List<Meal> mealList = TerminalManager.CompanyIdToMealList.get(device.getCompanyId());
 		int mealId = 0;
 		String opTime = StringUtil.dateFormat(c.getTime(), "HH:mm:ss");
@@ -135,12 +147,6 @@ public class PosExecConsumeRecord implements Runnable {
 			}
 		}
 		record.setMealId(mealId);
-
-		// 订餐消费记录
-		if (frame == 8) {
-			record.setCookbookCode(StringUtil.hexToInt(baseIndex + 52, baseIndex + 53, b));
-			record.setCookbookNum(StringUtil.hexToInt(baseIndex + 60, baseIndex + 60, b));
-		}
 
 		try {
 			JdbcUtil.consumeRecordDAO.insert(record);

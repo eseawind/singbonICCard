@@ -772,7 +772,7 @@ public class MonitorService implements Runnable {
 				sendCommand1.setPosParamGroup(posParamGroup);
 			} else {
 				// 水控参数组
-				WaterRateGroup waterRateGroup = (WaterRateGroup) waterRateGroupDAO.selectById(3);
+				WaterRateGroup waterRateGroup = (WaterRateGroup) waterRateGroupDAO.selectById(device.getParamGroupId());
 				sendCommand1.setWaterRateGroup(waterRateGroup);
 			}
 

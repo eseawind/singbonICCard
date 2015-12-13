@@ -113,8 +113,6 @@ public class PosExecCommandDispatch {
 
 			// 记录帧 1普通消费、2补助消费、9领取补助记录
 		} else if (b[30] == 1 && (b[31] == 1 || b[31] == 2 || b[31] == 9 || b[31] == 39)) {
-			// 帐号 4,卡号 4,卡序号1,卡总额 4, 卡余额
-			// 4,管理费额4,补助余额4,操作金额4,卡操作次数2,补助操作计数2,补助操作额4,RecNo
 			PosExecConsumeRecord record = new PosExecConsumeRecord(device, b, inetSocketAddress);
 			record.run();
 			// 订餐取餐记录
@@ -122,9 +120,10 @@ public class PosExecCommandDispatch {
 			map.put("'type'", "cookbookRecord");
 			// 菜单消费 202 0xca,菜单订餐 203 0xcb
 			int recType = b[92] & 0xff;
-			if (recType == 0xca) {
-				// PosExecConsumeRecord.consumeRecord(device, map, b);
-			} else if (recType == 0xcb) {
+			if (recType == 202) {
+				PosExecConsumeRecord record = new PosExecConsumeRecord(device, b, inetSocketAddress);
+				record.run();
+			} else if (recType == 203) {
 				PosExecCookbookRecord.cookbookRecord(device, map, b);
 			}
 			// 补助请求

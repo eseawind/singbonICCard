@@ -105,20 +105,20 @@
 					<th width="40">序号</th>
 					<th width="80">出纳员</th>
 					<th width="80">发卡金额</th>
-					<th width="80">发卡数量</th>
-					<th width="80">收取卡押金</th>
+					<th width="60">PC存款</th>
 					<th width="100">发卡赠送金额</th>
+					<th width="100">存款赠送金额</th>
+					<th width="80">收取卡押金</th>
+					<th width="120">消费机补助存款</th>
+					<th width="100">水控补助存款</th>
+					<th width="60">PC取款</th>
+					<th width="100">退还卡押金</th>
+					<th width="120">消费机补助清零</th>
+					<th width="100">水控补助清零</th>
+					<th width="80">发卡</th>
 					<th width="60">补卡</th>
 					<th width="60">挂失</th>
 					<th width="60">解挂</th>
-					<th width="60">PC存款</th>
-					<th width="100">存款赠送金额</th>
-					<th width="60">PC取款</th>
-					<th width="100">退还卡押金</th>
-					<th width="120">消费机补助存款</th>
-					<th width="120">消费机补助清零</th>
-					<th width="100">水控补助存款</th>
-					<th width="100">水控补助清零</th>
 					<th width="60">卡注销</th>
 				</tr>
 			</thead>
@@ -128,20 +128,20 @@
 						<td>${status.index+1}</td>
 						<td>${c.loginName}</td>
 						<td>${c.makeCardFare}</td>
-						<td>${c.makeCardCount}</td>
-						<td>${c.getCardDeposit}</td>
+						<td>${c.PCSaving}</td>
 						<td>${c.makeCardGiveFare}</td>
+						<td>${c.PCSavingGiveFare}</td>
+						<td>${c.getCardDeposit}</td>
+						<td>${c.posSubsidySaving}</td>
+						<td>${c.waterSubsidySaving}</td>
+						<td>${c.PCTake}</td>
+						<td>${c.backCardDepostFare}</td>
+						<td>${c.posSubsidyClear}</td>
+						<td>${c.waterSubsidyClear}</td>
+						<td>${c.makeCardCount}</td>
 						<td>${c.remakeCard}</td>
 						<td>${c.loss}</td>
 						<td>${c.unloss}</td>
-						<td>${c.PCSaving}</td>
-						<td>${c.PCSavingGiveFare}</td>
-						<td>${c.PCTake}</td>
-						<td>${c.backCardDepostFare}</td>
-						<td>${c.posSubsidySaving}</td>
-						<td>${c.posSubsidyClear}</td>
-						<td>${c.waterSubsidySaving}</td>
-						<td>${c.waterSubsidyClear}</td>
 						<td>${c.cardOff}</td>
 					</tr>
 				</c:forEach>

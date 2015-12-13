@@ -543,7 +543,7 @@ public class StringUtil {
 	}
 
 	public static void main(String[] args) {
-		byte[] b = StringUtil.strTobytes("00000000000000000000000000002001 00 00 07 d1 00 00 00 00 00 00 02 02 00 0A 19 19 00 00 00 00 D6 70".replaceAll(" ", ""));
+		byte[] b = StringUtil.strTobytes("01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 00 00 00 64 00 00 00 00 00 00 02 02 00 0A 19 19 00 00 00 00 D6 70".replaceAll(" ", ""));
 //		byte[] b = StringUtil.strTobytes("41 59 A9 6E 83 8E 4D F5 BD EC D4 E2 D8 E9 40 F1 00 BC 61 4E 00 00 00 00 00 00 02 02 00 1A 04 0A 00 00 00 00 00000000000000000000000000002002 70 54".replaceAll(" ", ""));
 		CRC16.generate(b);
 		StringUtil.print(Integer.toHexString(b[b.length - 2]).replace("ffffff", "") + " ");

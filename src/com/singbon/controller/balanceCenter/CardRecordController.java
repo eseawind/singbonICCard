@@ -105,14 +105,14 @@ public class CardRecordController extends BaseController {
 		// 统计查询
 		if (queryType == 0) {
 			String sql = String.format(
-					"select o.loginName,sum(case recordType when 0 then opFare else 0 end) makeCardFare,count(case recordType when 0 then 1 else 0 end) makeCardCount,"
+					"select o.loginName,sum(case recordType when 0 then opFare else 0 end) makeCardFare,sum(case recordType when 0 then 1 else 0 end) makeCardCount,"
 							+ "sum(case recordType when 1 then opFare else 0 end) getCardDeposit,sum(case recordType when 2 then opFare else 0 end) makeCardGiveFare,"
-							+ "count(case recordType when 3 then 1 else 0 end) remakeCard,count(case recordType when 4 then 1 else 0 end) loss,"
-							+ "count(case recordType when 0 then 1 else 0 end) unloss,sum(case recordType when 6 then opFare else 0 end) PCSaving,"
+							+ "sum(case recordType when 3 then 1 else 0 end) remakeCard,sum(case recordType when 4 then 1 else 0 end) loss,"
+							+ "sum(case recordType when 5 then 1 else 0 end) unloss,sum(case recordType when 6 then opFare else 0 end) PCSaving,"
 							+ "sum(case recordType when 7 then opFare else 0 end) PCSavingGiveFare,sum(case recordType when 8 then opFare else 0 end) PCTake,"
 							+ "sum(case recordType when 9 then opFare else 0 end) backCardDepostFare,sum(case recordType when 10 then opFare else 0 end) posSubsidySaving,"
 							+ "sum(case recordType when 11 then opFare else 0 end) posSubsidyClear,sum(case recordType when 12 then opFare else 0 end) waterSubsidySaving,"
-							+ "sum(case recordType when 13 then opFare else 0 end) waterSubsidyClear,count(case recordType when 14 then 1 else 0 end) cardOff from %s where %s group by c.operId",
+							+ "sum(case recordType when 13 then opFare else 0 end) waterSubsidyClear,sum(case recordType when 14 then 1 else 0 end) cardOff from %s where %s group by c.operId",
 					fromSql, whereSql);
 			list = this.commonService.selectBySql(sql);
 			for (Map map : list) {
@@ -130,28 +130,29 @@ public class CardRecordController extends BaseController {
 				map.put("waterSubsidyClear", StringUtil.objToInt(map.get("waterSubsidyClear")) / 100);
 			}
 			if (export != null && 1 == export) {
-				String[] expColumns = { "出纳员", "发卡金额", "发卡数量", "收取卡押金", "发卡赠送金额", "补卡", "挂失", "解挂", "PC存款", "存款赠送金额", "PC取款", "退还卡押金", "消费机补助存款", "消费机补助清零", "水控补助存款", "水控补助清零", "卡注销" };
+				String[] expColumns = { "出纳员", "发卡金额", "PC存款", "发卡赠送金额", "存款赠送金额", "收取卡押金", "消费机补助存款", "水控补助存款", "PC取款", "退还卡押金", "消费机补助清零", "水控补助清零", "发卡", "补卡", "挂失", "解挂", "卡注销" };
 
 				List<List<String>> exportList = new ArrayList<List<String>>();
 				for (Map m : list) {
 					List<String> list2 = new ArrayList<String>();
 					list2.add(StringUtil.objToString(m.get("loginName")));
 					list2.add(StringUtil.objToString(m.get("makeCardFare")));
-					list2.add(StringUtil.objToString(m.get("makeCardCount")));
-					list2.add(StringUtil.objToString(m.get("getCardDeposit")));
+					list2.add(StringUtil.objToString(m.get("PCSaving")));
 					list2.add(StringUtil.objToString(m.get("makeCardGiveFare")));
+					list2.add(StringUtil.objToString(m.get("PCSavingGiveFare")));
+					list2.add(StringUtil.objToString(m.get("getCardDeposit")));
+					list2.add(StringUtil.objToString(m.get("posSubsidySaving")));
+					list2.add(StringUtil.objToString(m.get("waterSubsidySaving")));
+					list2.add(StringUtil.objToString(m.get("PCTake")));
+					list2.add(StringUtil.objToString(m.get("backCardDepostFare")));
+					list2.add(StringUtil.objToString(m.get("posSubsidyClear")));
+					list2.add(StringUtil.objToString(m.get("waterSubsidyClear")));
+					list2.add(StringUtil.objToString(m.get("makeCardCount")));
 					list2.add(StringUtil.objToString(m.get("remakeCard")));
 					list2.add(StringUtil.objToString(m.get("loss")));
 					list2.add(StringUtil.objToString(m.get("unloss")));
-					list2.add(StringUtil.objToString(m.get("PCSaving")));
-					list2.add(StringUtil.objToString(m.get("PCSavingGiveFare")));
-					list2.add(StringUtil.objToString(m.get("PCTake")));
-					list2.add(StringUtil.objToString(m.get("backCardDepostFare")));
-					list2.add(StringUtil.objToString(m.get("posSubsidySaving")));
-					list2.add(StringUtil.objToString(m.get("posSubsidyClear")));
-					list2.add(StringUtil.objToString(m.get("waterSubsidySaving")));
-					list2.add(StringUtil.objToString(m.get("waterSubsidyClear")));
 					list2.add(StringUtil.objToString(m.get("cardOff")));
+
 					exportList.add(list2);
 				}
 

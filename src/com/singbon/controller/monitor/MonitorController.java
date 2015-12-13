@@ -159,6 +159,11 @@ public class MonitorController extends BaseController {
 		}
 
 		for (String sn2 : snList) {
+			Device device = TerminalManager.SNToDeviceList.get(sn2);
+			// 水控不下载菜单
+			if (device.getDeviceType() == 3 && cmd.toLowerCase().indexOf("cookbook") != -1)
+				return;
+
 			int commandIndex = 1;
 			synchronized (TerminalManager.sendCommandObject) {
 				ArrayList<SendCommand> sendCommandList = TerminalManager.SNToSendCommandList.get(sn2);
@@ -172,7 +177,6 @@ public class MonitorController extends BaseController {
 						commandIndex = sendCommand.getCommandCode() + 1;
 					}
 				}
-				Device device = TerminalManager.SNToDeviceList.get(sn2);
 				this.monitorService.addCommand(company, device, cmd, cookbookCode, commandIndex, sendCommandList);
 			}
 		}
