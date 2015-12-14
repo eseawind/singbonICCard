@@ -7,8 +7,9 @@
 <c:set var="w" value="${waterRateGroup}"/>
 <script type="text/javascript">
 	$(function() {
-		setDisplay('${w.consumeType}');
+		setTypeDisplay('${w.consumeType}');
 		setNumDisplay('${w.updateNum}');
+		setCalcDisplay('${w.enableAutoCalcRate}');
 		$('#waterRateGroupForm .save').click(
 			function() {
 				validateCallback($(this).parents('form'), function(e) {
@@ -30,21 +31,30 @@
 	});
 	$('#waterRateGroupForm input[name=consumeType]').click(function(){
 		var type=$(this).val();
-		setDisplay(type);
+		setTypeDisplay(type);
 	});
-	function setDisplay(type){
+	$('#waterRateGroupForm input[name=enableAutoCalcRate]').click(function(){
+		var type=$(this).val();
+		setCalcDisplay(type);
+	});
+	function setTypeDisplay(type){
 		if(type==33){
 			$('#waterRateGroupForm input[name^=rate][name*=Water]').removeClass('disabled').removeAttr('readonly');
-			$('#waterRateGroupForm input[name=waterPrecision]').removeClass('disabled').removeAttr('readonly');
 			$('#waterRateGroupForm input[name^=rate][name*=Cycle]').addClass('disabled').attr('readonly',true);
-			$('#waterRateGroupForm input[name*=cycleLimit]').addClass('disabled').attr('readonly',true);
-			$('#waterRateGroupForm input[name=waterLimit]').removeClass('disabled').removeAttr('readonly');
 		}else{
 			$('#waterRateGroupForm input[name^=rate][name*=Water]').addClass('disabled').attr('readonly',true);
-			$('#waterRateGroupForm input[name=waterPrecision]').addClass('disabled').attr('readonly',true);
 			$('#waterRateGroupForm input[name^=rate][name*=Cycle]').removeClass('disabled').removeAttr('readonly');
-			$('#waterRateGroupForm input[name*=waterLimit]').addClass('disabled').attr('readonly',true);
+		}
+	}
+	function setCalcDisplay(type){
+		if(type==1){
+			$('#waterRateGroupForm input[name=waterLimit]').removeClass('disabled').removeAttr('readonly');
+			$('#waterRateGroupForm input[name=waterPrecision]').removeClass('disabled').removeAttr('readonly');
 			$('#waterRateGroupForm input[name=cycleLimit]').removeClass('disabled').removeAttr('readonly');
+		}else{
+			$('#waterRateGroupForm input[name=waterLimit]').addClass('disabled').attr('readonly',true);
+			$('#waterRateGroupForm input[name=waterPrecision]').addClass('disabled').attr('readonly',true);
+			$('#waterRateGroupForm input[name=cycleLimit]').addClass('disabled').attr('readonly',true);
 		}
 	}
 	$('#waterRateGroupForm input[name=updateNum]').click(function(){
@@ -131,7 +141,7 @@
 						<dt>消费模式：</dt>
 						<dd>
 							<input name="id" type="hidden" value="${w.id}"/>
-							<input name="consumeType" type="radio" <c:if test="${w.consumeType==97}">checked</c:if> value="97"/>余额
+							<input name="consumeType" type="radio" <c:if test="${w.consumeType==93}">checked</c:if> value="93"/>余额
 							<input name="consumeType" type="radio" <c:if test="${w.consumeType==73}">checked</c:if> value="73"/>时间
 							<input name="consumeType" type="radio" <c:if test="${w.consumeType==33}">checked</c:if> value="33"/>流量
 						</dd>
@@ -176,8 +186,8 @@
 			<dl class="firstRow">
 				<dt>次日重置：</dt>
 				<dd>
-					<input name="rate1NextDayReset" type="radio" <c:if test="${w.rate1NextDayReset==0}">checked</c:if> value="1"/>是
-					<input name="rate1NextDayReset" type="radio" <c:if test="${w.rate1NextDayReset==1}">checked</c:if> value="0"/>否
+					<input name="rate1NextDayReset" type="radio" <c:if test="${w.rate1NextDayReset==1}">checked</c:if> value="1"/>是
+					<input name="rate1NextDayReset" type="radio" <c:if test="${w.rate1NextDayReset==0}">checked</c:if> value="0"/>否
 				</dd>
 			</dl>
 			<dl class="firstRow">
@@ -191,10 +201,10 @@
 				<dt style="width: 80px;">启用卡类型：</dt>
 				<dd class="cardTypes">
 					<input type="checkbox" class="selectAll">全选
-				 	<c:set var="rate4CardTypes" value="${w.rate4CardTypes}"/>
+				 	<c:set var="rate1CardTypes" value="${w.rate4CardTypes}"/>
 					<c:forEach begin="0" end="15" step="1" var="i">
 						<c:set var="str2" value=",${i},"/>
-						<input type="checkbox" name="rate4CardTypes" value="${i}" <c:if test="${fn:indexOf(rate4CardTypes, str2)!=-1}">checked</c:if>/>${i}类
+						<input type="checkbox" name="rate1CardTypes" value="${i}" <c:if test="${fn:indexOf(rate1CardTypes, str2)!=-1}">checked</c:if>/>${i}类
 					</c:forEach>
 				</dd>
 			</dl>
@@ -397,8 +407,8 @@
 			<dl class="firstRow">
 				<dt>补助清零：</dt>
 				<dd>
-					<input name="subsidyReset" type="radio" <c:if test="${w.subsidyReset==0}">checked</c:if> value="0"/>启用
-					<input name="subsidyReset" type="radio" <c:if test="${w.subsidyReset==1}">checked</c:if> value="1"/>禁用
+					<input name="subsidyReset" type="radio" <c:if test="${w.subsidyReset==1}">checked</c:if> value="1"/>启用
+					<input name="subsidyReset" type="radio" <c:if test="${w.subsidyReset==0}">checked</c:if> value="0"/>禁用
 				</dd>
 			</dl>
 			<dl class="firstRow">

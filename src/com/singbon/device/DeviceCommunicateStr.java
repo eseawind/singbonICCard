@@ -174,10 +174,14 @@ public class DeviceCommunicateStr {
 	 * 执行黑名单追加成功：%s
 	 */
 	public static String ExecBlackAppend = "cc9aacdb266b95061eb4f4a564bde57c3fb6982b97acc03e9d03d249fd9718e691f2e222f1af8a27";
+	/**
+	 * 系统没有补助
+	 */
+	public static String NoSubsidy = "a0d877c65f9a944951dcca50e1abdd826ec2e5d13f5fa211";
 
 	public static void main(String[] args) {
 		try {
-			String test = "发送黑名单更新命令";
+			String test = "系统没有补助";
 
 			DesUtil.desInit("ycsty");
 //			System.out.println("加密前的字符：" + test);

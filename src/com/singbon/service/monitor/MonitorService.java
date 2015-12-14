@@ -832,6 +832,15 @@ public class MonitorService implements Runnable {
 			sendCommandList.add(sendCommand2);
 			// 补助授权
 		} else if ("grantSubsidy".equals(cmd)) {
+			if (StringUtils.isEmpty(company.getSubsidyInvalidDate())) {
+				Map map = new HashMap();
+				map.put("type", "log");
+				map.put("time", StringUtil.dateFormat(new Date(), "yyyy-MM-dd HH:mm:ss"));
+				map.put("from", device.getDeviceName());
+				map.put("des", DesUtil.decrypt(DeviceCommunicateStr.NoSubsidy));
+				TerminalManager.sendToMonitor(map, company.getId());
+				return;
+			}
 			SendCommand sendCommand = new SendCommand();
 			sendCommand.setFrame(PosFrame.Sys07);
 			sendCommand.setSubFrame(PosSubFrameSys07.GrantSubsidy);

@@ -253,28 +253,28 @@
 				//订餐取餐记录
 				}else if(e2.type=='cookbookRecord'){
 					$("#deviceList .device[id="+sn+"] img").attr('alt','在线').attr('src','/img/online.png');
-					if(cookbookRecordIndex>=maxRow){
-						cookbookRecordIndex=1;
-						$('#cookbookRecord tbody tr td div').empty();
-					}
-					var tr=$("#cookbookRecord tbody tr[index="+consumeRecordIndex+"]");					
-					$('td[index] div',tr).html(logIndex);
-					$('td[deviceNum] div',tr).html(e2.consumeRecord.deviceNum);
-					$('td[userNO] div',tr).html(e2.consumeRecord.userNO);
-					$('td[username] div',tr).html(e2.consumeRecord.username);
-					$('td[cardOddFare] div',tr).html(e2.consumeRecord.cardOddFare);
-					$('td[subsidyOddFare] div',tr).html(e2.consumeRecord.subsidyOddFare);
-					$('td[discountFare] div',tr).html(e2.consumeRecord.discountFare);
-					$('td[oppFare] div',tr).html(e2.consumeRecord.oppFare);
-					$('td[mealName] div',tr).html(e2.consumeRecord.mealName);
-					$('td[opTime] div',tr).html(e2.consumeRecord.opTime);
-					$('td[cardOpCount] div',tr).html(e2.consumeRecord.cardOpCount);
-					$('td[subsidyOpCount] div',tr).html(e2.consumeRecord.subsidyOpCount);
-					$('td[recordNO] div',tr).html(e2.consumeRecord.recordNO);
-					$('td[consumeTypeDes] div',tr).html(e2.consumeRecord.consumeTypeDes);
-					$('td[cookbookName] div',tr).html(e2.consumeRecord.cookbookName);
-					$('td[cookbookCode] div',tr).html(e2.consumeRecord.cookbookCode);
-					cookbookRecordIndex++;
+// 					if(cookbookRecordIndex>=maxRow){
+// 						cookbookRecordIndex=1;
+// 						$('#cookbookRecord tbody tr td div').empty();
+// 					}
+// 					var tr=$("#cookbookRecord tbody tr[index="+consumeRecordIndex+"]");					
+// 					$('td[index] div',tr).html(logIndex);
+// 					$('td[deviceNum] div',tr).html(e2.consumeRecord.deviceNum);
+// 					$('td[userNO] div',tr).html(e2.consumeRecord.userNO);
+// 					$('td[username] div',tr).html(e2.consumeRecord.username);
+// 					$('td[cardOddFare] div',tr).html(e2.consumeRecord.cardOddFare);
+// 					$('td[subsidyOddFare] div',tr).html(e2.consumeRecord.subsidyOddFare);
+// 					$('td[discountFare] div',tr).html(e2.consumeRecord.discountFare);
+// 					$('td[oppFare] div',tr).html(e2.consumeRecord.oppFare);
+// 					$('td[mealName] div',tr).html(e2.consumeRecord.mealName);
+// 					$('td[opTime] div',tr).html(e2.consumeRecord.opTime);
+// 					$('td[cardOpCount] div',tr).html(e2.consumeRecord.cardOpCount);
+// 					$('td[subsidyOpCount] div',tr).html(e2.consumeRecord.subsidyOpCount);
+// 					$('td[recordNO] div',tr).html(e2.consumeRecord.recordNO);
+// 					$('td[consumeTypeDes] div',tr).html(e2.consumeRecord.consumeTypeDes);
+// 					$('td[cookbookName] div',tr).html(e2.consumeRecord.cookbookName);
+// 					$('td[cookbookCode] div',tr).html(e2.consumeRecord.cookbookCode);
+// 					cookbookRecordIndex++;
 					
 				//日志
 				}else if(e2.type=='log'){
@@ -646,9 +646,9 @@
 														<thead>
 															<tr>
 																<th width="40">序号</th>
-																<th width="100">终端设备</th>
-																<th width="100">用户编号</th>
-																<th width="100">卡号</th>
+																<th width="100">终端名称</th>
+																<th width="80">用户编号</th>
+																<th width="80">卡号</th>
 																<th width="100">姓名</th>
 																<th width="100">操作额</th>
 																<th width="100">餐别名称</th>
@@ -660,10 +660,24 @@
 															</tr>
 														</thead>
 														<tbody>
-															<c:forEach items="${cookbookRecordList }" var="d">
-																<tr>
-																</tr>
-															</c:forEach>
+<%-- 															<c:forEach begin="1" end="100" step="1" var="i"> --%>
+<%-- 																<tr index="${i}"> --%>
+<!-- 																	<td index></td> -->
+<!-- 																	<td deviceName></td> -->
+<!-- 																	<td userNO></td> -->
+<!-- 																	<td cardNO></td> -->
+<!-- 																	<td username></td> -->
+<!-- 																	<td ></td> -->
+<!-- 																	<td ></td> -->
+<!-- 																	<td ></td> -->
+<!-- 																	<td ></td> -->
+<!-- 																	<td ></td> -->
+<!-- 																	<td ></td> -->
+<!-- 																	<td ></td> -->
+<!-- 																	<td cookbookName></td> -->
+<!-- 																	<td cookbookNum></td> -->
+<!-- 																</tr> -->
+<%-- 															</c:forEach> --%>
 														</tbody>
 													</table>
 												</div>

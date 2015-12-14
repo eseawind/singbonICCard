@@ -42,6 +42,10 @@ public class CardRecord implements Serializable {
 	public static Integer WaterSubsidyClear = 13;
 	// 卡注销
 	public static Integer CardOff = 14;
+	// 按卡修正
+	public static Integer UpdateByCard = 15;
+	// 按库修正
+	public static Integer UpdateByUserInfo = 16;
 
 	public static String[] recordTypes = { "发卡", // 0
 			"收取卡押金", // 1
@@ -57,7 +61,9 @@ public class CardRecord implements Serializable {
 			"消费机补助清零", // 11
 			"水控补助存款", // 12
 			"水控补助清零", // 13
-			"卡注销"// 14
+			"卡注销", // 14
+			"按卡修正", // 15
+			"按库修正"// 16
 	};
 	private Integer id;
 	private Integer companyId;
@@ -71,6 +77,10 @@ public class CardRecord implements Serializable {
 	private Integer subsidyOddFare;
 	private Integer cardOddFare;
 	private Integer cardSubsidyOddFare;
+	private Integer opCount;
+	private Integer subsidyOpCount;
+	private Integer cardOpCount;
+	private Integer cardSubsidyOpCount;
 	private String opTime;
 
 	public Integer getId() {
@@ -175,6 +185,38 @@ public class CardRecord implements Serializable {
 
 	public void setCardSubsidyOddFare(Integer cardSubsidyOddFare) {
 		this.cardSubsidyOddFare = cardSubsidyOddFare;
+	}
+
+	public Integer getOpCount() {
+		return opCount;
+	}
+
+	public void setOpCount(Integer opCount) {
+		this.opCount = opCount;
+	}
+
+	public Integer getSubsidyOpCount() {
+		return subsidyOpCount;
+	}
+
+	public void setSubsidyOpCount(Integer subsidyOpCount) {
+		this.subsidyOpCount = subsidyOpCount;
+	}
+
+	public Integer getCardOpCount() {
+		return cardOpCount;
+	}
+
+	public void setCardOpCount(Integer cardOpCount) {
+		this.cardOpCount = cardOpCount;
+	}
+
+	public Integer getCardSubsidyOpCount() {
+		return cardSubsidyOpCount;
+	}
+
+	public void setCardSubsidyOpCount(Integer cardSubsidyOpCount) {
+		this.cardSubsidyOpCount = cardSubsidyOpCount;
 	}
 
 }
