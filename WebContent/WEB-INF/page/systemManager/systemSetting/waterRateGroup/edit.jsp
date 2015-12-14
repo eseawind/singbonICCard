@@ -7,8 +7,9 @@
 <c:set var="w" value="${waterRateGroup}"/>
 <script type="text/javascript">
 	$(function() {
-		setDisplay('${w.consumeType}');
+		setTypeDisplay('${w.consumeType}');
 		setNumDisplay('${w.updateNum}');
+		setCalcDisplay('${w.enableAutoCalcRate}');
 		$('#waterRateGroupForm .save').click(
 			function() {
 				validateCallback($(this).parents('form'), function(e) {
@@ -30,21 +31,30 @@
 	});
 	$('#waterRateGroupForm input[name=consumeType]').click(function(){
 		var type=$(this).val();
-		setDisplay(type);
+		setTypeDisplay(type);
 	});
-	function setDisplay(type){
+	$('#waterRateGroupForm input[name=enableAutoCalcRate]').click(function(){
+		var type=$(this).val();
+		setCalcDisplay(type);
+	});
+	function setTypeDisplay(type){
 		if(type==33){
 			$('#waterRateGroupForm input[name^=rate][name*=Water]').removeClass('disabled').removeAttr('readonly');
-			$('#waterRateGroupForm input[name=waterPrecision]').removeClass('disabled').removeAttr('readonly');
 			$('#waterRateGroupForm input[name^=rate][name*=Cycle]').addClass('disabled').attr('readonly',true);
-			$('#waterRateGroupForm input[name*=cycleLimit]').addClass('disabled').attr('readonly',true);
-			$('#waterRateGroupForm input[name=waterLimit]').removeClass('disabled').removeAttr('readonly');
 		}else{
 			$('#waterRateGroupForm input[name^=rate][name*=Water]').addClass('disabled').attr('readonly',true);
-			$('#waterRateGroupForm input[name=waterPrecision]').addClass('disabled').attr('readonly',true);
 			$('#waterRateGroupForm input[name^=rate][name*=Cycle]').removeClass('disabled').removeAttr('readonly');
-			$('#waterRateGroupForm input[name*=waterLimit]').addClass('disabled').attr('readonly',true);
+		}
+	}
+	function setCalcDisplay(type){
+		if(type==1){
+			$('#waterRateGroupForm input[name=waterLimit]').removeClass('disabled').removeAttr('readonly');
+			$('#waterRateGroupForm input[name=waterPrecision]').removeClass('disabled').removeAttr('readonly');
 			$('#waterRateGroupForm input[name=cycleLimit]').removeClass('disabled').removeAttr('readonly');
+		}else{
+			$('#waterRateGroupForm input[name=waterLimit]').addClass('disabled').attr('readonly',true);
+			$('#waterRateGroupForm input[name=waterPrecision]').addClass('disabled').attr('readonly',true);
+			$('#waterRateGroupForm input[name=cycleLimit]').addClass('disabled').attr('readonly',true);
 		}
 	}
 	$('#waterRateGroupForm input[name=updateNum]').click(function(){
@@ -176,8 +186,8 @@
 			<dl class="firstRow">
 				<dt>次日重置：</dt>
 				<dd>
-					<input name="rate1NextDayReset" type="radio" <c:if test="${w.rate1NextDayReset==0}">checked</c:if> value="1"/>是
-					<input name="rate1NextDayReset" type="radio" <c:if test="${w.rate1NextDayReset==1}">checked</c:if> value="0"/>否
+					<input name="rate1NextDayReset" type="radio" <c:if test="${w.rate1NextDayReset==1}">checked</c:if> value="1"/>是
+					<input name="rate1NextDayReset" type="radio" <c:if test="${w.rate1NextDayReset==0}">checked</c:if> value="0"/>否
 				</dd>
 			</dl>
 			<dl class="firstRow">

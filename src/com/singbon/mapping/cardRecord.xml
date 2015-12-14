@@ -5,7 +5,7 @@
 	</resultMap>
 	<parameterMap type="com.singbon.entity.CardRecord" id="cardRecord2" />
 	<insert id="insert" parameterMap="cardRecord2">
-		insert into cardRecord (companyId,operId,userId,cardNO,cardSN,recordType,opFare,oddFare,subsidyOddFare,cardOddFare,cardSubsidyOddFare,opTime)
-		values (#{companyId},#{operId},#{userId},#{cardNO},#{cardSN},#{recordType},#{opFare},#{oddFare},#{subsidyOddFare},#{cardOddFare},#{cardSubsidyOddFare},NOW())
+		insert into cardRecord (companyId,operId,userId,cardNO,cardSN,recordType,opFare,oddFare,subsidyOddFare,cardOddFare,cardSubsidyOddFare,opCount,subsidyOpCount,cardOpCount,cardSubsidyOpCount,opTime)
+		values (#{companyId},#{operId},#{userId},#{cardNO},#{cardSN},#{recordType},#{opFare},#{oddFare},#{subsidyOddFare},#{cardOddFare},#{cardSubsidyOddFare},#{opCount},#{subsidyOpCount},#{cardOpCount},#{cardSubsidyOpCount}NOW())
 	</insert>
 </mapper>
