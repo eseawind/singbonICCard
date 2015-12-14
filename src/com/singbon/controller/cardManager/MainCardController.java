@@ -705,8 +705,11 @@ public class MainCardController extends BaseController {
 						User user2 = this.mainCardService.selectByUserId(user.getUserId());
 
 						CardAllInfo cardAllInfo = new CardAllInfo();
-						initUserInfo(user2, cardAllInfo);
+						if(user2.getSubsidyInvalidDate()==null){
+							user2.setSubsidyInvalidDate("2000-01-01");							
+						}
 						cardAllInfo.setLimitPeriods(new Integer[] { 0, 0, 0, 0, 0, 0 });
+						cardAllInfo.setSubsidyLimitPeriods(new Integer[] { 0, 0, 0, 0, 0, 0 });
 
 						Batch batch = this.batchService.selectByDeptId(user2.getDeptId());
 						if (batch == null) {

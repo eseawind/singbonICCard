@@ -111,6 +111,7 @@ public class MonitorController extends BaseController {
 			collectThread.start();
 		}
 
+		TerminalManager.CompanyIdToMonitorRunningList.put(company.getId(), true);
 		request.getSession().setAttribute("companyId", company.getId().toString());
 		return url.replace(".do", "");
 	}

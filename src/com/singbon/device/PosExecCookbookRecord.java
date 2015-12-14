@@ -1,10 +1,15 @@
 package com.singbon.device;
 
+import java.net.InetSocketAddress;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import com.singbon.entity.ConsumeRecord;
+import com.singbon.entity.CookbookRecord;
 import com.singbon.entity.Device;
+import com.singbon.entity.Meal;
+import com.singbon.util.JdbcUtil;
 import com.singbon.util.StringUtil;
 
 /**
@@ -13,43 +18,88 @@ import com.singbon.util.StringUtil;
  * @author 郝威
  * 
  */
-public class PosExecCookbookRecord {
+public class PosExecCookbookRecord implements Runnable {
+
+	private byte[] b;
+	private Device device;
+	private InetSocketAddress inetSocketAddress;
+
+	public PosExecCookbookRecord(Device device, byte[] b, InetSocketAddress inetSocketAddress) {
+		this.device = device;
+		this.b = b;
+		this.inetSocketAddress = inetSocketAddress;
+	}
 
 	// 分解订餐取餐记录
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static int cookbookRecord(Device device, Map map, byte[] b) {
-		ConsumeRecord record = new ConsumeRecord();
+	public void run() {
+		// 大帧：1为普通8为菜单
+		CookbookRecord record = new CookbookRecord();
 		int baseIndex = 30;
+
+		record.setCompanyId(device.getCompanyId());
+
 		record.setUserId(Long.parseLong(StringUtil.getHexStrFromBytes(baseIndex + 6, baseIndex + 9, b), 16));
 		record.setCardNO(Long.parseLong(StringUtil.getHexStrFromBytes(baseIndex + 10, baseIndex + 13, b), 16));
 		record.setCardSeq(StringUtil.hexToInt(baseIndex + 14, baseIndex + 14, b));
+		record.setDeviceId(device.getId());
 		record.setDeviceName(device.getDeviceName());
 
-		record.setSumFare(StringUtil.hexToInt(baseIndex + 15, baseIndex + 18, b));
-		record.setOddFare(StringUtil.hexToInt(baseIndex + 19, baseIndex + 22, b));
-		record.setDiscountFare(StringUtil.hexToInt(baseIndex + 23, baseIndex + 26, b));
-		record.setSubsidyOddFare(StringUtil.hexToInt(baseIndex + 27, baseIndex + 30, b));
-		record.setOpFare(StringUtil.hexToInt(baseIndex + 31, baseIndex + 34, b));
-		record.setOpCount(StringUtil.hexToInt(baseIndex + 35, baseIndex + 36, b));
-		record.setSubsidyOpCount(StringUtil.hexToInt(baseIndex + 37, baseIndex + 38, b));
-		record.setSubsidyOpFare(StringUtil.hexToInt(baseIndex + 39, baseIndex + 42, b));
 		Calendar c = Calendar.getInstance();
-		c.set(Calendar.YEAR, 2000 + StringUtil.byteToInt(b[43]));
-		c.set(Calendar.MONTH, StringUtil.byteToInt(b[44]));
-		c.set(Calendar.DAY_OF_MONTH, StringUtil.byteToInt(b[45]));
-		c.set(Calendar.HOUR_OF_DAY, StringUtil.byteToInt(b[46]));
-		c.set(Calendar.MINUTE, StringUtil.byteToInt(b[47]));
-		c.set(Calendar.SECOND, StringUtil.byteToInt(b[48]));
+		c.set(Calendar.YEAR, 2000 + StringUtil.byteToBCDInt(b[baseIndex + 43]));
+		c.set(Calendar.MONTH, StringUtil.byteToBCDInt(b[baseIndex + 44]));
+		c.set(Calendar.DAY_OF_MONTH, StringUtil.byteToBCDInt(b[baseIndex + 45]));
+		c.set(Calendar.HOUR_OF_DAY, StringUtil.byteToBCDInt(b[baseIndex + 46]));
+		c.set(Calendar.MINUTE, StringUtil.byteToBCDInt(b[baseIndex + 47]));
+		c.set(Calendar.SECOND, StringUtil.byteToBCDInt(b[baseIndex + 48]));
 		c.add(Calendar.MONTH, -1);
 		record.setOpTime(StringUtil.dateFormat(c.getTime(), "yyyy-MM-dd HH:mm:ss"));
 		int recordNO = StringUtil.hexToInt(baseIndex + 49, baseIndex + 50, b);
 		record.setRecordNO(recordNO);
-		record.setMealId(0);
 
-		// 发送订餐记录到监控平台
-		map.put("record", record);
-		TerminalManager.sendToMonitor(map, device.getCompanyId());
-		return recordNO;
+		record.setCookbookCode(StringUtil.hexToInt(baseIndex + 52, baseIndex + 53, b));
+		record.setCookbookNum(StringUtil.hexToInt(baseIndex + 60, baseIndex + 61, b));
+
+		record.setRecordCount(StringUtil.hexToInt(baseIndex + 52, baseIndex + 53, b));
+		record.setSubsidyAuth((b[baseIndex + 60] >> 1) & 0x1);
+		record.setCardSN(StringUtil.getHexStrFromBytes(baseIndex + 67, baseIndex + 70, b).toUpperCase());
+
+		List<Meal> mealList = TerminalManager.CompanyIdToMealList.get(device.getCompanyId());
+		int mealId = 0;
+		String opTime = StringUtil.dateFormat(c.getTime(), "HH:mm:ss");
+		if (mealList != null) {
+			for (Meal m : mealList) {
+				if (m.getBeginTime().compareTo(opTime) <= 0 && m.getEndTime().compareTo(opTime) >= 0) {
+					mealId = m.getId();
+					record.setMealName(m.getMealName());
+				}
+			}
+		}
+		record.setMealId(mealId);
+
+		try {
+			JdbcUtil.consumeRecordDAO.insert(record);
+			if (record.getResult() == 1) {
+				// 回复记录号
+				String buf = StringUtil.getHexStrFromBytes(0, 27, b) + "000d0101" + StringUtil.strLeftPad("", 8) + StringUtil.hexLeftPad(recordNO, 4) + "000000";
+				b = StringUtil.strTobytes(buf);
+				try {
+					TerminalManager.sendToPos(inetSocketAddress, b);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				if (recordNO != device.getLastRecordNO()) {
+					Map map = new HashMap();
+					map.put("type", "cookbookRecord");
+					map.put("record", record);
+					// 向监控平台发送命令
+					TerminalManager.sendToMonitor(map, device.getCompanyId());
+					device.setLastRecordNO(recordNO);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }

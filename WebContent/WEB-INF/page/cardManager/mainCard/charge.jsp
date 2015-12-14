@@ -30,8 +30,10 @@
 		init();
 		
 		$('#userInfo .ok').click(function() {
-			validateCallback($(this).parents('form'), function(e) {
-			}, null);
+			if(getAllOddFare()){
+				validateCallback($(this).parents('form'), function(e) {
+				}, null);
+			}
 		});
 		
 		$('#userInfo .readCard').click(function() {
@@ -75,13 +77,16 @@
 			var allOddFare=parseFloat(opOddFare)+parseFloat(opFare)+parseFloat(giveFare);
 			if(allOddFare>167772.15){
 				alertMsg.warn('总操作余额不能大于167772.15！');
+				return false;
 			}
 		}else{
 			var allOddFare=opOddFare-opFare;
 			if(allOddFare<0){
-				alertMsg.warn('操作额不能大于余额！');		
+				alertMsg.warn('操作额不能大于余额！');	
+				return false;
 			}
 		}
+		return true;		
 	}
 	
 	function init() {
@@ -295,7 +300,7 @@
 				<dt>存取类型：</dt>
 				<dd style="width: 300px;">
 					<label><input type="radio" name="chargeType" checked="checked" value="0" />存款  <input type="radio" name="chargeType" value="1" />取款</label>
-					<input type="checkbox" name="backCardDeposit" checked="checked" disabled="disabled"/>退还卡押金
+					<input type="checkbox" name="backCardDeposit" disabled="disabled"/>退还卡押金
 				</dd>
 			</dl>
 			<dl style="width: 500px;">

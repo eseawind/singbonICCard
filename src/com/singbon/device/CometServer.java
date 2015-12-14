@@ -47,6 +47,7 @@ public class CometServer {
 					if (oldColectThread != null && oldColectThread.isAlive()) {
 						oldColectThread.interrupt();
 					}
+					TerminalManager.CompanyIdToMonitorRunningList.remove(Integer.valueOf(companyId));
 				}
 				String ip = connection.getClientIp();
 				StringUtil.println("d " + ip);

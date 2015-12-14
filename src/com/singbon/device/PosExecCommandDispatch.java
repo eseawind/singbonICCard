@@ -59,55 +59,58 @@ public class PosExecCommandDispatch {
 				// 16));
 				map.put("subsidyVersion", Integer.parseInt(StringUtil.getHexStrFromBytes(55, 56, b), 16));
 
-				// 相差半分钟校时
-				Calendar c1 = Calendar.getInstance();
-				c1.set(StringUtil.objToInt("20" + StringUtil.getHexStrFromBytes(45, 45, b)), StringUtil.objToInt(StringUtil.getHexStrFromBytes(46, 46, b)),
-						StringUtil.objToInt(StringUtil.getHexStrFromBytes(47, 47, b)), StringUtil.objToInt(StringUtil.getHexStrFromBytes(48, 48, b)),
-						StringUtil.objToInt(StringUtil.getHexStrFromBytes(49, 49, b)), StringUtil.objToInt(StringUtil.getHexStrFromBytes(50, 50, b)));
-				c1.add(Calendar.MONTH, -1);
-				Calendar c2 = Calendar.getInstance();
-				c2.setTime(new Date());
+				// 监控打开执行自动操作
+				if (TerminalManager.CompanyIdToMonitorRunningList.containsKey(device.getCompanyId()) && TerminalManager.CompanyIdToMonitorRunningList.get(device.getCompanyId())) {
+					// 相差半分钟校时
+					Calendar c1 = Calendar.getInstance();
+					c1.set(StringUtil.objToInt("20" + StringUtil.getHexStrFromBytes(45, 45, b)), StringUtil.objToInt(StringUtil.getHexStrFromBytes(46, 46, b)),
+							StringUtil.objToInt(StringUtil.getHexStrFromBytes(47, 47, b)), StringUtil.objToInt(StringUtil.getHexStrFromBytes(48, 48, b)),
+							StringUtil.objToInt(StringUtil.getHexStrFromBytes(49, 49, b)), StringUtil.objToInt(StringUtil.getHexStrFromBytes(50, 50, b)));
+					c1.add(Calendar.MONTH, -1);
+					Calendar c2 = Calendar.getInstance();
+					c2.setTime(new Date());
 
-				if (Math.abs(c1.getTimeInMillis() - c2.getTimeInMillis()) > 30000) {
-					String sendBufStr = StringUtil.hexLeftPad(PosFrame.Sys07, 2) + StringUtil.hexLeftPad(PosSubFrameSys07.SysTime, 2) + "0000" + StringUtil.hexLeftPad(commandCode, 4)
-							+ StringUtil.timeToHexStr() + "0000";
-					String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
-					sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + CommandDevice.NoSubDeviceNum + DeviceType.Main + DeviceType.getDeviceTypeFrame(device) + bufLen
-							+ sendBufStr;
-					byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
-					try {
-						TerminalManager.sendToPos(inetSocketAddress, sendBuf);
-					} catch (Exception e) {
-						e.printStackTrace();
+					if (Math.abs(c1.getTimeInMillis() - c2.getTimeInMillis()) > 30000) {
+						String sendBufStr = StringUtil.hexLeftPad(PosFrame.Sys07, 2) + StringUtil.hexLeftPad(PosSubFrameSys07.SysTime, 2) + "0000" + StringUtil.hexLeftPad(commandCode, 4)
+								+ StringUtil.timeToHexStr() + "0000";
+						String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
+						sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + CommandDevice.NoSubDeviceNum + DeviceType.Main + DeviceType.getDeviceTypeFrame(device) + bufLen
+								+ sendBufStr;
+						byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
+						try {
+							TerminalManager.sendToPos(inetSocketAddress, sendBuf);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
 					}
-				}
 
-				int lastBatchId = Integer.parseInt(StringUtil.getHexStrFromBytes(38, 39, b), 16);
-				long lastBlackNum = Long.parseLong(StringUtil.getHexStrFromBytes(40, 43, b), 16);
-				// 自动下载批次黑名单
-				long sysLastBatchId = 0;
-				if (TerminalManager.CompanyIdToLastBatchIdList.containsKey(device.getCompanyId())) {
-					sysLastBatchId = TerminalManager.CompanyIdToLastBatchIdList.get(device.getCompanyId());
-				}
-				long sysLastBlackNum = 0;
-				if (TerminalManager.CompanyIdToLastBlackNumList.containsKey(device.getCompanyId())) {
-					sysLastBlackNum = TerminalManager.CompanyIdToLastBlackNumList.get(device.getCompanyId());
-				}
-				if (lastBatchId != sysLastBatchId) {
-					PosExecBatchBlack black = new PosExecBatchBlack(lastBatchId, device);
-					black.run();
-				}
+					int lastBatchId = Integer.parseInt(StringUtil.getHexStrFromBytes(38, 39, b), 16);
+					long lastBlackNum = Long.parseLong(StringUtil.getHexStrFromBytes(40, 43, b), 16);
+					// 自动下载批次黑名单
+					long sysLastBatchId = 0;
+					if (TerminalManager.CompanyIdToLastBatchIdList.containsKey(device.getCompanyId())) {
+						sysLastBatchId = TerminalManager.CompanyIdToLastBatchIdList.get(device.getCompanyId());
+					}
+					long sysLastBlackNum = 0;
+					if (TerminalManager.CompanyIdToLastBlackNumList.containsKey(device.getCompanyId())) {
+						sysLastBlackNum = TerminalManager.CompanyIdToLastBlackNumList.get(device.getCompanyId());
+					}
+					if (lastBatchId != sysLastBatchId) {
+						PosExecBatchBlack black = new PosExecBatchBlack(lastBatchId, device);
+						black.run();
+					}
 
-				// 自动下载黑名单
-				if (lastBlackNum != sysLastBlackNum) {
-					PosExecCardBlack black = new PosExecCardBlack(lastBlackNum, device);
-					black.run();
-				}
+					// 自动下载黑名单
+					if (lastBlackNum != sysLastBlackNum) {
+						PosExecCardBlack black = new PosExecCardBlack(lastBlackNum, device);
+						black.run();
+					}
 
-				// 命令码为1是主动询问返回的状态
-				commandCode = StringUtil.byteToInt(b[34]) * 256 + StringUtil.byteToInt(b[35]);
-				if (commandCode == 1) {
-					PosExecReplyCommand.execReplyCommand(device, commandCode, b, map, true);
+					// 命令码为1是主动询问返回的状态
+					commandCode = StringUtil.byteToInt(b[34]) * 256 + StringUtil.byteToInt(b[35]);
+					if (commandCode == 1) {
+						PosExecReplyCommand.execReplyCommand(device, commandCode, b, map, true);
+					}
 				}
 			}
 
@@ -116,7 +119,7 @@ public class PosExecCommandDispatch {
 			PosExecConsumeRecord record = new PosExecConsumeRecord(device, b, inetSocketAddress);
 			record.run();
 			// 订餐取餐记录
-		} else if (b[30] == 8 && b[31] == 1) {
+		} else if (b[30] == 8 && (b[31] == 1 || b[31] == 2 || b[31] == 3)) {
 			map.put("'type'", "cookbookRecord");
 			// 菜单消费 202 0xca,菜单订餐 203 0xcb
 			int recType = b[92] & 0xff;
@@ -124,7 +127,8 @@ public class PosExecCommandDispatch {
 				PosExecConsumeRecord record = new PosExecConsumeRecord(device, b, inetSocketAddress);
 				record.run();
 			} else if (recType == 203) {
-				PosExecCookbookRecord.cookbookRecord(device, map, b);
+				PosExecCookbookRecord record = new PosExecCookbookRecord(device, b, inetSocketAddress);
+				record.run();
 			}
 			// 补助请求
 		} else if (b[30] == 4 && b[31] == 1) {

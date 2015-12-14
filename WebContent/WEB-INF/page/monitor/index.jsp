@@ -228,53 +228,56 @@
 					}
 					var tr=$("#consumeRecord tbody tr[index="+consumeRecordIndex+"]");					
 					$('td[index] div',tr).html(consumeRecordIndex);
-					$('td[deviceName] div',tr).html(e2.consumeRecord.deviceName);
-					$('td[userNO] div',tr).html(e2.consumeRecord.userNO);
-					$('td[cardNO] div',tr).html(e2.consumeRecord.cardNO);
-					$('td[username] div',tr).html(e2.consumeRecord.username);
-					$('td[oddFare] div',tr).html(e2.consumeRecord.oddFare/100);
-					$('td[subsidyOddFare] div',tr).html(e2.consumeRecord.subsidyOddFare/100);
-					$('td[discountFare] div',tr).html(e2.consumeRecord.discountFare/100);
-					$('td[opFare] div',tr).html((e2.consumeRecord.opFare+e2.consumeRecord.subsidyOpFare)/100);
-					$('td[mealName] div',tr).html(e2.consumeRecord.mealName);
-					$('td[opTime] div',tr).html(e2.consumeRecord.opTime);
-					$('td[opCount] div',tr).html(e2.consumeRecord.opCount);
-					$('td[subsidyOpCount] div',tr).html(e2.consumeRecord.subsidyOpCount);
-					$('td[recordNO] div',tr).html(e2.consumeRecord.recordNO);
-					$('td[consumeTypeDes] div',tr).html(e2.consumeRecord.consumeTypeDes);
-					$('td[cookbookName] div',tr).html(e2.consumeRecord.cookbookName);
-					$('td[cookbookNum] div',tr).html(e2.consumeRecord.cookbookNum);
+					$('td[deviceName] div',tr).html(e2.record.deviceName);
+					$('td[userNO] div',tr).html(e2.record.userNO);
+					$('td[cardNO] div',tr).html(e2.record.cardNO);
+					$('td[username] div',tr).html(e2.record.username);
+					$('td[oddFare] div',tr).html(e2.record.oddFare/100);
+					$('td[subsidyOddFare] div',tr).html(e2.record.subsidyOddFare/100);
+					$('td[discountFare] div',tr).html(e2.record.discountFare/100);
+					$('td[opFare] div',tr).html((e2.record.opFare+e2.record.subsidyOpFare)/100);
+					$('td[mealName] div',tr).html(e2.record.mealName);
+					$('td[opTime] div',tr).html(e2.record.opTime);
+					$('td[opCount] div',tr).html(e2.record.opCount);
+					$('td[subsidyOpCount] div',tr).html(e2.record.subsidyOpCount);
+					$('td[recordNO] div',tr).html(e2.record.recordNO);
+					$('td[consumeTypeDes] div',tr).html(e2.record.consumeTypeDes);
+					$('td[cookbookName] div',tr).html(e2.record.cookbookName);
+					$('td[cookbookNum] div',tr).html(e2.record.cookbookNum);
 					consumeRecordIndex++;
+					
+					var statusTr=$("#deviceStatusList tr.deviceStatus[id="+sn+"]");
+ 					$('td[recordCount] div',statusTr).html(e2.record.recordCount);
+					$('td[subsidyVersion] div',statusTr).html(e2.record.subsidyVersion);
+					$('td[subsidyAuth] div',statusTr).html(e2.record.subsidyAuth==1?'是':'否');
+				//订餐取餐记录
+				}else if(e2.type=='cookbookRecord'){
+					$("#deviceList .device[id="+sn+"] img").attr('alt','在线').attr('src','/img/online.png');
+					if(cookbookRecordIndex>=maxRow){
+						cookbookRecordIndex=1;
+						$('#cookbookRecord tbody tr td div').empty();
+					}
+					var tr=$("#cookbookRecord tbody tr[index="+consumeRecordIndex+"]");	
+					$('td[index] div',tr).html(cookbookRecordIndex);
+					$('td[deviceName] div',tr).html(e2.record.deviceName);
+					$('td[userNO] div',tr).html(e2.record.userNO);
+					$('td[cardNO] div',tr).html(e2.record.cardNO);
+					$('td[username] div',tr).html(e2.record.username);
+					$('td[opFare] div',tr).html(e2.record.cookbookNum*price);
+					$('td[mealName] div',tr).html(e2.record.mealName);
+					$('td[mealTime] div',tr).html(e2.record.mealTime);
+					$('td[orderTime] div',tr).html(e2.record.orderTime);
+					$('td[consumeTypeDes] div',tr).html(e2.record.consumeTypeDes);
+					$('td[cookbookName] div',tr).html(e2.record.cookbookName);
+					$('td[cookbookNum] div',tr).html(e2.record.cookbookNum);
+					$('td[recordNO] div',tr).html(e2.record.recordNO);
+					$('td[typeName] div',tr).html(e2.record.typeName);
+					cookbookRecordIndex++;
 					
 					var statusTr=$("#deviceStatusList tr.deviceStatus[id="+sn+"]");
  					$('td[recordCount] div',statusTr).html(e2.consumeRecord.recordCount);
 					$('td[subsidyVersion] div',statusTr).html(e2.consumeRecord.subsidyVersion);
 					$('td[subsidyAuth] div',statusTr).html(e2.consumeRecord.subsidyAuth==1?'是':'否');
-				//订餐取餐记录
-				}else if(e2.type=='cookbookRecord'){
-					$("#deviceList .device[id="+sn+"] img").attr('alt','在线').attr('src','/img/online.png');
-// 					if(cookbookRecordIndex>=maxRow){
-// 						cookbookRecordIndex=1;
-// 						$('#cookbookRecord tbody tr td div').empty();
-// 					}
-// 					var tr=$("#cookbookRecord tbody tr[index="+consumeRecordIndex+"]");					
-// 					$('td[index] div',tr).html(logIndex);
-// 					$('td[deviceNum] div',tr).html(e2.consumeRecord.deviceNum);
-// 					$('td[userNO] div',tr).html(e2.consumeRecord.userNO);
-// 					$('td[username] div',tr).html(e2.consumeRecord.username);
-// 					$('td[cardOddFare] div',tr).html(e2.consumeRecord.cardOddFare);
-// 					$('td[subsidyOddFare] div',tr).html(e2.consumeRecord.subsidyOddFare);
-// 					$('td[discountFare] div',tr).html(e2.consumeRecord.discountFare);
-// 					$('td[oppFare] div',tr).html(e2.consumeRecord.oppFare);
-// 					$('td[mealName] div',tr).html(e2.consumeRecord.mealName);
-// 					$('td[opTime] div',tr).html(e2.consumeRecord.opTime);
-// 					$('td[cardOpCount] div',tr).html(e2.consumeRecord.cardOpCount);
-// 					$('td[subsidyOpCount] div',tr).html(e2.consumeRecord.subsidyOpCount);
-// 					$('td[recordNO] div',tr).html(e2.consumeRecord.recordNO);
-// 					$('td[consumeTypeDes] div',tr).html(e2.consumeRecord.consumeTypeDes);
-// 					$('td[cookbookName] div',tr).html(e2.consumeRecord.cookbookName);
-// 					$('td[cookbookCode] div',tr).html(e2.consumeRecord.cookbookCode);
-// 					cookbookRecordIndex++;
 					
 				//日志
 				}else if(e2.type=='log'){
@@ -656,28 +659,28 @@
 																<th width="100">订餐时间</th>
 																<th width="100">菜肴名称</th>
 																<th width="100">菜肴份数</th>
+																<th width="100">记录序号</th>
 																<th width="100">类别</th>
 															</tr>
 														</thead>
 														<tbody>
-<%-- 															<c:forEach begin="1" end="100" step="1" var="i"> --%>
-<%-- 																<tr index="${i}"> --%>
-<!-- 																	<td index></td> -->
-<!-- 																	<td deviceName></td> -->
-<!-- 																	<td userNO></td> -->
-<!-- 																	<td cardNO></td> -->
-<!-- 																	<td username></td> -->
-<!-- 																	<td ></td> -->
-<!-- 																	<td ></td> -->
-<!-- 																	<td ></td> -->
-<!-- 																	<td ></td> -->
-<!-- 																	<td ></td> -->
-<!-- 																	<td ></td> -->
-<!-- 																	<td ></td> -->
-<!-- 																	<td cookbookName></td> -->
-<!-- 																	<td cookbookNum></td> -->
-<!-- 																</tr> -->
-<%-- 															</c:forEach> --%>
+															<c:forEach begin="1" end="100" step="1" var="i">
+																<tr index="${i}">
+																	<td index></td>
+																	<td deviceName></td>
+																	<td userNO></td>
+																	<td cardNO></td>
+																	<td username></td>
+																	<td opFare></td>
+																	<td mealName></td>
+																	<td mealTime></td>
+																	<td orderTime></td>
+																	<td cookbookName></td>
+																	<td cookbookNum></td>
+																	<td recordNO></td>
+																	<td typeName></td>
+																</tr>
+															</c:forEach>
 														</tbody>
 													</table>
 												</div>

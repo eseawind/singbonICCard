@@ -32,7 +32,7 @@ public class PosExecSubsidyRequest implements Runnable {
 		long userId = Long.parseLong(StringUtil.getHexStrFromBytes(36, 39, b), 16);
 		long cardNO = Long.parseLong(StringUtil.getHexStrFromBytes(40, 43, b), 16);
 		int cardTypeId = Integer.parseInt(StringUtil.getHexStrFromBytes(44, 44, b), 16);
-		String sql = String.format("select s.subsidyVersion,subsidyFare from user u left join subsidy s on u.userId=s.userId where u.companyId=%s and u.userId=%s", device.getCompanyId(), userId);
+		String sql = String.format("select s.subsidyVersion,subsidyFare from user u left join subsidy s on u.userId=s.userId where u.companyId=%s and u.userId=%s and u.status=241", device.getCompanyId(), userId);
 		List<Map> list = JdbcUtil.baseDAO.selectBySql(sql);
 
 		// 补助帐号（4 字节）+补助卡号（4 字节）+卡种类（1 字节参数

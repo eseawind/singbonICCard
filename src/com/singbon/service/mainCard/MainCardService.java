@@ -220,10 +220,10 @@ public class MainCardService extends BaseService {
 			cardRecord.setCardNO(user.getCardNO());
 			cardRecord.setCardSN(user.getCardSN());
 			cardRecord.setOpFare(0);
-			cardRecord.setOddFare(0);
-			cardRecord.setSubsidyOddFare(0);
-			cardRecord.setCardOddFare(0);
-			cardRecord.setCardSubsidyOddFare(0);
+			cardRecord.setOddFare(user.getOddFare());
+			cardRecord.setSubsidyOddFare(user.getSubsidyOddFare());
+			cardRecord.setCardOddFare(cardUser.getOddFare());
+			cardRecord.setCardSubsidyOddFare(cardUser.getSubsidyOddFare());
 			cardRecord.setOpCount(user.getOpCount());
 			cardRecord.setSubsidyOpCount(user.getSubsidyOpCount());
 			cardRecord.setCardOpCount(cardUser.getOpCount());
