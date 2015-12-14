@@ -134,18 +134,20 @@ public class MainCardService extends BaseService {
 	/**
 	 * 通过用户信息写卡： 单个发卡、信息发卡、补卡、按卡修正
 	 * 
+	 * @param sysUser
 	 * @param device
 	 * @param socketChannel
 	 * @param user
+	 *            库对象
+	 * @param cardUser
+	 *            卡对象
 	 * @param cardAllInfo
 	 * @param commandCode
-	 *            命令码
 	 * @param section
-	 *            开始扇区
 	 * @throws Exception
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public void makeCardByUserInfo(SysUser sysUser, Device device, SocketChannel socketChannel, User user, CardAllInfo cardAllInfo, int commandCode, Integer section) throws Exception {
+	public void makeCardByUserInfo(SysUser sysUser, Device device, SocketChannel socketChannel, User user, User cardUser, CardAllInfo cardAllInfo, int commandCode, Integer section) throws Exception {
 		if (commandCode == CardReaderCommandCode.SingleCard) {
 			this.userDAO.insert(user);
 		} else if (commandCode == CardReaderCommandCode.InfoCard) {
@@ -166,6 +168,10 @@ public class MainCardService extends BaseService {
 			cardRecord.setSubsidyOddFare(user.getSubsidyOddFare());
 			cardRecord.setCardOddFare(0);
 			cardRecord.setCardSubsidyOddFare(0);
+			cardRecord.setOpCount(user.getOpCount());
+			cardRecord.setSubsidyOpCount(user.getSubsidyOpCount());
+			cardRecord.setCardOpCount(user.getOpCount());
+			cardRecord.setCardSubsidyOpCount(user.getSubsidyOpCount());
 			this.cardRecordService.insert(cardRecord);
 		}
 
@@ -181,6 +187,10 @@ public class MainCardService extends BaseService {
 			cardRecord.setSubsidyOddFare(0);
 			cardRecord.setCardOddFare(0);
 			cardRecord.setCardSubsidyOddFare(0);
+			cardRecord.setOpCount(user.getOpCount());
+			cardRecord.setSubsidyOpCount(0);
+			cardRecord.setCardOpCount(user.getOpCount());
+			cardRecord.setCardSubsidyOpCount(0);
 			// 发卡
 			cardRecord.setRecordType(CardRecord.MakeCard);
 			int opFare = (user.getPreOpFare() - user.getCardDeposit()) * 100;
@@ -200,6 +210,26 @@ public class MainCardService extends BaseService {
 				cardRecord.setOpFare(user.getCardDeposit() * 100);
 				this.cardRecordService.insert(cardRecord);
 			}
+		}
+		// 添加卡操作记录：按库修正
+		if (commandCode == CardReaderCommandCode.UpdateByInfo) {
+			CardRecord cardRecord = new CardRecord();
+			cardRecord.setCompanyId(user.getCompanyId());
+			cardRecord.setOperId(sysUser.getOperId());
+			cardRecord.setUserId(user.getUserId());
+			cardRecord.setCardNO(user.getCardNO());
+			cardRecord.setCardSN(user.getCardSN());
+			cardRecord.setOpFare(0);
+			cardRecord.setOddFare(0);
+			cardRecord.setSubsidyOddFare(0);
+			cardRecord.setCardOddFare(0);
+			cardRecord.setCardSubsidyOddFare(0);
+			cardRecord.setOpCount(user.getOpCount());
+			cardRecord.setSubsidyOpCount(user.getSubsidyOpCount());
+			cardRecord.setCardOpCount(cardUser.getOpCount());
+			cardRecord.setCardSubsidyOpCount(cardUser.getSubsidyOpCount());
+			cardRecord.setRecordType(CardRecord.UpdateByUserInfo);
+			this.cardRecordService.insert(cardRecord);
 		}
 
 		// 基本扇区
@@ -343,6 +373,10 @@ public class MainCardService extends BaseService {
 		cardRecord.setSubsidyOddFare(user.getSubsidyOddFare());
 		cardRecord.setCardOddFare(0);
 		cardRecord.setCardSubsidyOddFare(0);
+		cardRecord.setOpCount(user.getOpCount());
+		cardRecord.setSubsidyOpCount(user.getSubsidyOpCount());
+		cardRecord.setCardOpCount(0);
+		cardRecord.setCardSubsidyOpCount(0);
 		this.cardRecordService.insert(cardRecord);
 	}
 
@@ -354,7 +388,8 @@ public class MainCardService extends BaseService {
 	 * @throws Exception
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public void unloss(SysUser sysUser, User user, Integer dbOddFare, Integer dbSubsidyOddFare, SocketChannel socketChannel, Device device, String cardInfoStr) throws Exception {
+	public void unloss(SysUser sysUser, User user, Integer dbOddFare, Integer dbSubsidyOddFare, Integer dbOpCount, Integer dbSubsidyOpCount, SocketChannel socketChannel, Device device,
+			String cardInfoStr) throws Exception {
 		long newCardNO = this.userDAO.selectMaxCardNO(user.getCompanyId());
 		user.setCardNO(newCardNO);
 		this.userDAO.unloss(user);
@@ -372,6 +407,10 @@ public class MainCardService extends BaseService {
 		cardRecord.setSubsidyOddFare(dbSubsidyOddFare);
 		cardRecord.setCardOddFare(user.getOddFare());
 		cardRecord.setCardSubsidyOddFare(user.getSubsidyOddFare());
+		cardRecord.setOpCount(dbOpCount);
+		cardRecord.setSubsidyOpCount(dbSubsidyOpCount);
+		cardRecord.setCardOpCount(user.getOpCount());
+		cardRecord.setCardSubsidyOpCount(user.getSubsidyOpCount());
 		this.cardRecordService.insert(cardRecord);
 
 		String commandCodeStr = "0000" + StringUtil.hexLeftPad(CardReaderCommandCode.Unloss, 4);
@@ -416,7 +455,7 @@ public class MainCardService extends BaseService {
 	 * @throws Exception
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public void offUserInfoWithInfo(SysUser sysUser, User user, Integer dbOddFare, Integer dbSubsidyOddFare) throws Exception {
+	public void offUserInfoWithInfo(SysUser sysUser, User user, Integer dbOddFare, Integer dbSubsidyOddFare, Integer dbOpCount, Integer dbSubsidyOpCount) throws Exception {
 		this.userDAO.offUserInfoWithInfo(user.getUserId());
 
 		// 添加卡操作记录
@@ -426,13 +465,17 @@ public class MainCardService extends BaseService {
 		cardRecord.setUserId(user.getUserId());
 		cardRecord.setCardNO(user.getCardNO());
 		cardRecord.setCardSN(user.getCardSN());
-		cardRecord.setRecordType(CardRecord.CardOff);
 		cardRecord.setOpFare(user.getOddFare());
 		cardRecord.setOpFare(0);
 		cardRecord.setOddFare(dbOddFare);
 		cardRecord.setSubsidyOddFare(dbSubsidyOddFare);
 		cardRecord.setCardOddFare(user.getOddFare());
 		cardRecord.setCardSubsidyOddFare(user.getSubsidyOddFare());
+		cardRecord.setOpCount(dbOpCount);
+		cardRecord.setSubsidyOpCount(dbSubsidyOpCount);
+		cardRecord.setCardOpCount(user.getOpCount());
+		cardRecord.setCardSubsidyOpCount(user.getSubsidyOpCount());
+		cardRecord.setRecordType(CardRecord.CardOff);
 		this.cardRecordService.insert(cardRecord);
 	}
 
@@ -444,8 +487,28 @@ public class MainCardService extends BaseService {
 	 * @param cardSN
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public void updateByCard(User user) throws Exception {
+	public void updateByCard(SysUser sysUser, User user, Integer dbOddFare, Integer dbSubsidyOddFare, Integer dbOpCount, Integer dbSubsidyOpCount) throws Exception {
 		this.userDAO.updateByCard(user);
+
+		// 添加卡操作记录
+		CardRecord cardRecord = new CardRecord();
+		cardRecord.setCompanyId(user.getCompanyId());
+		cardRecord.setOperId(sysUser.getOperId());
+		cardRecord.setUserId(user.getUserId());
+		cardRecord.setCardNO(user.getCardNO());
+		cardRecord.setCardSN(user.getCardSN());
+		cardRecord.setOpFare(user.getOddFare());
+		cardRecord.setOpFare(0);
+		cardRecord.setOddFare(dbOddFare);
+		cardRecord.setSubsidyOddFare(dbSubsidyOddFare);
+		cardRecord.setCardOddFare(user.getOddFare());
+		cardRecord.setCardSubsidyOddFare(user.getSubsidyOddFare());
+		cardRecord.setOpCount(dbOpCount);
+		cardRecord.setSubsidyOpCount(dbSubsidyOpCount);
+		cardRecord.setCardOpCount(user.getOpCount());
+		cardRecord.setCardSubsidyOpCount(user.getSubsidyOpCount());
+		cardRecord.setRecordType(CardRecord.UpdateByCard);
+		this.cardRecordService.insert(cardRecord);
 	}
 
 	/**
@@ -480,13 +543,14 @@ public class MainCardService extends BaseService {
 	 * @throws Exception
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public void doCharge(SysUser sysUser, User user, Integer chargeType, Float opFare, Integer cardOddFare, Integer cardSubsidyOddFare, String backCardDeposit, SocketChannel socketChannel, Device device,
-			String cardInfoStr) throws Exception {
+	public void doCharge(SysUser sysUser, User user, Integer chargeType, Float opFare, Integer cardOddFare, Integer cardSubsidyOddFare, Integer cardOpCount, Integer cardSubsidyOpCount,
+			String backCardDeposit, SocketChannel socketChannel, Device device, String cardInfoStr) throws Exception {
 		// 卡上总额
 		String totalFareString = cardInfoStr.substring(26, 34);
 		int cardTotalFare = Integer.parseInt(totalFareString, 16);
 		// 卡总操作余额
 		int cardAllOddFare = 0;
+
 		// 存款
 		if (chargeType == 0) {
 			cardAllOddFare = (int) (cardOddFare + (100 * (opFare + user.getGiveFare())));
@@ -505,6 +569,10 @@ public class MainCardService extends BaseService {
 			cardRecord.setSubsidyOddFare(user.getSubsidyOddFare());
 			cardRecord.setCardOddFare(cardOddFare);
 			cardRecord.setCardSubsidyOddFare(cardSubsidyOddFare);
+			cardRecord.setOpCount(user.getOpCount() + 1);
+			cardRecord.setSubsidyOpCount(user.getSubsidyOpCount());
+			cardRecord.setCardOpCount(cardOpCount + 1);
+			cardRecord.setCardSubsidyOpCount(cardSubsidyOpCount);
 			cardRecord.setRecordType(CardRecord.PCSaving);
 			this.cardRecordService.insert(cardRecord);
 
@@ -533,6 +601,10 @@ public class MainCardService extends BaseService {
 			cardRecord.setSubsidyOddFare(user.getSubsidyOddFare());
 			cardRecord.setCardOddFare(cardOddFare);
 			cardRecord.setCardSubsidyOddFare(cardSubsidyOddFare);
+			cardRecord.setOpCount(user.getOpCount() + 1);
+			cardRecord.setSubsidyOpCount(user.getSubsidyOpCount());
+			cardRecord.setCardOpCount(cardOpCount + 1);
+			cardRecord.setCardSubsidyOpCount(cardSubsidyOpCount);
 			cardRecord.setRecordType(CardRecord.PCTake);
 			this.cardRecordService.insert(cardRecord);
 
@@ -543,9 +615,7 @@ public class MainCardService extends BaseService {
 			}
 		}
 
-		String opCountStr = cardInfoStr.substring(44, 48);
-		int opCount = Integer.parseInt(opCountStr, 16) + 1;
-		cardInfoStr = cardInfoStr.substring(0, 26) + StringUtil.hexLeftPad(cardTotalFare, 8) + cardInfoStr.substring(34, 44) + StringUtil.hexLeftPad(opCount, 4)
+		cardInfoStr = cardInfoStr.substring(0, 26) + StringUtil.hexLeftPad(cardTotalFare, 8) + cardInfoStr.substring(34, 44) + StringUtil.hexLeftPad(cardOpCount + 1, 4)
 				+ StringUtil.hexLeftPad(cardAllOddFare, 8) + cardInfoStr.substring(56);
 		String commandCodeStr = "0000" + StringUtil.hexLeftPad(CardReaderCommandCode.Charge, 4);
 		String sendBufStr = CardReaderFrame.WriteCard + commandCodeStr + CardReaderFrame.ValidateCardSN + user.getCardSN() + cardInfoStr;

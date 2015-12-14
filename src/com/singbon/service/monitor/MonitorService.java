@@ -2,6 +2,7 @@ package com.singbon.service.monitor;
 
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -119,13 +120,11 @@ public class MonitorService implements Runnable {
 		if (StringUtils.isEmpty(date))
 			return;
 		String[] times = date.split("-");
-		byte year = (byte) (Integer.valueOf(times[0]) - 2000);
-		byte month = (byte) ((int) Integer.valueOf(times[1]));
-		byte day = (byte) ((int) Integer.valueOf(times[2]));
-		String d1 = Integer.toHexString((byte) (year << 1) | (month >> 3));
-		String d2 = Integer.toHexString((byte) (month << 5 | day));
+		Calendar c = Calendar.getInstance();
+		c.set(StringUtil.objToInt(times[0]), StringUtil.objToInt(times[1]), StringUtil.objToInt(times[2]));
+		c.add(Calendar.MONTH, -1);
 		String sendBufStr = StringUtil.hexLeftPad(PosFrame.Sys07, 2) + StringUtil.hexLeftPad(PosSubFrameSys07.GrantSubsidy, 2) + "0000" + StringUtil.hexLeftPad(sendCommand.getCommandCode(), 4)
-				+ StringUtil.hexLeftPad(sendCommand.getCompany().getSubsidyVersion(), 4) + StringUtil.strLeftPadWithChar(d1, 2, "0") + StringUtil.strLeftPadWithChar(d2, 2, "0") + "00" + "0000";
+				+ StringUtil.hexLeftPad(sendCommand.getCompany().getSubsidyVersion(), 4) + StringUtil.dateToHexStr(c) + "00" + "0000";
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
 		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + CommandDevice.NoSubDeviceNum + DeviceType.Main + DeviceType.getDeviceTypeFrame(device) + bufLen + sendBufStr;
 		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);

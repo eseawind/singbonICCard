@@ -99,7 +99,7 @@
 <div class="pageContent"
 	style="border-left: 1px #B8D0D6 solid; border-right: 1px #B8D0D6 solid">
 	<c:if test="${queryType==0}">
-		<table class="table" width="99%" layoutH="120">
+		<table class="table" width="112%" layoutH="120">
 			<thead>
 				<tr>
 					<th width="40">序号</th>
@@ -120,6 +120,8 @@
 					<th width="60">挂失</th>
 					<th width="60">解挂</th>
 					<th width="60">卡注销</th>
+					<th width="80">按卡修正</th>
+					<th width="80">按库修正</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -143,13 +145,15 @@
 						<td>${c.loss}</td>
 						<td>${c.unloss}</td>
 						<td>${c.cardOff}</td>
+						<td>${c.updateByCard}</td>
+						<td>${c.updateByUserInfo}</td>
 					</tr>
 				</c:forEach>
 			</tbody>
 		</table>
 	</c:if>
 	<c:if test="${queryType==1}">
-		<table class="table" width="99%" layoutH="148">
+		<table class="table" width="101%" layoutH="148">
 			<thead>
 				<tr>
 					<th width="40">序号</th>
@@ -158,13 +162,17 @@
 					<th width="100">编号</th>
 					<th width="100">卡号</th>
 					<th width="100">物理卡号</th>
-					<th width="120">操作类型</th>
+					<th width="140">操作类型</th>
 					<th width="100">操作额</th>
-					<th width="120">操作前库大钱包</th>
-					<th width="150">操作前库补助钱包</th>
-					<th width="120">操作前卡大钱包</th>
-					<th width="150">操作前卡补助钱包</th>
-					<th width="150">操作时间</th>
+					<th width="100">库大钱包</th>
+					<th width="110">库补助钱包</th>
+					<th width="100">卡大钱包</th>
+					<th width="110">卡补助钱包</th>
+					<th width="100">库计数器</th>
+					<th width="130">库补助计数器</th>
+					<th width="100">卡计数器</th>
+					<th width="130">卡补助计数器</th>
+					<th width="180">操作时间</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -182,6 +190,10 @@
 						<td>${c.subsidyOddFare}</td>
 						<td>${c.cardOddFare}</td>
 						<td>${c.cardSubsidyOddFare}</td>
+						<td>${c.opCount}</td>
+						<td>${c.subsidyOpCount}</td>
+						<td>${c.cardOpCount}</td>
+						<td>${c.cardSubsidyOpCount}</td>
 						<td>${c.opTime}</td>
 					</tr>
 				</c:forEach>

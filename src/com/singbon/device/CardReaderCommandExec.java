@@ -157,7 +157,7 @@ public class CardReaderCommandExec {
 			else if (commandCode == CardReaderCommandCode.Unloss || commandCode == CardReaderCommandCode.CardOff || commandCode == CardReaderCommandCode.ReadCard) {
 				if (commandCode == CardReaderCommandCode.Unloss) {
 					map.put("'f1'", CardReaderResultCommandCode.UnlossCmd);
-					map.put("'cardInfoStr'", StringUtil.getHexStrFromBytes(baseLen, baseLen+ 19-1, b));
+					map.put("'cardInfoStr'", StringUtil.getHexStrFromBytes(baseLen, baseLen + 19 - 1, b));
 				} else if (commandCode == CardReaderCommandCode.CardOff) {
 					map.put("'f1'", CardReaderResultCommandCode.CardOffCmd);
 				} else if (commandCode == CardReaderCommandCode.ReadCard) {
@@ -249,7 +249,7 @@ public class CardReaderCommandExec {
 					map.put("subsidyVersion", DesUtil.decrypt(DeviceCommunicateStr.Unknow));
 				}
 			}
-			// 读取卡余额命令
+			// 存取款读取卡信息命令
 			else if (commandCode == CardReaderCommandCode.ReadCardOddFare) {
 				map.put("'f1'", CardReaderResultCommandCode.ReadCardOddFareCmd);
 				map.put("'r'", cardStatus);
@@ -275,10 +275,12 @@ public class CardReaderCommandExec {
 				map.put("'statusDesc'", statusDesc);
 
 				int consume0 = baseLen + 19 * 2 + 3;
-				map.put("'oddFare'", (float) Integer.parseInt(StringUtil.getHexStrFromBytes(consume0 + 3, consume0 + 5, b), 16) / 100);
+				map.put("'opCount'", Integer.parseInt(StringUtil.getHexStrFromBytes(consume0, consume0 + 1, b), 16));
+				map.put("'oddFare'", (float) Integer.parseInt(StringUtil.getHexStrFromBytes(consume0 + 2, consume0 + 5, b), 16) / 100);
 				map.put("'cardInfoStr'", StringUtil.getHexStrFromBytes(baseLen + 19, b.length - 20, b));
 
 				int subsidy0 = baseLen + 19 * 3 + 3;
+				map.put("'subsidyOpCount'", Integer.parseInt(StringUtil.getHexStrFromBytes(subsidy0, subsidy0 + 1, b), 16));
 				map.put("'subsidyOddFare'", (float) Integer.parseInt(StringUtil.getHexStrFromBytes(subsidy0 + 2, subsidy0 + 5, b), 16) / 100);
 			}
 		}

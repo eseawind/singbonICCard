@@ -9,6 +9,7 @@
 	var title=null;
 	var heartTime=new Date();
 	var userStatus=null;
+	var isSame=0;
 	
 	$(function() {
 		title = $('.dialogHeader_c h1').html().split('——')[0];
@@ -68,7 +69,23 @@
 				if(updateType==0 && userStatus=='注销'){
 					alertMsg.warn('该人员已经注销不允许按卡修正！');
 					return;
-				}				
+				}
+				if(isSame==0){
+					if(oddFare>dbOddFare || subsidyOddFare>dbSubsidyOddFare){
+						alertMsg.warn('该人员卡库基本信息不一致不允许按卡修正！');
+						return;						
+					}					
+				}
+				if(updateType==0){
+					var oddFare= parseInt($('#userInfo input[name=oddFare]').val());
+					var subsidyOddFare=parseInt($('#userInfo input[name=subsidyOddFare]').val());
+					var dbOddFare= parseInt($('#userInfo input[name=dbOddFare]').val());
+					var dbSubsidyOddFare=parseInt($('#userInfo input[name=dbSubsidyOddFare]').val());
+					if(oddFare>dbOddFare || subsidyOddFare>dbSubsidyOddFare){
+						alertMsg.warn('卡上金额比库中多不允许按卡修正！');
+						return;						
+					}					
+				}
 				validateCallback($('#userInfo'), function(e) {
 					if(updateType==0){
 						if(e==1){
@@ -139,14 +156,21 @@
 									}
 								});
 								
+								//是否允许按卡修正 账号、卡号、卡序号、卡类型
+								if(e2['userId']==e4['userId'] && e2['cardNO']==e4['cardNO'] && e2['cardSeq']==e4['cardSeq'] && e2['cardTypeId']==e4['cardTypeId']){
+									isSame=1;
+								}
+								
 // 								按卡修正用
 								$('#userInfo input[name=userId]').val(e2['userId']);
 								$('#userInfo input[name=cardSN]').val(e2['cardSN']);
 								$('#userInfo input[name=status]').val(e2['status']);								
 								
-// 								库金额解挂注销卡操作记录用								
+// 								库信息解挂注销卡操作记录用								
 								$('#userInfo input[name=dbOddFare]').val(e4['oddFare']*100);
 								$('#userInfo input[name=dbSubsidyOddFare]').val(e4['subsidyOddFare']*100);
+								$('#userInfo input[name=dbOpCount]').val(e4['opCount']);
+								$('#userInfo input[name=dbSubsidyOpCount]').val(e4['subsidyOpCount']);
 								
 								var editType='${editType}';
 								if(editType==2){
@@ -359,9 +383,11 @@
 	<input name="subsidyVersion" type="hidden" />
 	<input name="cardInfoStr" type="hidden" />
 	 
-<!-- 	库金额解挂注销卡操作记录用  -->
+<!-- 	解挂注销卡按卡按库修正卡操作记录用  -->
 	<input name="dbOddFare" type="hidden" />
 	<input name="dbSubsidyOddFare" type="hidden" />
+	<input name="dbOpCount" type="hidden" />
+	<input name="dbSubsidyOpCount" type="hidden" />
 	 
 	<div class="formBar">
 		<ul>

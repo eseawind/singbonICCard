@@ -145,6 +145,11 @@
 							$('#userInfo input[name=cardOddFare]').val(e2.oddFare*100);
 							$('#userInfo input[name=cardSubsidyOddFare]').val(e2.subsidyOddFare*100);
 							
+							$('#userInfo input[name=cardOpCount]').val(e2.opCount);
+							$('#userInfo input[name=cardSubsidyOpCount]').val(e2.subsidyOpCount);
+							$('#userInfo input[name=opCount]').val(e4.subsidyOpCount);
+							$('#userInfo input[name=subsidyOpCount]').val(e4.subsidyOpCount);
+							
 							$('#userInfo input[name=cardInfoStr]').val(e2.cardInfoStr);
 							
 							$('#chargeLi').show();
@@ -241,6 +246,12 @@
 	<input name="subsidyOddFare" type="hidden"/>
 	<input name="cardOddFare" type="hidden"/>
 	<input name="cardSubsidyOddFare" type="hidden"/>
+	
+	<input name="opCount" type="hidden"/>
+	<input name="subsidyOpCount" type="hidden"/>
+	<input name="cardOpCount" type="hidden"/>
+	<input name="cardSubsidyOpCount" type="hidden"/>
+	
 	<input name="cardInfoStr" type="hidden"/> 
 	<div class="pageFormContent" layoutH="60">
 		<fieldset>

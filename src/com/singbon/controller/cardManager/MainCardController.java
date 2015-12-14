@@ -362,7 +362,7 @@ public class MainCardController extends BaseController {
 
 					cardAllInfo.setCardBatch(batchId);
 
-					this.mainCardService.makeCardByUserInfo(sysUser, device, socketChannel, user, cardAllInfo, CardReaderCommandCode.SingleCard, section);
+					this.mainCardService.makeCardByUserInfo(sysUser, device, socketChannel, user, null, cardAllInfo, CardReaderCommandCode.SingleCard, section);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -400,7 +400,7 @@ public class MainCardController extends BaseController {
 					if (editType == 6) {
 						commandCode = CardReaderCommandCode.RemakeCard;
 					}
-					this.mainCardService.makeCardByUserInfo(sysUser, device, socketChannel, user2, cardAllInfo, commandCode, section);
+					this.mainCardService.makeCardByUserInfo(sysUser, device, socketChannel, user2, null, cardAllInfo, commandCode, section);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -642,8 +642,8 @@ public class MainCardController extends BaseController {
 	 * @param model
 	 */
 	@RequestMapping(value = "/doChangeCard.do", method = RequestMethod.POST)
-	public void doChangeCard(@ModelAttribute User user, Integer editType, Integer updateType, Integer dbOddFare, Integer dbSubsidyOddFare, String cardInfoStr, HttpServletRequest request,
-			HttpServletResponse response, Model model) {
+	public void doChangeCard(@ModelAttribute User user, Integer editType, Integer updateType, Integer dbOddFare, Integer dbSubsidyOddFare, Integer dbOpCount, Integer dbSubsidyOpCount,
+			String cardInfoStr, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
 		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
 		Device device = (Device) request.getSession().getAttribute("device");
@@ -662,7 +662,7 @@ public class MainCardController extends BaseController {
 			SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
 			if (socketChannel != null) {
 				try {
-					this.mainCardService.unloss(sysUser, user, dbOddFare, dbSubsidyOddFare, socketChannel, device, cardInfoStr);
+					this.mainCardService.unloss(sysUser, user, dbOddFare, dbSubsidyOddFare, dbOpCount, dbSubsidyOpCount, socketChannel, device, cardInfoStr);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -681,7 +681,7 @@ public class MainCardController extends BaseController {
 		} else if (editType == 5) {
 			try {
 				p = response.getWriter();
-				this.mainCardService.offUserInfoWithInfo(sysUser, user, dbOddFare, dbSubsidyOddFare);
+				this.mainCardService.offUserInfoWithInfo(sysUser, user, dbOddFare, dbSubsidyOddFare, dbOpCount, dbSubsidyOpCount);
 				p.print(1);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -692,7 +692,7 @@ public class MainCardController extends BaseController {
 			// 按卡修正
 			if (updateType == 0) {
 				try {
-					this.mainCardService.updateByCard(user);
+					this.mainCardService.updateByCard(sysUser, user, dbOddFare, dbSubsidyOddFare, dbOpCount, dbSubsidyOpCount);
 					p.print(1);
 				} catch (Exception e) {
 					p.print(0);
@@ -714,7 +714,7 @@ public class MainCardController extends BaseController {
 						} else {
 							cardAllInfo.setCardBatch(batch.getId());
 						}
-						this.mainCardService.makeCardByUserInfo(sysUser, device, socketChannel, user2, cardAllInfo, CardReaderCommandCode.UpdateByInfo, section);
+						this.mainCardService.makeCardByUserInfo(sysUser, device, socketChannel, user2, user, cardAllInfo, CardReaderCommandCode.UpdateByInfo, section);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -926,6 +926,8 @@ public class MainCardController extends BaseController {
 			map.put("'oddFare'", (float) user.getOddFare() / 100);
 			map.put("'subsidyOddFare'", (float) user.getSubsidyOddFare() / 100);
 			map.put("'cardDeposit'", (float) user.getCardDeposit());
+			map.put("'opCount'", user.getOpCount());
+			map.put("'subsidyOpCount'", user.getSubsidyOpCount());
 		}
 		String msg = JSONUtil.convertToJson(map);
 		p.print(msg);
@@ -945,14 +947,14 @@ public class MainCardController extends BaseController {
 	 * @param model
 	 */
 	@RequestMapping(value = "/doCharge.do", method = RequestMethod.POST)
-	public void doCharge(@ModelAttribute User user, Integer chargeType, Float opFare, Integer cardOddFare, Integer cardSubsidyOddFare, String backCardDeposit, String cardInfoStr,
-			HttpServletRequest request, HttpServletResponse response, Model model) {
+	public void doCharge(@ModelAttribute User user, Integer chargeType, Float opFare, Integer cardOddFare, Integer cardSubsidyOddFare, Integer cardOpCount, Integer cardSubsidyOpCount,
+			String backCardDeposit, String cardInfoStr, HttpServletRequest request, HttpServletResponse response, Model model) {
 		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
 		Device device = (Device) request.getSession().getAttribute("device");
 		SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(device.getSn());
 		if (socketChannel != null) {
 			try {
-				this.mainCardService.doCharge(sysUser, user, chargeType, opFare, cardOddFare, cardSubsidyOddFare, backCardDeposit, socketChannel, device, cardInfoStr);
+				this.mainCardService.doCharge(sysUser, user, chargeType, opFare, cardOddFare, cardSubsidyOddFare, cardOpCount, cardSubsidyOpCount, backCardDeposit, socketChannel, device, cardInfoStr);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

@@ -417,6 +417,8 @@
 			</dl>
 <!-- 			挂失、补卡 -->
 			<c:if test="${editType==5 || editType==6}">
+				<input type="hidden" name="opCount" value="${user.opCount}" />
+				<input type="hidden" name="subsidyOpCount" value="${user.subsidyOpCount}" />
 				<dl>
 					<dt>大钱包余额：</dt>
 					<dd>

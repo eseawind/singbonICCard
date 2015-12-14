@@ -548,6 +548,11 @@ public class StringUtil {
 		CRC16.generate(b);
 		StringUtil.print(Integer.toHexString(b[b.length - 2]).replace("ffffff", "") + " ");
 		StringUtil.println(Integer.toHexString(b[b.length - 1]).replace("ffffff", ""));
+		
+		Calendar c=Calendar.getInstance();
+		c.set(2015, 12, 15);
+		c.add(Calendar.MONTH, -1);
+		System.out.println(dateToHexStr(c));
 	}
 
 	public static void print(Object obj) {

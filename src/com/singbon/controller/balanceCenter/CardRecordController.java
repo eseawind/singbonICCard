@@ -112,7 +112,8 @@ public class CardRecordController extends BaseController {
 							+ "sum(case recordType when 7 then opFare else 0 end) PCSavingGiveFare,sum(case recordType when 8 then opFare else 0 end) PCTake,"
 							+ "sum(case recordType when 9 then opFare else 0 end) backCardDepostFare,sum(case recordType when 10 then opFare else 0 end) posSubsidySaving,"
 							+ "sum(case recordType when 11 then opFare else 0 end) posSubsidyClear,sum(case recordType when 12 then opFare else 0 end) waterSubsidySaving,"
-							+ "sum(case recordType when 13 then opFare else 0 end) waterSubsidyClear,sum(case recordType when 14 then 1 else 0 end) cardOff from %s where %s group by c.operId",
+							+ "sum(case recordType when 13 then opFare else 0 end) waterSubsidyClear,sum(case recordType when 14 then 1 else 0 end) cardOff,"
+							+ "sum(case recordType when 15 then 1 else 0 end) updateByCard,sum(case recordType when 16 then 1 else 0 end) updateByUserInfo from %s where %s group by c.operId",
 					fromSql, whereSql);
 			list = this.commonService.selectBySql(sql);
 			for (Map map : list) {
@@ -130,7 +131,7 @@ public class CardRecordController extends BaseController {
 				map.put("waterSubsidyClear", StringUtil.objToInt(map.get("waterSubsidyClear")) / 100);
 			}
 			if (export != null && 1 == export) {
-				String[] expColumns = { "出纳员", "发卡金额", "PC存款", "发卡赠送金额", "存款赠送金额", "收取卡押金", "消费机补助存款", "水控补助存款", "PC取款", "退还卡押金", "消费机补助清零", "水控补助清零", "发卡", "补卡", "挂失", "解挂", "卡注销" };
+				String[] expColumns = { "出纳员", "发卡金额", "PC存款", "发卡赠送金额", "存款赠送金额", "收取卡押金", "消费机补助存款", "水控补助存款", "PC取款", "退还卡押金", "消费机补助清零", "水控补助清零", "发卡", "补卡", "挂失", "解挂", "卡注销", "按卡修正", "按库修正" };
 
 				List<List<String>> exportList = new ArrayList<List<String>>();
 				for (Map m : list) {
@@ -152,6 +153,8 @@ public class CardRecordController extends BaseController {
 					list2.add(StringUtil.objToString(m.get("loss")));
 					list2.add(StringUtil.objToString(m.get("unloss")));
 					list2.add(StringUtil.objToString(m.get("cardOff")));
+					list2.add(StringUtil.objToString(m.get("updateByCard")));
+					list2.add(StringUtil.objToString(m.get("updateByUserInfo")));
 
 					exportList.add(list2);
 				}
@@ -159,13 +162,14 @@ public class CardRecordController extends BaseController {
 				ExportUtil.exportExcel("卡操作统计表", expColumns, exportList, response);
 				return null;
 			}
+			// 明细
 		} else {
 			if (exportType != null && 1 == exportType) {
 				pagination.setPageNum(1);
 				pagination.setNumPerPage(pagination.getTotalCount());
 			}
 			String[] columns = { "o.loginName", "u.username", "u.userNO", "c.cardNO", "c.cardSN", "c.recordType", "c.opFare", "c.oddFare", "c.subsidyOddFare", "c.cardOddFare", "c.cardSubsidyOddFare",
-					"c.opTime" };
+					"c.opCount", "c.subsidyOpCount", "c.cardOpCount", "c.cardSubsidyOpCount", "c.opTime" };
 
 			list = this.commonService.selectByPage(columns, null, fromSql, whereSql, pagination);
 			int totalCount = Integer.valueOf(list.get(0).get("loginName").toString());
@@ -183,12 +187,12 @@ public class CardRecordController extends BaseController {
 			}
 
 			if (export != null && 1 == export) {
-				String[] expColumns = { "出纳员姓名", "姓名", "编号", "卡号", "物理卡号", "操作类型", "操作额", "操作时间" };
+				String[] expColumns = { "出纳员姓名", "姓名", "编号", "卡号", "物理卡号", "操作类型", "操作额", "库大钱包", "库补助钱包", "卡大钱包", "卡补助钱包", "库计数器", "库补助计数器", "卡计数器", "卡补助计数器", "操作时间" };
 
 				List<List<String>> exportList = new ArrayList<List<String>>();
 				for (Map m : list) {
 					List<String> list2 = new ArrayList<String>();
-
+					
 					list2.add(StringUtil.objToString(m.get("loginName")));
 					list2.add(StringUtil.objToString(m.get("username")));
 					list2.add(StringUtil.objToString(m.get("userNO")));
@@ -196,6 +200,15 @@ public class CardRecordController extends BaseController {
 					list2.add(StringUtil.objToString(m.get("cardSN")));
 					list2.add(StringUtil.objToString(m.get("recordTypeDes")));
 					list2.add(StringUtil.objToString(m.get("opFare")));
+					list2.add(StringUtil.objToString(m.get("oddFare")));
+					list2.add(StringUtil.objToString(m.get("subsidyOddFare")));
+					list2.add(StringUtil.objToString(m.get("cardOddFare")));
+					list2.add(StringUtil.objToString(m.get("cardSubsidyOddFare")));
+					list2.add(StringUtil.objToString(m.get("opCount")));
+					list2.add(StringUtil.objToString(m.get("subsidyOpCount")));
+					list2.add(StringUtil.objToString(m.get("cardOpCount")));
+					list2.add(StringUtil.objToString(m.get("cardSubsidyOpCount")));
+					
 					list2.add(StringUtil.objToString(m.get("opTime")));
 					exportList.add(list2);
 				}
