@@ -201,7 +201,7 @@
 				<dt style="width: 80px;">启用卡类型：</dt>
 				<dd class="cardTypes">
 					<input type="checkbox" class="selectAll">全选
-				 	<c:set var="rate1CardTypes" value="${w.rate4CardTypes}"/>
+				 	<c:set var="rate1CardTypes" value="${w.rate1CardTypes}"/>
 					<c:forEach begin="0" end="15" step="1" var="i">
 						<c:set var="str2" value=",${i},"/>
 						<input type="checkbox" name="rate1CardTypes" value="${i}" <c:if test="${fn:indexOf(rate1CardTypes, str2)!=-1}">checked</c:if>/>${i}类
