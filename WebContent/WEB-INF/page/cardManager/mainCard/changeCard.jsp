@@ -86,6 +86,14 @@
 						return;						
 					}					
 				}
+				if(updateType==1){
+					var dbOddFare= parseInt($('#userInfo input[name=dbOddFare]').val());
+					var dbSubsidyOddFare=parseInt($('#userInfo input[name=dbSubsidyOddFare]').val());
+					if(dbOddFare<0 || dbSubsidyOddFare<0){
+						alertMsg.warn('库中金额小于0不允许按库修正！');
+						return;						
+					}					
+				}
 				validateCallback($('#userInfo'), function(e) {
 					if(updateType==0){
 						if(e==1){
