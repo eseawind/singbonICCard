@@ -548,7 +548,7 @@ public class MonitorService implements Runnable {
 						sendCommand = sendCommandList.get(0);
 						// 访问次数
 						int sendTime = sendCommand.getSendTime();
-						if (sendTime >= accessTimeout) {
+						if (sendTime >= 5) {
 							sendCommandList.clear();
 							continue;
 						}
