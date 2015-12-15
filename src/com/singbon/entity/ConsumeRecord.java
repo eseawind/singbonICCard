@@ -21,12 +21,12 @@ public class ConsumeRecord implements Serializable {
 	private Integer cardSeq;
 	private Integer deviceId;
 	private String deviceName;
-	private Integer sumFare;
-	private Integer oddFare;
-	private Integer subsidyOddFare;
-	private Integer discountFare;
-	private Integer opFare;
-	private Integer subsidyOpFare;
+	private Long sumFare;
+	private Long oddFare;
+	private Long subsidyOddFare;
+	private Long discountFare;
+	private Long opFare;
+	private Long subsidyOpFare;
 	private Integer mealId;
 	private String mealName;
 	private String opTime;
@@ -116,51 +116,51 @@ public class ConsumeRecord implements Serializable {
 		this.deviceName = deviceName;
 	}
 
-	public Integer getSumFare() {
+	public Long getSumFare() {
 		return sumFare;
 	}
 
-	public void setSumFare(Integer sumFare) {
+	public void setSumFare(Long sumFare) {
 		this.sumFare = sumFare;
 	}
 
-	public Integer getOddFare() {
+	public Long getOddFare() {
 		return oddFare;
 	}
 
-	public void setOddFare(Integer oddFare) {
+	public void setOddFare(Long oddFare) {
 		this.oddFare = oddFare;
 	}
 
-	public Integer getSubsidyOddFare() {
+	public Long getSubsidyOddFare() {
 		return subsidyOddFare;
 	}
 
-	public void setSubsidyOddFare(Integer subsidyOddFare) {
+	public void setSubsidyOddFare(Long subsidyOddFare) {
 		this.subsidyOddFare = subsidyOddFare;
 	}
 
-	public Integer getDiscountFare() {
+	public Long getDiscountFare() {
 		return discountFare;
 	}
 
-	public void setDiscountFare(Integer discountFare) {
+	public void setDiscountFare(Long discountFare) {
 		this.discountFare = discountFare;
 	}
 
-	public Integer getOpFare() {
+	public Long getOpFare() {
 		return opFare;
 	}
 
-	public void setOpFare(Integer opFare) {
+	public void setOpFare(Long opFare) {
 		this.opFare = opFare;
 	}
 
-	public Integer getSubsidyOpFare() {
+	public Long getSubsidyOpFare() {
 		return subsidyOpFare;
 	}
 
-	public void setSubsidyOpFare(Integer subsidyOpFare) {
+	public void setSubsidyOpFare(Long subsidyOpFare) {
 		this.subsidyOpFare = subsidyOpFare;
 	}
 
@@ -178,6 +178,22 @@ public class ConsumeRecord implements Serializable {
 
 	public void setMealName(String mealName) {
 		this.mealName = mealName;
+	}
+
+	public String getOpTime() {
+		return opTime;
+	}
+
+	public void setOpTime(String opTime) {
+		this.opTime = opTime;
+	}
+
+	public String getCollectTime() {
+		return collectTime;
+	}
+
+	public void setCollectTime(String collectTime) {
+		this.collectTime = collectTime;
 	}
 
 	public Integer getOpCount() {
@@ -228,6 +244,14 @@ public class ConsumeRecord implements Serializable {
 		this.cookbookCode = cookbookCode;
 	}
 
+	public String getCookbookName() {
+		return cookbookName;
+	}
+
+	public void setCookbookName(String cookbookName) {
+		this.cookbookName = cookbookName;
+	}
+
 	public Integer getCookbookNum() {
 		return cookbookNum;
 	}
@@ -242,30 +266,6 @@ public class ConsumeRecord implements Serializable {
 
 	public void setResult(Integer result) {
 		this.result = result;
-	}
-
-	public String getOpTime() {
-		return opTime;
-	}
-
-	public void setOpTime(String opTime) {
-		this.opTime = opTime;
-	}
-
-	public String getCollectTime() {
-		return collectTime;
-	}
-
-	public void setCollectTime(String collectTime) {
-		this.collectTime = collectTime;
-	}
-
-	public String getCookbookName() {
-		return cookbookName;
-	}
-
-	public void setCookbookName(String cookbookName) {
-		this.cookbookName = cookbookName;
 	}
 
 	public Integer getRecordCount() {

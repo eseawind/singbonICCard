@@ -211,7 +211,7 @@ public class StringUtil {
 		date.add(Calendar.MONTH, -1);
 		String year = String.valueOf(date.get(Calendar.YEAR));
 		byte tmYear = (byte) ((int) Integer.valueOf(year.substring(2)));
-		byte tmMonth = (byte) (date.get(Calendar.MONTH)+1);
+		byte tmMonth = (byte) (date.get(Calendar.MONTH) + 1);
 		byte tmDay = (byte) date.get(Calendar.DAY_OF_MONTH);
 
 		String tmpStr = Integer.toHexString((tmYear << 1) | (tmMonth >> 3));
@@ -383,6 +383,18 @@ public class StringUtil {
 	}
 
 	/**
+	 * 转换卡hex字节数据到long
+	 * 
+	 * @param begin
+	 * @param end
+	 * @param b
+	 * @return
+	 */
+	public static Long hexToLong(Integer begin, Integer end, byte[] b) {
+		return Long.parseLong(getHexStrFromBytes(begin, end, b), 16);
+	}
+
+	/**
 	 * 获取系统密码
 	 * 
 	 * @param company
@@ -544,12 +556,14 @@ public class StringUtil {
 
 	public static void main(String[] args) {
 		byte[] b = StringUtil.strTobytes("03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 00 00 00 01 00 00 00 00 00 00 03 03 00 0A 19 19 00 00 00 00 D6 70".replaceAll(" ", ""));
-//		byte[] b = StringUtil.strTobytes("41 59 A9 6E 83 8E 4D F5 BD EC D4 E2 D8 E9 40 F1 00 BC 61 4E 00 00 00 00 00 00 02 02 00 1A 04 0A 00 00 00 00 00000000000000000000000000002002 70 54".replaceAll(" ", ""));
+		// byte[] b = StringUtil.strTobytes("41 59 A9 6E 83 8E 4D F5 BD EC D4 E2
+		// D8 E9 40 F1 00 BC 61 4E 00 00 00 00 00 00 02 02 00 1A 04 0A 00 00 00
+		// 00 00000000000000000000000000002002 70 54".replaceAll(" ", ""));
 		CRC16.generate(b);
 		StringUtil.print(Integer.toHexString(b[b.length - 2]).replace("ffffff", "") + " ");
 		StringUtil.println(Integer.toHexString(b[b.length - 1]).replace("ffffff", ""));
-		
-		Calendar c=Calendar.getInstance();
+
+		Calendar c = Calendar.getInstance();
 		c.set(2015, 12, 15);
 		c.add(Calendar.MONTH, -1);
 		System.out.println(dateToHexStr(c));
