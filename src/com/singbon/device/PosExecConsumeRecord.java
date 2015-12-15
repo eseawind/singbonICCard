@@ -60,12 +60,12 @@ public class PosExecConsumeRecord implements Runnable {
 
 		record.setSumFare(StringUtil.hexToLong(baseIndex + 15, baseIndex + 18, b));
 		record.setOddFare(StringUtil.hexToLong(baseIndex + 19, baseIndex + 22, b));
-		record.setDiscountFare(StringUtil.hexToLong(baseIndex + 23, baseIndex + 26, b));
+		record.setDiscountFare(StringUtil.hexToInt(baseIndex + 23, baseIndex + 26, b));
 		record.setSubsidyOddFare(StringUtil.hexToLong(baseIndex + 27, baseIndex + 30, b));
-		record.setOpFare(StringUtil.hexToLong(baseIndex + 31, baseIndex + 34, b));
+		record.setOpFare(StringUtil.hexToInt(baseIndex + 31, baseIndex + 34, b));
 		record.setOpCount(StringUtil.hexToInt(baseIndex + 35, baseIndex + 36, b));
 		record.setSubsidyOpCount(StringUtil.hexToInt(baseIndex + 37, baseIndex + 38, b));
-		record.setSubsidyOpFare(StringUtil.hexToLong(baseIndex + 39, baseIndex + 42, b));
+		record.setSubsidyOpFare(StringUtil.hexToInt(baseIndex + 39, baseIndex + 42, b));
 		Calendar c = Calendar.getInstance();
 		c.set(Calendar.YEAR, 2000 + StringUtil.byteToBCDInt(b[baseIndex + 43]));
 		c.set(Calendar.MONTH, StringUtil.byteToBCDInt(b[baseIndex + 44]));

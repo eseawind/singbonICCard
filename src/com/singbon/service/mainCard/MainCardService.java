@@ -166,8 +166,8 @@ public class MainCardService extends BaseService {
 			cardRecord.setOpFare(0);
 			cardRecord.setOddFare(user.getOddFare());
 			cardRecord.setSubsidyOddFare(user.getSubsidyOddFare());
-			cardRecord.setCardOddFare(0);
-			cardRecord.setCardSubsidyOddFare(0);
+			cardRecord.setCardOddFare((long)0);
+			cardRecord.setCardSubsidyOddFare((long)0);
 			cardRecord.setOpCount(user.getOpCount());
 			cardRecord.setSubsidyOpCount(user.getSubsidyOpCount());
 			cardRecord.setCardOpCount(user.getOpCount());
@@ -183,10 +183,10 @@ public class MainCardService extends BaseService {
 			cardRecord.setUserId(user.getUserId());
 			cardRecord.setCardNO(user.getCardNO());
 			cardRecord.setCardSN(user.getCardSN());
-			cardRecord.setOddFare(0);
-			cardRecord.setSubsidyOddFare(0);
-			cardRecord.setCardOddFare(0);
-			cardRecord.setCardSubsidyOddFare(0);
+			cardRecord.setOddFare((long)0);
+			cardRecord.setSubsidyOddFare((long)0);
+			cardRecord.setCardOddFare((long)0);
+			cardRecord.setCardSubsidyOddFare((long)0);
 			cardRecord.setOpCount(user.getOpCount());
 			cardRecord.setSubsidyOpCount(0);
 			cardRecord.setCardOpCount(user.getOpCount());
@@ -371,8 +371,8 @@ public class MainCardService extends BaseService {
 		cardRecord.setOpFare(0);
 		cardRecord.setOddFare(user.getOddFare());
 		cardRecord.setSubsidyOddFare(user.getSubsidyOddFare());
-		cardRecord.setCardOddFare(0);
-		cardRecord.setCardSubsidyOddFare(0);
+		cardRecord.setCardOddFare((long)0);
+		cardRecord.setCardSubsidyOddFare((long)0);
 		cardRecord.setOpCount(user.getOpCount());
 		cardRecord.setSubsidyOpCount(user.getSubsidyOpCount());
 		cardRecord.setCardOpCount(0);
@@ -388,7 +388,7 @@ public class MainCardService extends BaseService {
 	 * @throws Exception
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public void unloss(SysUser sysUser, User user, Integer dbOddFare, Integer dbSubsidyOddFare, Integer dbOpCount, Integer dbSubsidyOpCount, SocketChannel socketChannel, Device device,
+	public void unloss(SysUser sysUser, User user, Long dbOddFare, Long dbSubsidyOddFare, Integer dbOpCount, Integer dbSubsidyOpCount, SocketChannel socketChannel, Device device,
 			String cardInfoStr) throws Exception {
 		long newCardNO = this.userDAO.selectMaxCardNO(user.getCompanyId());
 		user.setCardNO(newCardNO);
@@ -455,7 +455,7 @@ public class MainCardService extends BaseService {
 	 * @throws Exception
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public void offUserInfoWithInfo(SysUser sysUser, User user, Integer dbOddFare, Integer dbSubsidyOddFare, Integer dbOpCount, Integer dbSubsidyOpCount) throws Exception {
+	public void offUserInfoWithInfo(SysUser sysUser, User user, Long dbOddFare, Long dbSubsidyOddFare, Integer dbOpCount, Integer dbSubsidyOpCount) throws Exception {
 		this.userDAO.offUserInfoWithInfo(user.getUserId());
 
 		// 添加卡操作记录
@@ -465,7 +465,6 @@ public class MainCardService extends BaseService {
 		cardRecord.setUserId(user.getUserId());
 		cardRecord.setCardNO(user.getCardNO());
 		cardRecord.setCardSN(user.getCardSN());
-		cardRecord.setOpFare(user.getOddFare());
 		cardRecord.setOpFare(0);
 		cardRecord.setOddFare(dbOddFare);
 		cardRecord.setSubsidyOddFare(dbSubsidyOddFare);
@@ -487,7 +486,7 @@ public class MainCardService extends BaseService {
 	 * @param cardSN
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public void updateByCard(SysUser sysUser, User user, Integer dbOddFare, Integer dbSubsidyOddFare, Integer dbOpCount, Integer dbSubsidyOpCount) throws Exception {
+	public void updateByCard(SysUser sysUser, User user, Long dbOddFare, Long dbSubsidyOddFare, Integer dbOpCount, Integer dbSubsidyOpCount) throws Exception {
 		this.userDAO.updateByCard(user);
 
 		// 添加卡操作记录
@@ -497,7 +496,6 @@ public class MainCardService extends BaseService {
 		cardRecord.setUserId(user.getUserId());
 		cardRecord.setCardNO(user.getCardNO());
 		cardRecord.setCardSN(user.getCardSN());
-		cardRecord.setOpFare(user.getOddFare());
 		cardRecord.setOpFare(0);
 		cardRecord.setOddFare(dbOddFare);
 		cardRecord.setSubsidyOddFare(dbSubsidyOddFare);
@@ -543,7 +541,7 @@ public class MainCardService extends BaseService {
 	 * @throws Exception
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public void doCharge(SysUser sysUser, User user, Integer chargeType, Float opFare, Integer cardOddFare, Integer cardSubsidyOddFare, Integer cardOpCount, Integer cardSubsidyOpCount,
+	public void doCharge(SysUser sysUser, User user, Integer chargeType, Float opFare, Long cardOddFare, Long cardSubsidyOddFare, Integer cardOpCount, Integer cardSubsidyOpCount,
 			String backCardDeposit, SocketChannel socketChannel, Device device, String cardInfoStr) throws Exception {
 		// 卡上总额
 		String totalFareString = cardInfoStr.substring(26, 34);

@@ -24,9 +24,9 @@ public class ConsumeRecord implements Serializable {
 	private Long sumFare;
 	private Long oddFare;
 	private Long subsidyOddFare;
-	private Long discountFare;
-	private Long opFare;
-	private Long subsidyOpFare;
+	private Integer discountFare;
+	private Integer opFare;
+	private Integer subsidyOpFare;
 	private Integer mealId;
 	private String mealName;
 	private String opTime;
@@ -140,27 +140,27 @@ public class ConsumeRecord implements Serializable {
 		this.subsidyOddFare = subsidyOddFare;
 	}
 
-	public Long getDiscountFare() {
+	public Integer getDiscountFare() {
 		return discountFare;
 	}
 
-	public void setDiscountFare(Long discountFare) {
+	public void setDiscountFare(Integer discountFare) {
 		this.discountFare = discountFare;
 	}
 
-	public Long getOpFare() {
+	public Integer getOpFare() {
 		return opFare;
 	}
 
-	public void setOpFare(Long opFare) {
+	public void setOpFare(Integer opFare) {
 		this.opFare = opFare;
 	}
 
-	public Long getSubsidyOpFare() {
+	public Integer getSubsidyOpFare() {
 		return subsidyOpFare;
 	}
 
-	public void setSubsidyOpFare(Long subsidyOpFare) {
+	public void setSubsidyOpFare(Integer subsidyOpFare) {
 		this.subsidyOpFare = subsidyOpFare;
 	}
 

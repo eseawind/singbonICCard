@@ -567,6 +567,8 @@ public class StringUtil {
 		c.set(2015, 12, 15);
 		c.add(Calendar.MONTH, -1);
 		System.out.println(dateToHexStr(c));
+		int a=0xffffff;
+		System.out.println(a);
 	}
 
 	public static void print(Object obj) {

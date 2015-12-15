@@ -46,7 +46,7 @@ public class User implements Serializable {
 	// 制卡日期
 	private String cardMakeDate;
 	// 卡总额
-	private Integer totalFare;
+	private Long totalFare;
 	// 卡状态
 	private Integer status;
 	// 卡状态描述
@@ -55,7 +55,7 @@ public class User implements Serializable {
 
 	// 大钱包内容
 	// 卡余额
-	private Integer oddFare;
+	private Long oddFare;
 	// 上次消费时间
 	private String lastConsumeTime;
 	// 当日操作金额
@@ -65,7 +65,7 @@ public class User implements Serializable {
 
 	// 小钱包内容
 	// 卡补助余额
-	private Integer subsidyOddFare;
+	private Long subsidyOddFare;
 	// 上次补助消费时间
 	private String lastSubsidyConsumeTime;
 	// 当日补助操作金额
@@ -306,19 +306,19 @@ public class User implements Serializable {
 		this.cardMakeDate = cardMakeDate;
 	}
 
-	public Integer getTotalFare() {
+	public Long getTotalFare() {
 		return totalFare;
 	}
 
-	public void setTotalFare(Integer totalFare) {
+	public void setTotalFare(Long totalFare) {
 		this.totalFare = totalFare;
 	}
 
-	public Integer getOddFare() {
+	public Long getOddFare() {
 		return oddFare;
 	}
 
-	public void setOddFare(Integer oddFare) {
+	public void setOddFare(Long oddFare) {
 		this.oddFare = oddFare;
 	}
 
@@ -330,11 +330,11 @@ public class User implements Serializable {
 		this.opCount = opCount;
 	}
 
-	public Integer getSubsidyOddFare() {
+	public Long getSubsidyOddFare() {
 		return subsidyOddFare;
 	}
 
-	public void setSubsidyOddFare(Integer subsidyOddFare) {
+	public void setSubsidyOddFare(Long subsidyOddFare) {
 		this.subsidyOddFare = subsidyOddFare;
 	}
 

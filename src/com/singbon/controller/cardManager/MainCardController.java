@@ -354,8 +354,8 @@ public class MainCardController extends BaseController {
 					user.setStatus(241);
 					user.setCardSeq(1);
 					user.setCardNO(cardNO);
-					user.setTotalFare(allOpFare);
-					user.setOddFare(allOpFare);
+					user.setTotalFare((long)allOpFare);
+					user.setOddFare((long)allOpFare);
 					user.setOpCount(cardOpCounter);
 
 					initUserInfo(user, cardAllInfo);
@@ -384,8 +384,8 @@ public class MainCardController extends BaseController {
 					user2.setCardNO(cardNO);
 					// 非补卡，金额信息以修改的为准
 					if (editType != 6) {
-						user2.setTotalFare(allOpFare);
-						user2.setOddFare(allOpFare);
+						user2.setTotalFare((long)allOpFare);
+						user2.setOddFare((long)allOpFare);
 						user2.setOpCount(cardOpCounter);
 					}
 					initUserInfo(user2, cardAllInfo);
@@ -446,7 +446,7 @@ public class MainCardController extends BaseController {
 	// 初始化发卡信息
 	private void initUserInfo(User user, CardAllInfo cardAllInfo) {
 		user.setSubsidyOpCount(0);
-		user.setSubsidyOddFare(0);
+		user.setSubsidyOddFare((long)0);
 		user.setSubsidyVersion(0);
 		user.setSubsidyDaySum(0);
 		user.setSubsidyInvalidDate("2000-01-01");
@@ -642,7 +642,7 @@ public class MainCardController extends BaseController {
 	 * @param model
 	 */
 	@RequestMapping(value = "/doChangeCard.do", method = RequestMethod.POST)
-	public void doChangeCard(@ModelAttribute User user, Integer editType, Integer updateType, Integer dbOddFare, Integer dbSubsidyOddFare, Integer dbOpCount, Integer dbSubsidyOpCount,
+	public void doChangeCard(@ModelAttribute User user, Integer editType, Integer updateType, Long dbOddFare, Long dbSubsidyOddFare, Integer dbOpCount, Integer dbSubsidyOpCount,
 			String cardInfoStr, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
 		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
@@ -950,7 +950,7 @@ public class MainCardController extends BaseController {
 	 * @param model
 	 */
 	@RequestMapping(value = "/doCharge.do", method = RequestMethod.POST)
-	public void doCharge(@ModelAttribute User user, Integer chargeType, Float opFare, Integer cardOddFare, Integer cardSubsidyOddFare, Integer cardOpCount, Integer cardSubsidyOpCount,
+	public void doCharge(@ModelAttribute User user, Integer chargeType, Float opFare, Long cardOddFare, Long cardSubsidyOddFare, Integer cardOpCount, Integer cardSubsidyOpCount,
 			String backCardDeposit, String cardInfoStr, HttpServletRequest request, HttpServletResponse response, Model model) {
 		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
 		Device device = (Device) request.getSession().getAttribute("device");

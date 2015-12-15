@@ -153,7 +153,7 @@
 		</table>
 	</c:if>
 	<c:if test="${queryType==1}">
-		<table class="table" width="101%" layoutH="148">
+		<table class="table" width="105%" layoutH="148">
 			<thead>
 				<tr>
 					<th width="40">序号</th>
