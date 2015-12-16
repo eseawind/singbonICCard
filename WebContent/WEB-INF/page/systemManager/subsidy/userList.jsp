@@ -9,33 +9,23 @@
 		$('#userList2 .search').click(function(){
 			search();
 		});
-		$('#userList2 .addSubsidyFare').click(function(){
-			var subsidyFare=$('#subsidyFare').val();
-			$('#pagerForm input[name=subsidyFare]').val(subsidyFare);
-			$('#pagerForm input[name=autoSubsidyFare]').val('');			
-			search();
-		});
-		$('#userList2 .autoSubsidyFare').click(function(){
-			$('#pagerForm input[name=subsidyFare]').val('');
-			$('#pagerForm input[name=autoSubsidyFare]').val('1');	
-			search();
-		});
-		$('#userList2 .addSubsidy').click(function(){
+		
+		$('#userList2 .addSubsidyUser').click(function(){
 			var deptIds = '';
 			$('#addUserUserDeptTree .checked').each(function(i, e2) {
 					deptIds += $(this).next().next().attr('deptId') + ',';
 				});
 			$('#pagerForm input[name=deptIds]').val(deptIds);	
 			var form=$('#pagerForm').clone();
-			form.attr('action','${base}/addSubsidy.do');
+			form.attr('action','${base}/addSubsidyUser.do');
 			
 			validateCallback(form, function(e) {
 				if (e == 2) {
 					alertMsg.warn('当前已有补助生成，需转移后才可以添加！');										
 				}else if (e == 1) {
-					alertMsg.correct('添加补助准备成功！');
+					alertMsg.correct('添加人员完成！');
 				} else if(e==0) {
-					alertMsg.warn('添加补助准备失败！');					
+					alertMsg.warn('添加人员失败！');					
 				}
 			}, null);
 		});
@@ -65,14 +55,6 @@
 					<td>用户信息：</td>
 					<td><input type="text" name="nameStr" size="10" value="${nameStr }" />
 					</td>
-					<td width="50">部门：</td>
-					<td>
-						<input type="hidden" name="deptId" value="${deptId}"/>
-						<input type="text" name="deptName" value="${deptName}" size="10" readonly="readonly"/>
-					</td>
-					<td>
-						<a class="btnLook" width="300" maxable="false" resizable="false" title="选择部门" href="/selectUserDeptTree.do" lookupgroup="district"></a>					
-					</td>
 					<td width="60">卡种类：</td>
 					<td align="left">
 						<select class="combox" outerw="50" innerw="70" name="cardTypeId">
@@ -82,15 +64,11 @@
 							</c:forEach>
 						</select>
 					</td>
-					<td width="60">身份：</td>
+					<td width="40">状态：</td>
 					<td align="left">
-						<select class="combox" outerw="50" innerw="70" name="cardIdentity">
+						<select class="combox" outerw="50" innerw="70" name="status">
 							<option value="-1" width="70">全部</option>
-							<option value="1" width="70" <c:if test="${cardIdentity==1}">selected</c:if>>教师</option>
-							<option value="2" width="70" <c:if test="${cardIdentity==2}">selected</c:if>>学生</option>
-							<option value="3" width="70" <c:if test="${cardIdentity==3}">selected</c:if>>职工</option>
-							<option value="4" width="70" <c:if test="${cardIdentity==4}">selected</c:if>>临时人员</option>
-							<option value="5" width="70" <c:if test="${cardIdentity==5}">selected</c:if>>其他</option>
+							<option value="241" width="70" <c:if test="${status==241}">selected</c:if>>正常</option>
 						</select>
 					</td>
 					<td width="40">性别：</td>
@@ -109,28 +87,12 @@
 								<button type="button" class="search">&nbsp;&nbsp;查询&nbsp;&nbsp;</button>
 							</div>
 						</div>
-						<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_ADDSUBSIDY_ADD_SUBSIDYFARE">
-						<span style="float: left;margin: 7px 0 0 80px;">补助金额：</span>
-						<input type="text" id="subsidyFare" size="10" value="${subsidyFare}" style="float: left;margin: 2px 5px 0px;"/>
-						<div class="buttonActive">
-							<div class="buttonContent">
-								<button type="button" class="addSubsidyFare">添加补助金额</button>
+						<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_ADDUSER_ADD_USER">
+							<div class="buttonActive" style="margin: 0 12px;">
+								<div class="buttonContent">
+									<button type="button" class="addSubsidyUser">添加选中人员</button>
+								</div>
 							</div>
-						</div>
-						</security:authorize>
-						<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_ADDSUBSIDY_AUTO_SUBSIDYFARE">
-						<div class="buttonActive" style="margin: 0 5px;">
-							<div class="buttonContent">
-								<button type="button" class="autoSubsidyFare">自动生成补助金额</button>
-							</div>
-						</div>
-						</security:authorize>
-						<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_ADDSUBSIDY_ADD_SUBSIDY">
-						<div class="buttonActive">
-							<div class="buttonContent">
-								<button type="button" class="addSubsidy">添加补助准备</button>
-							</div>
-						</div>
 						</security:authorize>
 					</td>
 				</tr>
@@ -143,6 +105,7 @@
 	<table class="table" width="99%" layoutH="172">
 		<thead>
 			<tr>
+				<th width="10"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
 				<th width="80">序号</th>
 				<th width="100">编号</th>
 				<th width="100">姓名</th>
@@ -156,6 +119,7 @@
 		<tbody class="userList2">
 			<c:forEach var="user" items="${list}" varStatus="status">
 				<tr>
+					<td><input name="ids" value="${user.id }" type="checkbox"></td>
 					<td>${status.index+1}</td>
 					<td>${user.userNO}</td>
 					<td>${user.username}</td>

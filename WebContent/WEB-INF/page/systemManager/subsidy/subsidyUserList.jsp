@@ -11,6 +11,17 @@
 		$('#subsidyUserList .search').click(function(){
 			searchSubsidyUserList();
 		});
+		$('#userList2 .addSubsidyFare').click(function(){
+			var subsidyFare=$('#subsidyFare').val();
+			$('#pagerForm input[name=subsidyFare]').val(subsidyFare);
+			$('#pagerForm input[name=autoSubsidyFare]').val('');			
+			search();
+		});
+		$('#userList2 .autoSubsidyFare').click(function(){
+			$('#pagerForm input[name=subsidyFare]').val('');
+			$('#pagerForm input[name=autoSubsidyFare]').val('1');	
+			search();
+		});
 		$('#subsidyUserList .changeSubsidyFare').click(function(){
 			if(selectedId==null){
 				alertMsg.warn('还未选择修改人员！');
@@ -68,20 +79,12 @@
 		<input type="hidden" name="totalCount" value="${totalCount}" />
 		<div class="searchBar">
 			<table border="0">
-				<tr align="right">
-					<td>用户信息：</td>
-					<td><input type="text" name="nameStr" size="10" value="${nameStr }" />
+				<tr align="left">
+					<td width="60">用户信息：</td>
+					<td width="100"><input type="text" name="nameStr" size="10" value="${nameStr }" />
 					</td>
-					<td width="50">部门：</td>
-					<td>
-						<input type="hidden" name="deptId" value="${deptId}"/>
-						<input type="text" name="deptName" value="${deptName}" size="10" readonly="readonly"/>
-					</td>
-					<td>
-						<a class="btnLook" width="300" maxable="false" resizable="false" title="选择部门" href="/selectUserDeptTree.do" lookupgroup="district"></a>					
-					</td>
-					<td width="60">卡种类：</td>
-					<td align="left">
+					<td width="50">卡种类：</td>
+					<td width="90">
 						<select class="combox" outerw="50" innerw="70" name="cardTypeId">
 							<option value="-1" width="70">全部</option>
 							<c:forEach var="i" begin="0" end="15" step="1">
@@ -89,19 +92,8 @@
 							</c:forEach>
 						</select>
 					</td>
-					<td width="60">身份：</td>
-					<td align="left">
-						<select class="combox" outerw="50" innerw="70" name="cardIdentity">
-							<option value="-1" width="70">全部</option>
-							<option value="1" width="70" <c:if test="${cardIdentity==1}">selected</c:if>>教师</option>
-							<option value="2" width="70" <c:if test="${cardIdentity==2}">selected</c:if>>学生</option>
-							<option value="3" width="70" <c:if test="${cardIdentity==3}">selected</c:if>>职工</option>
-							<option value="4" width="70" <c:if test="${cardIdentity==4}">selected</c:if>>临时人员</option>
-							<option value="5" width="70" <c:if test="${cardIdentity==5}">selected</c:if>>其他</option>
-						</select>
-					</td>
 					<td width="40">性别：</td>
-					<td align="left">
+					<td>
 						<select class="combox" outerw="50" innerw="70" name="sex">
 							<option value="-1" width="70">全部</option>
 							<option value="0" width="70" <c:if test="${sex==0}">selected</c:if>>男</option>
@@ -110,27 +102,41 @@
 					</td>
 				</tr>
 				<tr>
-					<td colspan="12">
+					<td colspan="6">
 						<div class="buttonActive">
 							<div class="buttonContent">
 								<button type="button" class="search">&nbsp;&nbsp;查询&nbsp;&nbsp;</button>
 							</div>
 						</div>
-						<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_GENERATESUBSIDY_EDIT_SUBSIDYFARE">
-						<span style="float: left;margin: 7px 0 0 80px;">补助金额：</span>
-						<input type="text" id="subsidyFare" size="10" value="${subsidyFare}" style="float: left;margin: 2px 5px 0px;"/>
-						<div class="buttonActive">
-							<div class="buttonContent">
-								<button type="button" class="changeSubsidyFare">修改补助金额</button>
+						<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_ADDSUBSIDY_ADD_SUBSIDYFARE">
+							<span style="float: left;margin: 7px 0 0 10px;">补助金额：</span>
+							<input type="text" id="subsidyFare" size="10" value="${subsidyFare}" style="float: left;margin: 2px 5px 0px;"/>
+							<div class="buttonActive">
+								<div class="buttonContent">
+									<button type="button" class="addSubsidyFare">添加补助金额</button>
+								</div>
 							</div>
-						</div>
+						</security:authorize>
+						<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_GENERATESUBSIDY_EDIT_SUBSIDYFARE">
+							<div class="buttonActive" style="margin: 0 10px 0 5px">
+								<div class="buttonContent">
+									<button type="button" class="changeSubsidyFare">修改补助金额</button>
+								</div>
+							</div>
+						</security:authorize>
+						<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_ADDSUBSIDY_AUTO_SUBSIDYFARE">
+							<div class="buttonActive">
+								<div class="buttonContent">
+									<button type="button" class="autoSubsidyFare">自动生成补助金额</button>
+								</div>
+							</div>
 						</security:authorize>
 						<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_GENERATESUBSIDY_DEL">
-						<div class="buttonActive" style="margin: 0 10px;">
-							<div class="buttonContent">
-								<button type="button" class="delete">删除选中人员</button>
+							<div class="buttonActive" style="margin: 0 10px;">
+								<div class="buttonContent">
+									<button type="button" class="delete">删除选中人员</button>
+								</div>
 							</div>
-						</div>
 						</security:authorize>
 					</td>
 				</tr>

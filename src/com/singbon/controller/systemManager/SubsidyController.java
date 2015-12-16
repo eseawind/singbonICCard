@@ -149,7 +149,7 @@ public class SubsidyController extends BaseController {
 	}
 
 	/**
-	 * 添加补助准备
+	 * 添加补助人员
 	 * 
 	 * @param request
 	 * @param model
@@ -157,8 +157,8 @@ public class SubsidyController extends BaseController {
 	 * @return
 	 */
 	@SuppressWarnings({ "unchecked", "unused", "rawtypes" })
-	@RequestMapping(value = "/addSubsidy.do")
-	public void addSubsidy(String nameStr, String deptIds, String deptName, Integer cardTypeId, Integer cardIdentity, Integer sex, Integer autoSubsidyFare, Float subsidyFare,
+	@RequestMapping(value = "/addSubsidyUser.do")
+	public void addSubsidyUser(String nameStr, String deptIds, String deptName, Integer cardTypeId, Integer cardIdentity, Integer sex, Integer autoSubsidyFare, Float subsidyFare,
 			HttpServletRequest request, HttpServletResponse response, Model model) {
 		SysUser sysUser = (SysUser) request.getSession().getAttribute("sysUser");
 		Company company = (Company) request.getSession().getAttribute("company");

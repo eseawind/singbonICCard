@@ -215,7 +215,7 @@ public class CardReaderCommandExec {
 					map.put("cardTypeId", DesUtil.decrypt(DeviceCommunicateStr.Unknow));
 				}
 				try {
-					map.put("'totalFare'", StringUtil.hexToLong(base2 + 10, base2 + 13, b) / 100);
+					map.put("'totalFare'", (float)StringUtil.hexToLong(base2 + 10, base2 + 13, b) / 100);
 				} catch (Exception e) {
 					map.put("totalFare", DesUtil.decrypt(DeviceCommunicateStr.Unknow));
 				}
@@ -227,7 +227,7 @@ public class CardReaderCommandExec {
 					map.put("opCount", DesUtil.decrypt(DeviceCommunicateStr.Unknow));
 				}
 				try {
-					map.put("'oddFare'", StringUtil.hexToLong(consume0 + 3, consume0 + 5, b) / 100);
+					map.put("'oddFare'", (float) StringUtil.hexToLong(consume0 + 3, consume0 + 5, b) / 100);
 				} catch (Exception e) {
 					map.put("oddFare", DesUtil.decrypt(DeviceCommunicateStr.Unknow));
 				}
@@ -239,7 +239,7 @@ public class CardReaderCommandExec {
 					map.put("subsidyOpCount", DesUtil.decrypt(DeviceCommunicateStr.Unknow));
 				}
 				try {
-					map.put("'subsidyOddFare'", StringUtil.hexToLong(subsidy0 + 2, subsidy0 + 5, b) / 100);
+					map.put("'subsidyOddFare'", (float) StringUtil.hexToLong(subsidy0 + 2, subsidy0 + 5, b) / 100);
 				} catch (Exception e) {
 					map.put("subsidyOddFare", DesUtil.decrypt(DeviceCommunicateStr.Unknow));
 				}
@@ -276,12 +276,12 @@ public class CardReaderCommandExec {
 
 				int consume0 = baseLen + 19 * 2 + 3;
 				map.put("'opCount'", Integer.parseInt(StringUtil.getHexStrFromBytes(consume0, consume0 + 1, b), 16));
-				map.put("'oddFare'", StringUtil.hexToLong(consume0 + 2, consume0 + 5, b) / 100);
+				map.put("'oddFare'", (float) StringUtil.hexToLong(consume0 + 2, consume0 + 5, b) / 100);
 				map.put("'cardInfoStr'", StringUtil.getHexStrFromBytes(baseLen + 19, b.length - 20, b));
 
 				int subsidy0 = baseLen + 19 * 3 + 3;
 				map.put("'subsidyOpCount'", Integer.parseInt(StringUtil.getHexStrFromBytes(subsidy0, subsidy0 + 1, b), 16));
-				map.put("'subsidyOddFare'", StringUtil.hexToLong(subsidy0 + 2, subsidy0 + 5, b) / 100);
+				map.put("'subsidyOddFare'", (float) StringUtil.hexToLong(subsidy0 + 2, subsidy0 + 5, b) / 100);
 			}
 		}
 		if (map.size() > 0)

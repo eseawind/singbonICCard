@@ -118,17 +118,17 @@ public class CardRecordController extends BaseController {
 			list = this.commonService.selectBySql(sql);
 			for (Map map : list) {
 				map.put("loginName", DesUtil.decrypt(StringUtil.objToString(map.get("loginName"))));
-				map.put("makeCardFare", StringUtil.objToInt(map.get("makeCardFare")) / 100);
-				map.put("getCardDeposit", StringUtil.objToInt(map.get("getCardDeposit")) / 100);
-				map.put("makeCardGiveFare", StringUtil.objToInt(map.get("makeCardGiveFare")) / 100);
-				map.put("PCSaving", StringUtil.objToInt(map.get("PCSaving")) / 100);
-				map.put("PCSavingGiveFare", StringUtil.objToInt(map.get("PCSavingGiveFare")) / 100);
-				map.put("PCTake", StringUtil.objToInt(map.get("PCTake")) / 100);
-				map.put("backCardDepostFare", StringUtil.objToInt(map.get("backCardDepostFare")) / 100);
-				map.put("posSubsidySaving", StringUtil.objToInt(map.get("posSubsidySaving")) / 100);
-				map.put("posSubsidyClear", StringUtil.objToInt(map.get("posSubsidyClear")) / 100);
-				map.put("waterSubsidySaving", StringUtil.objToInt(map.get("waterSubsidySaving")) / 100);
-				map.put("waterSubsidyClear", StringUtil.objToInt(map.get("waterSubsidyClear")) / 100);
+				map.put("makeCardFare", (float) StringUtil.objToInt(map.get("makeCardFare")) / 100);
+				map.put("getCardDeposit", (float) StringUtil.objToInt(map.get("getCardDeposit")) / 100);
+				map.put("makeCardGiveFare", (float) StringUtil.objToInt(map.get("makeCardGiveFare")) / 100);
+				map.put("PCSaving", (float) StringUtil.objToInt(map.get("PCSaving")) / 100);
+				map.put("PCSavingGiveFare", (float) StringUtil.objToInt(map.get("PCSavingGiveFare")) / 100);
+				map.put("PCTake", (float) StringUtil.objToInt(map.get("PCTake")) / 100);
+				map.put("backCardDepostFare", (float) StringUtil.objToInt(map.get("backCardDepostFare")) / 100);
+				map.put("posSubsidySaving", (float) StringUtil.objToInt(map.get("posSubsidySaving")) / 100);
+				map.put("posSubsidyClear", (float) StringUtil.objToInt(map.get("posSubsidyClear")) / 100);
+				map.put("waterSubsidySaving", (float) StringUtil.objToInt(map.get("waterSubsidySaving")) / 100);
+				map.put("waterSubsidyClear", (float) StringUtil.objToInt(map.get("waterSubsidyClear")) / 100);
 			}
 			if (export != null && 1 == export) {
 				String[] expColumns = { "出纳员", "发卡金额", "PC存款", "发卡赠送金额", "存款赠送金额", "收取卡押金", "消费机补助存款", "水控补助存款", "PC取款", "退还卡押金", "消费机补助清零", "水控补助清零", "发卡", "补卡", "挂失", "解挂", "卡注销", "按卡修正", "按库修正" };
@@ -177,11 +177,11 @@ public class CardRecordController extends BaseController {
 
 			for (Map map : list) {
 				map.put("loginName", DesUtil.decrypt(StringUtil.objToString(map.get("loginName"))));
-				map.put("opFare", StringUtil.objToInt(map.get("opFare")) / 100);
-				map.put("oddFare", StringUtil.objToInt(map.get("oddFare")) / 100);
-				map.put("subsidyOddFare", StringUtil.objToInt(map.get("subsidyOddFare")) / 100);
-				map.put("cardOddFare", StringUtil.objToInt(map.get("cardOddFare")) / 100);
-				map.put("cardSubsidyOddFare", StringUtil.objToInt(map.get("cardSubsidyOddFare")) / 100);
+				map.put("opFare", (float) StringUtil.objToInt(map.get("opFare")) / 100);
+				map.put("oddFare", (float) StringUtil.objToInt(map.get("oddFare")) / 100);
+				map.put("subsidyOddFare", (float) StringUtil.objToInt(map.get("subsidyOddFare")) / 100);
+				map.put("cardOddFare", (float) StringUtil.objToInt(map.get("cardOddFare")) / 100);
+				map.put("cardSubsidyOddFare", (float) StringUtil.objToInt(map.get("cardSubsidyOddFare")) / 100);
 
 				map.put("recordTypeDes", CardRecord.recordTypes[StringUtil.objToInt(map.get("recordType"))]);
 			}
@@ -192,7 +192,7 @@ public class CardRecordController extends BaseController {
 				List<List<String>> exportList = new ArrayList<List<String>>();
 				for (Map m : list) {
 					List<String> list2 = new ArrayList<String>();
-					
+
 					list2.add(StringUtil.objToString(m.get("loginName")));
 					list2.add(StringUtil.objToString(m.get("username")));
 					list2.add(StringUtil.objToString(m.get("userNO")));
@@ -208,7 +208,7 @@ public class CardRecordController extends BaseController {
 					list2.add(StringUtil.objToString(m.get("subsidyOpCount")));
 					list2.add(StringUtil.objToString(m.get("cardOpCount")));
 					list2.add(StringUtil.objToString(m.get("cardSubsidyOpCount")));
-					
+
 					list2.add(StringUtil.objToString(m.get("opTime")));
 					exportList.add(list2);
 				}

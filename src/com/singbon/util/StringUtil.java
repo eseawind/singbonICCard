@@ -497,7 +497,7 @@ public class StringUtil {
 	 * @return
 	 */
 	public static String getWaterDeduceCycle(WaterRateGroup w, Integer cycle, Integer water) {
-		if (w.getConsumeType() == 3) {
+		if (w.getConsumeType() == 33) {
 			return StringUtil.hexLeftPad(water, 4);
 		} else {
 			return StringUtil.hexLeftPad(cycle, 4);
