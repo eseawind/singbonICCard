@@ -79,7 +79,7 @@ public class CollectService implements Runnable {
 				if (sendCommandList == null || sendCommandList.size() == 0) {
 					try {
 						// 采集间隔
-						Thread.sleep(transferInterval * 1000);
+						Thread.sleep(transferInterval);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 						stop = true;
