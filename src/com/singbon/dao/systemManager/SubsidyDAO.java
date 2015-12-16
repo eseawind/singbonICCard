@@ -20,8 +20,8 @@ public interface SubsidyDAO extends BaseDAO {
 	 * @param list
 	 * @throws Exception
 	 */
-	public void insert(@Param("companyId") Integer companyId, @Param("userIds") String[] userIds, @Param("subsidyVersion") Integer subsidyVersion, @Param("invalidDate") String invalidDate)
-			throws Exception;
+	public void insert(@Param("companyId") Integer companyId, @Param("userIds") String[] userIds, @Param("subsidyVersion") Integer subsidyVersion, @Param("invalidDate") String invalidDate,
+			@Param("subsidyStatus") Integer subsidyStatus) throws Exception;
 
 	/**
 	 * 查询生成补助信息

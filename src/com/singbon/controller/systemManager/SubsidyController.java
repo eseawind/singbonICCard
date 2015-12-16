@@ -169,7 +169,7 @@ public class SubsidyController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/addUser.do")
-	public void addUser(String checkedIds, Integer subsidyVersion, String invalidDate, HttpServletRequest request, HttpServletResponse response, Model model) {
+	public void addUser(String checkedIds, Integer subsidyVersion, String invalidDate, Integer subsidyStatus, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Company company = (Company) request.getSession().getAttribute("company");
 
 		if (StringUtils.isEmpty(checkedIds))
@@ -184,7 +184,7 @@ public class SubsidyController extends BaseController {
 		try {
 			p = response.getWriter();
 			String[] ids = checkedIds.split(",");
-			this.subsidyService.insert(company.getId(), ids, subsidyVersion, invalidDate);
+			this.subsidyService.insert(company.getId(), ids, subsidyVersion, invalidDate, subsidyStatus);
 			p.print(1);
 		} catch (Exception e) {
 			p.print(0);

@@ -6,7 +6,7 @@
 	<parameterMap type="com.singbon.entity.Subsidy" id="subsidy2"></parameterMap>
 	<insert id="insert">
 		insert into subsidy (companyId,userId,subsidyFare,subsidyVersion,invalidDate,subsidyStatus)
-		select #{companyId},userId,0,#{subsidyVersion}, #{invalidDate},0 from (
+		select #{companyId},userId,0,#{subsidyVersion}, #{invalidDate},#{subsidyStatus} from (
 			<foreach collection="userIds" item="item" index="index" separator="union">  
     		 select #{item} userId
 			</foreach>

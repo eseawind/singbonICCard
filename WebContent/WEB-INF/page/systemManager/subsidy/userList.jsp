@@ -26,29 +26,34 @@
 						if (e2.subsidyVersion!=0) {
 							alertMsg.confirm('当前已有补助生成，是否继续添加人员？', {
 								okCall : function() {
-									go=1;	
+									go=1;
 									invalidDate=e2.invalidDate;
+									addUser(go,ids,subsidyVersion,invalidDate,1);
 								}
 							});
 						}else {
 							go=1;
 						}
-						if(go==1){
-							ids = ids.substring(0, ids.length - 1);
-							$.post('${base}/addUser.do?checkedIds='+ ids+'&subsidyVersion='+subsidyVersion+'&invalidDate='+invalidDate, function(e) {
-								if (e == 1) {
-									alertMsg.correct('添加人员完成！');
-								} else if(e==0) {
-									alertMsg.warn('添加人员失败！');					
-								}
-							});
-						}
+						addUser(go,ids,subsidyVersion,invalidDate,0);
 					});
 				} else {
 					alertMsg.warn('请选择待添加人员！');
 				}
 		});
 	});
+	
+	function addUser(go,ids,subsidyVersion,invalidDate,subsidyStatus){
+		if(go==1){
+			ids = ids.substring(0, ids.length - 1);
+			$.post('${base}/addUser.do?checkedIds='+ ids+'&subsidyVersion='+subsidyVersion+'&invalidDate='+invalidDate+'&subsidyStatus='+subsidyStatus, function(e) {
+				if (e == 1) {
+					alertMsg.correct('添加人员完成！');
+				} else if(e==0) {
+					alertMsg.warn('添加人员失败！');					
+				}
+			});
+		}
+	}
 	
 	function search(){
 		var deptIds = '';

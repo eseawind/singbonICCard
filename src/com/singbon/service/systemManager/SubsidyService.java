@@ -38,8 +38,8 @@ public class SubsidyService extends BaseService {
 	 * @throws Exception
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public void insert(Integer companyId, String[] userIds, Integer subsidyVersion, String invalidDate) throws Exception {
-		this.subsidyDAO.insert(companyId, userIds, subsidyVersion, invalidDate);
+	public void insert(Integer companyId, String[] userIds, Integer subsidyVersion, String invalidDate, Integer subsidyStatus) throws Exception {
+		this.subsidyDAO.insert(companyId, userIds, subsidyVersion, invalidDate, subsidyStatus);
 	}
 
 	/**
