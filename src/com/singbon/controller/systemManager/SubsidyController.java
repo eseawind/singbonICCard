@@ -424,4 +424,26 @@ public class SubsidyController extends BaseController {
 			e.printStackTrace();
 		}
 	}
+
+	/**
+	 * 转移补助
+	 * 
+	 * @param request
+	 * @param model
+	 * @param module
+	 * @return
+	 */
+	@RequestMapping(value = "/transferSubsidy.do")
+	public void transferSubsidy(String invalidDate, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Company company = (Company) request.getSession().getAttribute("company");
+		PrintWriter p = null;
+		try {
+			p = response.getWriter();
+			this.subsidyService.transferSubsidy(company.getId());
+			p.print(1);
+		} catch (Exception e) {
+			p.print(0);
+			e.printStackTrace();
+		}
+	}
 }

@@ -13,16 +13,23 @@
 		) t where t.userId not in (select userId from subsidy where companyId=#{companyId})
 	</insert>
 	<update id="addFare">
-		update subsidy set subsidyFare=#{subsidyFare} where companyId=#{companyId} and status=0
+		update subsidy set subsidyFare=#{subsidyFare} where companyId=#{companyId} and subsidyStatus=0
 	</update>
 	<update id="update">
 		update subsidy set subsidyFare=#{subsidyFare} where id=#{id}
 	</update>
 	<update id="autoFare">
-		update subsidy s,user u,discount d set s.subsidyFare=d.subsidy where s.userId=u.userId and u.cardTypeId=d.discountType and s.companyId=#{companyId}
+		update subsidy s,user u,discount d set s.subsidyFare=d.subsidy where s.userId=u.userId and u.cardTypeId=d.discountType and s.companyId=#{companyId} and s.subsidyStatus!=2
 	</update>
 	<update id="generateSubsidy">
 		update subsidy set subsidyVersion=#{subsidyVersion},invalidDate=#{invalidDate},subsidyStatus=1 where companyId=#{companyId}
+	</update>
+	<update id="transferSubsidy">
+	    insert subsidyhistory (userId,companyId,subsidyFare,subsidyVersion,invalidDate,subsidyStatus)
+	    select userId,companyId,subsidyFare,subsidyVersion,invalidDate,subsidyStatus from subsidy where companyId=#{companyId}
+	</update>
+	<update id="deleteAll">
+	    delete from Subsidy where companyId=#{companyId}
 	</update>
 	<delete id="delete" >
 		delete from Subsidy where id in (		

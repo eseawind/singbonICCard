@@ -6,16 +6,17 @@
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <script type="text/javascript">
 	var selectedId=null;
+	var selectedStatus=null;
 	$(function(){
 		$('#subsidyUserList .search').click(function(){
 			searchSubsidyUserList();
 		});
-		$('#userList2 .addFare').click(function(){
-			if($('#userList2 #pagerForm').valid()){
+		$('#subsidyUserList .addFare').click(function(){
+			if($('#subsidyUserList #pagerForm').valid()){
 				var subsidyFare=$('#subsidyFare').val();
 				$.post('${base}/addFare.do?subsidyFare='+subsidyFare, function(e) {
 					if(e==1){
-						alertMsg.warn('添加金额完成！');			
+						alertMsg.correct('添加金额完成！');			
 						searchSubsidyUserList();
 					}else{
 						alertMsg.warn('添加金额失败！');
@@ -23,10 +24,10 @@
 				});					
 			}
 		});
-		$('#userList2 .autoFare').click(function(){
+		$('#subsidyUserList .autoFare').click(function(){
 			$.post('${base}/autoFare.do', function(e) {
 				if(e==1){
-					alertMsg.warn('自动生成金额完成！');			
+					alertMsg.correct('自动生成金额完成！');			
 					searchSubsidyUserList();
 				}else{
 					alertMsg.warn('自动生成金额失败！');
@@ -38,10 +39,22 @@
 				alertMsg.warn('还未选择修改人员！');
 				return;
 			}
-			var fare=$('#subsidyUserList #subsidyFare').val();
-			$.post('${base}/editFare.do?id='+ selectedId+'&subsidyFare='+fare, function(e) {
-				selectedId=null;
-			});
+			if($('#subsidyUserList #pagerForm').valid()){
+				if(selectedStatus==2){
+					alertMsg.warn('已领取不能修改！');					
+					return;
+				}
+				var fare=$('#subsidyUserList #subsidyFare').val();
+				$.post('${base}/editFare.do?id='+ selectedId+'&subsidyFare='+fare, function(e) {
+					if(e==1){
+						selectedId=null;
+						alertMsg.correct('修改完成！');			
+						searchSubsidyUserList();
+					}else{
+						alertMsg.warn('修改失败！');
+					}
+				});
+			}
 		});
 		$('#subsidyUserList .delete').click(function(){
 			var ids = '';
@@ -62,6 +75,20 @@
 				alertMsg.warn('请选择待删除人员！');
 			}
 		});
+		$('#subsidyUserList .transfer').click(function(){
+			alertMsg.confirm('确定要转移补助吗？', {
+				okCall : function() {
+					$.post('${base}/transferSubsidy.do', function(e) {
+						if(e==1){
+							alertMsg.correct('转移完成！');			
+							searchSubsidyUserList();
+						}else{
+							alertMsg.warn('转移失败！');
+						}
+					});
+				}
+			});
+		});
 	});
 	
 	function searchSubsidyUserList(){
@@ -77,6 +104,7 @@
 		var subsidyFare=tr.attr('subsidyFare');
 		$('#subsidyUserList #subsidyFare').val(subsidyFare);
 		selectedId=tr.attr('id');
+		selectedStatus=tr.attr('subsidyStatus');
 	}
 </script>
 
@@ -154,6 +182,13 @@
 								</div>
 							</div>
 						</security:authorize>
+						<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_SUBSIDY_GENERATE_TRANSFER">
+							<div class="buttonActive" style="margin: 0 10px;">
+								<div class="buttonContent">
+									<button type="button" class="transfer">转移补助</button>
+								</div>
+							</div>
+						</security:authorize>
 					</td>
 				</tr>
 			</table>
@@ -179,7 +214,7 @@
 		</thead>
 		<tbody class="subsidyUserList">
 			<c:forEach var="user" items="${list}" varStatus="status">
-				<tr id="${user.id }" subsidyFare="${user.subsidyFare }" target="subsidyUserList">
+				<tr id="${user.id }" subsidyFare="${user.subsidyFare }" subsidyStatus="${user.subsidyStatus}" target="subsidyUserList">
 					<td><input name="ids" value="${user.id }" type="checkbox"></td>
 					<td>${status.index+1}</td>
 					<td>${user.userNO}</td>

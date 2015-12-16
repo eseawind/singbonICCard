@@ -138,6 +138,7 @@
 										<li><a href="javascript:;" tvalue="ROLE_SUBSIDY_GENERATE_EDIT">修改金额</a></li>
 										<li><a href="javascript:;" tvalue="ROLE_SUBSIDY_GENERATE_AUTO">自动生成金额</a></li>
 										<li><a href="javascript:;" tvalue="ROLE_SUBSIDY_GENERATE_DEL">删除选中人员</a></li>
+										<li><a href="javascript:;" tvalue="ROLE_SUBSIDY_GENERATE_TRANSFER">补助转移</a></li>
 										<li><a href="javascript:;" tvalue="ROLE_SUBSIDY_GENERATE_GENERATE">生成补助</a></li>
 									</ul></li>
 							</ul></li>

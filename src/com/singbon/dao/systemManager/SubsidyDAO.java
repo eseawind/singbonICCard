@@ -3,8 +3,6 @@ package com.singbon.dao.systemManager;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.singbon.dao.BaseDAO;
 
@@ -15,8 +13,6 @@ import com.singbon.dao.BaseDAO;
  * 
  */
 public interface SubsidyDAO extends BaseDAO {
-
-	public Integer selectCountByUserId(@Param("userId") Long userId);
 
 	/**
 	 * 添加人员
@@ -42,7 +38,6 @@ public interface SubsidyDAO extends BaseDAO {
 	 * @param list
 	 * @throws Exception
 	 */
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void addFare(@Param("companyId") Integer companyId, @Param("subsidyFare") float subsidyFare) throws Exception;
 
 	/**
@@ -51,7 +46,6 @@ public interface SubsidyDAO extends BaseDAO {
 	 * @param list
 	 * @throws Exception
 	 */
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void autoFare(@Param("companyId") Integer companyId) throws Exception;
 
 	/**
@@ -61,4 +55,20 @@ public interface SubsidyDAO extends BaseDAO {
 	 * @throws Exception
 	 */
 	public void generateSubsidy(@Param("companyId") Integer companyId, @Param("subsidyVersion") Integer subsidyVersion, @Param("invalidDate") String invalidDate) throws Exception;
+
+	/**
+	 * 转移补助
+	 * 
+	 * @param list
+	 * @throws Exception
+	 */
+	public void transferSubsidy(@Param("companyId") Integer companyId) throws Exception;
+
+	/**
+	 * 删除全部补助
+	 * 
+	 * @param list
+	 * @throws Exception
+	 */
+	public void deleteAll(@Param("companyId") Integer companyId) throws Exception;
 }

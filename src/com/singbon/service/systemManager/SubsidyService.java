@@ -76,6 +76,18 @@ public class SubsidyService extends BaseService {
 	}
 
 	/**
+	 * 转移补助
+	 * 
+	 * @param list
+	 * @throws Exception
+	 */
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public void transferSubsidy(Integer companyId) throws Exception {
+		this.subsidyDAO.transferSubsidy(companyId);
+		this.subsidyDAO.deleteAll(companyId);
+	}
+
+	/**
 	 * 生成补助信息
 	 * 
 	 * @param list
