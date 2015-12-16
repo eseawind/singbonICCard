@@ -1,6 +1,5 @@
 package com.singbon.service.systemManager;
 
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,10 +10,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.singbon.dao.BaseDAO;
-import com.singbon.dao.CompanyDAO;
 import com.singbon.dao.systemManager.SubsidyDAO;
 import com.singbon.entity.Company;
-import com.singbon.entity.Subsidy;
 import com.singbon.service.BaseService;
 
 /**
@@ -28,8 +25,6 @@ public class SubsidyService extends BaseService {
 
 	@Autowired
 	public SubsidyDAO subsidyDAO;
-	@Autowired
-	public CompanyDAO companyDAO;
 
 	@Override
 	public BaseDAO getBaseDAO() {
@@ -37,26 +32,14 @@ public class SubsidyService extends BaseService {
 	}
 
 	/**
-	 * 添加补助准备
+	 * 添加人员
 	 * 
 	 * @param list
 	 * @throws Exception
 	 */
-	@SuppressWarnings("rawtypes")
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public void addSubsidy(Integer companyId, List<Map> list) throws Exception {
-		for (Map m : list) {
-			Long userId = Long.valueOf(m.get("userId").toString());
-			int count = this.subsidyDAO.selectCountByUserId(userId);
-			if (count > 0)
-				continue;
-
-			Subsidy subsidy = new Subsidy();
-			subsidy.setUserId(userId);
-			subsidy.setCompanyId(companyId);
-			subsidy.setSubsidyFare(Float.valueOf(m.get("subsidyFare").toString()));
-			this.subsidyDAO.insert(subsidy);
-		}
+	public void insert(Integer companyId, String[] userIds, Integer subsidyVersion, String invalidDate) throws Exception {
+		this.subsidyDAO.insert(companyId, userIds, subsidyVersion, invalidDate);
 	}
 
 	/**
@@ -65,8 +48,31 @@ public class SubsidyService extends BaseService {
 	 * @param list
 	 * @throws Exception
 	 */
-	public Integer selectCountByCompanyId(Integer companyId) {
-		return this.subsidyDAO.selectCountByCompanyId(companyId);
+	@SuppressWarnings("rawtypes")
+	public Map selectSubsidyInfo(Integer companyId) {
+		return this.subsidyDAO.selectSubsidyInfo(companyId);
+	}
+
+	/**
+	 * 添加金额
+	 * 
+	 * @param list
+	 * @throws Exception
+	 */
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public void addFare(Integer companyId, float subsidyFare) throws Exception {
+		this.subsidyDAO.addFare(companyId, subsidyFare);
+	}
+
+	/**
+	 * 自动生成金额
+	 * 
+	 * @param list
+	 * @throws Exception
+	 */
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public void autoFare(Integer companyId) throws Exception {
+		this.subsidyDAO.autoFare(companyId);
 	}
 
 	/**
@@ -77,11 +83,11 @@ public class SubsidyService extends BaseService {
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void generateSubsidy(Company company, String invalidDate, HttpServletRequest request) throws Exception {
-		int subsidyVersion = company.getSubsidyVersion()+1;
+		int subsidyVersion = company.getSubsidyVersion() + 1;
 		company.setSubsidyVersion(subsidyVersion);
 		company.setSubsidyInvalidDate(invalidDate);
 		this.subsidyDAO.generateSubsidy(company.getId(), subsidyVersion, invalidDate);
-		
+
 		request.getSession().setAttribute("company", company);
 	}
 }

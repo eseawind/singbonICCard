@@ -5,31 +5,41 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <script type="text/javascript">
-	var currentTr=null;
 	var selectedId=null;
 	$(function(){
 		$('#subsidyUserList .search').click(function(){
 			searchSubsidyUserList();
 		});
-		$('#userList2 .addSubsidyFare').click(function(){
-			var subsidyFare=$('#subsidyFare').val();
-			$('#pagerForm input[name=subsidyFare]').val(subsidyFare);
-			$('#pagerForm input[name=autoSubsidyFare]').val('');			
-			search();
+		$('#userList2 .addFare').click(function(){
+			if($('#userList2 #pagerForm').valid()){
+				var subsidyFare=$('#subsidyFare').val();
+				$.post('${base}/addFare.do?subsidyFare='+subsidyFare, function(e) {
+					if(e==1){
+						alertMsg.warn('添加金额完成！');			
+						searchSubsidyUserList();
+					}else{
+						alertMsg.warn('添加金额失败！');
+					}
+				});					
+			}
 		});
-		$('#userList2 .autoSubsidyFare').click(function(){
-			$('#pagerForm input[name=subsidyFare]').val('');
-			$('#pagerForm input[name=autoSubsidyFare]').val('1');	
-			search();
+		$('#userList2 .autoFare').click(function(){
+			$.post('${base}/autoFare.do', function(e) {
+				if(e==1){
+					alertMsg.warn('自动生成金额完成！');			
+					searchSubsidyUserList();
+				}else{
+					alertMsg.warn('自动生成金额失败！');
+				}
+			});		
 		});
-		$('#subsidyUserList .changeSubsidyFare').click(function(){
+		$('#subsidyUserList .updateFare').click(function(){
 			if(selectedId==null){
 				alertMsg.warn('还未选择修改人员！');
 				return;
 			}
 			var fare=$('#subsidyUserList #subsidyFare').val();
-			$.post('${base}/edit.do?id='+ selectedId+'&subsidyFare='+fare, function(e) {
-				currentTr.find('td').eq(8).find('div').html(fare);
+			$.post('${base}/editFare.do?id='+ selectedId+'&subsidyFare='+fare, function(e) {
 				selectedId=null;
 			});
 		});
@@ -64,7 +74,6 @@
 	}
 	
 	function subsidyUserListClick(tr){
-		currentTr=tr;
 		var subsidyFare=tr.attr('subsidyFare');
 		$('#subsidyUserList #subsidyFare').val(subsidyFare);
 		selectedId=tr.attr('id');
@@ -92,6 +101,13 @@
 							</c:forEach>
 						</select>
 					</td>
+					<td width="40">状态：</td>
+					<td width="90">
+						<select class="combox" outerw="50" innerw="70" name="status">
+							<option value="-1" width="70">全部</option>
+							<option value="241" width="70" <c:if test="${status==241}">selected</c:if>>正常</option>
+						</select>
+					</td>
 					<td width="40">性别：</td>
 					<td>
 						<select class="combox" outerw="50" innerw="70" name="sex">
@@ -102,36 +118,36 @@
 					</td>
 				</tr>
 				<tr>
-					<td colspan="6">
+					<td colspan="10">
 						<div class="buttonActive">
 							<div class="buttonContent">
 								<button type="button" class="search">&nbsp;&nbsp;查询&nbsp;&nbsp;</button>
 							</div>
 						</div>
-						<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_ADDSUBSIDY_ADD_SUBSIDYFARE">
-							<span style="float: left;margin: 7px 0 0 10px;">补助金额：</span>
-							<input type="text" id="subsidyFare" size="10" value="${subsidyFare}" style="float: left;margin: 2px 5px 0px;"/>
+						<span style="float: left;margin: 7px 0 0 10px;">补助金额：</span>
+						<input type="text" id="subsidyFare" size="10" value="${subsidyFare}" class="number" style="float: left;margin: 2px 5px 0px;"/>
+						<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_SUBSIDY_GENERATE_ADDFARE">
 							<div class="buttonActive">
 								<div class="buttonContent">
-									<button type="button" class="addSubsidyFare">添加补助金额</button>
+									<button type="button" class="addFare">添加金额</button>
 								</div>
 							</div>
 						</security:authorize>
-						<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_GENERATESUBSIDY_EDIT_SUBSIDYFARE">
+						<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_SUBSIDY_GENERATE_EDIT">
 							<div class="buttonActive" style="margin: 0 10px 0 5px">
 								<div class="buttonContent">
-									<button type="button" class="changeSubsidyFare">修改补助金额</button>
+									<button type="button" class="updateFare">修改金额</button>
 								</div>
 							</div>
 						</security:authorize>
-						<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_ADDSUBSIDY_AUTO_SUBSIDYFARE">
+						<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_SUBSIDY_GENERATE_AUTO">
 							<div class="buttonActive">
 								<div class="buttonContent">
-									<button type="button" class="autoSubsidyFare">自动生成补助金额</button>
+									<button type="button" class="autoFare">自动生成金额</button>
 								</div>
 							</div>
 						</security:authorize>
-						<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_GENERATESUBSIDY_DEL">
+						<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_SUBSIDY_GENERATE_DEL">
 							<div class="buttonActive" style="margin: 0 10px;">
 								<div class="buttonContent">
 									<button type="button" class="delete">删除选中人员</button>
@@ -149,7 +165,7 @@
 	<table class="table" width="99%" layoutH="172">
 		<thead>
 			<tr>
-				<th width="10"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
+				<th width="40"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
 				<th width="80">序号</th>
 				<th width="100">编号</th>
 				<th width="100">姓名</th>
@@ -157,6 +173,7 @@
 				<th width="200">身份证号</th>
 				<th width="80">卡类别</th>
 				<th width="80">状态</th>
+				<th width="80">补助状态</th>
 				<th width="80">补助金额</th>
 			</tr>
 		</thead>
@@ -171,6 +188,7 @@
 					<td>${user.cardID}</td>
 					<td>${user.cardTypeId}类卡</td>
 					<td>${user.statusDesc}</td>
+					<td>${user.subsidyStatusDesc}</td>
 					<td>${user.subsidyFare}</td>
 				</tr>
 			</c:forEach>

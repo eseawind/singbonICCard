@@ -4,15 +4,25 @@
 	<resultMap id="subsidy" type="com.singbon.entity.Subsidy">
 	</resultMap>
 	<parameterMap type="com.singbon.entity.Subsidy" id="subsidy2"></parameterMap>
-	<insert id="insert" parameterMap="subsidy2">
-		insert into subsidy (companyId,userId,subsidyFare,status)
-		values (#{companyId},#{userId},#{subsidyFare},0)
+	<insert id="insert">
+		insert into subsidy (companyId,userId,subsidyFare,subsidyVersion,invalidDate,subsidyStatus)
+		select #{companyId},userId,0,#{subsidyVersion}, #{invalidDate},0 from (
+			<foreach collection="userIds" item="item" index="index" separator="union">  
+    		 select #{item} userId
+			</foreach>
+		) t where t.userId not in (select userId from subsidy where companyId=#{companyId})
 	</insert>
-	<update id="update" parameterMap="subsidy2">
+	<update id="addFare">
+		update subsidy set subsidyFare=#{subsidyFare} where companyId=#{companyId} and status=0
+	</update>
+	<update id="update">
 		update subsidy set subsidyFare=#{subsidyFare} where id=#{id}
 	</update>
-	<update id="generateSubsidy" parameterMap="subsidy2">
-		update subsidy set subsidyVersion=#{subsidyVersion},invalidDate=#{invalidDate},status=1 where companyId=#{companyId}
+	<update id="autoFare">
+		update subsidy s,user u,discount d set s.subsidyFare=d.subsidy where s.userId=u.userId and u.cardTypeId=d.discountType and s.companyId=#{companyId}
+	</update>
+	<update id="generateSubsidy">
+		update subsidy set subsidyVersion=#{subsidyVersion},invalidDate=#{invalidDate},subsidyStatus=1 where companyId=#{companyId}
 	</update>
 	<delete id="delete" >
 		delete from Subsidy where id in (		
@@ -20,10 +30,7 @@
     		(#{item})
 		</foreach>
 		)    </delete>
-  	<select id="selectCountByUserId" resultType="java.lang.Integer">
-		select count(userId) from subsidy where userId=#{userId}
-	</select>
-  	<select id="selectCountByCompanyId" resultType="java.lang.Integer">
-		select count(*) from subsidy where companyId=#{companyId} and status!=0
+  	<select id="selectSubsidyInfo" resultType="java.util.Map">
+		select subsidyVersion,invalidDate from subsidy where companyId=#{companyId} and subsidyStatus!=0 limit 1
 	</select>
 </mapper>

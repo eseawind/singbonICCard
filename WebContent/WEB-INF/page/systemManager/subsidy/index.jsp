@@ -9,10 +9,10 @@
 	<div class="tabsHeader">
 		<div class="tabsHeaderContent">
 			<ul>
-				<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_ADDUSER">
+				<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_SUBSIDY_USER">
 				<li><a href="${base }/addIndex.do" class="j-ajax"><span>添加人员</span></a></li>
 				</security:authorize>
-				<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_GENERATESUBSIDY">
+				<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_SUBSIDY_GENERATE">
 				<li><a href="${base }/generateIndex.do" class="j-ajax"><span>生成补助</span></a></li>
 				</security:authorize>
 			</ul>

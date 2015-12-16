@@ -17,7 +17,7 @@ public class Subsidy implements Serializable {
 	private float subsidyFare;
 	private Integer subsidyVersion;
 	private String invalidDate;
-	private Integer status;
+	private Integer subsidyStatus;
 
 	public Long getUserId() {
 		return userId;
@@ -51,14 +51,6 @@ public class Subsidy implements Serializable {
 		this.subsidyVersion = subsidyVersion;
 	}
 
-	public Integer getStatus() {
-		return status;
-	}
-
-	public void setStatus(Integer status) {
-		this.status = status;
-	}
-
 	public Integer getId() {
 		return id;
 	}
@@ -73,6 +65,14 @@ public class Subsidy implements Serializable {
 
 	public void setInvalidDate(String invalidDate) {
 		this.invalidDate = invalidDate;
+	}
+
+	public Integer getSubsidyStatus() {
+		return subsidyStatus;
+	}
+
+	public void setSubsidyStatus(Integer subsidyStatus) {
+		this.subsidyStatus = subsidyStatus;
 	}
 
 }

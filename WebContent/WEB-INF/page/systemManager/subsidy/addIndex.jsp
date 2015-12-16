@@ -38,6 +38,6 @@ list.each(function() {
 	</div>
 
 	<div id="userList2" class="unitBox" style="margin-left: 246px;">
-		<jsp:include page="${base }/userList.do?pageNum=1&numPerPage=50" />
+		<jsp:include page="${base }/userList.do?pageNum=1&numPerPage=50&status=241" />
 	</div>
 </div>

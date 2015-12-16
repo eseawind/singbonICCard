@@ -63,13 +63,15 @@
 						</dd>
 					</dl>
 				</div>
-				<div class="formBar">
-					<div class="panelBar" style="border-style: none;">
-						<ul class="toolBar">
-							<li><a class="add" href="javascript:;"><span>生成补助</span></a></li>
-						</ul>
+				<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_SUBSIDY_GENERATE_GENERATE">
+					<div class="formBar">
+						<div class="panelBar" style="border-style: none;">
+							<ul class="toolBar">
+								<li><a class="add" href="javascript:;"><span>生成补助</span></a></li>
+							</ul>
+						</div>
 					</div>
-				</div>
+				</security:authorize>
 			</form>
 		</div>
 	</div>

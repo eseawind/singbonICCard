@@ -10,24 +10,43 @@
 			search();
 		});
 		
-		$('#userList2 .addSubsidyUser').click(function(){
-			var deptIds = '';
-			$('#addUserUserDeptTree .checked').each(function(i, e2) {
-					deptIds += $(this).next().next().attr('deptId') + ',';
+		$('#userList2 .addUser').click(function(){
+			var ids = '';
+			$('#userList2 input:checkbox[name][checked]').each(
+				function() {
+					ids += $(this).val() + ',';
 				});
-			$('#pagerForm input[name=deptIds]').val(deptIds);	
-			var form=$('#pagerForm').clone();
-			form.attr('action','${base}/addSubsidyUser.do');
-			
-			validateCallback(form, function(e) {
-				if (e == 2) {
-					alertMsg.warn('当前已有补助生成，需转移后才可以添加！');										
-				}else if (e == 1) {
-					alertMsg.correct('添加人员完成！');
-				} else if(e==0) {
-					alertMsg.warn('添加人员失败！');					
+				if (ids != '') {
+					var go=0;
+					var subsidyVersion=0;
+					var invalidDate='';
+					$.post('${base}/selectStatus.do', function(e) {
+						var e2 = eval('(' + e + ')');
+						subsidyVersion=e2.subsidyVersion;
+						if (e2.subsidyVersion!=0) {
+							alertMsg.confirm('当前已有补助生成，是否继续添加人员？', {
+								okCall : function() {
+									go=1;	
+									invalidDate=e2.invalidDate;
+								}
+							});
+						}else {
+							go=1;
+						}
+						if(go==1){
+							ids = ids.substring(0, ids.length - 1);
+							$.post('${base}/addUser.do?checkedIds='+ ids+'&subsidyVersion='+subsidyVersion+'&invalidDate='+invalidDate, function(e) {
+								if (e == 1) {
+									alertMsg.correct('添加人员完成！');
+								} else if(e==0) {
+									alertMsg.warn('添加人员失败！');					
+								}
+							});
+						}
+					});
+				} else {
+					alertMsg.warn('请选择待添加人员！');
 				}
-			}, null);
 		});
 	});
 	
@@ -44,8 +63,6 @@
 <div class="pageHeader" style="border: 1px #B8D0D6 solid">
 	<form action="${base}/userList.do" id="pagerForm">		
 		<input type="hidden" name="deptIds"/>
-		<input type="hidden" name="autoSubsidyFare" value="${autoSubsidyFare}"/>
-		<input type="hidden" name="subsidyFare" value="${subsidyFare}"/>
 		<input type="hidden" name="pageNum" value="${pageNum}" />
 		<input type="hidden" name="numPerPage" value="${numPerPage}" />
 		<input type="hidden" name="totalCount" value="${totalCount}" />
@@ -87,10 +104,10 @@
 								<button type="button" class="search">&nbsp;&nbsp;查询&nbsp;&nbsp;</button>
 							</div>
 						</div>
-						<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_ADDUSER_ADD_USER">
+						<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_SUBSIDY_USER_ADDUSER">
 							<div class="buttonActive" style="margin: 0 12px;">
 								<div class="buttonContent">
-									<button type="button" class="addSubsidyUser">添加选中人员</button>
+									<button type="button" class="addUser">添加选中人员</button>
 								</div>
 							</div>
 						</security:authorize>
@@ -113,13 +130,12 @@
 				<th width="200">身份证号</th>
 				<th width="80">卡类别</th>
 				<th width="80">状态</th>
-				<th width="80">补助金额</th>
 			</tr>
 		</thead>
 		<tbody class="userList2">
 			<c:forEach var="user" items="${list}" varStatus="status">
 				<tr>
-					<td><input name="ids" value="${user.id }" type="checkbox"></td>
+					<td><input name="ids" value="${user.userId }" type="checkbox"></td>
 					<td>${status.index+1}</td>
 					<td>${user.userNO}</td>
 					<td>${user.username}</td>
@@ -127,7 +143,6 @@
 					<td>${user.cardID}</td>
 					<td>${user.cardTypeId}类卡</td>
 					<td>${user.statusDesc}</td>
-					<td>${user.subsidyFare}</td>
 				</tr>
 			</c:forEach>
 		</tbody>
