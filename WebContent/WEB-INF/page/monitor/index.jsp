@@ -307,7 +307,7 @@
 	
 	function heart(){
 		var heartInterval=parseInt('${company.heartInterval}')*3;
-		$('body').everyTime('1s','getCardReaderStatus', function() {
+		$('body').everyTime('3s','getCardReaderStatus', function() {
 			var d=new Date();
 			var array = map.keySet();
 			for(var i in array) {

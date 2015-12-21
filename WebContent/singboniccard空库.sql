@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50528
 File Encoding         : 65001
 
-Date: 2015-12-09 20:56:25
+Date: 2015-12-21 23:47:05
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -25,7 +25,7 @@ CREATE TABLE `authgroup` (
   `remark` varchar(50) DEFAULT NULL,
   `roles` varchar(5000) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of authgroup
@@ -45,7 +45,7 @@ CREATE TABLE `authgroupbase` (
 -- ----------------------------
 -- Records of authgroupbase
 -- ----------------------------
-INSERT INTO `authgroupbase` VALUES ('1', '管理员', 'ROLE_SYSTEMMANAGER,ROLE_SYSTEMSETTING,ROLE_SYSTEMPARAM,ROLE_SYSTEMPARAM_SAVE,ROLE_BATCH,ROLE_BATCH_ADD,ROLE_BATCH_EDIT,ROLE_BATCH_DEL,ROLE_USERDEPT,ROLE_USERDEPT_ADD,ROLE_USERDEPT_EDIT,ROLE_USERDEPT_DEL,ROLE_DEPT,ROLE_DEPT_ADD,ROLE_DEPT_EDIT,ROLE_DEPT_DEL,ROLE_MEAL,ROLE_MEAL_SAVE,ROLE_COOKBOOK,ROLE_COOKBOOK_SAVE,ROLE_ORDERTIME,ROLE_ORDERTIME_SAVE,ROLE_DISCOUNT,ROLE_DISCOUNT_SAVE,ROLE_CONSUMEPARAM,ROLE_CONSUMEPARAM_SAVE,ROLE_POSPARAMGROUP,ROLE_POSPARAMGROUP_ADD,ROLE_POSPARAMGROUP_EDIT,ROLE_POSPARAMGROUP_DEL,ROLE_POSPARAMGROUP_SAVE,ROLE_WATERRATEGROUP,ROLE_WATERRATEGROUP_ADD,ROLE_WATERRATEGROUP_EDIT,ROLE_WATERRATEGROUP_DEL,ROLE_WATERRATEGROUP_SAVE,ROLE_CARDPARAM,ROLE_CARDPARAM_SAVE,ROLE_CARDPARAM,ROLE_CARDPARAM_SAVE,ROLE_ENTRANCEGUARD,ROLE_ENTRANCEGUARD_SAVE,ROLE_DEVICEMANAGER,ROLE_DEVICEMANAGER_POS,ROLE_DEVICEMANAGER_POS_ADD,ROLE_DEVICEMANAGER_POS_EDIT,ROLE_DEVICEMANAGER_POS_DEL,ROLE_DEVICEMANAGER_TRANSFER,ROLE_DEVICEMANAGER_TRANSFER_ADD,ROLE_DEVICEMANAGER_TRANSFER_EDIT,ROLE_DEVICEMANAGER_TRANSFER_DEL,ROLE_DEVICEMANAGER_CARDREADER,ROLE_DEVICEMANAGER_CARDREADER_ADD,ROLE_DEVICEMANAGER_CARDREADER_EDIT,ROLE_DEVICEMANAGER_CARDREADER_DEL,ROLE_SYSUSER,ROLE_SYSUSER_ADD,ROLE_SYSUSER_EDIT,ROLE_SYSUSER_DEL,ROLE_USERROLES,ROLE_USERROLES_GROUP,ROLE_SYSUSER_ADD,ROLE_SYSUSER_EDIT,ROLE_SYSUSER_DEL,ROLE_USERROLES_USER,ROLE_USERROLES_USER_SAVE,ROLE_SUBSIDY,ROLE_ADDSUBSIDY,ROLE_ADDSUBSIDY_ADD_SUBSIDYFARE,ROLE_ADDSUBSIDY_AUTO_SUBSIDYFARE,ROLE_ADDSUBSIDY_ADD_SUBSIDY,ROLE_GENERATESUBSIDY,ROLE_GENERATESUBSIDY_EDIT_SUBSIDYFARE,ROLE_GENERATESUBSIDY_DEL,ROLE_GENERATESUBSIDY_GENERATE,');
+INSERT INTO `authgroupbase` VALUES ('1', '管理员', 'ROLE_SYSTEMMANAGER,ROLE_SYSTEMSETTING,ROLE_SYSTEMPARAM,ROLE_SYSTEMPARAM_SAVE,ROLE_BATCH,ROLE_BATCH_ADD,ROLE_BATCH_EDIT,ROLE_BATCH_DEL,ROLE_USERDEPT,ROLE_USERDEPT_ADD,ROLE_USERDEPT_EDIT,ROLE_USERDEPT_DEL,ROLE_DEPT,ROLE_DEPT_ADD,ROLE_DEPT_EDIT,ROLE_DEPT_DEL,ROLE_MEAL,ROLE_MEAL_SAVE,ROLE_COOKBOOK,ROLE_COOKBOOK_SAVE,ROLE_ORDERTIME,ROLE_ORDERTIME_SAVE,ROLE_DISCOUNT,ROLE_DISCOUNT_SAVE,ROLE_CONSUMEPARAM,ROLE_CONSUMEPARAM_SAVE,ROLE_POSPARAMGROUP,ROLE_POSPARAMGROUP_ADD,ROLE_POSPARAMGROUP_EDIT,ROLE_POSPARAMGROUP_DEL,ROLE_POSPARAMGROUP_SAVE,ROLE_WATERRATEGROUP,ROLE_WATERRATEGROUP_ADD,ROLE_WATERRATEGROUP_EDIT,ROLE_WATERRATEGROUP_DEL,ROLE_WATERRATEGROUP_SAVE,ROLE_CARDPARAM,ROLE_CARDPARAM_SAVE,ROLE_CARDPARAM,ROLE_CARDPARAM_SAVE,ROLE_ENTRANCEGUARD,ROLE_ENTRANCEGUARD_SAVE,ROLE_DEVICEMANAGER,ROLE_DEVICEMANAGER_POS,ROLE_DEVICEMANAGER_POS_ADD,ROLE_DEVICEMANAGER_POS_EDIT,ROLE_DEVICEMANAGER_POS_DEL,ROLE_DEVICEMANAGER_TRANSFER,ROLE_DEVICEMANAGER_TRANSFER_ADD,ROLE_DEVICEMANAGER_TRANSFER_EDIT,ROLE_DEVICEMANAGER_TRANSFER_DEL,ROLE_DEVICEMANAGER_CARDREADER,ROLE_DEVICEMANAGER_CARDREADER_ADD,ROLE_DEVICEMANAGER_CARDREADER_EDIT,ROLE_DEVICEMANAGER_CARDREADER_DEL,ROLE_SYSUSER,ROLE_SYSUSER_ADD,ROLE_SYSUSER_EDIT,ROLE_SYSUSER_DEL,ROLE_USERROLES,ROLE_USERROLES_GROUP,ROLE_SYSUSER_ADD,ROLE_SYSUSER_EDIT,ROLE_SYSUSER_DEL,ROLE_USERROLES_USER,ROLE_USERROLES_USER_SAVE,ROLE_SUBSIDY,ROLE_SUBSIDY_USER,ROLE_SUBSIDY_USER_ADDUSER,ROLE_SUBSIDY_GENERATE,ROLE_SUBSIDY_GENERATE_ADDFARE,ROLE_SUBSIDY_GENERATE_EDIT,ROLE_SUBSIDY_GENERATE_AUTO,ROLE_SUBSIDY_GENERATE_DEL,ROLE_SUBSIDY_GENERATE_TRANSFER,ROLE_SUBSIDY_GENERATE_GENERATE,');
 INSERT INTO `authgroupbase` VALUES ('2', '出纳员', 'ROLE_CARDMANAGER,ROLE_MAINCARD,ROLE_MAINCARD_INFO,ROLE_MAINCARD_EDIT,ROLE_MAINCARD_DEPT,ROLE_MAINCARD_SINGLE,ROLE_MAINCARD_INFOCARD,ROLE_MAINCARD_BATCH,ROLE_MAINCARD_READCARD,ROLE_MAINCARD_LOSS,ROLE_MAINCARD_UNLOSS,ROLE_MAINCARD_REMAKECARD,ROLE_MAINCARD_CHANGECARD,ROLE_MAINCARD_OFFWITHCARD,ROLE_MAINCARD_OFFNOCARD,ROLE_MAINCARD_CHARGE,ROLE_MAINCARD_DELETE,ROLE_FUNCCARD,ROLE_CARDREADER,ROLE_ACCOUNTCENTER,ROLE_MONITOR,');
 
 -- ----------------------------
@@ -57,7 +57,7 @@ CREATE TABLE `authgroupuser` (
   `operId` int(11) DEFAULT NULL,
   `groupId` int(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of authgroupuser
@@ -75,7 +75,7 @@ CREATE TABLE `batch` (
   `companyId` int(11) DEFAULT NULL,
   `status` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of batch
@@ -90,7 +90,7 @@ CREATE TABLE `batchblack` (
   `companyId` int(11) DEFAULT NULL,
   `batchId` int(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of batchblack
@@ -106,7 +106,7 @@ CREATE TABLE `cardblack` (
   `cardNO` bigint(11) DEFAULT NULL,
   `blackType` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of cardblack
@@ -122,7 +122,7 @@ CREATE TABLE `cardparam` (
   `cardDeposit` int(11) DEFAULT NULL,
   `prepayFare` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of cardparam
@@ -158,25 +158,21 @@ CREATE TABLE `cardrecord` (
   `cardSN` varchar(50) DEFAULT NULL,
   `recordType` int(11) DEFAULT NULL,
   `opFare` int(11) DEFAULT NULL,
-  `oddFare` int(11) DEFAULT NULL,
-  `subsidyOddFare` int(11) DEFAULT NULL,
-  `cardOddFare` int(11) DEFAULT NULL,
-  `cardSubsidyOddFare` int(11) DEFAULT NULL,
+  `oddFare` bigint(11) DEFAULT NULL,
+  `subsidyOddFare` bigint(11) DEFAULT NULL,
+  `cardOddFare` bigint(11) DEFAULT NULL,
+  `cardSubsidyOddFare` bigint(11) DEFAULT NULL,
+  `opCount` int(11) DEFAULT NULL,
+  `subsidyOpCount` int(11) DEFAULT NULL,
+  `cardOpCount` int(11) DEFAULT NULL,
+  `cardSubsidyOpCount` int(11) DEFAULT NULL,
   `opTime` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of cardrecord
 -- ----------------------------
-INSERT INTO `cardrecord` VALUES ('41', null, '28', '5', '1', '0c4d582f', '6', '100000', '0', '0', '0', '0', '2015-12-09 18:49:18');
-INSERT INTO `cardrecord` VALUES ('42', null, '28', '5', '1', '0c4d582f', '7', '1000', '0', '0', '0', '0', '2015-12-09 18:49:18');
-INSERT INTO `cardrecord` VALUES ('43', null, '28', '5', '1', '0c4d582f', '8', '101000', '101000', '0', '101000', '0', '2015-12-09 18:49:31');
-INSERT INTO `cardrecord` VALUES ('44', null, '28', '5', '1', '0c4d582f', '1', '500', '101000', '0', '101000', '0', '2015-12-09 18:49:37');
-INSERT INTO `cardrecord` VALUES ('45', '7', '28', '5', null, '0c4d582f', '14', '0', '0', '0', '0', '0', '2015-12-09 19:18:59');
-INSERT INTO `cardrecord` VALUES ('46', '7', '28', '6', '2', '0c4d582f', '0', '9500', '0', '0', '0', '0', '2015-12-09 19:19:23');
-INSERT INTO `cardrecord` VALUES ('47', '7', '28', '6', '2', '0c4d582f', '1', '500', '0', '0', '0', '0', '2015-12-09 19:19:23');
-INSERT INTO `cardrecord` VALUES ('48', null, '28', '6', '2', '0c4d582f', '6', '1000', '9500', '0', '8700', '0', '2015-12-09 19:24:10');
 
 -- ----------------------------
 -- Table structure for `company`
@@ -191,6 +187,8 @@ CREATE TABLE `company` (
   `heartInterval` int(11) DEFAULT NULL,
   `uploadInterval` int(11) DEFAULT NULL,
   `uploadErrTime` int(11) DEFAULT NULL,
+  `accessTimeout` int(11) DEFAULT NULL,
+  `transferInterval` int(11) DEFAULT NULL,
   `invalidDate` varchar(255) DEFAULT NULL,
   `enable` bit(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -215,7 +213,7 @@ CREATE TABLE `consumeparam` (
   `timeLimitFareCardTypes` varchar(50) DEFAULT NULL,
   `userPwd` varchar(5) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of consumeparam
@@ -252,16 +250,17 @@ CREATE TABLE `consumerecord` (
   `userId` int(11) DEFAULT NULL,
   `cardNO` int(11) DEFAULT NULL,
   `cardSeq` int(11) DEFAULT NULL,
+  `cardSN` varchar(8) DEFAULT NULL,
   `deviceId` int(11) DEFAULT NULL,
-  `sumFare` int(11) DEFAULT NULL,
-  `oddFare` int(11) DEFAULT NULL,
-  `subsidyOddFare` int(11) DEFAULT NULL,
+  `sumFare` bigint(11) DEFAULT NULL,
+  `oddFare` bigint(11) DEFAULT NULL,
+  `subsidyOddFare` bigint(11) DEFAULT NULL,
   `discountFare` int(11) DEFAULT NULL,
   `opFare` int(11) DEFAULT NULL,
   `subsidyOpFare` int(11) DEFAULT NULL,
   `mealId` int(11) DEFAULT NULL,
-  `opTime` varchar(50) DEFAULT NULL,
-  `collectTime` varchar(50) DEFAULT NULL,
+  `opTime` varchar(20) DEFAULT NULL,
+  `collectTime` varchar(20) DEFAULT NULL,
   `opCount` int(11) DEFAULT NULL,
   `subsidyOpCount` int(11) DEFAULT NULL,
   `recordNO` int(11) DEFAULT NULL,
@@ -269,8 +268,8 @@ CREATE TABLE `consumerecord` (
   `cookbookCode` int(11) DEFAULT NULL,
   `cookbookNum` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `userId` (`userId`,`cardNO`,`recordNO`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+  UNIQUE KEY `onlyone` (`userId`,`cardNO`,`cardSeq`,`cardSN`,`deviceId`,`sumFare`,`oddFare`,`opFare`,`subsidyOpFare`,`opCount`,`subsidyOpCount`,`recordNO`,`consumeType`,`opTime`,`collectTime`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of consumerecord
@@ -289,7 +288,7 @@ CREATE TABLE `cookbook` (
   `remark` varchar(50) DEFAULT NULL,
   `enable` bit(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=104 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of cookbook
@@ -305,7 +304,7 @@ CREATE TABLE `dept` (
   `companyId` int(11) DEFAULT NULL,
   `parentId` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of dept
@@ -327,7 +326,7 @@ CREATE TABLE `device` (
   `enable` int(11) DEFAULT NULL,
   `sn` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of device
@@ -344,7 +343,7 @@ CREATE TABLE `discount` (
   `rate` int(11) DEFAULT NULL,
   `subsidy` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=98 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of discount
@@ -396,7 +395,7 @@ CREATE TABLE `entranceguard` (
   `openStatus` int(11) DEFAULT NULL,
   `operPwd` varchar(6) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of entranceguard
@@ -434,7 +433,7 @@ CREATE TABLE `meal` (
   `endTime` varchar(8) DEFAULT NULL,
   `timeLimit` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of meal
@@ -559,7 +558,7 @@ CREATE TABLE `ordertime` (
   `remark` varchar(100) DEFAULT NULL,
   `enable` bit(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of ordertime
@@ -611,7 +610,7 @@ CREATE TABLE `posparamgroup` (
   `enableMeal` int(11) DEFAULT NULL,
   `bound` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of posparamgroup
@@ -666,12 +665,31 @@ CREATE TABLE `subsidy` (
   `subsidyFare` float DEFAULT NULL,
   `subsidyVersion` int(255) DEFAULT NULL,
   `invalidDate` varchar(50) DEFAULT NULL,
-  `status` int(255) DEFAULT NULL,
+  `subsidyStatus` int(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of subsidy
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `subsidyhistory`
+-- ----------------------------
+DROP TABLE IF EXISTS `subsidyhistory`;
+CREATE TABLE `subsidyhistory` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `userId` int(11) NOT NULL,
+  `companyId` int(11) DEFAULT NULL,
+  `subsidyFare` float DEFAULT NULL,
+  `subsidyVersion` int(255) DEFAULT NULL,
+  `invalidDate` varchar(50) DEFAULT NULL,
+  `subsidyStatus` int(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of subsidyhistory
 -- ----------------------------
 
 -- ----------------------------
@@ -686,7 +704,7 @@ CREATE TABLE `sysuser` (
   `deviceId` int(11) DEFAULT NULL,
   `status` int(11) DEFAULT NULL,
   PRIMARY KEY (`operId`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sysuser
@@ -714,11 +732,11 @@ CREATE TABLE `user` (
   `endDate` varchar(50) DEFAULT NULL,
   `cardMakeDate` varchar(50) DEFAULT NULL,
   `consumePwd` varchar(255) DEFAULT NULL,
-  `totalFare` int(11) DEFAULT '0',
+  `totalFare` bigint(11) DEFAULT '0',
   `opCount` int(11) DEFAULT '0',
-  `oddFare` int(11) DEFAULT '0',
+  `oddFare` bigint(11) DEFAULT '0',
   `subsidyOpCount` int(11) DEFAULT '0',
-  `subsidyOddFare` int(11) DEFAULT '0',
+  `subsidyOddFare` bigint(11) DEFAULT '0',
   `cardDeposit` int(11) DEFAULT NULL,
   `giveFare` int(11) DEFAULT NULL,
   `preOpFare` int(11) DEFAULT NULL,
@@ -746,7 +764,7 @@ CREATE TABLE `userdept` (
   `parentId` int(11) DEFAULT NULL,
   `batchId` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of userdept
@@ -807,7 +825,7 @@ CREATE TABLE `waterrategroup` (
   `waterPrecision` int(11) DEFAULT NULL,
   `enableAutoCalcRate` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of waterrategroup
@@ -903,31 +921,8 @@ delete from authgroup where companyId not in (select id from company);
 delete from authgroupuser where operId not in (select operId from sysUser);
 delete from subsidy where companyId not in (select id from company) or userId not in (select userId from `user`);
 delete from batchblack where companyId not in (select id from company);
-END
-;;
-DELIMITER ;
-
--- ----------------------------
--- Procedure structure for `insertCardRecord`
--- ----------------------------
-DROP PROCEDURE IF EXISTS `insertCardRecord`;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `insertCardRecord`(IN `tcompanyId` int,IN `tuserId` int,IN `tcardNO` int,IN `toddFare` int,IN `tsubsidyOddFare` int,IN `topFare` int,IN `tsubsidyOpFare` int,IN `topTime` datetime,IN `trecordNO` int,IN `tconsumeType` int,OUT `tresult` int)
-BEGIN
-		DECLARE EXIT HANDLER FOR SQLEXCEPTION set tresult=0;
-		set tresult=1;
-
-		insert cardrecord(companyId,operId,userId,cardNO,cardSN,recordType,opFare,oddFare,subsidyOddFare,cardOddFare,cardSubsidyOddFare,opTime) values
-			(tcompanyId,0,tuserId,tcardNO,tcardSN,trecordType,topFare,toddFare,tsubsidyOddFare,tcardOddFare,tcardSubsidyOddFare,topTime);
-
-		#领取补助
-		if tconsumeType = 9 or tconsumeType = 109
-		then
-			update subsidy set status=2 where companyId=tcompanyId and userId=tuserId and status=1;
-			update user set subsidyOddFare=subsidyOddFare+tsubsidyOddFare where userId=tuserId;
-		else
-			update user set subsidyOddFare=0 where userId=tuserId;
-		end if;
+delete from cardrecord where companyId not in (select id from company);
+delete from subsidyhistory where companyId not in (select id from company);
 END
 ;;
 DELIMITER ;
@@ -937,13 +932,59 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `insertConsumeRecord`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `insertConsumeRecord`(IN `tcompanyId` int,IN `tuserId` int,IN `tcardNO` int,IN `tcardSeq` int,IN `tdeviceId` int,IN `tsumFare` int,IN `toddFare` int,IN `tsubsidyOddFare` int,IN `tdiscountFare` int,IN `topFare` int,IN `tsubsidyOpFare` int,IN `tmealId` int,IN `topTime` datetime,IN `topCount` int,IN `tsubsidyOpCount` int,IN `trecordNO` int,IN `tconsumeType` int,IN `tcookbookCode` int,IN `tcookbookNum` int,OUT `tresult` int,OUT `tuserNO` varchar(50),OUT `tusername` varchar(50),OUT `tcookbookName` varchar(50))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertConsumeRecord`(IN `tcompanyId` int,IN `tuserId` int,IN `tcardNO` int,IN `tcardSeq` int,IN `tcardSN` varchar(8),IN `tdeviceId` int,IN `tsumFare` bigint,IN `toddFare` bigint,IN `tsubsidyOddFare` bigint,IN `tdiscountFare` int,IN `topFare` int,IN `tsubsidyOpFare` int,IN `tmealId` int,IN `topTime` datetime,IN `topCount` int,IN `tsubsidyOpCount` int,IN `trecordNO` int,IN `tconsumeType` int,IN `tcookbookCode` int,IN `tcookbookNum` int,OUT `tresult` int,OUT `tuserNO` varchar(20),OUT `tusername` varchar(20),OUT `tcookbookName` varchar(20))
 BEGIN
+		declare cardRecordType int;
+    declare dbOddFare bigint;
+		declare dbSubsidyOddFare bigint;
+		declare dbOpCount int;
+		declare dbSubsidyOpCount int;
+    declare tsubsidyInvalidDate varchar(20);
 		DECLARE EXIT HANDLER FOR SQLEXCEPTION set tresult=0;
-		set tresult=1;
-		insert into consumerecord (companyId,userId,cardNO,cardSeq,deviceId,sumFare,oddFare,subsidyOddFare,discountFare,opFare,subsidyOpFare,mealId,opTime,collectTime,opCount,subsidyOpCount,recordNO,consumeType,cookbookCode,cookbookNum)
-		values (tcompanyId,tuserId,tcardNO,tcardSeq,tdeviceId,tsumFare,toddFare,tsubsidyOddFare,tdiscountFare,topFare,tsubsidyOpFare,tmealId,topTime,NOW(),topCount,tsubsidyOpCount,trecordNO,tconsumeType,tcookbookCode,tcookbookNum);
+		set tresult=1;		
+
+		insert into consumerecord (companyId,userId,cardNO,cardSeq,cardSN,deviceId,sumFare,oddFare,subsidyOddFare,discountFare,opFare,subsidyOpFare,mealId,opTime,collectTime,opCount,subsidyOpCount,recordNO,consumeType,cookbookCode,cookbookNum)
+		values (tcompanyId,tuserId,tcardNO,tcardSeq,tcardSN,tdeviceId,tsumFare,toddFare,tsubsidyOddFare,tdiscountFare,topFare,tsubsidyOpFare,tmealId,topTime,NOW(),topCount,tsubsidyOpCount,trecordNO,tconsumeType,tcookbookCode,tcookbookNum);
 		select userNO,username into tuserNO,tusername from user where userId=tuserId;
+	
+    #领取补助
+		if tconsumeType = 9 or tconsumeType = 109
+		then
+			select invalidDate into tsubsidyInvalidDate from subsidy where companyId=tcompanyId and userId=tuserId and status=1;
+			update subsidy set status=2 where companyId=tcompanyId and userId=tuserId and status=1;
+			update user set subsidyOddFare=subsidyOddFare+topFare,subsidyOpCount=subsidyOpCount+1,subsidyVersion=subsidyVersion+1,subsidyInvalidDate=tsubsidyInvalidDate where userId=tuserId;
+			
+    #补助清零
+		else if tconsumeType = 39 or tconsumeType = 139
+		then
+			update user set subsidyOddFare=0,subsidyOpCount=subsidyOpCount+1 where userId=tuserId;
+			
+		#普通消费
+		else
+			update user set oddFare=oddFare-topFare,opCount=topCount,subsidyOddFare=subsidyOddFare-tsubsidyOddFare,subsidyOpCount=tsubsidyOpCount where userId=tuserId;
+		end if;
+		end if;
+
+		#补助卡操作记录
+		if tconsumeType = 9 or tconsumeType = 109 or tconsumeType = 39 or tconsumeType = 139
+		then
+			if tconsumeType = 9
+			then set cardRecordType=10;
+			else if tconsumeType = 109
+			then set cardRecordType=12;
+      else if tconsumeType = 39
+			then set cardRecordType=11;
+			else if tconsumeType = 139
+			then set cardRecordType=13;
+			end if;
+			end if;
+			end if;
+			end if;
+
+			select oddFare,subsidyOddFare,opCount,subsidyOpCount into dbOddFare,dbSubsidyOddFare,dbOpCount,dbSubsidyOpCount from user where userId=tuserId;
+			insert cardrecord(companyId,operId,userId,cardNO,cardSN,recordType,opFare,oddFare,subsidyOddFare,cardOddFare,cardSubsidyOddFare,opCount,subsidyOpCount,cardOpCount,cardSubsidyOpCount,opTime) values
+			(tcompanyId,0,tuserId,tcardNO,tcardSN,cardRecordType,topFare,dbOddFare,dbSubsidyOddFare,toddFare,tsubsidyOddFare,dbOpCount,dbSubsidyOpCount,topCount,tsubsidyOpCounttopTime);
+    end if;
 
 		#查询菜单名称
 		if tcookbookCode is not null
@@ -974,6 +1015,17 @@ BEGIN
 	-- 水控默认参数分组
 	insert into waterRateGroup (companyId,groupName,consumeType,goWaterType,stopWaterType,rate1Fare,rate1Cycle,rate1Water,rate1NextDayReset,rate1Status,rate1CardTypes,rate2Fare,rate2Cycle,rate2Water,rate2BeginTime,rate2EndTime,rate2CardTypes,rate3Fare,rate3Cycle,rate3Water,rate3BeginTime,rate3EndTime,rate3CardTypes,rate4Fare,rate4Cycle,rate4Water,rate4BeginTime,rate4EndTime,rate4CardTypes,rate5Fare,rate5Cycle,rate5Water,pwd,bound,subsidyReset,subsidyFirst,enableCheckTime,enableCardMinFare,enableTimeLimitFare,enableDayLimitFare,enableDiscount,enableMeal,updateNum,deviceNum,waterLimit,cycleLimit,waterPrecision,enableAutoCalcRate) 
 	select cId,'水控默认参数分组',consumeType,goWaterType,stopWaterType,rate1Fare,rate1Cycle,rate1Water,rate1NextDayReset,rate1Status,rate1CardTypes,rate2Fare,rate2Cycle,rate2Water,rate2BeginTime,rate2EndTime,rate2CardTypes,rate3Fare,rate3Cycle,rate3Water,rate3BeginTime,rate3EndTime,rate3CardTypes,rate4Fare,rate4Cycle,rate4Water,rate4BeginTime,rate4EndTime,rate4CardTypes,rate5Fare,rate5Cycle,rate5Water,pwd,bound,subsidyReset,subsidyFirst,enableCheckTime,enableCardMinFare,enableTimeLimitFare,enableDayLimitFare,enableDiscount,enableMeal,updateNum,deviceNum,waterLimit,cycleLimit,waterPrecision,enableAutoCalcRate from waterRateGroupBase;
+	-- 制卡参数
+	insert into cardParam (companyId,cardDeposit,prepayFare) select cId,cardDeposit,prepayFare from cardParamBase;
+  -- 消费参数
+  insert into consumeParam (companyId,cardMinFare,cardMinFareCardTypes,dayLimitFare,dayLimitFareCardTypes,timeLimitFare,timeLimitFareCardTypes,userPwd)
+			select cId,cardMinFare,cardMinFareCardTypes,dayLimitFare,dayLimitFareCardTypes,timeLimitFare,timeLimitFareCardTypes,userPwd from consumeParamBase;
+  -- 优惠方案
+  insert into discount (companyId,discountType,rate,subsidy) select cId,discountType,rate,subsidy from discountBase;
+  -- 餐别限次
+  insert into meal (companyId,mealName,beginTime,endTime,timeLimit) select cId,mealName,beginTime,endTime,timeLimit from mealBase;
+  -- 订餐时间段
+  insert into orderTime (companyId,orderTimeName,beginTime,endTime,enable) select cId,orderTimeName,beginTime,endTime,1 from orderTimeBase;
 END
 ;;
 DELIMITER ;
