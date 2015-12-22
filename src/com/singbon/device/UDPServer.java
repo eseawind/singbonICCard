@@ -63,10 +63,6 @@ class UDPSeverHandler extends SimpleChannelInboundHandler<DatagramPacket> {
 		byte[] b = new byte[buf.readableBytes()];
 		buf.readBytes(b);
 
-		// 校验
-		if (!CRC16.compareCRC16(b)) {
-			return;
-		}
 
 		// System.out.println(new java.util.Date().toLocaleString());
 		// for (byte b2 : b) {
@@ -76,6 +72,10 @@ class UDPSeverHandler extends SimpleChannelInboundHandler<DatagramPacket> {
 
 		// 处理数据
 		try {
+			// 校验
+			if (!CRC16.compareCRC16(b)) {
+				return;
+			}
 			PosExecCommandDispatch.execCommand(packet.sender(), b);
 		} catch (Exception e) {
 			e.printStackTrace();
