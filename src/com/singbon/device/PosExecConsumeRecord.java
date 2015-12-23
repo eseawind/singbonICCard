@@ -32,7 +32,7 @@ public class PosExecConsumeRecord implements Runnable {
 	public PosExecConsumeRecord(Device device, byte[] b, Map map, InetSocketAddress inetSocketAddress) {
 		this.device = device;
 		this.b = b;
-		this.map=map;
+		this.map = map;
 		this.inetSocketAddress = inetSocketAddress;
 	}
 
@@ -94,52 +94,75 @@ public class PosExecConsumeRecord implements Runnable {
 		record.setCardSN(StringUtil.getHexStrFromBytes(baseIndex + addIndex + 67, baseIndex + addIndex + 70, b).toUpperCase());
 
 		// 相差半分钟校时
-//		Calendar c1 = Calendar.getInstance();
-//		c1.set(StringUtil.objToInt("20" + StringUtil.getHexStrFromBytes(baseIndex + addIndex + 61, baseIndex + addIndex + 61, b)),
-//				StringUtil.objToInt(StringUtil.getHexStrFromBytes(baseIndex + addIndex + 62, baseIndex + addIndex + 62, b)),
-//				StringUtil.objToInt(StringUtil.getHexStrFromBytes(baseIndex + addIndex + 63, baseIndex + addIndex + 63, b)),
-//				StringUtil.objToInt(StringUtil.getHexStrFromBytes(baseIndex + addIndex + 64, baseIndex + addIndex + 64, b)),
-//				StringUtil.objToInt(StringUtil.getHexStrFromBytes(baseIndex + addIndex + 65, baseIndex + addIndex + 65, b)),
-//				StringUtil.objToInt(StringUtil.getHexStrFromBytes(baseIndex + addIndex + 66, baseIndex + addIndex + 66, b)));
-//		c1.add(Calendar.MONTH, -1);
-//		Calendar c2 = Calendar.getInstance();
-//		c2.setTime(new Date());
-//
-//		if (Math.abs(c1.getTimeInMillis() - c2.getTimeInMillis()) > 30000) {
-//			String sendBufStr = StringUtil.hexLeftPad(PosFrame.Sys07, 2) + StringUtil.hexLeftPad(PosSubFrameSys07.SysTime, 2) + "0000" + "0000" + StringUtil.timeToHexStr() + "0000";
-//			String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
-//			sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + CommandDevice.NoSubDeviceNum + DeviceType.Main + DeviceType.getDeviceTypeFrame(device) + bufLen
-//					+ sendBufStr;
-//			byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
-//			try {
-//				TerminalManager.sendToPos(inetSocketAddress, sendBuf);
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//		}
-//
-//		int lastBatchId = Integer.parseInt(StringUtil.getHexStrFromBytes(baseIndex + 54, baseIndex + 55, b), 16);
-//		long lastBlackNum = Long.parseLong(StringUtil.getHexStrFromBytes(baseIndex + 56, baseIndex + 59, b), 16);
-//
-//		// 自动下载批次黑名单
-//		long sysLastBatchId = 0;
-//		if (TerminalManager.CompanyIdToLastBatchIdList.containsKey(device.getCompanyId())) {
-//			sysLastBatchId = TerminalManager.CompanyIdToLastBatchIdList.get(device.getCompanyId());
-//		}
-//		long sysLastBlackNum = 0;
-//		if (TerminalManager.CompanyIdToLastBlackNumList.containsKey(device.getCompanyId())) {
-//			sysLastBlackNum = TerminalManager.CompanyIdToLastBlackNumList.get(device.getCompanyId());
-//		}
-//		if (lastBatchId != sysLastBatchId) {
-//			PosExecBatchBlack black = new PosExecBatchBlack(lastBatchId, device);
-//			black.run();
-//		}
-//
-//		// 自动下载黑名单
-//		if (lastBlackNum != sysLastBlackNum) {
-//			PosExecCardBlack black = new PosExecCardBlack(lastBlackNum, device);
-//			black.run();
-//		}
+		// Calendar c1 = Calendar.getInstance();
+		// c1.set(StringUtil.objToInt("20" +
+		// StringUtil.getHexStrFromBytes(baseIndex + addIndex + 61, baseIndex +
+		// addIndex + 61, b)),
+		// StringUtil.objToInt(StringUtil.getHexStrFromBytes(baseIndex +
+		// addIndex + 62, baseIndex + addIndex + 62, b)),
+		// StringUtil.objToInt(StringUtil.getHexStrFromBytes(baseIndex +
+		// addIndex + 63, baseIndex + addIndex + 63, b)),
+		// StringUtil.objToInt(StringUtil.getHexStrFromBytes(baseIndex +
+		// addIndex + 64, baseIndex + addIndex + 64, b)),
+		// StringUtil.objToInt(StringUtil.getHexStrFromBytes(baseIndex +
+		// addIndex + 65, baseIndex + addIndex + 65, b)),
+		// StringUtil.objToInt(StringUtil.getHexStrFromBytes(baseIndex +
+		// addIndex + 66, baseIndex + addIndex + 66, b)));
+		// c1.add(Calendar.MONTH, -1);
+		// Calendar c2 = Calendar.getInstance();
+		// c2.setTime(new Date());
+		//
+		// if (Math.abs(c1.getTimeInMillis() - c2.getTimeInMillis()) > 30000) {
+		// String sendBufStr = StringUtil.hexLeftPad(PosFrame.Sys07, 2) +
+		// StringUtil.hexLeftPad(PosSubFrameSys07.SysTime, 2) + "0000" + "0000"
+		// + StringUtil.timeToHexStr() + "0000";
+		// String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2,
+		// 4);
+		// sendBufStr = device.getSn() +
+		// StringUtil.hexLeftPad(device.getDeviceNum(), 8) +
+		// CommandDevice.NoSubDeviceNum + DeviceType.Main +
+		// DeviceType.getDeviceTypeFrame(device) + bufLen
+		// + sendBufStr;
+		// byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
+		// try {
+		// TerminalManager.sendToPos(inetSocketAddress, sendBuf);
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
+		// }
+		//
+		// int lastBatchId =
+		// Integer.parseInt(StringUtil.getHexStrFromBytes(baseIndex + 54,
+		// baseIndex + 55, b), 16);
+		// long lastBlackNum =
+		// Long.parseLong(StringUtil.getHexStrFromBytes(baseIndex + 56,
+		// baseIndex + 59, b), 16);
+		//
+		// // 自动下载批次黑名单
+		// long sysLastBatchId = 0;
+		// if
+		// (TerminalManager.CompanyIdToLastBatchIdList.containsKey(device.getCompanyId()))
+		// {
+		// sysLastBatchId =
+		// TerminalManager.CompanyIdToLastBatchIdList.get(device.getCompanyId());
+		// }
+		// long sysLastBlackNum = 0;
+		// if
+		// (TerminalManager.CompanyIdToLastBlackNumList.containsKey(device.getCompanyId()))
+		// {
+		// sysLastBlackNum =
+		// TerminalManager.CompanyIdToLastBlackNumList.get(device.getCompanyId());
+		// }
+		// if (lastBatchId != sysLastBatchId) {
+		// PosExecBatchBlack black = new PosExecBatchBlack(lastBatchId, device);
+		// black.run();
+		// }
+		//
+		// // 自动下载黑名单
+		// if (lastBlackNum != sysLastBlackNum) {
+		// PosExecCardBlack black = new PosExecCardBlack(lastBlackNum, device);
+		// black.run();
+		// }
 
 		List<Meal> mealList = TerminalManager.CompanyIdToMealList.get(device.getCompanyId());
 		int mealId = 0;
@@ -156,7 +179,9 @@ public class PosExecConsumeRecord implements Runnable {
 
 		try {
 			JdbcUtil.consumeRecordDAO.insert(record);
-			if (record.getResult() == 1) {
+			int result = record.getResult();
+
+			if (result == 1 || result == 2) {
 				// 回复记录号
 				String buf = StringUtil.getHexStrFromBytes(0, 27, b) + "000d0101" + StringUtil.strLeftPad("", 8) + StringUtil.hexLeftPad(recordNO, 4) + "000000";
 				b = StringUtil.strTobytes(buf);
@@ -165,30 +190,32 @@ public class PosExecConsumeRecord implements Runnable {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				if (recordNO != device.getLastRecordNO()) {
-					map.put("type", "cr");
-					map.put("a", record.getDeviceName());
-					map.put("b", record.getUserNO());
-					map.put("c", record.getCardNO());
-					map.put("d", record.getUsername());
-					map.put("e", (float)record.getOddFare()/100);
-					map.put("f", (float)record.getSubsidyOddFare()/100);
-					map.put("g", (float)record.getDiscountFare()/100);
-					map.put("h", (float)(record.getOpFare()+record.getSubsidyOpFare())/100);
-					map.put("i", record.getMealName());
-					map.put("j", record.getOpTime());
-					map.put("k", record.getOpCount());
-					map.put("l", record.getSubsidyOpCount());
-					map.put("m", record.getRecordNO());
-					map.put("n", record.getConsumeTypeDes());
-					map.put("o", record.getCookbookName());
-					map.put("p", record.getCookbookNum());
-					map.put("q", record.getRecordCount());
-					map.put("s", record.getSubsidyAuth());
-					// 向监控平台发送命令
-					TerminalManager.sendToMonitor(map, device.getCompanyId());
-					device.setLastRecordNO(recordNO);
-				}
+			}
+			if (result == 1) {
+				// if (recordNO != device.getLastRecordNO()) {
+				map.put("type", "cr");
+				map.put("a", record.getDeviceName());
+				map.put("b", record.getUserNO());
+				map.put("c", record.getCardNO());
+				map.put("d", record.getUsername());
+				map.put("e", (float) record.getOddFare() / 100);
+				map.put("f", (float) record.getSubsidyOddFare() / 100);
+				map.put("g", (float) record.getDiscountFare() / 100);
+				map.put("h", (float) (record.getOpFare() + record.getSubsidyOpFare()) / 100);
+				map.put("i", record.getMealName());
+				map.put("j", record.getOpTime());
+				map.put("k", record.getOpCount());
+				map.put("l", record.getSubsidyOpCount());
+				map.put("m", record.getRecordNO());
+				map.put("n", record.getConsumeTypeDes());
+				map.put("o", record.getCookbookName());
+				map.put("p", record.getCookbookNum());
+				map.put("q", record.getRecordCount());
+				map.put("s", record.getSubsidyAuth());
+				// 向监控平台发送命令
+				TerminalManager.sendToMonitor(map, device.getCompanyId());
+				// device.setLastRecordNO(recordNO);
+				// }
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

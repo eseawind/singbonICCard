@@ -96,15 +96,14 @@ public class TCPServer implements Runnable {
 				// }
 				// StringUtil.println("");
 
-				// 校验
-				if (!CRC16.compareCRC16(b)) {
-					return;
-				}
-
 				byteBuffer.clear();
 
 				// 处理数据
 				try {
+					// 校验
+					if (!CRC16.compareCRC16(b)) {
+						return;
+					}
 					CardReaderCommandExec.execCommand(selectionKey, b);
 				} catch (Exception e) {
 					e.printStackTrace();
