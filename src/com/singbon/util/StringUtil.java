@@ -562,6 +562,9 @@ public class StringUtil {
 		CRC16.generate(b);
 		StringUtil.print(Integer.toHexString(b[b.length - 2]).replace("ffffff", "") + " ");
 		StringUtil.println(Integer.toHexString(b[b.length - 1]).replace("ffffff", ""));
+		
+		long a=12345;
+		System.out.println((float)a/100);
 	}
 
 	public static void print(Object obj) {

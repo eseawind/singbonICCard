@@ -2,7 +2,6 @@ package com.singbon.device;
 
 import java.net.InetSocketAddress;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,17 +20,21 @@ import com.singbon.util.StringUtil;
 public class PosExecCookbookRecord implements Runnable {
 
 	private byte[] b;
+	@SuppressWarnings("rawtypes")
+	private Map map;
 	private Device device;
 	private InetSocketAddress inetSocketAddress;
 
-	public PosExecCookbookRecord(Device device, byte[] b, InetSocketAddress inetSocketAddress) {
+	@SuppressWarnings("rawtypes")
+	public PosExecCookbookRecord(Device device, byte[] b, Map map, InetSocketAddress inetSocketAddress) {
 		this.device = device;
 		this.b = b;
+		this.map = map;
 		this.inetSocketAddress = inetSocketAddress;
 	}
 
 	// 分解订餐取餐记录
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({ "unchecked" })
 	public void run() {
 		// 大帧：1为普通8为菜单
 		CookbookRecord record = new CookbookRecord();
@@ -89,8 +92,7 @@ public class PosExecCookbookRecord implements Runnable {
 					e.printStackTrace();
 				}
 				if (recordNO != device.getLastRecordNO()) {
-					Map map = new HashMap();
-					map.put("type", "cookbookRecord");
+					map.put("type", "cbr");
 					map.put("record", record);
 					// 向监控平台发送命令
 					TerminalManager.sendToMonitor(map, device.getCompanyId());

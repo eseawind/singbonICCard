@@ -209,18 +209,18 @@
 					map.put(sn,new Date());
 				}
 			    //状态
-				if(e2.type=='status'){
+				if(e2.type=='s'){
 					$("#deviceList .device[name="+sn+"] img").attr('alt','在线').attr('src','/img/online.png');
 					var statusTr=$("#deviceStatusList tr.deviceStatus[id="+sn+"]");
 					if(statusTr.length!=0){
-	 					$('td[recordCount] div',statusTr).html(e2.recordCount);
+	 					$('td[recordCount] div',statusTr).html(e2.a);
 	// 					$('td[batchCount] div',statusTr).html(e2.batchCount);
 	// 					$('td[blackCount] div',statusTr).html(e2.blackCount);
-						$('td[subsidyVersion] div',statusTr).html(e2.subsidyVersion);
-						$('td[subsidyAuth] div',statusTr).html(e2.subsidyAuth==1?'是':'否');
+						$('td[subsidyVersion] div',statusTr).html(e2.b);
+						$('td[subsidyAuth] div',statusTr).html(e2.c==1?'是':'否');
 					}
 				//消费记录
-				}else if(e2.type=='consumeRecord'){
+				}else if(e2.type=='cr'){
 					$("#deviceList .device[id="+sn+"] img").attr('alt','在线').attr('src','/img/online.png');
 					if(consumeRecordIndex>=maxRow){
 						consumeRecordIndex=1;
@@ -228,30 +228,30 @@
 					}
 					var tr=$("#consumeRecord tbody tr[index="+consumeRecordIndex+"]");					
 					$('td[index] div',tr).html(consumeRecordIndex);
-					$('td[deviceName] div',tr).html(e2.record.deviceName);
-					$('td[userNO] div',tr).html(e2.record.userNO);
-					$('td[cardNO] div',tr).html(e2.record.cardNO);
-					$('td[username] div',tr).html(e2.record.username);
-					$('td[oddFare] div',tr).html(e2.record.oddFare/100);
-					$('td[subsidyOddFare] div',tr).html(e2.record.subsidyOddFare/100);
-					$('td[discountFare] div',tr).html(e2.record.discountFare/100);
-					$('td[opFare] div',tr).html((e2.record.opFare+e2.record.subsidyOpFare)/100);
-					$('td[mealName] div',tr).html(e2.record.mealName);
-					$('td[opTime] div',tr).html(e2.record.opTime);
-					$('td[opCount] div',tr).html(e2.record.opCount);
-					$('td[subsidyOpCount] div',tr).html(e2.record.subsidyOpCount);
-					$('td[recordNO] div',tr).html(e2.record.recordNO);
-					$('td[consumeTypeDes] div',tr).html(e2.record.consumeTypeDes);
-					$('td[cookbookName] div',tr).html(e2.record.cookbookName);
-					$('td[cookbookNum] div',tr).html(e2.record.cookbookNum);
+					$('td[deviceName] div',tr).html(e2.a);
+					$('td[userNO] div',tr).html(e2.b);
+					$('td[cardNO] div',tr).html(e2.c);
+					$('td[username] div',tr).html(e2.d);
+					$('td[oddFare] div',tr).html(e2.e);
+					$('td[subsidyOddFare] div',tr).html(e2.f);
+					$('td[discountFare] div',tr).html(e2.g);
+					$('td[opFare] div',tr).html(e2.h);
+					$('td[mealName] div',tr).html(e2.i);
+					$('td[opTime] div',tr).html(e2.j);
+					$('td[opCount] div',tr).html(e2.k);
+					$('td[subsidyOpCount] div',tr).html(e2.l);
+					$('td[recordNO] div',tr).html(e2.m);
+					$('td[consumeTypeDes] div',tr).html(e2.n);
+					$('td[cookbookName] div',tr).html(e2.o);
+					$('td[cookbookNum] div',tr).html(e2.p);
 					consumeRecordIndex++;
 					
 					var statusTr=$("#deviceStatusList tr.deviceStatus[id="+sn+"]");
- 					$('td[recordCount] div',statusTr).html(e2.record.recordCount);
-					$('td[subsidyVersion] div',statusTr).html(e2.record.subsidyVersion);
-					$('td[subsidyAuth] div',statusTr).html(e2.record.subsidyAuth==1?'是':'否');
+ 					$('td[recordCount] div',statusTr).html(e2.q);
+// 					$('td[subsidyVersion] div',statusTr).html(e2.r);
+					$('td[subsidyAuth] div',statusTr).html(e2.s==1?'是':'否');
 				//订餐取餐记录
-				}else if(e2.type=='cookbookRecord'){
+				}else if(e2.type=='cbr'){
 					$("#deviceList .device[id="+sn+"] img").attr('alt','在线').attr('src','/img/online.png');
 					if(cookbookRecordIndex>=maxRow){
 						cookbookRecordIndex=1;
@@ -307,7 +307,7 @@
 	
 	function heart(){
 		var heartInterval=parseInt('${company.heartInterval}')*3;
-		$('body').everyTime('3s','getCardReaderStatus', function() {
+		$('body').everyTime('5s','getCardReaderStatus', function() {
 			var d=new Date();
 			var array = map.keySet();
 			for(var i in array) {

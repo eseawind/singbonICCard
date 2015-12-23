@@ -43,21 +43,21 @@ public class PosExecCommandDispatch {
 
 		// 心跳包
 		if (b[30] == PosFrame.Status && b[31] == PosSubFrameStatus.SysStatus) {
-			map.put("'type'", "status");
+			map.put("'type'", "s");
 			// 中转
 			if (device.getDeviceType() != 1) {
-				map.put("recordCount", Integer.parseInt(StringUtil.getHexStrFromBytes(36, 37, b), 16));
+				map.put("a", Integer.parseInt(StringUtil.getHexStrFromBytes(36, 37, b), 16));
 
 				// map.put("lastBatchId", lastBatchId);
 				// map.put("lastBlackNum", lastBlackNum);
-				map.put("subsidyAuth", (b[44] >> 1) & 0x1);
+				map.put("b", (b[44] >> 1) & 0x1);
 				// map.put("batchCount",
 				// Integer.parseInt(StringUtil.getHexStrFromBytes(51, 52, b),
 				// 16));
 				// map.put("blackCount",
 				// Integer.parseInt(StringUtil.getHexStrFromBytes(53, 54, b),
 				// 16));
-				map.put("subsidyVersion", Integer.parseInt(StringUtil.getHexStrFromBytes(55, 56, b), 16));
+				map.put("c", Integer.parseInt(StringUtil.getHexStrFromBytes(55, 56, b), 16));
 
 				// 监控打开执行自动操作
 				if (TerminalManager.CompanyIdToMonitorRunningList.containsKey(device.getCompanyId()) && TerminalManager.CompanyIdToMonitorRunningList.get(device.getCompanyId())) {
@@ -114,20 +114,23 @@ public class PosExecCommandDispatch {
 				}
 			}
 
+			// 向监控平台发送心跳
+			if (map.size() > 1) {
+				TerminalManager.sendToMonitor(map, device.getCompanyId());
+			}
 			// 记录帧 1普通消费、2补助消费、9领取补助记录
 		} else if (b[30] == 1 && (b[31] == 1 || b[31] == 2 || b[31] == 3 || b[31] == 9 || b[31] == 39)) {
-			PosExecConsumeRecord record = new PosExecConsumeRecord(device, b, inetSocketAddress);
+			PosExecConsumeRecord record = new PosExecConsumeRecord(device, b, map, inetSocketAddress);
 			record.run();
 			// 订餐取餐记录
 		} else if (b[30] == 8 && (b[31] == 1 || b[31] == 2 || b[31] == 3)) {
-			map.put("'type'", "cookbookRecord");
 			// 菜单消费 202 0xca,菜单订餐 203 0xcb
 			int recType = b[92] & 0xff;
 			if (recType == 202) {
-				PosExecConsumeRecord record = new PosExecConsumeRecord(device, b, inetSocketAddress);
+				PosExecConsumeRecord record = new PosExecConsumeRecord(device, b, map, inetSocketAddress);
 				record.run();
 			} else if (recType == 203) {
-				PosExecCookbookRecord record = new PosExecCookbookRecord(device, b, inetSocketAddress);
+				PosExecCookbookRecord record = new PosExecCookbookRecord(device, b, map, inetSocketAddress);
 				record.run();
 			}
 			// 补助请求
@@ -138,11 +141,6 @@ public class PosExecCommandDispatch {
 		} else {
 			PosExecReplyCommand.execReplyCommand(device, commandCode, b, map, false);
 			return;
-		}
-
-		// 向监控平台发送命令
-		if (map.size() > 1) {
-			TerminalManager.sendToMonitor(map, device.getCompanyId());
 		}
 	}
 }

@@ -2,7 +2,6 @@ package com.singbon.device;
 
 import java.net.InetSocketAddress;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,17 +23,21 @@ import com.singbon.util.StringUtil;
 public class PosExecConsumeRecord implements Runnable {
 
 	private byte[] b;
+	@SuppressWarnings("rawtypes")
+	private Map map;
 	private Device device;
 	private InetSocketAddress inetSocketAddress;
 
-	public PosExecConsumeRecord(Device device, byte[] b, InetSocketAddress inetSocketAddress) {
+	@SuppressWarnings("rawtypes")
+	public PosExecConsumeRecord(Device device, byte[] b, Map map, InetSocketAddress inetSocketAddress) {
 		this.device = device;
 		this.b = b;
+		this.map=map;
 		this.inetSocketAddress = inetSocketAddress;
 	}
 
 	// 分解消费记录
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ "unchecked" })
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void run() {
 		// 大帧：1为普通8为菜单
@@ -163,9 +166,25 @@ public class PosExecConsumeRecord implements Runnable {
 					e.printStackTrace();
 				}
 				if (recordNO != device.getLastRecordNO()) {
-					Map map = new HashMap();
-					map.put("type", "consumeRecord");
-					map.put("record", record);
+					map.put("type", "cr");
+					map.put("a", record.getDeviceName());
+					map.put("b", record.getUserNO());
+					map.put("c", record.getCardNO());
+					map.put("d", record.getUsername());
+					map.put("e", (float)record.getOddFare()/100);
+					map.put("f", (float)record.getSubsidyOddFare()/100);
+					map.put("g", (float)record.getDiscountFare()/100);
+					map.put("h", (float)(record.getOpFare()+record.getSubsidyOpFare())/100);
+					map.put("i", record.getMealName());
+					map.put("j", record.getOpTime());
+					map.put("k", record.getOpCount());
+					map.put("l", record.getSubsidyOpCount());
+					map.put("m", record.getRecordNO());
+					map.put("n", record.getConsumeTypeDes());
+					map.put("o", record.getCookbookName());
+					map.put("p", record.getCookbookNum());
+					map.put("q", record.getRecordCount());
+					map.put("s", record.getSubsidyAuth());
 					// 向监控平台发送命令
 					TerminalManager.sendToMonitor(map, device.getCompanyId());
 					device.setLastRecordNO(recordNO);

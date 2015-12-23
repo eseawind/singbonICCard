@@ -69,7 +69,6 @@ public class CollectService implements Runnable {
 						byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
 						try {
 							TerminalManager.sendToPos(inetSocketAddress, sendBuf);
-							System.out.println();
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
@@ -79,6 +78,7 @@ public class CollectService implements Runnable {
 				if (sendCommandList == null || sendCommandList.size() == 0) {
 					try {
 						// 采集间隔
+						Thread.sleep(1000);
 						Thread.sleep(transferInterval);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
