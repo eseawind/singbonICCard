@@ -40,9 +40,6 @@
 			</if>
 			) snCount
 	</select>
-	<select id="selectTransferListByCompanyId" resultType="String" useCache="false">
-		select sn from device d where companyId=#{companyId} and exists (select id from device where transferId=d.id)
-	</select>
 	<select id="selectDeviceListByCompanyId" resultMap="device" useCache="false">
 		select id,companyId,deptId,paramGroupId,deviceName,deviceNum,deviceType,transferId,enable,sn,case when ifnull(transferId,0) =0 then sn else (select sn from device where id=d.transferId) end transferSn
 		 from device d where companyId=#{companyId} and deviceType in (
@@ -53,6 +50,7 @@
 		<if test="onlyEnable == 1">
 			 and enable=1
 		</if>
+		order by deviceNum
 	</select>
 	<select id="selectPosListByDeptId" resultMap="device" useCache="false">
 		select id,companyId,deptId,paramGroupId,deviceName,deviceNum,deviceType,transferId,enable,sn,case when ifnull(transferId,0) =0 then sn else (select sn from device where id=d.transferId) end transferSn
@@ -71,6 +69,6 @@
 	</select>
 <!-- 	系统启动加载用 -->
 	<select id="selectAllList" resultMap="device" useCache="false">
-		select * from device
+		select id,companyId,deptId,paramGroupId,deviceName,deviceNum,deviceType,transferId,enable,sn,case when ifnull(transferId,0) =0 then sn else (select sn from device where id=d.transferId) end transferSn from device d
 	</select>
 </mapper>

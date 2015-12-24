@@ -32,7 +32,8 @@ public class PosExecSubsidyRequest implements Runnable {
 		long userId = Long.parseLong(StringUtil.getHexStrFromBytes(36, 39, b), 16);
 		long cardNO = Long.parseLong(StringUtil.getHexStrFromBytes(40, 43, b), 16);
 		int cardTypeId = Integer.parseInt(StringUtil.getHexStrFromBytes(44, 44, b), 16);
-		String sql = String.format("select s.subsidyVersion,subsidyFare from user u left join subsidy s on u.userId=s.userId where u.companyId=%s and u.userId=%s and u.status=241", device.getCompanyId(), userId);
+		String sql = String.format("select s.subsidyVersion,subsidyFare from user u left join subsidy s on u.userId=s.userId where u.companyId=%s and u.userId=%s and u.status=241",
+				device.getCompanyId(), userId);
 		List<Map> list = JdbcUtil.baseDAO.selectBySql(sql);
 
 		// 补助帐号（4 字节）+补助卡号（4 字节）+卡种类（1 字节参数
@@ -48,7 +49,12 @@ public class PosExecSubsidyRequest implements Runnable {
 		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + CommandDevice.NoSubDeviceNum + DeviceType.Main + DeviceType.getDeviceTypeFrame(device) + bufLen + sendBufStr;
 		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
 
-		InetSocketAddress inetSocketAddress = TerminalManager.SNToInetSocketAddressList.get(device.getSn());
+		String sn = device.getSn();
+		if (device.getTransferId() != null && device.getTransferId() != 0) {
+			sn = device.getTransferSn();
+		}
+
+		InetSocketAddress inetSocketAddress = TerminalManager.SNToInetSocketAddressList.get(sn);
 		try {
 			TerminalManager.sendToPos(inetSocketAddress, sendBuf);
 		} catch (Exception e) {

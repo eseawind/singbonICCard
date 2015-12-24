@@ -19,21 +19,17 @@ public class PosExecReplyCommand {
 
 	// 分解命令回复
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static void execReplyCommand(Device device, Integer commandCode, byte[] b, Map map, boolean statusReply) {
+	public static void execReplyCommand(Device device, Integer commandCode, byte[] b, Map map) {
 		SendCommand sendCommand = null;
 		synchronized (TerminalManager.sendCommandObject) {
 			ArrayList<SendCommand> sendCommandList = TerminalManager.SNToSendCommandList.get(device.getSn());
 			if (sendCommandList != null && sendCommandList.size() > 0) {
 				sendCommand = sendCommandList.get(0);
-				System.out.println(sendCommand.getCommandCode() + " " + commandCode);
+//				System.out.println(sendCommand.getCommandCode() + " " + commandCode);
 				if (sendCommand.getCommandCode() == commandCode) {
 					sendCommandList.remove(sendCommand);
 				}
 			}
-		}
-		// 如果是获取状态回复就返回
-		if (statusReply) {
-			return;
 		}
 
 		map.put("type", "log");
@@ -100,7 +96,7 @@ public class PosExecReplyCommand {
 						}
 						TerminalManager.SNToSendCommandList.put(device.getSn(), tempList);
 					}
-					System.out.println("new size:" + tempList.size());
+//					System.out.println("new size:" + tempList.size());
 				}
 				map.put("des", DesUtil.decrypt(DeviceCommunicateStr.ExecGetLastNumCookbook));
 			}

@@ -68,12 +68,7 @@ public class TerminalManager {
 	/**
 	 * 公司ID到采集监控命令多线程映射列表
 	 */
-	public static Map<Integer, Thread> CompanyIdToMonitorCommandThreadList = new HashMap<Integer, Thread>();
-
-	/**
-	 * 公司ID到采集监控采集数据多线程映射列表
-	 */
-	public static Map<Integer, Thread> CompanyIdToMonitorCollectThreadList = new HashMap<Integer, Thread>();
+	public static Map<Integer, List<Thread>> CompanyIdToMonitorThreadList = new HashMap<Integer, List<Thread>>();
 
 	/**
 	 * SN序列号到发送命令映射列表
@@ -177,8 +172,8 @@ public class TerminalManager {
 	 */
 	public static void sendToCardReader(SocketChannel socketChannel, byte[] sendBuf) throws Exception {
 		CRC16.generate(sendBuf);
-		StringUtil.print(StringUtil.toHexString(sendBuf[sendBuf.length - 2]) + " ");
-		StringUtil.print(StringUtil.toHexString(sendBuf[sendBuf.length - 1]) + " ");
+//		StringUtil.print(StringUtil.toHexString(sendBuf[sendBuf.length - 2]) + " ");
+//		StringUtil.print(StringUtil.toHexString(sendBuf[sendBuf.length - 1]) + " ");
 		ByteBuffer byteBuffer = ByteBuffer.wrap(sendBuf);
 		socketChannel.write(byteBuffer);
 	}
@@ -192,8 +187,8 @@ public class TerminalManager {
 	 */
 	public static void sendToPos(InetSocketAddress inetSocketAddress, byte[] b) throws Exception {
 		CRC16.generate(b);
-		StringUtil.print(StringUtil.toHexString(b[b.length - 2]) + " ");
-		StringUtil.print(StringUtil.toHexString(b[b.length - 1]) + " ");
+//		StringUtil.print(StringUtil.toHexString(b[b.length - 2]) + " ");
+//		StringUtil.print(StringUtil.toHexString(b[b.length - 1]) + " ");
 		ByteBuf buf = Unpooled.copiedBuffer(b);
 		DatagramPacket datagramPacket = new DatagramPacket(buf, inetSocketAddress);
 		TerminalManager.ctx.writeAndFlush(datagramPacket);

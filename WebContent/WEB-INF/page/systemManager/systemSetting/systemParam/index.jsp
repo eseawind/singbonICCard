@@ -23,13 +23,13 @@
 	}
 	
 	#systemParamForm dl {
-		width: 340px;
+		width: 360px;
 	}
 	
 	#systemParamForm dt {
 		margin: 0 0 0 5px;
 		padding: 0;
-		width: 120px;
+		width: 140px;
 	}
 	
 	#systemParamForm dd {
@@ -55,26 +55,26 @@
 </style>
 <form id="systemParamForm" method="post" action="${base}/save.do" class="pageForm required-validate">
 	<div class="pageFormContent" layoutH="188" style="width: 500px;margin: 50px 0 0 200px;">
-		<dl style="margin: 10px 0;">
+		<dl style="margin: 7px 0;">
 			<dt>单位名称：</dt>
 			<dd>
 				<input type="hidden" name="id" value="${company.id}"/>
 				<input type="text" name="companyName" value="${company.companyName}" maxlength="20" class="required" />
 			</dd>
 		</dl>
-<!-- 		<dl style="margin: 10px 0;"> -->
+<!-- 		<dl style="margin: 7px 0;"> -->
 <!-- 			<dt>单位序列号：</dt> -->
 <!-- 			<dd> -->
 <%-- 				<input type="text" name="serialNumber" value="${company.serialNumber}" maxlength="20" class="digits required" /> --%>
 <!-- 			</dd> -->
 <!-- 		</dl> -->
-<!-- 		<dl style="margin: 10px 0;"> -->
+<!-- 		<dl style="margin: 7px 0;"> -->
 <!-- 			<dt>单位授权号：</dt> -->
 <!-- 			<dd> -->
 <%-- 				<input type="text" name="authNumber" value="${company.authNumber}" maxlength="20" class="digits required" /> --%>
 <!-- 			</dd> -->
 <!-- 		</dl> -->
-		<dl style="margin: 10px 0;">
+		<dl style="margin: 7px 0;">
 			<dt>基本扇区号：</dt>
 			<select class="combox" outerw="178" innerw="195" name="baseSection" class="required">
 				<c:forEach var="i" begin="1" end="13" step="1">
@@ -82,25 +82,25 @@
 				</c:forEach>
 			</select>
 		</dl>
-		<dl style="margin: 10px 0;">
+		<dl style="margin: 7px 0;">
 			<dt>设备心跳间隔：</dt>
 			<dd>
 				<input type="text" name="heartInterval" value="${company.heartInterval}" maxlength="20" class="digits required" />
 			</dd>
 		</dl>
-		<dl style="margin: 10px 0;">
+		<dl style="margin: 7px 0;">
 			<dt>数据上传间隔：</dt>
 			<dd>
 				<input type="text" name="uploadInterval" value="${company.uploadInterval}" maxlength="20" class="digits required" />
 			</dd>
 		</dl>
-		<dl style="margin: 10px 0;">
+		<dl style="margin: 7px 0;">
 			<dt>数据上传容错次数：</dt>
 			<dd>
 				<input type="text" name="uploadErrTime" value="${company.uploadErrTime}" maxlength="20" class="digits required" />
 			</dd>
 		</dl>
-		<dl style="margin: 10px 0;">
+		<dl style="margin: 7px 0;">
 			<dt>终端访问超次：</dt>
 			<select class="combox" outerw="178" innerw="195" name="accessTimeout" class="required">
 				<c:forEach var="i" begin="1" end="50" step="1">
@@ -108,7 +108,7 @@
 				</c:forEach>
 			</select>
 		</dl>
-		<dl style="margin: 10px 0;">
+		<dl style="margin: 7px 0;">
 			<dt>中转访问间隔(毫秒)：</dt>
 			<select class="combox" outerw="178" innerw="195" name="transferInterval" class="required">
 				<c:forEach var="i" begin="1" end="50" step="1">
@@ -116,20 +116,28 @@
 				</c:forEach>
 			</select>
 		</dl>
-<!-- 		<dl style="margin: 10px 0;"> -->
+		<dl style="margin: 7px 0;">
+			<dt>黑名单重发间隔(毫秒)：</dt>
+			<select class="combox" outerw="178" innerw="195" name="blackInterval" class="required">
+				<c:forEach var="i" begin="1" end="50" step="1">
+					<option value="${i*100}" width="220" <c:if test="${company.blackInterval==i*100}">selected</c:if>>${i*100}</option>
+				</c:forEach>
+			</select>
+		</dl>
+<!-- 		<dl style="margin: 7px 0;"> -->
 <!-- 			<dt>是否启用补助宏冲：</dt> -->
 <!-- 			<dd> -->
 <%-- 				<input style="width: 16px;" name="enableSubsidyReset" type="radio" <c:if test="${company.enableSubsidyReset==0}">checked</c:if> value="0"/>启用 --%>
 <%-- 				<input style="width: 16px;" name="enableSubsidyReset" type="radio" <c:if test="${company.enableSubsidyReset==1}">checked</c:if> value="1"/>不启用 --%>
 <!-- 			</dd> -->
 <!-- 		</dl> -->
-		<dl style="margin: 10px 0;">
+		<dl style="margin: 7px 0;">
 			<dt>最新补助宏冲日期：</dt>
 			<dd>
 				${company.subsidyInvalidDate}
 			</dd>
 		</dl>
-		<dl style="margin: 10px 0;">
+		<dl style="margin: 7px 0;">
 			<dt>补助版本号：</dt>
 			<dd>
 				${company.subsidyVersion}

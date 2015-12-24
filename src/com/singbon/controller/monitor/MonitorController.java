@@ -1,7 +1,10 @@
 package com.singbon.controller.monitor;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,8 +23,9 @@ import com.singbon.entity.Company;
 import com.singbon.entity.Dept;
 import com.singbon.entity.Device;
 import com.singbon.entity.SysUser;
-import com.singbon.service.monitor.CollectService;
 import com.singbon.service.monitor.MonitorService;
+import com.singbon.service.monitor.PosTransferService;
+import com.singbon.service.monitor.PosUdpService;
 import com.singbon.service.systemManager.DeviceService;
 import com.singbon.service.systemManager.systemSetting.DeptService;
 
@@ -58,10 +62,8 @@ public class MonitorController extends BaseController {
 		model.addAttribute("sysUser", sysUser);
 		model.addAttribute("company", company);
 
-		List<Device> transferPosList = new ArrayList<>();
-
 		List<Dept> deptList = (List<Dept>) this.deptService.selectListByCompanyId(company.getId());
-		List<String> transferList = (List<String>) this.deviceService.selectTransferListByCompanyId(company.getId());
+		// 所有设备
 		List<Device> deviceList = this.deviceService.selectDeviceListByCompanyId(company.getId(), new String[] { "2", "3" }, 1);
 		for (Device d : deviceList) {
 			if (TerminalManager.SNToInetSocketAddressList.containsKey(d.getTransferSn())) {
@@ -69,50 +71,88 @@ public class MonitorController extends BaseController {
 			} else {
 				d.setIsOnline(0);
 			}
-			if (d.getTransferId() != null && d.getTransferId() != 0) {
-				transferPosList.add(d);
-			}
 		}
-		model.addAttribute("deptList", deptList);
-		model.addAttribute("transferList", transferList);
-		model.addAttribute("deviceList", deviceList);
-
-		String url = request.getRequestURI();
-		model.addAttribute("base", url.replace("/index.do", ""));
 
 		// 关闭老线程
-		Thread oldCommandThread = TerminalManager.CompanyIdToMonitorCommandThreadList.get(company.getId());
-		if (oldCommandThread != null && oldCommandThread.isAlive()) {
-			oldCommandThread.interrupt();
+		List<Thread> threadList = TerminalManager.CompanyIdToMonitorThreadList.get(company.getId());
+		if (threadList != null) {
+			for (Thread thread : threadList) {
+				if (thread != null && thread.isAlive()) {
+					thread.interrupt();
+				}
+			}
 		}
-		Thread oldColectThread = TerminalManager.CompanyIdToMonitorCollectThreadList.get(company.getId());
-		if (oldColectThread != null && oldColectThread.isAlive()) {
-			oldColectThread.interrupt();
+		TerminalManager.CompanyIdToMonitorThreadList.remove(company.getId());
+		
+		// 监控用中转通信器列表
+		List<String> transferList = new ArrayList<>();
+		// 主动udp设备
+		List<Device> posUdpDeviceList = new ArrayList<>();
+		// 中转设备
+		Map<Integer, List<Device>> posTransferDeviceList = new HashMap<>();
+
+		for (Device d : deviceList) {
+			Integer transferId = d.getTransferId();
+			if (transferId == null || transferId == 0) {
+				posUdpDeviceList.add(d);
+			} else {
+				List<Device> tempPosTransferDeviceList = new ArrayList<>();
+				if (posTransferDeviceList.containsKey(transferId)) {
+					tempPosTransferDeviceList = posTransferDeviceList.get(transferId);
+				}
+				tempPosTransferDeviceList.add(d);
+				posTransferDeviceList.put(transferId, tempPosTransferDeviceList);
+			}
+			if(d.getDeviceType()==1){
+				transferList.add(d.getSn());				
+			}
 		}
 
-		// 启动监控线程
-		MonitorService monitorService = new MonitorService();
-		monitorService.setAccessTimeout(company.getAccessTimeout());
-		monitorService.setTransferInterval(company.getTransferInterval());
-		monitorService.setDeviceList(deviceList);
-		Thread comandThread = new Thread(monitorService);
-		comandThread.setName("Co-command" + company.getId());
-		TerminalManager.CompanyIdToMonitorCommandThreadList.put(company.getId(), comandThread);
-		comandThread.start();
-
-		// 启动采集线程
-		if (transferPosList.size() > 0) {
-			CollectService collectService = new CollectService();
-			collectService.setTransferInterval(company.getTransferInterval());
-			collectService.setDeviceList(transferPosList);
-			Thread collectThread = new Thread(collectService);
-			collectThread.setName("Co-collect" + company.getId());
-			TerminalManager.CompanyIdToMonitorCollectThreadList.put(company.getId(), collectThread);
-			collectThread.start();
+		threadList = new ArrayList<>();
+		if (posUdpDeviceList.size() > 0) {
+			// 启动线程
+			PosUdpService service = new PosUdpService();
+			service.setAccessTimeout(company.getAccessTimeout());
+			service.setBlackInterval(company.getBlackInterval());			
+			service.setDeviceList(posUdpDeviceList);
+			Thread posUdpThread = new Thread(service);
+			posUdpThread.setName("Co-udp" + company.getId());
+			threadList.add(posUdpThread);
+			posUdpThread.start();
 		}
+
+		if (posTransferDeviceList.size() > 0) {
+			Iterator<Integer> transferIds = posTransferDeviceList.keySet().iterator();
+			while (transferIds.hasNext()) {
+				Integer transferId = transferIds.next();
+				List<Device> transferDeviceList = posTransferDeviceList.get(transferId);
+				if (transferDeviceList.size() > 0) {
+					// 启动线程
+					PosTransferService service = new PosTransferService();
+					service.setAccessTimeout(company.getAccessTimeout());
+					service.setBlackInterval(company.getBlackInterval());	
+					service.setTransferInterval(company.getTransferInterval());
+					service.setDeviceList(transferDeviceList);
+					Thread posTransferThread = new Thread(service);
+					posTransferThread.setName("Co-transfer" + transferId);
+					threadList.add(posTransferThread);
+					posTransferThread.start();
+				}
+			}
+		}
+
+		// 加入线程列表
+		TerminalManager.CompanyIdToMonitorThreadList.put(company.getId(), threadList);
 
 		TerminalManager.CompanyIdToMonitorRunningList.put(company.getId(), true);
 		request.getSession().setAttribute("companyId", company.getId().toString());
+
+		model.addAttribute("deptList", deptList);
+		model.addAttribute("deviceList", deviceList);
+		model.addAttribute("transferSnList", transferList);
+
+		String url = request.getRequestURI();
+		model.addAttribute("base", url.replace("/index.do", ""));
 		return url.replace(".do", "");
 	}
 

@@ -1,5 +1,7 @@
 package com.singbon.device;
 
+import java.util.List;
+
 import org.comet4j.core.CometConnection;
 import org.comet4j.core.CometContext;
 import org.comet4j.core.event.ConnectEvent;
@@ -39,16 +41,17 @@ public class CometServer {
 				// 停止监控线程
 				String companyId = connection.getCompanyId();
 				if (companyId != null) {
-					Thread oldCommandThread = TerminalManager.CompanyIdToMonitorCommandThreadList.get(Integer.valueOf(companyId));
-					if (oldCommandThread != null && oldCommandThread.isAlive()) {
-						oldCommandThread.interrupt();
+					// 关闭老线程
+					List<Thread> threadList = TerminalManager.CompanyIdToMonitorThreadList.get(StringUtil.objToInt(companyId));
+					if (threadList != null) {
+						for (Thread thread : threadList) {
+							if (thread != null && thread.isAlive()) {
+								thread.interrupt();
+							}
+						}
 					}
-					Thread oldColectThread = TerminalManager.CompanyIdToMonitorCollectThreadList.get(Integer.valueOf(companyId));
-					if (oldColectThread != null && oldColectThread.isAlive()) {
-						oldColectThread.interrupt();
-					}
-					TerminalManager.CompanyIdToMonitorRunningList.remove(Integer.valueOf(companyId));
 				}
+				TerminalManager.CompanyIdToMonitorThreadList.remove(StringUtil.objToInt(companyId));
 				String ip = connection.getClientIp();
 				StringUtil.println("d " + ip);
 				return false;

@@ -21,6 +21,7 @@ public class Company implements Serializable {
 	private Integer uploadErrTime;
 	private Integer accessTimeout;
 	private Integer transferInterval;
+	private Integer blackInterval;
 	private String invalidDate;
 	private boolean enable;
 	// 不入库
@@ -156,6 +157,14 @@ public class Company implements Serializable {
 
 	public void setTransferInterval(Integer transferInterval) {
 		this.transferInterval = transferInterval;
+	}
+
+	public Integer getBlackInterval() {
+		return blackInterval;
+	}
+
+	public void setBlackInterval(Integer blackInterval) {
+		this.blackInterval = blackInterval;
 	}
 
 }

@@ -12,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import com.singbon.dao.systemManager.DeviceDAO;
-import com.singbon.dao.systemManager.systemSetting.BatchDAO;
 import com.singbon.dao.systemManager.systemSetting.ConsumeParamDAO;
 import com.singbon.dao.systemManager.systemSetting.CookbookDAO;
 import com.singbon.dao.systemManager.systemSetting.DiscountDAO;
@@ -51,10 +49,8 @@ import com.singbon.util.StringUtil;
  * 
  */
 @Service
-public class MonitorService implements Runnable {
+public class MonitorService {
 
-	@Autowired
-	public DeviceDAO deviceDAO;
 	@Autowired
 	public ConsumeParamDAO consumeParamDAO;
 	@Autowired
@@ -69,24 +65,6 @@ public class MonitorService implements Runnable {
 	public DiscountDAO discountDAO;
 	@Autowired
 	public CookbookDAO cookbookDAO;
-	@Autowired
-	public BatchDAO batchDAO;
-
-	private Integer accessTimeout;
-	private Integer transferInterval;
-	private List<Device> deviceList;
-
-	public void setAccessTimeout(Integer accessTimeout) {
-		this.accessTimeout = accessTimeout;
-	}
-
-	public void setTransferInterval(Integer transferInterval) {
-		this.transferInterval = transferInterval;
-	}
-
-	public void setDeviceList(List<Device> deviceList) {
-		this.deviceList = deviceList;
-	}
 
 	/**
 	 * 校时
@@ -97,7 +75,7 @@ public class MonitorService implements Runnable {
 	 * @throws Exception
 	 * @throws Exception
 	 */
-	public void time(Device device, InetSocketAddress inetSocketAddress, Integer commandCode) throws Exception {
+	private static void time(Device device, InetSocketAddress inetSocketAddress, Integer commandCode) throws Exception {
 		String sendBufStr = StringUtil.hexLeftPad((int) PosFrame.Sys07, 2) + StringUtil.hexLeftPad((int) PosSubFrameSys07.SysTime, 2) + "0000" + StringUtil.hexLeftPad(commandCode, 4)
 				+ StringUtil.timeToHexStr() + "0000";
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
@@ -115,7 +93,7 @@ public class MonitorService implements Runnable {
 	 * @throws Exception
 	 * @throws Exception
 	 */
-	public void grantSubsidy(Device device, InetSocketAddress inetSocketAddress, SendCommand sendCommand) throws Exception {
+	private static void grantSubsidy(Device device, InetSocketAddress inetSocketAddress, SendCommand sendCommand) throws Exception {
 		String date = sendCommand.getCompany().getSubsidyInvalidDate();
 		if (StringUtils.isEmpty(date))
 			return;
@@ -140,7 +118,7 @@ public class MonitorService implements Runnable {
 	 * @throws Exception
 	 * @throws Exception
 	 */
-	public void disableSubsidy(Device device, InetSocketAddress inetSocketAddress, Integer commandCode) throws Exception {
+	private static void disableSubsidy(Device device, InetSocketAddress inetSocketAddress, Integer commandCode) throws Exception {
 		String sendBufStr = StringUtil.hexLeftPad(PosFrame.Sys07, 2) + StringUtil.hexLeftPad(PosSubFrameSys07.DisableSubsidy, 2) + "0000" + StringUtil.hexLeftPad(commandCode, 4) + "0000";
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
 		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + CommandDevice.NoSubDeviceNum + DeviceType.Main + DeviceType.getDeviceTypeFrame(device) + bufLen + sendBufStr;
@@ -157,7 +135,7 @@ public class MonitorService implements Runnable {
 	 * @throws Exception
 	 * @throws Exception
 	 */
-	public void getStatus(Device device, InetSocketAddress inetSocketAddress, Integer commandCode) throws Exception {
+	private static void getStatus(Device device, InetSocketAddress inetSocketAddress, Integer commandCode) throws Exception {
 		String sendBufStr = StringUtil.hexLeftPad(PosFrame.Status, 2) + StringUtil.hexLeftPad(PosSubFrameStatus.Ask, 2) + "0000" + StringUtil.hexLeftPad(commandCode, 4) + StringUtil.timeToHexStr()
 				+ "0000";
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
@@ -175,7 +153,7 @@ public class MonitorService implements Runnable {
 	 * @throws Exception
 	 * @throws Exception
 	 */
-	public void consumeParam(Device device, InetSocketAddress inetSocketAddress, SendCommand command) throws Exception {
+	private static void consumeParam(Device device, InetSocketAddress inetSocketAddress, SendCommand command) throws Exception {
 		ConsumeParam p = command.getConsumeParam();
 		if (p == null)
 			return;
@@ -227,7 +205,7 @@ public class MonitorService implements Runnable {
 	 * @throws Exception
 	 * @throws Exception
 	 */
-	public void meal(Device device, InetSocketAddress inetSocketAddress, SendCommand command) throws Exception {
+	private static void meal(Device device, InetSocketAddress inetSocketAddress, SendCommand command) throws Exception {
 		List<Meal> mealList = command.getMealList();
 		if (mealList == null)
 			return;
@@ -257,7 +235,7 @@ public class MonitorService implements Runnable {
 	 * @throws Exception
 	 * @throws Exception
 	 */
-	public void discount(Device device, InetSocketAddress inetSocketAddress, SendCommand command) throws Exception {
+	private static void discount(Device device, InetSocketAddress inetSocketAddress, SendCommand command) throws Exception {
 		List<Discount> discountList = command.getDiscountList();
 		if (discountList == null)
 			return;
@@ -283,7 +261,7 @@ public class MonitorService implements Runnable {
 	 * @throws Exception
 	 * @throws Exception
 	 */
-	public void sysPwd(Device device, InetSocketAddress inetSocketAddress, SendCommand command) throws Exception {
+	private static void sysPwd(Device device, InetSocketAddress inetSocketAddress, SendCommand command) throws Exception {
 		Company company = command.getCompany();
 		String sendBufStr = StringUtil.hexLeftPad(PosFrame.Sys04, 2) + StringUtil.hexLeftPad(PosSubFrameSys04.SysPwd, 2) + "0000" + StringUtil.hexLeftPad(command.getCommandCode(), 4)
 				+ StringUtil.getSysPwd(company) + StringUtil.hexLeftPad(company.getBaseSection(), 2) + StringUtil.hexLeftPad(company.getHeartInterval(), 4)
@@ -304,7 +282,7 @@ public class MonitorService implements Runnable {
 	 * @throws Exception
 	 * @throws Exception
 	 */
-	public void companyName(Device device, InetSocketAddress inetSocketAddress, SendCommand command) throws Exception {
+	private static void companyName(Device device, InetSocketAddress inetSocketAddress, SendCommand command) throws Exception {
 		String sendBufStr = StringUtil.hexLeftPad(PosFrame.Sys04, 2) + StringUtil.hexLeftPad(PosSubFrameSys04.SetCompanyName, 2) + "0000" + StringUtil.hexLeftPad(command.getCommandCode(), 4)
 				+ StringUtil.strRightPad(StringUtil.strToGB2312(command.getCompany().getCompanyName()), 64) + "0000";
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
@@ -323,7 +301,7 @@ public class MonitorService implements Runnable {
 	 * @throws Exception
 	 * @throws Exception
 	 */
-	public void orderTime(Device device, InetSocketAddress inetSocketAddress, byte subFrame, SendCommand command, Integer beginIndex, Integer endIndex) throws Exception {
+	private static void orderTime(Device device, InetSocketAddress inetSocketAddress, byte subFrame, SendCommand command, Integer beginIndex, Integer endIndex) throws Exception {
 		List<OrderTime> orderTimeList = command.getOrderTimeList();
 		if (orderTimeList == null)
 			return;
@@ -351,7 +329,7 @@ public class MonitorService implements Runnable {
 	 * @throws Exception
 	 * @throws Exception
 	 */
-	public void updateCookbook(Device device, InetSocketAddress inetSocketAddress, Integer commandCode) throws Exception {
+	private static void updateCookbook(Device device, InetSocketAddress inetSocketAddress, Integer commandCode) throws Exception {
 		String sendBufStr = StringUtil.hexLeftPad(PosFrame.Cookbook, 2) + StringUtil.hexLeftPad(PosSubFrameCookbook.Update, 2) + "0000" + StringUtil.hexLeftPad(commandCode, 4) + "0000";
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
 		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + CommandDevice.NoSubDeviceNum + DeviceType.Main + DeviceType.getDeviceTypeFrame(device) + bufLen + sendBufStr;
@@ -369,7 +347,7 @@ public class MonitorService implements Runnable {
 	 * @throws Exception
 	 * @throws Exception
 	 */
-	public void appendCookbook(Device device, InetSocketAddress inetSocketAddress, SendCommand sendCommand) throws Exception {
+	private static void appendCookbook(Device device, InetSocketAddress inetSocketAddress, SendCommand sendCommand) throws Exception {
 		Cookbook cookbook = sendCommand.getCookbook();
 		if (cookbook == null)
 			return;
@@ -392,7 +370,7 @@ public class MonitorService implements Runnable {
 	 * @throws Exception
 	 * @throws Exception
 	 */
-	public void getLastNumCookbook(Device device, InetSocketAddress inetSocketAddress, Integer commandCode) throws Exception {
+	private static void getLastNumCookbook(Device device, InetSocketAddress inetSocketAddress, Integer commandCode) throws Exception {
 		String sendBufStr = StringUtil.hexLeftPad(PosFrame.Cookbook, 2) + StringUtil.hexLeftPad(PosSubFrameCookbook.GetLastNum, 2) + "0000" + StringUtil.hexLeftPad(commandCode, 4) + "0000";
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
 		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + CommandDevice.NoSubDeviceNum + DeviceType.Main + DeviceType.getDeviceTypeFrame(device) + bufLen + sendBufStr;
@@ -410,7 +388,7 @@ public class MonitorService implements Runnable {
 	 * @throws Exception
 	 * @throws Exception
 	 */
-	public void modifyCookbook(Device device, InetSocketAddress inetSocketAddress, SendCommand sendCommand) throws Exception {
+	private static void modifyCookbook(Device device, InetSocketAddress inetSocketAddress, SendCommand sendCommand) throws Exception {
 		Cookbook cookbook = sendCommand.getCookbook();
 		String sendBufStr = StringUtil.hexLeftPad(PosFrame.Cookbook, 2) + StringUtil.hexLeftPad(PosSubFrameCookbook.Modify, 2) + "0000" + StringUtil.hexLeftPad(sendCommand.getCommandCode(), 4)
 				+ StringUtil.hexLeftPad(cookbook.getCookbookCode(), 4) + StringUtil.hexLeftPad(cookbook.getPrice().intValue() / 100, 8)
@@ -431,7 +409,7 @@ public class MonitorService implements Runnable {
 	 * @throws Exception
 	 * @throws Exception
 	 */
-	public void batchUpdate(Device device, InetSocketAddress inetSocketAddress, SendCommand sendCommand) throws Exception {
+	private static void batchUpdate(Device device, InetSocketAddress inetSocketAddress, SendCommand sendCommand) throws Exception {
 		String sendBufStr = StringUtil.hexLeftPad(PosFrame.Black, 2) + StringUtil.hexLeftPad(PosSubFrameBlack.BatchUpdate, 2) + "0000" + StringUtil.hexLeftPad(sendCommand.getCommandCode(), 4)
 				+ "0000";
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
@@ -450,7 +428,7 @@ public class MonitorService implements Runnable {
 	 * @throws Exception
 	 * @throws Exception
 	 */
-	public void batchAppend(Device device, InetSocketAddress inetSocketAddress, SendCommand sendCommand) throws Exception {
+	private static void batchAppend(Device device, InetSocketAddress inetSocketAddress, SendCommand sendCommand) throws Exception {
 		String sendBufStr = StringUtil.hexLeftPad(PosFrame.Black, 2) + StringUtil.hexLeftPad(PosSubFrameBlack.BatchAppend, 2) + "0000" + StringUtil.hexLeftPad(sendCommand.getCommandCode(), 4)
 				+ sendCommand.getBatchIds() + "0000";
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
@@ -469,7 +447,7 @@ public class MonitorService implements Runnable {
 	 * @throws Exception
 	 * @throws Exception
 	 */
-	public void blackUpdate(Device device, InetSocketAddress inetSocketAddress, SendCommand sendCommand) throws Exception {
+	private static void blackUpdate(Device device, InetSocketAddress inetSocketAddress, SendCommand sendCommand) throws Exception {
 		String sendBufStr = StringUtil.hexLeftPad(PosFrame.Black, 2) + StringUtil.hexLeftPad(PosSubFrameBlack.AllUpdate, 2) + "0000" + StringUtil.hexLeftPad(sendCommand.getCommandCode(), 4) + "0000";
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
 		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + CommandDevice.NoSubDeviceNum + DeviceType.Main + DeviceType.getDeviceTypeFrame(device) + bufLen + sendBufStr;
@@ -487,7 +465,7 @@ public class MonitorService implements Runnable {
 	 * @throws Exception
 	 * @throws Exception
 	 */
-	public void blackAppend(Device device, InetSocketAddress inetSocketAddress, SendCommand sendCommand) throws Exception {
+	private static void blackAppend(Device device, InetSocketAddress inetSocketAddress, SendCommand sendCommand) throws Exception {
 		String sendBufStr = StringUtil.hexLeftPad(PosFrame.Black, 2) + StringUtil.hexLeftPad(PosSubFrameBlack.IncAppend, 2) + "0000" + StringUtil.hexLeftPad(sendCommand.getCommandCode(), 4)
 				+ sendCommand.getBlackNums() + "0000";
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
@@ -506,100 +484,13 @@ public class MonitorService implements Runnable {
 	 * @throws Exception
 	 * @throws Exception
 	 */
-	public void sysInit(Device device, InetSocketAddress inetSocketAddress, Integer commandCode) throws Exception {
+	private static void sysInit(Device device, InetSocketAddress inetSocketAddress, Integer commandCode) throws Exception {
 		String sendBufStr = StringUtil.hexLeftPad(PosFrame.SysInit, 2) + StringUtil.hexLeftPad(PosSubFrameSys07.SysInit, 2) + "0000" + StringUtil.hexLeftPad(commandCode, 4) + "0000";
 		String bufLen = StringUtil.hexLeftPad(2 + sendBufStr.length() / 2, 4);
 		sendBufStr = device.getSn() + StringUtil.hexLeftPad(device.getDeviceNum(), 8) + CommandDevice.NoSubDeviceNum + DeviceType.Main + DeviceType.getDeviceTypeFrame(device) + bufLen + sendBufStr;
 		byte[] sendBuf = StringUtil.strTobytes(sendBufStr);
 
 		TerminalManager.sendToPos(inetSocketAddress, sendBuf);
-	}
-
-	/*
-	 * 监控线程
-	 */
-	public void run() {
-		boolean stop = false;
-		while (!stop) {
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e1) {
-				stop = true;
-			}
-			for (Device d : this.deviceList) {
-				String sn = d.getSn();
-				if (d.getTransferSn() != null) {
-					sn = d.getTransferSn();
-				}
-				InetSocketAddress inetSocketAddress = TerminalManager.SNToInetSocketAddressList.get(sn);
-				if (inetSocketAddress == null) {
-					continue;
-				}
-
-				// 当前设备命令列表
-				List<SendCommand> sendCommandList = null;
-				// 当前命令
-				SendCommand sendCommand = null;
-				// 同步执行当前命令
-				synchronized (TerminalManager.sendCommandObject) {
-					sendCommandList = TerminalManager.SNToSendCommandList.get(d.getSn());
-					if (sendCommandList != null && sendCommandList.size() > 0) {
-						StringUtil.println("命令个数：" + sendCommandList.size());
-						sendCommand = sendCommandList.get(0);
-						// 访问次数
-						int sendTime = sendCommand.getSendTime();
-						if (sendTime >= 5) {
-							sendCommandList.clear();
-							continue;
-						}
-						try {
-							excuteCommand(d, inetSocketAddress, sendCommand);
-							sendCommand.setSendTime(++sendTime);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					}
-				}
-
-				// 如果没有命令，继续询问下个设备
-				if (sendCommandList == null || sendCommandList.size() == 0) {
-					continue;
-				}
-
-				// 检测命令是否执行，比较命令列表里的第0命令和当前执行的命令是否一致
-				try {
-					// 等待消除网络延时
-					Thread.sleep(1000);
-
-					for (int i = 0; i < accessTimeout; i++) {
-						synchronized (TerminalManager.sendCommandObject) {
-							List<SendCommand> sendCommandList2 = TerminalManager.SNToSendCommandList.get(d.getSn());
-							if (sendCommandList2.size() > 0) {
-								SendCommand tempSendCommand = sendCommandList2.get(0);
-								if (sendCommand != tempSendCommand) {
-									System.out.println("f" + sendCommand.getSendTime());
-									break;
-								}
-							} else {
-								// 列表为空说明执行完毕
-								break;
-							}
-						}
-						System.out.println("nf" + sendCommand.getSendTime());
-						Thread.sleep(200);
-					}
-
-					// 中转延时
-					if (d.getTransferId() != null && d.getTransferId() != 0) {
-						Thread.sleep(transferInterval);
-					}
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-					stop = true;
-					break;
-				}
-			}
-		}
 	}
 
 	/**
@@ -612,7 +503,7 @@ public class MonitorService implements Runnable {
 	 * @throws Exception
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private void excuteCommand(Device d, InetSocketAddress inetSocketAddress, SendCommand sendCommand) throws Exception {
+	public static void excuteCommand(Device d, InetSocketAddress inetSocketAddress, SendCommand sendCommand) throws Exception {
 		byte frame = sendCommand.getFrame();
 		Map map = new HashMap();
 		map.put("type", "log");

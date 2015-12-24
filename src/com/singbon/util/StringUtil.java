@@ -304,7 +304,7 @@ public class StringUtil {
 		byte[] b = new byte[str.length() / 2];
 		for (int i = 0; i < str.length() / 2 - 2; i++) {
 			String s = str.substring(i * 2, i * 2 + 2);
-			StringUtil.print(s + " ");
+//			StringUtil.print(s + " ");
 			b[i] = (byte) Integer.parseInt(s, 16);
 		}
 		return b;
