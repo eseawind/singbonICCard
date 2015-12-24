@@ -54,6 +54,11 @@ public class TerminalManager {
 	 * SN序列号到设备映射列表
 	 */
 	public static Map<String, Device> SNToDeviceList = new HashMap<String, Device>();
+	
+	/**
+	 * 中转通信器ID到SN列表
+	 */
+	public static Map<Integer, String> TransferIdToSNList = new HashMap<Integer, String>();
 
 	/**
 	 * SN序列号到套接字通道映射列表

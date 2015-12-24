@@ -38,7 +38,7 @@ public class SystemListener implements ServletContextListener {
 	@Override
 	public void contextInitialized(ServletContextEvent arg0) {
 		WebApplicationContext app = WebApplicationContextUtils.getRequiredWebApplicationContext(arg0.getServletContext());
-		
+
 		DeviceService deviceService = (DeviceService) app.getBean("deviceService");
 		CompanyService companyService = (CompanyService) app.getBean("companyService");
 		MealService mealService = (MealService) app.getBean("mealService");
@@ -49,6 +49,9 @@ public class SystemListener implements ServletContextListener {
 			// 读卡机
 			if (d.getDeviceType() == 8) {
 				TerminalManager.registChannel("c" + d.getSn());
+			} else if (d.getDeviceType() == 1) {
+				TerminalManager.TransferIdToSNList.put(d.getId(), d.getSn());
+				TerminalManager.SNToDeviceList.put(d.getSn(), d);
 			} else {
 				TerminalManager.SNToDeviceList.put(d.getSn(), d);
 			}
