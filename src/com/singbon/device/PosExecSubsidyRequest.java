@@ -51,7 +51,7 @@ public class PosExecSubsidyRequest implements Runnable {
 
 		String sn = device.getSn();
 		if (device.getTransferId() != null && device.getTransferId() != 0) {
-			sn = device.getTransferSn();
+			sn = TerminalManager.TransferIdToSNList.get(device.getTransferId());
 		}
 
 		InetSocketAddress inetSocketAddress = TerminalManager.SNToInetSocketAddressList.get(sn);

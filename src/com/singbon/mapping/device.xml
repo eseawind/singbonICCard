@@ -6,7 +6,7 @@
 	<parameterMap type="com.singbon.entity.Device" id="device2" />
 	<cache eviction="FIFO" size="2000" readOnly="true"/>
 
-	<insert id="insert" parameterMap="device2">
+	<insert id="insert" parameterMap="device2" useGeneratedKeys="true" keyProperty="id">
 		insert into device (companyId,deptId,paramGroupId,deviceName,deviceNum,deviceType,enable,sn)
 		values (#{companyId},#{deptId},#{paramGroupId},#{deviceName},#{deviceNum},#{deviceType},#{enable},#{sn})
 	</insert>
@@ -69,6 +69,6 @@
 	</select>
 <!-- 	系统启动加载用 -->
 	<select id="selectAllList" resultMap="device" useCache="false">
-		select id,companyId,deptId,paramGroupId,deviceName,deviceNum,deviceType,transferId,enable,sn,case when ifnull(transferId,0) =0 then sn else (select sn from device where id=d.transferId) end transferSn from device d
+		select * from device
 	</select>
 </mapper>

@@ -149,7 +149,7 @@ public class MonitorController extends BaseController {
 
 		model.addAttribute("deptList", deptList);
 		model.addAttribute("deviceList", deviceList);
-		model.addAttribute("transferSnList", transferList);
+		model.addAttribute("transferList", transferList);
 
 		String url = request.getRequestURI();
 		model.addAttribute("base", url.replace("/index.do", ""));

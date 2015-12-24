@@ -54,6 +54,9 @@ public class DeviceService extends BaseService {
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void insert(Device device) throws Exception {
 		this.deviceDAO.insert(device);
+		if (device.getDeviceType() == 1) {
+			TerminalManager.TransferIdToSNList.put(device.getId(), device.getSn());
+		}
 		TerminalManager.SNToDeviceList.put(device.getSn(), device);
 		if (device.getDeviceType() == 8) {
 			TerminalManager.registChannel("c" + device.getSn());
@@ -70,6 +73,9 @@ public class DeviceService extends BaseService {
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void update(Device device, String oldSn) throws Exception {
 		this.deviceDAO.update(device);
+		if (device.getDeviceType() == 1) {
+			TerminalManager.TransferIdToSNList.put(device.getId(), device.getSn());
+		}
 		if (!device.getSn().equals(oldSn)) {
 			TerminalManager.SNToDeviceList.remove(oldSn);
 			if (device.getDeviceType() == 8) {
@@ -93,6 +99,7 @@ public class DeviceService extends BaseService {
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void deleteDevice(Integer id, boolean isCardReader, String sn) throws Exception {
 		this.deviceDAO.delete(id);
+		TerminalManager.TransferIdToSNList.remove(id);
 		if (sn != null) {
 			TerminalManager.SNToDeviceList.remove(sn);
 			if (isCardReader) {
