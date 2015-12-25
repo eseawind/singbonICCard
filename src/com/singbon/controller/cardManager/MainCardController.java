@@ -349,11 +349,9 @@ public class MainCardController extends BaseController {
 			SocketChannel socketChannel = TerminalManager.SNToSocketChannelList.get(sn);
 			if (socketChannel != null) {
 				try {
-					long cardNO = this.mainCardService.selectMaxCardNO(company.getId());
 					user.setCompanyId(company.getId());
 					user.setStatus(241);
 					user.setCardSeq(1);
-					user.setCardNO(cardNO);
 					user.setTotalFare((long)allOpFare);
 					user.setOddFare((long)allOpFare);
 					user.setOpCount(cardOpCounter);
@@ -364,11 +362,15 @@ public class MainCardController extends BaseController {
 
 					this.mainCardService.makeCardByUserInfo(sysUser, device, socketChannel, user, null, cardAllInfo, CardReaderCommandCode.SingleCard, section);
 				} catch (Exception e) {
-					e.printStackTrace();
+					String msg=e.getMessage();
+					if(msg.indexOf("userNOUnique")!=-1){
+						p.print(2);
+					}
+//					e.printStackTrace();
 				}
 			}
 		}
-		// 信息发卡、批量发卡、补卡
+		// (信息发卡、批量发卡)、补卡
 		else if (editType == 3 || editType == 4 || editType == 6) {
 			int cardSNCount = getCardSNCount(company.getId(), user.getCardSN(), sn);
 			if (cardSNCount > 0) {
@@ -379,9 +381,7 @@ public class MainCardController extends BaseController {
 				try {
 					User user2 = this.mainCardService.selectByUserId(user.getUserId());
 					user2.setCardSN(user.getCardSN());
-					long cardNO = this.mainCardService.selectMaxCardNO(company.getId());
 					user2.setStatus(241);
-					user2.setCardNO(cardNO);
 					// 非补卡，金额信息以修改的为准
 					if (editType != 6) {
 						user2.setTotalFare((long)allOpFare);
@@ -427,8 +427,12 @@ public class MainCardController extends BaseController {
 				}
 				p.print(1);
 			} catch (Exception e) {
-				e.printStackTrace();
-				p.print(0);
+				String msg=e.getMessage();
+				if(msg.indexOf("userNOUnique")!=-1){
+					p.print(2);
+				}else{
+					p.print(0);					
+				}
 			}
 			// 5挂失
 		} else if (editType == 5) {

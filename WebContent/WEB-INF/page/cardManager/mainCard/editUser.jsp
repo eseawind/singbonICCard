@@ -157,6 +157,9 @@
 					if(e2.r==1){
 						$('#userinfo input[name=cardSN]').val(e2.cardSN);
 						validateCallback($('#userinfo'), function(e) {
+							if(e==2){
+								alertMsg.warn('该用户编号已存在请更改！');					
+							}
 						}, null);
 					}else{
 						opCardResult(e2.r);

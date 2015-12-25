@@ -51,6 +51,9 @@ public class MainCardService extends BaseService {
 		return this.userDAO.selectByUserId(userId);
 	}
 
+	// 锁
+	public static Object userObject = new Object();
+
 	/**
 	 * 删除未发卡人员
 	 * 
@@ -148,14 +151,23 @@ public class MainCardService extends BaseService {
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void makeCardByUserInfo(SysUser sysUser, Device device, SocketChannel socketChannel, User user, User cardUser, CardAllInfo cardAllInfo, int commandCode, Integer section) throws Exception {
-		if (commandCode == CardReaderCommandCode.SingleCard) {
-			this.userDAO.insert(user);
-		} else if (commandCode == CardReaderCommandCode.InfoCard) {
-			this.userDAO.infoCard(user);
-		} else if (commandCode == CardReaderCommandCode.RemakeCard) {
-			this.userDAO.remakeCard(user);
+		if (commandCode != CardReaderCommandCode.UpdateByInfo) {
+			// 同步执行
+			synchronized (MainCardService.userObject) {
+				long cardNO = this.selectMaxCardNO(user.getCompanyId());
+				user.setCardNO(cardNO);
+				if (commandCode == CardReaderCommandCode.SingleCard) {
+					this.userDAO.insert(user);
+				} else if (commandCode == CardReaderCommandCode.InfoCard) {
+					this.userDAO.infoCard(user);
+				} else if (commandCode == CardReaderCommandCode.RemakeCard) {
+					this.userDAO.remakeCard(user);
+				}
+			}
+		}
 
-			// 添加卡操作记录
+		// 添加卡操作记录
+		if (commandCode == CardReaderCommandCode.RemakeCard) {
 			CardRecord cardRecord = new CardRecord();
 			cardRecord.setCompanyId(user.getCompanyId());
 			cardRecord.setOperId(sysUser.getOperId());
@@ -166,8 +178,8 @@ public class MainCardService extends BaseService {
 			cardRecord.setOpFare(0);
 			cardRecord.setOddFare(user.getOddFare());
 			cardRecord.setSubsidyOddFare(user.getSubsidyOddFare());
-			cardRecord.setCardOddFare((long)0);
-			cardRecord.setCardSubsidyOddFare((long)0);
+			cardRecord.setCardOddFare((long) 0);
+			cardRecord.setCardSubsidyOddFare((long) 0);
 			cardRecord.setOpCount(user.getOpCount());
 			cardRecord.setSubsidyOpCount(user.getSubsidyOpCount());
 			cardRecord.setCardOpCount(user.getOpCount());
@@ -183,10 +195,10 @@ public class MainCardService extends BaseService {
 			cardRecord.setUserId(user.getUserId());
 			cardRecord.setCardNO(user.getCardNO());
 			cardRecord.setCardSN(user.getCardSN());
-			cardRecord.setOddFare((long)0);
-			cardRecord.setSubsidyOddFare((long)0);
-			cardRecord.setCardOddFare((long)0);
-			cardRecord.setCardSubsidyOddFare((long)0);
+			cardRecord.setOddFare((long) 0);
+			cardRecord.setSubsidyOddFare((long) 0);
+			cardRecord.setCardOddFare((long) 0);
+			cardRecord.setCardSubsidyOddFare((long) 0);
 			cardRecord.setOpCount(user.getOpCount());
 			cardRecord.setSubsidyOpCount(0);
 			cardRecord.setCardOpCount(user.getOpCount());
@@ -371,8 +383,8 @@ public class MainCardService extends BaseService {
 		cardRecord.setOpFare(0);
 		cardRecord.setOddFare(user.getOddFare());
 		cardRecord.setSubsidyOddFare(user.getSubsidyOddFare());
-		cardRecord.setCardOddFare((long)0);
-		cardRecord.setCardSubsidyOddFare((long)0);
+		cardRecord.setCardOddFare((long) 0);
+		cardRecord.setCardSubsidyOddFare((long) 0);
 		cardRecord.setOpCount(user.getOpCount());
 		cardRecord.setSubsidyOpCount(user.getSubsidyOpCount());
 		cardRecord.setCardOpCount(0);
@@ -388,8 +400,8 @@ public class MainCardService extends BaseService {
 	 * @throws Exception
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public void unloss(SysUser sysUser, User user, Long dbOddFare, Long dbSubsidyOddFare, Integer dbOpCount, Integer dbSubsidyOpCount, SocketChannel socketChannel, Device device,
-			String cardInfoStr) throws Exception {
+	public void unloss(SysUser sysUser, User user, Long dbOddFare, Long dbSubsidyOddFare, Integer dbOpCount, Integer dbSubsidyOpCount, SocketChannel socketChannel, Device device, String cardInfoStr)
+			throws Exception {
 		long newCardNO = this.userDAO.selectMaxCardNO(user.getCompanyId());
 		user.setCardNO(newCardNO);
 		this.userDAO.unloss(user);

@@ -104,7 +104,7 @@ public class PosTransferService implements Runnable {
 							Thread.sleep(200);
 						}
 					} catch (InterruptedException e) {
-						e.printStackTrace();
+//						e.printStackTrace();
 						stop = true;
 						break;
 					}

@@ -50,8 +50,8 @@ public class CometServer {
 							}
 						}
 					}
+					TerminalManager.CompanyIdToMonitorThreadList.remove(StringUtil.objToInt(companyId));
 				}
-				TerminalManager.CompanyIdToMonitorThreadList.remove(StringUtil.objToInt(companyId));
 				String ip = connection.getClientIp();
 				StringUtil.println("d " + ip);
 				return false;
