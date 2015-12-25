@@ -44,9 +44,9 @@ public class PosExecCardBlack implements Runnable {
 		if (!blackAdded) {
 			String sql = null;
 			if (lastBlackNum == 0) {
-				sql = String.format("select cardNO,blackType from cardBlack where companyId=%s and cardNO>0 limit 20", device.getCompanyId());
+				sql = String.format("select cardNO,blackType from cardBlack where companyId=%s and cardNO>0 limit 8", device.getCompanyId());
 			} else {
-				sql = String.format("select cardNO,blackType from cardBlack where companyId=%s and id>(select id from cardBlack where companyId=%s and cardNO=%s) limit 20", device.getCompanyId(),
+				sql = String.format("select cardNO,blackType from cardBlack where companyId=%s and id>(select id from cardBlack where companyId=%s and cardNO=%s) limit 8", device.getCompanyId(),
 						device.getCompanyId(), lastBlackNum);
 			}
 			List<Map> list = JdbcUtil.baseDAO.selectBySql(sql);
