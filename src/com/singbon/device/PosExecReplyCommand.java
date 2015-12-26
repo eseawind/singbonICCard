@@ -117,8 +117,8 @@ public class PosExecReplyCommand {
 				String log = String.format(DesUtil.decrypt(DeviceCommunicateStr.ExecBlackAppend), sendCommand.getBlackNumsDes());
 				map.put("des", log);
 
-				long lastBlackNum = Long.parseLong(StringUtil.getHexStrFromBytes(b.length - 6, b.length - 3, b), 16);
-				TerminalManager.CompanyIdToLastBlackNumList.put(device.getCompanyId(), lastBlackNum);
+			//	long lastBlackNum = Long.parseLong(StringUtil.getHexStrFromBytes(b.length - 6, b.length - 3, b), 16);
+			//	TerminalManager.CompanyIdToLastBlackNumList.put(device.getCompanyId(), lastBlackNum);
 			}
 			break;
 		// 初始化
