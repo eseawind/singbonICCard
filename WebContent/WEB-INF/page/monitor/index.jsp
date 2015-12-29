@@ -42,7 +42,7 @@
 <!-- <script src="/js/dwz.util.date.js" type="text/javascript"></script> -->
 <!-- <script src="/js/dwz.validate.method.js" type="text/javascript"></script> -->
 <!-- <script src="/js/dwz.regional.zh.js" type="text/javascript"></script> -->
-<!-- <script src="/js/dwz.drag.js" type="text/javascript"></script> -->
+<script src="/js/dwz.drag.js" type="text/javascript"></script>
 <!-- <script src="/js/dwz.accordion.js" type="text/javascript"></script> -->
 <!-- <script src="/js/dwz.theme.js" type="text/javascript"></script> -->
 <!-- <script src="/js/dwz.switchEnv.js" type="text/javascript"></script> -->
@@ -439,6 +439,26 @@
 			}
 // 		}
 	}
+	$(function(){
+		 var src_posi_Y = 0, dest_posi_Y = 0, move_Y = 0, is_mouse_down = false, destHeight = 30;
+	    $('.tabsHeaderContent').mousedown(function(e){
+			src_posi_Y = e.pageY;
+	        is_mouse_down = true;
+	    });
+	    $(document).bind("click mouseup",function(e){
+	        if(is_mouse_down){
+	        	is_mouse_down = false;
+	        }
+	    }).mousemove(function(e){
+	    	if(!is_mouse_down)
+	    		return;
+	        dest_posi_Y = e.pageY;
+	        move_Y = dest_posi_Y-src_posi_Y;
+	        src_posi_Y = dest_posi_Y;
+	        $('#deviceList').css('height',$('#deviceList').height()+move_Y);
+	        $('#msgContent').attr('layoutH',parseInt($('#msgContent').attr('layoutH'))+move_Y).layoutH();
+	    });
+	});
 </script>
 <style type="text/css">
 	#deviceGroupList{
@@ -467,6 +487,7 @@
 	.tabs .tabsContent {
 /* 		padding: 0; */
 	}
+	.tabsHeaderContent:hover{ cursor:row-resize;}
 </style>
 </head>
 <body scroll="no">
@@ -560,10 +581,10 @@
 													</ul>
 												</div>
 											</div>
-											<div class="tabsContent" style="padding:0;" layoutH="210">
+											<div id="msgContent" class="tabsContent" style="padding:0;" layoutH="280">
 												<!-- 消费设备状态 -->
 												<div id="deviceStatusList">
-													<table class="table" width="99%" layoutH="300" rel="jbsxBox" target="deviceStatus">
+													<table class="table" width="99%" rel="jbsxBox" target="deviceStatus">
 														<thead>
 															<tr>
 																<th width="100">设备名称</th>
@@ -593,7 +614,7 @@
 												<!-- 消费设备状态 end-->
 												<!-- 消费记录监控 -->
 												<div id="consumeRecord">
-													<table class="table" width="100%" layoutH="300" rel="jbsxBox" target="consumeRecord">
+													<table class="table" width="100%" rel="jbsxBox" target="consumeRecord">
 														<thead>
 															<tr>
 																<th width="40">序号</th>
@@ -615,8 +636,7 @@
 																<th width="80">菜肴份数</th>
 															</tr>
 														</thead>
-														<tbody>
-															<tbody class="clearLog consumeRecord">
+														<tbody class="clearLog consumeRecord">
 															<c:forEach begin="1" end="100" step="1" var="i">
 																<tr index="${i}">
 																	<td index></td>
@@ -639,13 +659,12 @@
 																</tr>
 															</c:forEach>
 														</tbody>
-														</tbody>
 													</table>
 												</div>
 												<!-- 消费记录监控 end-->
 												<!-- 订餐信息监控 -->
 												<div id="cookbookRecord">
-													<table class="table" width="99%" layoutH="300" rel="jbsxBox" target="cookbookRecord">
+													<table class="table" width="99%" rel="jbsxBox" target="cookbookRecord">
 														<thead>
 															<tr>
 																<th width="40">序号</th>
@@ -687,7 +706,7 @@
 												<!-- 订餐信息监控 end-->
 												<!-- 门禁考勤设备状态 -->
 												<div id="attendanceStatus">
-													<table class="table" width="99%" layoutH="300" rel="jbsxBox" target="attendanceStatus">
+													<table class="table" width="99%" rel="jbsxBox" target="attendanceStatus">
 														<thead>
 															<tr>
 																<th width="40">序号</th>
@@ -711,7 +730,7 @@
 												<!-- 门禁考勤设备状态 end-->
 												<!-- 考勤记录监控 -->
 												<div id="attendanceRecord">
-													<table class="table" width="99%" layoutH="300" rel="jbsxBox" target="attendanceRecord">
+													<table class="table" width="99%" rel="jbsxBox" target="attendanceRecord">
 														<thead>
 															<tr>
 																<th width="40">序号</th>
@@ -736,7 +755,7 @@
 												<!-- 考勤记录监控 end-->
 												<!-- 日记监控 -->
 												<div id="log">
-													<table class="table" width="99%" layoutH="300" rel="jbsxBox" target="log">
+													<table class="table" width="99%" rel="jbsxBox" target="log">
 														<thead>
 															<tr>
 																<th width="20">序号</th>
