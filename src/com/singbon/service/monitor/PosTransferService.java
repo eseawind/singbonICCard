@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.singbon.device.CommandDevice;
 import com.singbon.device.DeviceType;
 import com.singbon.device.PosFrame;
+import com.singbon.device.PosSubFrameBlack;
 import com.singbon.device.SendCommand;
 import com.singbon.device.TerminalManager;
 import com.singbon.entity.Device;
@@ -112,7 +113,7 @@ public class PosTransferService implements Runnable {
 				}
 
 				// 如果下载黑名单不检测是否命令回复，继续询问下个设备
-				if (sendCommand != null && sendCommand.getFrame() == PosFrame.Black) {
+				if (sendCommand != null && sendCommand.getFrame() == PosFrame.Black && sendCommand.getSubFrame()==PosSubFrameBlack.IncAppend) {
 					try {
 						if (sendTime <= 1) {
 							Thread.sleep(100);
